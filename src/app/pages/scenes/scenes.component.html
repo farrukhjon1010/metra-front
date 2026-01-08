@@ -1,0 +1,13 @@
+<section class="scenes">
+  <h2>Сцены</h2>
+
+  <div class="scene-card" *ngFor="let scene of scenes">
+    <h3>{{ scene.title }}</h3>
+    <p>{{ scene.description }}</p>
+
+    <div class="actions">
+      <button>Открыть</button>
+      <button class="danger">Удалить</button>
+    </div>
+  </div>
+</section>

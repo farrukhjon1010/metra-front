@@ -1,0 +1,9 @@
+<section class="history">
+  <h2>История</h2>
+
+  <div class="scene-card" *ngFor="let item of history">
+    <h3>{{ item.title }}</h3>
+    <p>{{ item.description }}</p>
+    <span>Status: {{ item.status || 'Завершено' }}</span>
+  </div>
+</section>

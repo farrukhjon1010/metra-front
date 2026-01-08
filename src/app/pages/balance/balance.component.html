@@ -1,0 +1,13 @@
+<section class="balance">
+  <h2>Баланс</h2>
+
+  <div class="card">
+    <p>Текущий баланс: {{ balance }} ₽</p>
+  </div>
+
+  <div class="funds-buttons">
+    <button (click)="addFunds(100)">+100 ₽</button>
+    <button (click)="addFunds(500)">+500 ₽</button>
+    <button (click)="addFunds(1000)">+1000 ₽</button>
+  </div>
+</section>

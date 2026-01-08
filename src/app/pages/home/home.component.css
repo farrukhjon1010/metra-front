@@ -1,0 +1,210 @@
+.home-container {
+  min-height: 100vh;
+  background: #0a0a14;
+  padding-bottom: 80px; /* Место для bottom nav */
+  max-width: 390px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.home-header {
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.8) 100%);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.avatar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(181, 123, 255, 0.2);
+  border: 2px solid rgba(181, 123, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(181, 123, 255, 0.9);
+  flex-shrink: 0;
+}
+
+.home-content {
+  padding: 0 16px;
+}
+
+.scenes-section {
+  margin-bottom: 24px;
+}
+
+.section-header {
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.scenes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.scene-card {
+  background: #181826;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.scene-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.scene-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(135deg, rgba(181, 123, 255, 0.2) 0%, rgba(123, 92, 255, 0.2) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.scene-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scene-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 60%,
+    rgba(24, 24, 38, 0.8) 100%
+  );
+  z-index: 1;
+}
+
+.scene-info {
+  padding: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.scene-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.scene-description {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.recommendations-section {
+  margin-bottom: 20px;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.recommendation-btn {
+  background: #181826;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.recommendation-btn:hover {
+  background: rgba(181, 123, 255, 0.1);
+  border-color: rgba(181, 123, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.recommendation-btn:active {
+  transform: translateY(0);
+}
+
+.rec-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(181, 123, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(181, 123, 255, 0.9);
+  flex-shrink: 0;
+}
+
+.rec-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: left;
+  flex: 1;
+}
+

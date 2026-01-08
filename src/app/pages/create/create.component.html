@@ -1,0 +1,253 @@
+<!--<div style="position:fixed;top:10px;right:10px;z-index:999;color:red; display: none">-->
+<!--  STEP: {{ currentStep }}-->
+<!--</div>-->
+
+<!--<div class="create-avatar-container">-->
+<!--  <div class="background-pattern"></div>-->
+<!--  &lt;!&ndash; Форма создания аватара &ndash;&gt;-->
+<!--  <div class="content" *ngIf="currentStep === 'form'">-->
+<!--    <div class="header">-->
+<!--      <h1 class="title">Создать аватар</h1>-->
+<!--    </div>-->
+<!--    <div class="form-content">-->
+<!--      &lt;!&ndash; Имя аватара &ndash;&gt;-->
+<!--      <div class="form-group">-->
+<!--        <label class="form-label">Имя аватара</label>-->
+<!--        <input-->
+<!--          type="text"-->
+<!--          name="avatarName"-->
+<!--          class="form-input"-->
+<!--          placeholder="Введите имя своего аватара"-->
+<!--          [(ngModel)]="avatarName">-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Выбор пола &ndash;&gt;-->
+<!--      <div class="form-group">-->
+<!--        <label class="form-label">Пол</label>-->
+<!--        <div class="gender-buttons">-->
+<!--          <div class="slider" [ngStyle]="{'transform': gender === 'male' ? 'translateX(0%)' : 'translateX(100%)'}"></div>-->
+<!--          <button-->
+<!--            class="gender-btn"-->
+<!--            [class.active]="gender === 'male'"-->
+<!--            (click)="gender = 'male'">-->
+<!--            Мужской-->
+<!--          </button>-->
+<!--          <button-->
+<!--            class="gender-btn"-->
+<!--            [class.active]="gender === 'female'"-->
+<!--            (click)="gender = 'female'">-->
+<!--            Женский-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Загрузка фото фронтальной стороны &ndash;&gt;-->
+<!--      <div class="photo-load">-->
+<!--        <div class="photo-upload-section">-->
+<!--          <label class="form-label">Загрузите фото с фронтальной стороны</label>-->
+<!--          <div class="upload-row">-->
+<!--            &lt;!&ndash; Кнопка загрузки &ndash;&gt;-->
+<!--            <div class="upload-area-small" (click)="triggerFileInput('front',$event)">-->
+<!--              <input-->
+<!--                #frontInput-->
+<!--                type="file"-->
+<!--                accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"-->
+<!--                (change)="onFileSelected($event, 'front')"-->
+<!--                style="display: none;">-->
+<!--              <div class="upload-content">-->
+<!--                <span class="upload-text-small">Загрузить</span>-->
+<!--                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>-->
+<!--              </div>-->
+<!--              <img src="assets/icons/upload.svg" alt="Icon">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>-->
+<!--        </div>-->
+<!--        <div class="front-photo">-->
+<!--          <img *ngIf="photos.front" [src]="photos.front" alt="Front Photo" style="width:100%; height:100%;">-->
+<!--          <ng-container *ngIf="!photos.front">-->
+<!--            <img src="assets/icons/vector-front.svg" alt="Front Placeholder" style="padding-top: 8px; padding-left: 6px">-->
+<!--          </ng-container>-->
+<!--          <button *ngIf="photos.front" class="delete-photo"-->
+<!--                  style="position:absolute; top:4px; right:4px;"-->
+<!--                  (click)="removePhoto('front', $event)">-->
+<!--            <img src="assets/icons/delete.svg">-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Загрузка фото левого профиля &ndash;&gt;-->
+<!--      <div class="photo-load">-->
+<!--        <div class="photo-upload-section">-->
+<!--          <label class="form-label">Загрузите фото с левого профиля</label>-->
+<!--          <div class="upload-row">-->
+<!--            &lt;!&ndash; Кнопка загрузки &ndash;&gt;-->
+<!--            <div class="upload-area-small" (click)="triggerFileInput('left', $event)">-->
+<!--              <input-->
+<!--                #leftInput-->
+<!--                type="file"-->
+<!--                accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"-->
+<!--                (change)="onFileSelected($event, 'left')"-->
+<!--                style="display: none;">-->
+<!--              <div class="upload-content">-->
+<!--                <span class="upload-text-small">Загрузить</span>-->
+<!--                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>-->
+<!--              </div>-->
+<!--              <img src="assets/icons/upload.svg" alt="Icon">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Блок левого профиля &ndash;&gt;-->
+<!--        <div class="front-photo"  >-->
+<!--          <img *ngIf="photos.left" [src]="photos.left" alt="Left Photo" style="width:100%; height:100%;">-->
+<!--          <ng-container *ngIf="!photos.left">-->
+<!--            <img src="assets/icons/vector-left.svg" alt="Left Placeholder" style="padding-top: 10px; padding-left: 6px">-->
+<!--          </ng-container>-->
+<!--          <button *ngIf="photos.left" class="delete-photo"-->
+<!--                  style="position:absolute; top:4px; right:4px;"-->
+<!--                  (click)="removePhoto('left', $event)">-->
+<!--            <img src="assets/icons/delete.svg">-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="photo-load">-->
+<!--        <div class="photo-upload-section">-->
+<!--          <label class="form-label">Загрузите фото с правого профиля</label>-->
+<!--          <div class="upload-row">-->
+<!--            &lt;!&ndash; Кнопка загрузки &ndash;&gt;-->
+<!--            <div class="upload-area-small" (click)="triggerFileInput('right', $event)">-->
+<!--              <input-->
+<!--                #rightInput-->
+<!--                type="file"-->
+<!--                accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"-->
+<!--                (change)="onFileSelected($event, 'right')"-->
+<!--                style="display: none;">-->
+<!--              <div class="upload-content">-->
+<!--                <span class="upload-text-small">Загрузить</span>-->
+<!--                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>-->
+<!--              </div>-->
+<!--              <img src="assets/icons/upload.svg" alt="Icon">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>-->
+<!--        </div>-->
+
+<!--        <div class="front-photo"  >-->
+<!--          <img *ngIf="photos.right" [src]="photos.right" alt="Right Photo" style="width:100%; height:100%;">-->
+<!--          <ng-container *ngIf="!photos.right">-->
+<!--            <img src="assets/icons/vector-right.svg" alt="Right Placeholder" style="padding-top: 10px; padding-left: 6px">-->
+<!--          </ng-container>-->
+<!--          <button *ngIf="photos.right" class="delete-photo"-->
+<!--                  style="position:absolute; top:4px; right:4px;"-->
+<!--                  (click)="removePhoto('right', $event)">-->
+<!--            <img src="assets/icons/delete.svg">-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <button-->
+<!--        class="btn-primary"-->
+<!--        [disabled]="!canCreate()"-->
+<!--        (click)="createAvatar()">-->
+<!--        <span>Создать аватар</span>-->
+<!--        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--          <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>-->
+<!--          <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>-->
+<!--        </svg>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  &lt;!&ndash; Экран загрузки &ndash;&gt;-->
+<!--  <div class="loading-screen" *ngIf="currentStep === 'loading'">-->
+<!--    <div class="loading-spinner"></div>-->
+<!--    <p class="loading-text">Создаем аватар..</p>-->
+<!--  </div>-->
+
+<!--  <div class="select-screen" *ngIf="currentStep === 'select'">-->
+<!--    <div class="success-badge">-->
+<!--          <span class="check-icon">-->
+<!--            <img src="assets/icons/check-circle.svg" alt="">-->
+<!--             <span class="success-text">Ваш аватар создан</span>-->
+<!--          </span>-->
+
+<!--      <p class="subtitle">Выберите одно изображений</p>-->
+<!--    </div>-->
+
+<!--    <div class="avatar-grid" *ngIf="generatedAvatars.length; else emptyState">-->
+<!--      <div-->
+<!--        class="avatar-card"-->
+<!--        *ngFor="let avatar of generatedAvatars"-->
+<!--        [class.selected]="isSelected(avatar)"-->
+<!--      >-->
+<!--        <div class="avatar-image-wrapper">-->
+<!--          <img [src]="avatar" alt="Avatar" class="avatar-image" />-->
+<!--        </div>-->
+<!--        <button-->
+<!--          class="btn-select"-->
+<!--          [class.selected]="isSelected(avatar)"-->
+<!--          (click)="toggleAvatar(avatar)"-->
+<!--        >-->
+<!--          {{ isSelected(avatar) ? 'Выбран' : 'Выбрать' }}-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <ng-template #emptyState>-->
+<!--      <p class="empty-message">Аватары генерируются…</p>-->
+<!--    </ng-template>-->
+
+<!--    <button class="btn-primary" [disabled]="selectedAvatars.length === 0" (click)="confirmAvatars()">-->
+<!--      Продолжить →-->
+<!--    </button>-->
+<!--  </div>-->
+
+<!--  <div class="success-screen" *ngIf="currentStep === 'success'">-->
+<!--    <div class="success-card">-->
+<!--      <div class="success-icon">-->
+<!--        <img src="assets/icons/check-circle.svg" alt="">-->
+<!--      </div>-->
+<!--      <h2 class="success-title">Аватар успешно добавлен</h2>-->
+<!--      <button class="btn-primary" (click)="goToProfile()">-->
+<!--        Вернуться в профиль <img src="assets/icons/arrow-forward.svg" alt="">-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="success-screen" *ngIf="currentStep === 'success'">-->
+<!--    <div class="success-icon">-->
+<!--      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--        <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--      </svg>-->
+<!--    </div>-->
+<!--    <h2 class="success-title">Ваши аватары сохранены</h2>-->
+<!--    <div class="gift-card">-->
+<!--      <h3 class="gift-title">Вы получили подарок</h3>-->
+<!--      <h4 class="gift-name">METRA Basic на 7 дней</h4>-->
+<!--      <ul class="gift-features">-->
+<!--        <li>-->
+<!--          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--            <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--          </svg>-->
+<!--          <span>120 токенов в месяц</span>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--            <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--          </svg>-->
+<!--          <span>Доступ к сценам METRA</span>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--            <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--          </svg>-->
+<!--          <span>Доступ к Nano Banana</span>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--      <button class="gift-button" (click)="goToHome()">-->
+<!--        <span>Начать использовать METRA</span>-->
+<!--        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--        </svg>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
