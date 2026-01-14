@@ -1,5 +1,6 @@
-<main>
-  <router-outlet></router-outlet>
-</main>
+<router-outlet></router-outlet>
 
-<app-bottom-nav *ngIf="showBottomNav()"></app-bottom-nav>
+@if (showBottomNav()) {
+<app-bottom-nav></app-bottom-nav>
+}
+

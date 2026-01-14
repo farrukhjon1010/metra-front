@@ -1,0 +1,34 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+@use 'styles/utilities' as *;
+
+html {
+  height: 100%;
+  width: 100%;
+  background: url('/assets/bg.png') center center / cover;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: transparent;
+  position: relative;
+  font-family: 'SF Pro Display', system-ui !important;
+  color: #ffffff;
+}
+
+app-root {
+  display: block;
+  max-width: 390px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+@media (max-width: 390px) {
+  app-root {
+    max-width: 100%;
+  }
+}
+
+

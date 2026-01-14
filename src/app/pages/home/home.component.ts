@@ -1,69 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../core/services/api.service';
+import {Component, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {PaidDialog} from '../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, PaidDialog],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
-  scenes: any[] = [
-    {
-      title: 'Домашний портрет',
-      description: 'Уютная атмосфера, естественный свет',
-      image: null
-    },
-    {
-      title: 'Студийный образ',
-      description: 'Профессиональная съемка, четкие линии',
-      image: null
-    },
-    {
-      title: 'Городской вечер',
-      description: 'Уличной свет, глубина, атмосфера',
-      image: null
-    },
-    {
-      title: 'Зимний образ',
-      description: 'Холодный свет, текстуры, объём',
-      image: null
-    },
-    {
-      title: 'Профиль / Аватар',
-      description: 'Портретное фото, фокус на лице',
-      image: null
-    },
-    {
-      title: 'Пара / Duo',
-      description: 'Два человека, взаимодействие',
-      image: null
-    }
-  ];
+export class HomeComponent  {
 
-  recommendations = [
-    { label: 'Домашний портрет', icon: 'home' },
-    { label: 'Студийный образ', icon: 'studio' },
-    { label: 'Городской вечер', icon: 'city' },
-    { label: 'Зимний образ', icon: 'winter' },
-    { label: 'Профиль / Аватар', icon: 'profile' },
-    { label: 'Пара / Duo', icon: 'duo' }
-  ];
+  showPaidDialog = signal(true);
 
-  constructor(private api: ApiService) {}
-
-  ngOnInit() {
-    this.api.getScenes().subscribe({
-      next: (data: any) => {
-        if (data && Array.isArray(data) && data.length > 0) {
-          this.scenes = data;
-        }
-      },
-      error: (err) => {
-        console.error('Error loading scenes:', err);
-        // Используем дефолтные сцены при ошибке
-      }
-    });
-  }
 }

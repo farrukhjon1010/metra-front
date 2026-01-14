@@ -1,0 +1,74 @@
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-col($gap: null) {
+  display: flex;
+  flex-direction: column;
+
+  @if $gap {
+    gap: $gap;
+  }
+}
+
+/* ===============================
+   GLASS
+================================ */
+
+@mixin glass($radius: $radius-lg) {
+  background: linear-gradient(135deg, $glass-bg-strong, $glass-bg-soft);
+  border: 1px solid $glass-border;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: $radius;
+}
+
+/* ===============================
+   GRADIENT CARDS
+================================ */
+
+@mixin gradient-card($gradient, $border-color) {
+  background: $gradient;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+@mixin sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: $gradient-header;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===============================
+   TEXT
+================================ */
+
+@mixin text($size, $weight: 400, $color: $color-text-primary) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  font-family: $font-system;
+}
+
+@mixin p($padding...) {
+  padding: $padding;
+}

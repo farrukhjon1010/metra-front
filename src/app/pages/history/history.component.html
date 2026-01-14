@@ -1,9 +1,47 @@
-<section class="history">
-  <h2>История</h2>
+<div class="history">
+  <header class="history-header">
+    <h2>История</h2>
+  </header>
+  <div class="history-container">
+    <div class="form-group">
+      <div class="filter-buttons">
+        <div class="slider"
+             [ngStyle]="{'transform': selectedFilter === 'all' ? 'translateX(0%)' :
+                    selectedFilter === 'photo' ? 'translateX(100%)' : 'translateX(200%)'}">
+        </div>
 
-  <div class="scene-card" *ngFor="let item of history">
-    <h3>{{ item.title }}</h3>
-    <p>{{ item.description }}</p>
-    <span>Status: {{ item.status || 'Завершено' }}</span>
+        <button
+          class="filter-btn"
+          [class.active]="selectedFilter === 'all'"
+          (click)="selectedFilter = 'all'">
+          Все
+        </button>
+
+        <button
+          class="filter-btn"
+          [class.active]="selectedFilter === 'photo'"
+          (click)="selectedFilter = 'photo'">
+          Фото
+        </button>
+
+        <button
+          class="filter-btn"
+          [class.active]="selectedFilter === 'video'"
+          (click)="selectedFilter = 'video'">
+          Видео
+        </button>
+      </div>
+
+    </div>
+    <div class="create-of-history">
+      <div class="no-create-image-wrapper">
+          <div><img src="assets/icons/error.svg" alt=""></div>
+          <span>Вы ещё ничего не создали</span>
+      </div>
+    </div>
+
+    <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()" >
+      Создать изображение
+    </app-button>
   </div>
-</section>
+</div>

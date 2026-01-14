@@ -1,14 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../core/services/api.service';
-import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-scenes',
-  imports: [
-    NgForOf
-  ],
+  imports: [],
   templateUrl: './scenes.component.html',
-  styleUrl: './scenes.component.css',
+  styleUrls: ['./scenes.component.scss'],
 })
 export class ScenesComponent implements OnInit {
   scenes: any[] = [];

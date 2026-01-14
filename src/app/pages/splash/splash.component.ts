@@ -1,22 +1,21 @@
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {NgClass, NgStyle} from '@angular/common';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ButtonComponent} from '../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-splash',
   standalone: true,
   imports: [
-    NgForOf,
-    NgIf,
     ReactiveFormsModule,
     FormsModule,
     NgStyle,
-    NgSwitch,
-    NgSwitchCase
+    ButtonComponent,
+    NgClass,
   ],
   templateUrl: './splash.component.html',
-  styleUrls: ['./splash.component.css'],
+  styleUrls: ['./splash.component.scss'],
 })
 export class SplashComponent {
 
@@ -25,16 +24,18 @@ export class SplashComponent {
   @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
 
   currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
-  avatarName = '';
   gender: 'male' | 'female' = 'male';
   generatedAvatars: string[] = [];
+  selectedAvatars: string[] = [];
   photos = {
     front: null as string | null,
     left: null as string | null,
     right: null as string | null,
   };
 
-  selectedAvatars: string[] = [];
+  myForm = new FormGroup({
+    avatarName: new FormControl('', Validators.required),
+  });
 
   constructor(private router: Router,
               private cdr: ChangeDetectorRef) {}
@@ -75,8 +76,9 @@ export class SplashComponent {
   }
 
   canCreate() {
+    const avatarName = this.myForm.controls['avatarName'].value?.trim();
     return (
-      this.avatarName.trim() &&
+      avatarName &&
       this.photos.front &&
       this.photos.left &&
       this.photos.right
@@ -103,10 +105,6 @@ export class SplashComponent {
   }
 
   goToMetra() {
-    this.router.navigate(['/profile']);
-  }
-
-  goToHome() {
     this.router.navigate(['/home']);
   }
 
@@ -128,5 +126,10 @@ export class SplashComponent {
       this.currentStep = 'select'; // переходим на следующий шаг
       this.cdr.detectChanges();
     }, 2000);
+  }
+
+  submit() {
+    if (this.myForm.invalid) return;
+    console.log('Форма отправлена', this.myForm.value);
   }
 }

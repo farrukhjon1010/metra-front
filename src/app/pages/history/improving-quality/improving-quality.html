@@ -1,0 +1,82 @@
+<div class="card-quality">
+  <span (click)="goBack()">
+    <img src="assets/icons/arrow-back.svg" alt="">
+  </span>
+  <div class="text-header-history">
+    <p>Повышение качества</p>
+    <span>Улучшаем чёткость и детализацию изображения</span>
+  </div>
+</div>
+
+<div class="quality-content">
+  <div class="photo-upload-section">
+    <label class="form-label-quality">Загрузите фото</label>
+    <div class="upload-row-quality">
+      <div class="upload-area-small" (click)="triggerFileInput('photo',$event)">
+        <input
+          #photoInput
+          type="file"
+          accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+          (change)="onPhotoSelected($event, 'photo')"
+          style="display: none;">
+        <div class="upload-content-quality">
+          <span class="upload-text-small">Загрузить</span>
+          <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+        </div>
+        <img src="assets/icons/upload.svg" alt="Icon">
+      </div>
+    </div>
+    @if (photos.photo) {
+    <div class="photo-quality">
+        <img class="with-photo" [src]="photos.photo" alt="Photo">
+
+      @if (photos.photo){
+        <button class="delete-photo" (click)="removePhoto('photo', $event)">
+          <img src="assets/icons/delete.svg" alt="">
+        </button>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="btn-quality">
+    <app-button type="primary" icon="assets/icons/photo-size.svg" (click)="enhanceImage()" [disabled]="!photos.photo">
+      Улучшить  изображение
+    </app-button>
+  </div>
+
+  <div class="result-content">
+    <h2>Результат</h2>
+
+    <div class="before-photo">
+      <div class="bf-text">До</div>
+      @if (photos.photo && isProcessing) {
+        <img class="result-img" [src]="photos.photo" alt="Before">
+      } @else {
+        <div class="center-text-quality">Ваше изображение</div>
+      }
+    </div>
+
+    <div class="after-photo">
+      <div class="aft-text">После</div>
+      @if (enhancedPhoto) {
+        <img class="result-img" [src]="enhancedPhoto" alt="After">
+      } @else {
+        <div class="center-text-quality">После улучшения</div>
+      }
+    </div>
+
+    @if (photos.photo && isProcessing) {
+      <div class="result-actions">
+        <app-button type="secondary" icon="assets/icons/download.svg" (click)="downloadImage()">
+          Скачать
+        </app-button>
+
+        <app-button type="primary" icon="assets/icons/update.svg" (click)="repeatImage()">
+          Повторить
+        </app-button>
+      </div>
+    }
+  </div>
+
+</div>

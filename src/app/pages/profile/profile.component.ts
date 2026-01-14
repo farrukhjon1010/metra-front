@@ -1,60 +1,40 @@
-import { Component, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import {Router, RouterLink } from '@angular/router';
+import {ButtonComponent} from '../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink, ButtonComponent],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css',
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
 
   currentStep: 'select' | 'success' | 'profile' = 'select';
   selectedAvatars: string[] = [];
-  generatedAvatars: string[] = [
-    'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop',
-    'https://images.pexels.com/photos/1310474/pexels-photo-1310474.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop',
-    'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop',
-    'https://images.pexels.com/photos/1212984/pexels-photo-1212984.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop',
-    'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop',
-    'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop'
-  ];
 
-  isSelected(avatar: string): boolean {
-    return this.selectedAvatars.includes(avatar);
-  }
-
-  toggleAvatar(avatar: string): void {
-    const index = this.selectedAvatars.indexOf(avatar);
-
-    if (index > -1) {
-      this.selectedAvatars.splice(index, 1);
-    } else {
-      if (this.selectedAvatars.length < 3) {
-        this.selectedAvatars.push(avatar);
-      }
-    }
-  }
-
-  confirmAvatars(): void {
-    if (this.selectedAvatars.length > 0) {
-      this.currentStep = 'profile';
-    }
-  }
-
-  startUsingMetra(): void {
-    this.currentStep = 'profile';
-  }
+  constructor(public router: Router) {}
 
   addMoreAvatars(): void {
     this.currentStep = 'select';
   }
 
-  navigateTo(page: string): void {
-    console.log('Navigating to:', page);
+  goToAddAvatar() {
+    this.router.navigate(['/profile/add-avatar']);
+  }
+
+  goToReplenish() {
+    this.router.navigate(['/profile/balance']);
+  }
+
+  goToAffiliateProgram() {
+    this.router.navigate(['/profile/affiliate-program']);
+  }
+
+  goToSubscription() {
+    this.router.navigate(['/profile/subscription']);
   }
 }

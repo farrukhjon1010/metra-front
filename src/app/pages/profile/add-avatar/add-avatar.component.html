@@ -1,0 +1,243 @@
+@switch (currentStep) {
+
+  @case ('form') {
+    <div class="add-avatar">
+      <div class="create-avatar-container">
+        <div class="add-avatar-content">
+          <div class="header">
+            <h1 class="title" (click)="goBack()">
+              <img src="assets/icons/arrow-back.svg" alt="">Добавить аватар
+            </h1>
+          </div>
+          <div class="form-content">
+            <div class="form-group">
+              <form [formGroup]="myForm" (ngSubmit)="submit()" novalidate>
+                <div class="form-group">
+                  <label class="form-label">Имя аватара</label>
+                  <div
+                    class="input-wrapper"
+                    [ngClass]="{
+                      'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
+                      'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
+                    }"
+                  >
+                    <input
+                      type="text"
+                      name="avatarName"
+                      formControlName="avatarName"
+                      class="form-input"
+                      placeholder="Введите имя своего аватара"
+                    />
+                  </div>
+                  @if (myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid) {
+                  <div class="alert">
+                    Не указано имя
+                  </div>
+                  }
+                </div>
+              </form>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Пол</label>
+              <div class="gender-buttons">
+                <div class="slider"
+                     [ngStyle]="{'transform': gender === 'male' ? 'translateX(0%)' : 'translateX(100%)'}">
+                </div>
+                <button
+                  class="gender-btn"
+                  [class.active]="gender === 'male'"
+                  (click)="gender = 'male'">
+                  Мужской
+                </button>
+                <button
+                  class="gender-btn"
+                  [class.active]="gender === 'female'"
+                  (click)="gender = 'female'">
+                  Женский
+                </button>
+              </div>
+            </div>
+            <div class="photo-load">
+              <div class="photo-upload-section">
+                <label class="form-label">Загрузите фото с фронтальной стороны</label>
+                <div class="upload-row">
+                  <div class="upload-area-small" (click)="triggerFileInput('front',$event)">
+                    <input
+                      #frontInput
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                      (change)="onFileSelectedAvatar($event, 'front')"
+                      style="display: none;">
+                    <div class="upload-content">
+                      <span class="upload-text-small">Загрузить</span>
+                      <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+                    </div>
+                    <img src="assets/icons/upload.svg" alt="Icon">
+                  </div>
+                </div>
+                <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+              </div>
+              <div class="front-photo-ava">
+                @if (photos.front){
+                    <img class="with-photo-ava" [src]="photos.front" alt="Front Photo">
+                }
+                @if (!photos.front){
+                    <ng-container>
+                      <img class="empty-photo-ava" src="assets/icons/vector-front.svg" alt="Front Photo">
+                    </ng-container>
+                }
+                @if (photos.front){
+                    <button class="delete-photo-ava" (click)="removePhoto('front', $event)">
+                      <img src="assets/icons/delete.svg" alt="">
+                    </button>
+                  }
+              </div>
+            </div>
+            <div class="photo-load">
+              <div class="photo-upload-section">
+                <label class="form-label">Загрузите фото с левого профиля</label>
+                <div class="upload-row">
+                  <div class="upload-area-small" (click)="triggerFileInput('left', $event)">
+                    <input
+                      #leftInput
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                      (change)="onFileSelectedAvatar($event, 'left')"
+                      style="display: none;">
+                    <div class="upload-content">
+                      <span class="upload-text-small">Загрузить</span>
+                      <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+                    </div>
+                    <img src="assets/icons/upload.svg" alt="Icon">
+                  </div>
+                </div>
+                <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+              </div>
+              <div class="front-photo-ava">
+                @if (photos.left){
+                    <img class="with-photo-ava" [src]="photos.left" alt="Left Photo">
+                }
+                @if (!photos.left) {
+                  <ng-container>
+                    <img class="empty-photo-ava" src="assets/icons/vector-left.svg" alt="Left Left">
+                  </ng-container>
+                }
+                @if (photos.left){
+                  <button class="delete-photo-ava" (click)="removePhoto('left', $event)">
+                    <img src="assets/icons/delete.svg" alt="">
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="photo-load">
+              <div class="photo-upload-section">
+                <label class="form-label">Загрузите фото с правого профиля</label>
+                <div class="upload-row">
+                  <div class="upload-area-small" (click)="triggerFileInput('right', $event)">
+                    <input
+                      #rightInput
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                      (change)="onFileSelectedAvatar($event, 'right')"
+                      style="display: none;">
+                    <div class="upload-content">
+                      <span class="upload-text-small">Загрузить</span>
+                      <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+                    </div>
+                    <img src="assets/icons/upload.svg" alt="Icon">
+                  </div>
+                </div>
+                <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+              </div>
+
+              <div class="front-photo-ava">
+                @if (photos.right){
+                  <img class="with-photo-ava" [src]="photos.right" alt="Right Photo">
+                }
+                @if (!photos.right) {
+                  <ng-container>
+                    <img class="empty-photo-ava" src="assets/icons/vector-right.svg" alt="Right Right">
+                  </ng-container>
+                }
+                @if (photos.right){
+                  <button class="delete-photo-ava" (click)="removePhoto('right', $event)">
+                    <img src="assets/icons/delete.svg" alt="">
+                  </button>
+                }
+              </div>
+            </div>
+            <app-button
+              type="primary"
+              buttonType="submit"
+              icon="assets/icons/add.svg"
+              [disabled]="!canCreate()"
+              (click)="createAvatar()"
+            >
+              Создать аватар
+            </app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @case ('loading') {
+    <div class="loading-screen">
+      <div class="spinner"></div>
+      <p>Создаём аватар…</p>
+    </div>
+  }
+
+  @case ('select') {
+    <div class="select-screen">
+      <div class="success-badge">
+        <img src="assets/icons/check-circle.svg" alt="">
+        <div class="check-icon">
+          <span class="success-text">Ваш аватар создан</span>
+           <p class="subtitle">Выберите одно изображений</p>
+        </div>
+      </div>
+      @if (generatedAvatars.length){
+      <div class="avatar-grid">
+        @for (avatar of generatedAvatars; track avatar){
+        <div class="avatar-card " [class.selected]="isSelected(avatar)">
+            <div class="avatar-image-wrapper">
+              <img [src]="avatar" alt="Avatar" class="avatar-image"/>
+            </div>
+            <div class="avatar-wrapper">
+            @if (isSelected(avatar)) {
+              <app-button type="primary" (click)="toggleAvatar(avatar)">
+                Выбран
+              </app-button>
+            } @else {
+              <app-button type="secondary" (click)="toggleAvatar(avatar)">
+                Выбрать
+              </app-button>
+            }
+            </div>
+        </div>
+        }
+      </div>
+      } @else {
+        <p class="empty-message">Аватары генерируются…</p>
+      }
+      <app-button type="primary" icon="assets/icons/arrow-forward.svg"
+                  [disabled]="selectedAvatars.length === 0" (click)="confirmAvatars()">Продолжить
+      </app-button>
+    </div>
+  }
+
+  @case ('success') {
+    <div class="success-screen">
+      <div class="success-icon">
+        <img src="assets/icons/check-circle.svg" alt="">
+      </div>
+      <h2 class="success-title">Аватар успешно добавлен</h2>
+      <div class="gift-card">
+        <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goProfile()">
+          Вернуться в профиль
+        </app-button>
+      </div>
+    </div>
+  }
+}

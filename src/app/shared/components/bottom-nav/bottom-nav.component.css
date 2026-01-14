@@ -1,94 +1,66 @@
 .bottom-nav {
   position: fixed;
-  bottom: 0;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 382px;
+  max-width: 365px;
   background: #181826;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 2px;
-  z-index: 100;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
   border-radius: 16px;
-  margin-bottom: 8px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border: 1px solid #FFFFFF33;
+}
+
+.nav-slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 73px;
+  background: linear-gradient(90deg, #b57bff 0%, #7b5cff 100%);
+  border-radius: 12px;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
 }
 
 .bottom-nav a {
+  flex: 1;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 4px;
-  padding: 9px 0;
-  border-radius: 12px;
+  padding: 4px;
   text-decoration: none;
-  transition: all 0.2s ease;
-  min-width: 56px;
-  position: relative;
-  flex: 1;
 }
 
-.bottom-nav a:not(.active) {
-  background: transparent;
-}
-
-.bottom-nav a.active {
-  background: linear-gradient(90deg, #b57bff 0%, #7b5cff 100%);
-  transition: color 0.5s ease;
-}
-
-.nav-icon {
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color 0.2s ease;
-}
-
-.bottom-nav a.active .nav-icon {
-  color: #ffffff;
-}
-
-.bottom-nav a:not(.active) .nav-icon {
-  color: rgba(255, 255, 255, 0.5);
-}
-
+.nav-icon,
 .nav-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color 0.2s ease;
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1;
+  font-size: 13px;
+  transition: color 0.25s ease;
 }
 
+.bottom-nav a.active .nav-icon,
 .bottom-nav a.active .nav-label {
-  color: #ffffff;
+  font-size: 13px;
+  color: #fff;
 }
 
+.bottom-nav a:not(.active) .nav-icon,
 .bottom-nav a:not(.active) .nav-label {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* Hover эффекты для неактивных элементов */
-.bottom-nav a:not(.active):hover {
-  background: rgba(255, 255, 255, 0.05);
+.nav-icon img {
+  opacity: 0.7;
+  filter: brightness(0) saturate(100%) invert(70%);
+  transition: filter 0.25s ease, opacity 0.25s ease;
 }
 
-.bottom-nav a:not(.active):hover .nav-icon,
-.bottom-nav a:not(.active):hover .nav-label {
-  color: rgba(255, 255, 255, 0.7);
+.bottom-nav a.active .nav-icon img {
+  filter: brightness(0) saturate(100%) invert(100%);
+  opacity: 1;
 }
-
-/* Оптимизация для 390x800 */
-.nav-label {
-  font-size: 10px;
-}
-

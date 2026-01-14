@@ -1,0 +1,50 @@
+<div class="affiliate-program-content">
+  <div class="affiliate-program-header">
+    <span (click)="goBack()">
+      <img src="assets/icons/arrow-back.svg" alt="">
+    </span>
+    <div class="text-header-affiliate">
+      <p>Партнёрская программа</p>
+      <span>Получайте 25% дохода с оплат пользователей, которые приобрели подписку или пополнили баланс по вашей ссылке.</span>
+    </div>
+  </div>
+<div class="affiliate-link-content">
+  <div class="your-link">
+      <p>Ваша реферальная ссылка</p>
+    <div class="copy-link-container">
+      <input type="text" [value]="link" readonly>
+      <span (click)="copyLink()">
+        <img src="assets/icons/copy.svg" alt="Copy">
+      </span>
+    </div>
+    <div class="balance-content">
+      <div class="transitions">
+        <p>Переходы:</p>
+        <span>450</span>
+      </div>
+
+      <div class="purchases">
+        <p>Покупки:</p>
+        <span>45</span>
+      </div>
+
+      <div class="income">
+        <p>Доход:</p>
+        <span>4500 руб</span>
+      </div>
+    </div>
+    <div class="button-affiliate">
+      <app-button type="primary" icon="assets/icons/withdraw.svg" (click)="goToWithdraw()">
+        Вывести
+      </app-button>
+    </div>
+  </div>
+</div>
+  <div class="button-invite">
+    <app-button type="primary" icon="assets/icons/share.svg" (click)="goToShare()">
+      Пригласить друзей
+    </app-button>
+  </div>
+</div>
+
+

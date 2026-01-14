@@ -1,0 +1,97 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #fff;
+  transition: transform 0.15s ease,
+  box-shadow 0.15s ease,
+  background 0.2s ease,
+  border 0.2s ease;
+  width: auto;
+  max-width: 100%;
+  min-width: 100%;
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.ui-button.primary {
+  background: linear-gradient(90deg, #6A5CFF 0%, #A890FF 100%);
+  box-shadow: 0 4px 12px rgba(106, 92, 255, 0.5);
+
+  &:hover {
+    box-shadow: 0 6px 16px rgba(106, 92, 255, 0.7);
+  }
+}
+
+.ui-button.secondary {
+  backdrop-filter: blur(40px);
+  border: 1px solid #FFFFFF33;
+  border-radius: 12px;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
+                    linear-gradient(90deg, #FFFFFF33 0%, #FFFFFF0F 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  &:hover {
+    background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    linear-gradient(
+      90deg,
+      #FFFFFF4D, #FFFFFF1A
+    );
+  }
+}
+
+.ui-button.ghost {
+  background: transparent;
+  color: #A6A6FF;
+
+  &:hover {
+    background: rgba(106, 92, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(106, 92, 255, 0.25);
+  }
+}
+
+.ui-button.danger {
+  background: linear-gradient(90deg, #FF4B55 0%, #FF8188 100%);
+  box-shadow: 0 4px 12px rgba(255, 75, 85, 0.5);
+
+  &:hover {
+    box-shadow: 0 6px 16px rgba(255, 75, 85, 0.7);
+  }
+}
+
+
+.ui-button.green {
+  background: linear-gradient(90deg, #2EC57A 0%, #56E29C 100%);
+  box-shadow: 0 4px 12px 0 rgba(72, 239, 157, 0.5);
+
+  &:hover {
+    box-shadow: 0 6px 16px #2EC57A80;
+  }
+}

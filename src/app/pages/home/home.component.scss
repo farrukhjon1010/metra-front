@@ -1,0 +1,216 @@
+.home {
+  &__container {
+    min-height: 100vh;
+    padding-bottom: 80px;
+    max-width: 390px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  &__header {
+    padding: 24px 16px;
+    background: linear-gradient(
+        180deg,
+        rgba(10, 10, 20, 0.95) 0%,
+        rgba(10, 10, 20, 0.5) 100%
+    );
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    &-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      border-bottom: 1px solid #ffffff33;
+    }
+
+    &-text {
+      flex: 1;
+    }
+
+    &__page-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 6px;
+    }
+
+    &__page-subtitle {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      line-height: 1.4;
+      padding-bottom: 16px;
+    }
+
+    &__avatar-icon {
+    }
+    h2 {
+      margin: 0;
+      padding-bottom: 2px;
+    }
+    p{
+      margin: 0;
+      font-family: system-ui;
+      font-size: 15px;
+      color: #C5CCE0;
+      padding-bottom: 16px;
+    }
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(181, 123, 255, 0.2);
+      border: 2px solid rgba(181, 123, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  }
+
+  &__content {
+    padding: 0 16px 70px 16px;
+  }
+
+
+  &__section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+
+  &__section-subtitle {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &__scenes-section {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__scenes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  &__scene-card {
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 8px;
+    background: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(106, 92, 255, 0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1), inset 0 0 20px rgba(106, 92, 255, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  &__scene-image {
+    width: 155px;
+    height: 155px;
+    aspect-ratio: 3 / 4;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 60%,
+          rgba(24, 24, 38, 0.8) 100%
+      );
+      z-index: 1;
+    }
+  }
+
+  &__scene-info {
+    padding: 16px 0 8px 0;
+    text-align: center;
+  }
+
+  &__scene-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    font-family: system-ui;
+  }
+
+  &__scene-description {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-family: system-ui;
+  }
+
+  &__recommendations-section {
+    margin-bottom: 20px;
+
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  &__recommendation-btn {
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(106, 92, 255, 0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1), inset 0 0 20px rgba(106, 92, 255, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 16px;
+    gap: 16px;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__rec-label {
+    font-size: 13px;
+    font-family: system-ui;
+    color: #fff;
+    flex: 1;
+  }
+
+}

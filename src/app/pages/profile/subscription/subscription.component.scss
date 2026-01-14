@@ -1,0 +1,175 @@
+.subscription-header {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 24px 16px;
+  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.subscription-header-balance span {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+.metra-basic-card {
+  border: 1px solid #6A5CFF66;
+  background: linear-gradient(90deg, rgba(106, 92, 255, 0.6), rgba(168, 144, 255, 0.1));
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  border-radius: 16px;
+}
+
+.subscription-content {
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 90px 16px;
+}
+
+.text-card {
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+.text-card h2 {
+  margin: 0;
+}
+
+.text-card p {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+  padding-top: 8px
+}
+
+.span-card-basic {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  font-family: system-ui;
+  gap: 6px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #C5CCE0;
+  }
+}
+
+.btn-card-basic {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.btn-card-basic app-button {
+  flex: 1;
+}
+
+.metra-pro-card {
+  border: 1px solid #FF4B5566;
+  background: linear-gradient(90deg, rgba(255, 75, 85, 0.6), rgba(255, 75, 85, 0.1));
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  border-radius: 16px;
+}
+
+.span-card-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  font-family: system-ui;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #C5CCE0;
+  }
+
+}
+
+.btn-card-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.span-card-pro img {
+  filter: brightness(0) saturate(31%) invert(27%)
+  sepia(83%) saturate(2899%) hue-rotate(343deg)
+  brightness(97%) contrast(101%)
+}
+
+
+
+.metra-max-card {
+  border: 1px solid #2EC57A99;
+  background: linear-gradient(90deg, rgba(46, 197, 122, 0.4) 0%, rgba(46, 197, 122, 0.05) 100%);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  border-radius: 16px;
+}
+
+.span-card-max {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  font-family: system-ui;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #C5CCE0;
+  }
+
+}
+
+.btn-card-max {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.span-card-max img {
+  filter: brightness(69) saturate(70%)
+  invert(27%) sepia(112%) saturate(2899%)
+  hue-rotate(430deg) brightness(200%) contrast(50%)
+}
+
+.btn-card-max {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-card-max app-button, button {
+  flex: 1;
+}
+
+.recommendation-icon {
+  display: flex;
+  position: absolute;
+  background: white;
+  right: 16px;
+  border-top-right-radius: 16px;
+  border-bottom-left-radius: 12px;
+  color: #0B0D11;
+  font-size: 13px;
+  padding: 4px 10px;
+  gap: 2px;
+}

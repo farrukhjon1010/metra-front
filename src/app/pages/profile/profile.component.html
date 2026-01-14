@@ -1,29 +1,64 @@
-
-<div class="profile-screen" >
+<div class="profile-screen">
   <header class="profile-header">
-    <h1 class="profile-title">Профиль</h1>
+    <h2 class="profile-title">Профиль</h2>
   </header>
-
   <div class="profile-content">
+    @if (!router.url.includes('add-avatar')){
     <div class="profile-card">
       <h3 class="card-title">Ваш аватар</h3>
-      <div class="avatars-display">
-        <div class="avatar-item" *ngFor="let avatar of selectedAvatars">
-          <img [src]="avatar" alt="Avatar" class="profile-avatar" />
-        </div>
-        <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
-          <span class="plus-icon">+</span>
-        </div>
+      <div class="avatar-circle">
+          <div class="avatars-display">
+            @for (avatar of selectedAvatars; track avatar){
+            <div class="avatar-item">
+              <img [src]="avatar" alt="Avatar" class="profile-avatar" />
+            </div>
+            }
+            <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
+              <span class="user-empty">
+                <img src="assets/icons/user-empty.svg" alt="">
+              </span>
+            </div>
+          </div>
+          <div class="avatars-display">
+            @for (avatar of selectedAvatars; track avatar){
+            <div class="avatar-item">
+              <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
+            </div>
+            }
+            <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
+              <span class="user-empty">
+                <img src="assets/icons/user-empty.svg" alt="">
+              </span>
+            </div>
+          </div>
+          <div class="avatars-display">
+            @for (avatar of selectedAvatars; track avatar){
+            <div class="avatar-item">
+              <img [src]="avatar" alt="Avatar" class="profile-avatar" />
+            </div>
+            }
+            <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
+              <span class="user-empty">
+                <img src="assets/icons/user-empty.svg" alt="">
+              </span>
+            </div>
+          </div>
       </div>
-      <button class="btn-secondary">Добавить аватар +</button>
-    </div>
 
+      <app-button type="primary" icon="assets/icons/add.svg"
+                  routerLink="/profile/add-avatar" (click)="goToAddAvatar()">Добавить аватар
+      </app-button>
+    </div>
+    }
+    @if (!router.url.includes('balance')){
     <div class="profile-card">
       <h3 class="card-title">Баланс</h3>
       <p class="balance-text">120 токенов</p>
-      <button class="btn-secondary">Пополнить +</button>
+      <app-button type="primary" icon="assets/icons/add.svg" (click)="goToReplenish()">
+        Пополнить
+      </app-button>
     </div>
-
+    }
     <div class="profile-card">
       <h3 class="card-title">Подписка</h3>
       <p class="subscription-text">Basic (7 дней осталось)</p>
@@ -32,19 +67,25 @@
         Доступ к сценам METRA<br>
         Доступ к Nano Banana
       </p>
-      <button class="btn-secondary">Обновить 🔄</button>
+      <app-button type="primary" icon="assets/icons/update.svg" (click)="goToSubscription()">
+        Обновить
+      </app-button>
     </div>
-
+    @if (!router.url.includes('affiliate-program')){
     <div class="profile-card">
       <h3 class="card-title">Партнерская программа</h3>
       <p class="partnership-text">4 500 руб</p>
-      <button class="btn-secondary">Подробнее →</button>
+      <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToAffiliateProgram()">
+        Подробнее
+      </app-button>
     </div>
-
+    }
     <div class="profile-card">
       <h3 class="card-title">Помощь</h3>
-      <p class="help-text">Есть вопросы?</p>
-      <button class="btn-secondary">Написать в техподдержку ℹ</button>
+      <p class="any-questions">Есть вопросы?</p>
+      <app-button type="primary" icon="assets/icons/contact-support.svg">
+        Написать в техподдержку
+      </app-button>
     </div>
   </div>
 </div>
