@@ -1,0 +1,101 @@
+.scenes {
+  padding: 0 16px 80px 16px;
+}
+.card-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+}
+.header-card {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 24px 16px;
+  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+
+  span {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+.scenes-image {
+  display: flex;
+  flex-direction: row-reverse;
+  border-radius: 24px;
+  background: linear-gradient(90deg, #6A5CFF 0%, #A890FF 100%);
+  box-shadow: 0 4px 12px rgba(106, 92, 255, 0.5);
+  padding: 8px 8px 8px 24px
+}
+.scenes-image img {
+  width: 155px;
+  height: 155px;
+  border-radius: 16px;
+}
+.scenes-info {
+  padding-right: 16px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    padding-top: 24px;
+  }
+  p{
+    font-size: 15px;
+    font-family: system-ui;
+  }
+}
+
+.scenes-card-templates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 137px;
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  background: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(106, 92, 255, 0.4);
+  box-shadow: 0 4px 10px rgb(0, 0, 0), inset 0 0 20px rgba(106, 92, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.circle-ava-text {
+
+  span {
+    font-size: 13px;
+    color: #A9B2C8;
+    font-family: system-ui;
+  }
+  p{
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+    padding-bottom: 4px;
+  }
+}
+.circle-ava {
+  display: flex;
+  width: 92px;
+  height: 92px;
+  border: 2px solid #8b5cf6;
+  border-radius: 50%;
+
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+.scenes-card-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding-bottom: 16px;
+}

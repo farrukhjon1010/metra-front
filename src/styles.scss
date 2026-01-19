@@ -3,9 +3,11 @@
 @use 'styles/utilities' as *;
 
 html {
-  height: 100%;
   width: 100%;
-  background: url('/assets/bg.png') center center / cover;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: url('/assets/images/bg.png') no-repeat fixed center;
 }
 
 body {

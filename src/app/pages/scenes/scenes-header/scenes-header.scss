@@ -1,0 +1,30 @@
+.header {
+  height: 100px;
+}
+.scenes {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+    backdrop-filter: blur(10px);
+    padding: 24px 16px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 15px;
+    color: #c5cce0;
+  }
+
+}
+

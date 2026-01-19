@@ -3,10 +3,11 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
+
   constructor(private http: HttpClient) {}
 
   getScenes() {
-    return this.http.get('/api/scenes');
+    return this.http.get('/scenes');
   }
 
   createScene(data: any) {

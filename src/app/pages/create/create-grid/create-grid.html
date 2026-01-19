@@ -1,0 +1,16 @@
+@for (category of categories; track category) {
+  <div class="create__category">
+    <h3 class="create__category-title">{{ category }}</h3>
+
+    <div class="create__cards-grid">
+      @for (card of cardsByCategory(category); track card.id) {
+        <div class="create__card" (click)="selectCard(card)">
+          <div class="create__icon">
+            <img [src]="card.icon" alt="">
+          </div>
+          <div class="create__text">{{ card.title }}</div>
+        </div>
+      }
+    </div>
+  </div>
+}

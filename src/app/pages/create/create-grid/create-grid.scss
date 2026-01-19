@@ -1,0 +1,103 @@
+.create__category-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.create__cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.create__card {
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.create__icon {
+  margin-bottom: 8px;
+}
+
+.create__text {
+  font-size: 14px;
+}
+
+.create {
+  &__header {
+    backdrop-filter: blur(10px);
+    background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+    -webkit-backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 24px 16px;
+
+    & > .create__title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+    }
+  }
+
+  &__category {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px 24px 16px;
+
+    &-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 0;
+      color: #fff;
+      padding-bottom: 8px;
+    }
+  }
+
+
+
+  &__card {
+    background: linear-gradient(
+        90deg,
+        rgba(106, 92, 255, 0.4) 0%,
+        rgba(106, 92, 255, 0.05) 100%
+    );
+    backdrop-filter: blur(40px);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 66px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(111, 76, 255, 0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1), inset 0 0 20px rgba(106, 92, 255, 0.25);
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(111, 76, 255, 0.3);
+      border-color: rgba(111, 76, 255, 0.5);
+    }
+
+    &:active {
+      transform: translateY(-2px);
+    }
+
+    & > .create__text {
+      font-size: 15px;
+      color: #C5CCE0;
+    }
+  }
+}
+
+.create__title {
+  font-size: 22px;
+  font-weight: 600;
+}

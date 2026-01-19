@@ -1,81 +1,21 @@
 <div class="create">
-  <header class="create__header">
-    <h2 class="create__title">Создать</h2>
-  </header>
 
-  <div class="create__content">
-    <div class="create__category">
-      <h2 class="create__category-title">Фото</h2>
-      <div class="create__cards-grid">
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/photo-camera-front.svg" alt="">
-          </div>
-          <div class="create__text">Фото по сцене</div>
-        </div>
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/photo-based-on-reference.svg" alt="">
-          </div>
-          <div class="create__text">Фото по референсу (Image to Image)</div>
-        </div>
-      </div>
-    </div>
+  @if (!selectedCard) {
+    <header class="create-header">
+      <h2 class="create__title">Создать</h2>
+    </header>
 
-    <div class="create__category">
-      <h2 class="create__category-title">Видео</h2>
-      <div class="create__cards-grid">
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/emotions.svg" alt="">
-          </div>
-          <div class="create__text">Оживление фото</div>
-        </div>
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/lips.svg" alt="">
-          </div>
-          <div class="create__text">LipSync</div>
-        </div>
-      </div>
-    </div>
+    <app-create-grid
+      [cards]="cards"
+      (select)="selectCard($event)">
+    </app-create-grid>
+  }
 
-    <div class="create__category">
-      <h2 class="create__category-title">Генерация</h2>
-      <div class="create__cards-grid">
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/nano-banana.svg" alt="">
-          </div>
-          <div class="create__text">Nano Banana</div>
-        </div>
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/nano-banana-pro.svg" alt="">
-          </div>
-          <div class="create__text">Nano Banana PRO</div>
-        </div>
-      </div>
-    </div>
+  @if (selectedCard) {
+    <app-create-detail
+      [card]="selectedCard"
+      (back)="back()">
+    </app-create-detail>
+  }
 
-    <div class="create__category">
-      <h2 class="create__category-title">
-        Wardrobe <span class="create__subtitle">(примерка одежды)</span>
-      </h2>
-      <div class="create__cards-grid">
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/wedding-dress.svg" alt="">
-          </div>
-          <div class="create__text">Женский стиль</div>
-        </div>
-        <div class="create__card">
-          <div class="create__icon">
-            <img src="assets/icons/suit.svg" alt="">
-          </div>
-          <div class="create__text">Мужской стиль</div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

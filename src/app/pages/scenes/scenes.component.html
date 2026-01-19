@@ -1,74 +1,14 @@
-<header class="scenes">
-  <div class="scenes__header">
-    <h2 class="scenes__title">Сцены METRA</h2>
-    <span class="scenes__subtitle">
-      Готовые визуальные сцены для естественных и стильных образов
-    </span>
-  </div>
-</header>
+@if (!selectedScene) {
+<app-scenes-grid
+  [scenes]="scenes"
+  (selectScene)="onSceneSelect($event)">
+</app-scenes-grid>
+}
 
-<div class="scenes__content">
-  <div class="scenes__grid">
+@if (selectedScene){
+  <app-scene-card
+    [scene]="selectedScene"
+    (back)="backToGrid()">
+  </app-scene-card>
+}
 
-    <div class="scenes__card">
-      <div class="scenes__image">
-        <img src="assets/home-portrait.png" alt="">
-      </div>
-      <div class="scenes__info">
-        <h3 class="scenes__card-title">Домашний портрет</h3>
-        <p class="scenes__card-desc">Мягкий свет, уют, естественность</p>
-      </div>
-    </div>
-
-    <div class="scenes__card">
-      <div class="scenes__image">
-        <img src="assets/studio-image.png" alt="">
-      </div>
-      <div class="scenes__info">
-        <h3 class="scenes__card-title">Студийный образ</h3>
-        <p class="scenes__card-desc">Чистый фон, аккуратный свет</p>
-      </div>
-    </div>
-
-    <div class="scenes__card">
-      <div class="scenes__image">
-        <img src="assets/city-evening.png" alt="">
-      </div>
-      <div class="scenes__info">
-        <h3 class="scenes__card-title">Городской вечер</h3>
-        <p class="scenes__card-desc">Уличной свет, глубина, атмосфера</p>
-      </div>
-    </div>
-
-    <div class="scenes__card">
-      <div class="scenes__image">
-        <img src="assets/winter-look.png" alt="">
-      </div>
-      <div class="scenes__info">
-        <h3 class="scenes__card-title">Зимний образ</h3>
-        <p class="scenes__card-desc">Холодный свет, текстуры, объём</p>
-      </div>
-    </div>
-
-    <div class="scenes__card">
-      <div class="scenes__image">
-        <img src="assets/profile-avatar.png" alt="">
-      </div>
-      <div class="scenes__info">
-        <h3 class="scenes__card-title">Профиль / Аватар</h3>
-        <p class="scenes__card-desc">Идеально для соцсетей</p>
-      </div>
-    </div>
-
-    <div class="scenes__card">
-      <div class="scenes__image">
-        <img src="assets/pair-duo.png" alt="">
-      </div>
-      <div class="scenes__info">
-        <h3 class="scenes__card-title">Пара / Duo</h3>
-        <p class="scenes__card-desc">Два человека в одном кадре</p>
-      </div>
-    </div>
-
-  </div>
-</div>

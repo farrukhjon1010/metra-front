@@ -25,7 +25,7 @@
       <div class="home__scenes-grid">
         <div class="home__scene-card">
           <div class="home__scene-image">
-            <img src="assets/home-portrait.png" alt="">
+            <img src="assets/images/home-portrait.png" alt="">
           </div>
           <div class="home__scene-info">
             <h3 class="home__scene-title">Домашний портрет</h3>
@@ -35,7 +35,7 @@
 
         <div class="home__scene-card">
           <div class="home__scene-image">
-            <img src="assets/studio-image.png" alt="">
+            <img src="assets/images/studio-image.png" alt="">
           </div>
           <div class="home__scene-info">
             <h3 class="home__scene-title">Студийный образ</h3>
@@ -45,7 +45,7 @@
 
         <div class="home__scene-card">
           <div class="home__scene-image">
-            <img src="assets/city-evening.png" alt="">
+            <img src="assets/images/city-evening.png" alt="">
           </div>
           <div class="home__scene-info">
             <h3 class="home__scene-title">Городской вечер</h3>
@@ -55,7 +55,7 @@
 
         <div class="home__scene-card">
           <div class="home__scene-image">
-            <img src="assets/winter-look.png" alt="">
+            <img src="assets/images/winter-look.png" alt="">
           </div>
           <div class="home__scene-info">
             <h3 class="home__scene-title">Зимний образ</h3>
@@ -65,7 +65,7 @@
 
         <div class="home__scene-card">
           <div class="home__scene-image">
-            <img src="assets/profile-avatar.png" alt="">
+            <img src="assets/images/profile-avatar.png" alt="">
           </div>
           <div class="home__scene-info">
             <h3 class="home__scene-title">Профиль / Аватар</h3>
@@ -75,7 +75,7 @@
 
         <div class="home__scene-card">
           <div class="home__scene-image">
-            <img src="assets/pair-duo.png" alt="">
+            <img src="assets/images/pair-duo.png" alt="">
           </div>
           <div class="home__scene-info">
             <h3 class="home__scene-title">Пара / Duo</h3>
@@ -129,8 +129,8 @@
     </div>
   </div>
 </div>
-<!--@if (showPaidDialog()) {-->
-<!--<app-paid-dialog>-->
+@if (showPaidDialog()) {
+<app-paid-dialog (click)="closeDialog()">
 
-<!--</app-paid-dialog>-->
-<!--}-->
+</app-paid-dialog>
+}

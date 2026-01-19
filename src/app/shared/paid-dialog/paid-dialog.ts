@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {ButtonComponent} from '../components/button/button.component';
 
 @Component({
@@ -10,13 +10,14 @@ import {ButtonComponent} from '../components/button/button.component';
   styleUrls: ['./paid-dialog.scss'],
 })
 export class PaidDialog {
-  showPaidDialog = false;
+
+  @Output() close = new EventEmitter<void>();
 
   openPaidDialog() {
-    this.showPaidDialog = false;
+    this.close.emit();
   }
 
   closeDialog() {
-    this.showPaidDialog = false;
+    this.close.emit();
   }
 }

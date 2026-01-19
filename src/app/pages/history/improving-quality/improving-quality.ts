@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
-import {repeat} from 'rxjs';
 
 @Component({
   selector: 'app-improving-quality',

@@ -12,4 +12,12 @@ export class HomeComponent  {
 
   showPaidDialog = signal(true);
 
+  closeDialog() {
+    this.showPaidDialog.set(false);
+
+    setTimeout(() => {
+      this.showPaidDialog.set(true);
+    }, 60_000); // 1 минута
+  }
+
 }
