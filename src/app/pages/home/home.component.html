@@ -13,120 +13,67 @@
     </div>
   </header>
 
+  @if (!selectedScene) {
+    <app-scenes-grid
+      [scenes]="scenes"
+      (selectScene)="onSceneSelect($event)">
+    </app-scenes-grid>
+  }
+
+  @if (selectedScene){
+    <app-scene-card
+      [scene]="selectedScene"
+      (back)="backToGrid()">
+    </app-scene-card>
+  }
+
   <div class="home__content">
-    <section class="home__scenes-section">
-      <div class="home__section-header">
-        <h2 class="home__section-title">Сцены METRA</h2>
-        <p class="home__section-subtitle">
-          Готовые визуальные сцены для естественных и стильных образов
-        </p>
-      </div>
+    <div class="home__scenes-section">
 
-      <div class="home__scenes-grid">
-        <div class="home__scene-card">
-          <div class="home__scene-image">
-            <img src="assets/images/home-portrait.png" alt="">
-          </div>
-          <div class="home__scene-info">
-            <h3 class="home__scene-title">Домашний портрет</h3>
-            <p class="home__scene-description">Мягкий свет, уют, естественность</p>
-          </div>
+      <div class="home__recommendations-section">
+        <div class="home__section-header">
+          <h2 class="home__section-title">Рекомендации дня</h2>
         </div>
 
-        <div class="home__scene-card">
-          <div class="home__scene-image">
-            <img src="assets/images/studio-image.png" alt="">
+        <div class="home__recommendations-grid">
+          <div class="home__recommendation-btn">
+            <img src="assets/icons/home-port-icon.svg" alt="">
+            <span class="home__rec-label">Домашний портрет</span>
           </div>
-          <div class="home__scene-info">
-            <h3 class="home__scene-title">Студийный образ</h3>
-            <p class="home__scene-description">Чистый фон, аккуратный свет</p>
+
+          <div class="home__recommendation-btn">
+            <img src="assets/icons/studio-icon.svg" alt="">
+            <span class="home__rec-label">Студийный образ</span>
           </div>
         </div>
 
-        <div class="home__scene-card">
-          <div class="home__scene-image">
-            <img src="assets/images/city-evening.png" alt="">
+        <div class="home__recommendations-grid">
+          <div class="home__recommendation-btn">
+            <img src="assets/icons/city-night-icon.svg" alt="">
+            <span class="home__rec-label">Городской вечер</span>
           </div>
-          <div class="home__scene-info">
-            <h3 class="home__scene-title">Городской вечер</h3>
-            <p class="home__scene-description">Уличной свет, глубина, атмосфера</p>
-          </div>
-        </div>
 
-        <div class="home__scene-card">
-          <div class="home__scene-image">
-            <img src="assets/images/winter-look.png" alt="">
-          </div>
-          <div class="home__scene-info">
-            <h3 class="home__scene-title">Зимний образ</h3>
-            <p class="home__scene-description">Холодный свет, текстуры, объём</p>
+          <div class="home__recommendation-btn">
+            <img src="assets/icons/winter-look-icon.svg" alt="">
+            <span class="home__rec-label">Зимний образ</span>
           </div>
         </div>
 
-        <div class="home__scene-card">
-          <div class="home__scene-image">
-            <img src="assets/images/profile-avatar.png" alt="">
+        <div class="home__recommendations-grid">
+          <div class="home__recommendation-btn">
+            <img src="assets/icons/profile-avatar-icon.svg" alt="">
+            <span class="home__rec-label">Профиль / Аватар</span>
           </div>
-          <div class="home__scene-info">
-            <h3 class="home__scene-title">Профиль / Аватар</h3>
-            <p class="home__scene-description">Идеально для соцсетей</p>
+
+          <div class="home__recommendation-btn">
+            <img src="assets/icons/pair-duo-icon.svg" alt="">
+            <span class="home__rec-label">Пара / Duo</span>
           </div>
+
         </div>
-
-        <div class="home__scene-card">
-          <div class="home__scene-image">
-            <img src="assets/images/pair-duo.png" alt="">
-          </div>
-          <div class="home__scene-info">
-            <h3 class="home__scene-title">Пара / Duo</h3>
-            <p class="home__scene-description">Два человека в одном кадре</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="home__recommendations-section">
-      <div class="home__section-header">
-        <h2 class="home__section-title">Рекомендации дня</h2>
-      </div>
-
-      <div class="home__recommendations-grid">
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/home-port-icon.svg" alt="">
-          <span class="home__rec-label">Домашний портрет</span>
-        </div>
-
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/studio-icon.svg" alt="">
-          <span class="home__rec-label">Студийный образ</span>
-        </div>
-      </div>
-
-      <div class="home__recommendations-grid">
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/city-night-icon.svg" alt="">
-          <span class="home__rec-label">Городской вечер</span>
-        </div>
-
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/winter-look-icon.svg" alt="">
-          <span class="home__rec-label">Зимний образ</span>
-        </div>
-      </div>
-
-      <div class="home__recommendations-grid">
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/profile-avatar-icon.svg" alt="">
-          <span class="home__rec-label">Профиль / Аватар</span>
-        </div>
-
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/pair-duo-icon.svg" alt="">
-          <span class="home__rec-label">Пара / Duo</span>
-        </div>
-
       </div>
     </div>
+
   </div>
 </div>
 @if (showPaidDialog()) {

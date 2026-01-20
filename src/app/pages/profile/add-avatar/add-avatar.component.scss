@@ -28,7 +28,7 @@
     color: #a9b2c8;
   }
 
-  .form-input {
+  .form-input-add-avatar {
     width: 326px;
     background: #181826;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -37,6 +37,7 @@
     color: #ffffff;
     font-size: 15px;
     font-weight: 600;
+    outline: none;
   }
 }
 
@@ -294,18 +295,15 @@
 
 .input-wrapper.invalid {
   border-color: #FF4B55;
+  background: #0B0D11;
 }
 
 .input-wrapper.valid {
   border-color: #2EC57A;
+  background: #0B0D11;
 }
 
-.form-input {
-  outline: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 16px;
-}
+
 
 .alert {
   color: #FF4B55;

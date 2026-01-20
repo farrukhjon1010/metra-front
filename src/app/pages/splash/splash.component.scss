@@ -76,13 +76,15 @@
 }
 
 .form-input {
-  width: 328px;
+  width: 326px;
   border: 1px solid rgba(255, 255, 255, .1);
   border-radius: 12px;
   padding: 14px;
-  color: #7A859E;
   font-size: 15px;
   font-weight: 600;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
 }
 .gender-buttons {
   position: relative;
@@ -388,14 +390,7 @@
   border-color: #2EC57A;
 }
 
-.form-input {
-  outline: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 15px;
-}
-
-.alert {
+.alert-splash {
   color: #FF4B55;
   font-size: 12px;
   margin-top: 4px;

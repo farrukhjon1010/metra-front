@@ -7,7 +7,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url('/assets/images/bg.png') no-repeat fixed center;
+  background: url('/assets/images/bg.png') repeat fixed center;
 }
 
 body {
@@ -25,6 +25,20 @@ app-root {
   margin: 0 auto;
   position: relative;
   min-height: 100vh;
+}
+input {
+  background-color: #181826;
+  color: #fff;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #181826 inset !important;
+  -webkit-text-fill-color: #fff !important;
+  caret-color: #fff;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 @media (max-width: 390px) {
