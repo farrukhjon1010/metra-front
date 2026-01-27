@@ -1,5 +1,5 @@
 <div class="create-page">
-  <header class="header-card-detail">
+  <header class="header-card">
     <img src="assets/icons/arrow-back.svg" alt="Назад" (click)="goBack()">
     <div class="head-text">
       <p>{{ card.title }}</p>
@@ -9,148 +9,149 @@
   <div class="create-detail-wrapper">
     @switch (createState) {
 
-      @case ('idle') {
-        <div class="create-detail">
-          <div class="text-ai-generation">
-            <label>Введите запрос</label>
-            <img src="assets/icons/awesome.svg" alt="">
-            <textarea placeholder="Опишите ваше изображение" rows="4"></textarea>
-          </div>
+    @case ('idle') {
+    <div class="create-detail">
+      <div class="text-ai-generation">
+        <label>Введите запрос</label>
+        <img src="assets/icons/awesome.svg" alt="">
+        <textarea [(ngModel)]="prompt" placeholder="Опишите ваше изображение" rows="4">
+          </textarea>
+      </div>
 
-          <div class="photo-upload-detail">
-            <label>Загрузите фото</label>
-            <div class="upload-row-detail">
-              <div
-                class="upload-area-detail"
-                (click)="triggerFileInput('generate', $event)"
-              >
-                <input
-                  #photoGenerate
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
-                  (change)="onPhotoSelected($event, 'generate')"
-                  style="display: none;"
-                >
+      <div class="photo-upload-section">
+        <label class="form-label-detail">Загрузите фото</label>
 
-                <div class="upload-content-detail">
-                  <span class="upload-text-detail">Загрузить</span>
-                  <span class="upload-formats-detail">
-                  JPEG, JPG, PNG, HEIC, WEBP
-                </span>
-                </div>
+        <div class="upload-row-quality">
+          <div class="upload-area-small" (click)="triggerFileInput('generate', $event)">
+            <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+              (change)="onPhotoSelected($event, 'generate')" style="display: none;">
 
-                <img src="assets/icons/upload.svg" alt="Icon">
-              </div>
+            <div class="upload-content-quality">
+              <span class="upload-text-small">Загрузить</span>
+              <span class="upload-formats">
+                JPEG, JPG, PNG, HEIC, WEBP
+              </span>
             </div>
 
-            @if (photos.generate) {
-              <div class="photo-generate">
-                <img class="with-photo-detail" [src]="photos.generate" alt="Photo">
-
-                <button class="delete-photo-generation" (click)="removePhoto('generate', $event)">
-                  <img src="assets/icons/delete.svg" alt="">
-                </button>
-              </div>
-            }
-          </div>
-
-          <div class="btn-quality">
-            <app-button type="primary" icon="assets/icons/add.svg" (click)="createImage()"
-                        [disabled]="!photos.generate">
-              Создать изображение
-            </app-button>
+            <img src="assets/icons/upload.svg" alt="Icon">
           </div>
         </div>
-      }
-      @case ('loading') {
-        <div class="loading-screen">
-          <div class="spinner"></div>
-          <p>Генерируем изображения…</p>
+
+        @if (photos.generate) {
+        <div class="photo-quality">
+          <img class="with-photo" [src]="photos.generate" alt="Photo">
+
+          <button class="delete-photo-generation" (click)="removePhoto('generate', $event)">
+            <img src="assets/icons/delete.svg" alt="">
+          </button>
         </div>
-      }
-      @case ('result') {
-        <div class="result-detail">
-          <div class="result-generate">
-            <h1>Результат</h1>
-            <span>
-            кошка тигр, с желтыми глазами, покрытая снегом,
-            кинематографический стиль, средний снимок,
-            профессиональная фотография, макросъемка 200 мм 1.4f
-          </span>
-            <div class="image-generation">
+        }
+      </div>
 
-            </div>
-            <div class="btn-detail">
-              <app-button type="secondary" icon="assets/icons/download.svg">
-                Скачать
-              </app-button>
-              <app-button type="secondary" icon="assets/icons/change.svg">
-                Изменить
-              </app-button>
-            </div>
-          </div>
+      <div class="btn-quality">
+        <app-button type="primary" icon="assets/icons/add.svg" (click)="createImage()" [disabled]="!photos.generate">
+          Создать изображение
+        </app-button>
+      </div>
+    </div>
+    }
 
-          <app-button type="primary" icon="assets/icons/add.svg">
-            Создать ещё
+
+    @case ('loading') {
+    <div class="loading-screen">
+      <div class="spinner"></div>
+      <p>Создаём…</p>
+    </div>
+    }
+
+    @case ('result') {
+    <div class="result-detail">
+      <div class="result-generate">
+        <h1>Результат</h1>
+        <span>
+          {{prompt}}
+        </span>
+        <div class="image-generation">
+          <img [src]="resultImageUrl" alt="">
+        </div>
+        <div class="btn-detail">
+          <app-button type="secondary" icon="assets/icons/download.svg">
+            Скачать
+          </app-button>
+          <app-button type="secondary" icon="assets/icons/change.svg">
+            Изменить
           </app-button>
         </div>
-      }
+      </div>
+
+      <app-button type="primary" icon="assets/icons/add.svg">
+        Создать ещё
+      </app-button>
+    </div>
+    }
+
     }
   </div>
 
   <div class="create-detail-content">
     <h1 class="last-generation-text">Последние генерации</h1>
 
-    @if (generationHistory.length === 1) {
-      <div class="empty-content-detail">
-        <div class="create-of-detail">
-          <img src="assets/icons/error.svg" alt="">
+    @if (generationHistory.length < 1) { <div class="empty-content-detail">
+      <div class="create-of-detail">
+        <div class="no-create-image-wrapper">
+          <div>
+            <img src="assets/icons/error.svg" alt="">
+          </div>
           <span>Вы ещё ничего не создали</span>
         </div>
       </div>
-    } @else {
-      <div class="history-content-detail">
-        <div class="create-generate-detail">
-          <div class="left-text-detail">
-            <div class="date-detail">
-              <label>Дата</label>
-              <span>15.12.2025 / 16:40</span>
-            </div>
-
-            <div class="scenes-pro-detail">
-              <label>Сцены</label>
-              <span>Nano Banana</span>
-            </div>
-
-            <div class="date-detail-prom">
-              <span class="lab-prom">Promt</span>
-              <span class="prom-text">
-            кошка тигр, с желтыми глазами, покрытая снегом,
-            кинематографический стиль, средний снимок,
-            профессиональная фотография, макросъемка 200 мм 1.4f
-          </span>
-            </div>
-          </div>
-
-          <div class="right-photo-detail">
-            <div class="photo-detail"></div>
-
-            <app-button type="primary" icon="assets/icons/update.svg">
-              Повторить
-            </app-button>
-            <app-button type="secondary" icon="assets/icons/download.svg">
-              Скачать
-            </app-button>
-            <app-button type="secondary" icon="assets/icons/photo-size.svg">
-              Upscale
-            </app-button>
-          </div>
+  </div>
+  } @else {
+  <div class="history-content-detail">
+    @for (generation of generationHistory; track generation.id){
+    <div class="create-generate-detail">
+      <div class="left-text-detail">
+        <div class="date-detail">
+          <label>Дата</label>
+          <span>{{ generation.createdAt | date:'MM.dd.yyyy / HH:mm' }}</span>
         </div>
 
-        <app-button type="secondary" (click)="navigateToHistory()">
-          Открыть историю
+        <div class="scenes-pro-detail">
+          <label>Сцены</label>
+          <span>{{ card.category }}</span>
+        </div>
+
+        <div class="date-detail-prom">
+          <span class="lab-prom">Promt</span>
+          <span class="prom-text">{{ generation.prompt }}</span>
+        </div>
+      </div>
+
+      <div class="right-photo-detail">
+        <div class="photo-detail"><img class="photo-history" [src]="generation.imageURL" alt=""></div>
+
+        <app-button type="primary" icon="assets/icons/update.svg">
+          Повторить
+        </app-button>
+
+        <app-button type="secondary" icon="assets/icons/download.svg">
+          Скачать
+        </app-button>
+
+        <app-button type="secondary" icon="assets/icons/photo-size.svg">
+          Upscale
         </app-button>
       </div>
+    </div>
+
+
     }
+    <app-button type="secondary" (click)="navigateToHistory()">
+      Открыть историю
+    </app-button>
   </div>
+  }
+
+
+</div>
 </div>

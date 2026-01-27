@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "3052cd9e-9a44-4a94-b642-c3484b7a90b6"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -56,6 +57,11 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+           "options": {
+            "host": "0.0.0.0",
+            "port": 4200,
+            "allowedHosts": true
+          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -66,6 +72,7 @@
             }
           },
           "defaultConfiguration": "development"
+
         },
         "test": {
           "builder": "@angular/build:unit-test"

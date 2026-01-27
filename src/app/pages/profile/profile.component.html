@@ -4,51 +4,31 @@
   </header>
   <div class="profile-content">
     @if (!router.url.includes('add-avatar')) {
-      <div class="profile-card">
-        <h3 class="card-title">Ваш аватар</h3>
-        <div class="avatar-circle">
-          <div class="avatars-display">
-            @for (avatar of selectedAvatars; track avatar) {
-              <div class="avatar-item">
-                <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
-              </div>
-            }
-            <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
-              <span class="user-empty">
-                <img src="assets/icons/user-empty.svg" alt="">
-              </span>
-            </div>
-          </div>
-          <div class="avatars-display">
-            @for (avatar of selectedAvatars; track avatar) {
-              <div class="avatar-item">
-                <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
-              </div>
-            }
-            <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
-              <span class="user-empty">
-                <img src="assets/icons/user-empty.svg" alt="">
-              </span>
-            </div>
-          </div>
-          <div class="avatars-display">
-            @for (avatar of selectedAvatars; track avatar) {
-              <div class="avatar-item">
-                <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
-              </div>
-            }
-            <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
-              <span class="user-empty">
-                <img src="assets/icons/user-empty.svg" alt="">
-              </span>
-            </div>
-          </div>
-        </div>
+    <div class="profile-card">
+      <h3 class="card-title">Ваш аватар</h3>
+      <div class="avatar-circle">
+        <div class="avatars-display">
 
-        <app-button type="primary" icon="assets/icons/add.svg"
-                    routerLink="/profile/add-avatar" (click)="goToAddAvatar()">Добавить аватар
-        </app-button>
+          @for (avatar of selectedAvatars; track avatar) {
+          <div class="avatar-item add-avatar">
+            <img [src]="avatar" alt="Avatar" class="profile-avatar" />
+          </div>
+          }
+
+          @for (empty of [].constructor(3 - selectedAvatars.length > 0 ? 3 - selectedAvatars.length : 0); track $index)
+          {
+          <div class="avatar-item add-avatar" (click)="goToAddAvatar()">
+            <img src="assets/icons/user-empty.svg" alt="Empty" class="profile-avatar" />
+          </div>
+          }
+
+        </div>
       </div>
+
+      <app-button type="primary" icon="assets/icons/add.svg" (click)="goToAddAvatar()">
+        Добавить аватар
+      </app-button>
+    </div>
     }
     @if (!router.url.includes('balance')) {
       <div class="profile-card">
