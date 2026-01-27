@@ -1,8 +1,11 @@
-import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {CommonModule, NgStyle } from '@angular/common';
-import {Router} from '@angular/router';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule, NgStyle } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { Gender } from '../../../core/models/avatar.model';
+import { AvatarService } from '../../../core/services/avatar.service';
+import { FileService } from '../../../core/services/file.service';
 
 @Component({
   selector: 'app-add-avatar',
@@ -13,18 +16,21 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 })
 export class AddAvatarComponent {
 
+  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
+
   @ViewChild('frontInput', { static: false }) frontInput!: ElementRef<HTMLInputElement>;
   @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
   @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
 
-  gender: 'male' | 'female' = 'male';
+  gender: Gender = Gender.MALE
   currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
+  
   photos = {
-    front: null as string | null,
-    left: null as string | null,
-    right: null as string | null,
+    front: { file: null as File | null, preview: null as string | null },
+    left: { file: null as File | null, preview: null as string | null },
+    right: { file: null as File | null, preview: null as string | null },
   };
 
   myForm = new FormGroup({
@@ -33,7 +39,9 @@ export class AddAvatarComponent {
 
 
   constructor(private router: Router,
-              private cdr: ChangeDetectorRef) {}
+    private cdr: ChangeDetectorRef,
+    private avatarService: AvatarService,
+    private fileService: FileService) { }
 
   isSelected(avatar: string): boolean {
     return this.selectedAvatars.includes(avatar);
@@ -48,9 +56,45 @@ export class AddAvatarComponent {
   }
 
   confirmAvatars(): void {
-    if (this.selectedAvatars.length > 0) {
-      this.currentStep = 'success';
-    }
+    if (this.selectedAvatars.length === 0) return;
+
+    this.currentStep = 'loading';
+    this.cdr.detectChanges();
+
+    const userId = this.UUID;
+    const selectedUrl = this.selectedAvatars[0];
+
+    this.avatarService.findByUser(userId).subscribe({
+      next: (existingAvatar) => {
+        // Если 0 фото -> индекс 1
+        // Если 1 фото -> индекс 2
+        const currentCount = existingAvatar?.imagesURL?.length || 0;
+        const nextIndex = currentCount + 1;
+
+        this.uploadAndSave(selectedUrl, userId, nextIndex);
+      },
+      error: (err) => {
+        this.uploadAndSave(selectedUrl, userId, 1);
+      }
+    });
+  }
+  private uploadAndSave(url: string, userId: string, index: number) {
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], `avatar_v${index}.png`, { type: 'image/png' });
+
+        this.fileService.uploadGeneratedAvatar(file, userId, index).subscribe({
+          next: (response) => {
+            this.avatarService.addImgUrl(userId, response.url).subscribe({
+              next: () => {
+                this.currentStep = 'success';
+                this.cdr.detectChanges();
+              }
+            });
+          }
+        });
+      });
   }
 
   triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
@@ -64,20 +108,25 @@ export class AddAvatarComponent {
   }
 
   onFileSelectedAvatar(event: Event, type: 'front' | 'left' | 'right') {
-    const files = (event.target as HTMLInputElement)?.files?.[0];
-    if (!files) return;
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (!file) return;
+
+    // Сохраняем сам файл для отправки
+    this.photos[type].file = file;
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.photos[type] = reader.result as string;
+      this.photos[type].preview = reader.result as string;
       this.cdr.detectChanges(); // обновляем UI сразу после загрузки
     };
-    reader.readAsDataURL(files);
+    reader.readAsDataURL(file);
   }
+
 
   removePhoto(type: 'front' | 'left' | 'right', event: Event) {
     event.stopPropagation();
-    this.photos[type] = null;
+    this.photos[type].file = null;
+    this.photos[type].preview = null;
   }
 
   canCreate() {
@@ -97,18 +146,53 @@ export class AddAvatarComponent {
     this.currentStep = 'loading';
     this.cdr.detectChanges();
 
-    setTimeout(() => {
-      console.log('Timeout finished, generating avatars');
-      this.generatedAvatars = [
-        this.photos.front!,
-        'assets/avatars/avatar-2.png',
-        'assets/avatars/avatar-3.png',
-        'assets/avatars/avatar-4.png',
-      ];
+    const filesToUpload: File[] = [];
+    if (this.photos.front.file) filesToUpload.push(this.photos.front.file);
+    if (this.photos.left.file) filesToUpload.push(this.photos.left.file);
+    if (this.photos.right.file) filesToUpload.push(this.photos.right.file);
 
-      this.currentStep = 'select';
-      this.cdr.detectChanges();
-    }, 2000);
+    const userId = this.UUID;
+
+    // Загрузка файлов
+    this.fileService.uploadAvatars(filesToUpload, userId).subscribe({
+      next: (event: any) => {
+        if (event.body) {
+          const urls = event.body.map((img: any) => img.url);
+
+          const generateDto = {
+            name: this.myForm.value.avatarName || '',
+            gender: this.gender,
+            imageFront: urls[0],
+            imageLeft: urls[1],
+            imageRight: urls[2]
+          };
+
+          // Генерация
+          this.avatarService.generateAvatar(generateDto).subscribe({
+            next: (response: any) => {
+              if (response.images) {
+                this.generatedAvatars = response.images.imagesURL;
+                console.log(this.generatedAvatars)
+
+                this.currentStep = 'select';
+                this.cdr.detectChanges();
+              }
+            },
+            error: (err) => {
+              console.error('Ошибка генерации:', err);
+              this.currentStep = 'form';
+              alert('Ошибка ИИ-сервиса');
+              this.cdr.detectChanges();
+            }
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки фото:', err);
+        this.currentStep = 'form';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   goProfile() {

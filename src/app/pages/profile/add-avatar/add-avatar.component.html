@@ -46,13 +46,13 @@
                 <button
                   class="gender-btn"
                   [class.active]="gender === 'male'"
-                  (click)="gender = 'male'">
+                  (click)="gender = gender">
                   Мужской
                 </button>
                 <button
                   class="gender-btn"
                   [class.active]="gender === 'female'"
-                  (click)="gender = 'female'">
+                  (click)="gender = gender">
                   Женский
                 </button>
               </div>
@@ -61,7 +61,7 @@
               <div class="photo-upload-section">
                 <label class="form-label">Загрузите фото с фронтальной стороны</label>
                 <div class="upload-row">
-                  <div class="upload-area-small" (click)="triggerFileInput('front',$event)">
+                  <div class="upload-area-small" (click)="triggerFileInput('front', $event)">
                     <input
                       #frontInput
                       type="file"
@@ -78,15 +78,15 @@
                 <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
               </div>
               <div class="front-photo-ava">
-                @if (photos.front){
-                    <img class="with-photo-ava" [src]="photos.front" alt="Front Photo">
+                @if (photos.front.preview){
+                    <img class="with-photo-ava" [src]="photos.front.preview" alt="Front Photo">
                 }
-                @if (!photos.front){
+                @if (!photos.front.preview){
                     <ng-container>
                       <img class="empty-photo-ava" src="assets/icons/vector-front.svg" alt="Front Photo">
                     </ng-container>
                 }
-                @if (photos.front){
+                @if (photos.front.preview){
                     <button class="delete-photo-ava" (click)="removePhoto('front', $event)">
                       <img src="assets/icons/delete.svg" alt="">
                     </button>
@@ -114,15 +114,15 @@
                 <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
               </div>
               <div class="front-photo-ava">
-                @if (photos.left){
-                    <img class="with-photo-ava" [src]="photos.left" alt="Left Photo">
+                @if (photos.left.preview){
+                    <img class="with-photo-ava" [src]="photos.left.preview" alt="Left Photo">
                 }
-                @if (!photos.left) {
+                @if (!photos.left.preview) {
                   <ng-container>
                     <img class="empty-photo-ava" src="assets/icons/vector-left.svg" alt="Left Left">
                   </ng-container>
                 }
-                @if (photos.left){
+                @if (photos.left.preview){
                   <button class="delete-photo-ava" (click)="removePhoto('left', $event)">
                     <img src="assets/icons/delete.svg" alt="">
                   </button>
@@ -151,15 +151,15 @@
               </div>
 
               <div class="front-photo-ava">
-                @if (photos.right){
-                  <img class="with-photo-ava" [src]="photos.right" alt="Right Photo">
+                @if (photos.right.preview){
+                  <img class="with-photo-ava" [src]="photos.right.preview" alt="Right Photo">
                 }
-                @if (!photos.right) {
+                @if (!photos.right.preview) {
                   <ng-container>
                     <img class="empty-photo-ava" src="assets/icons/vector-right.svg" alt="Right Right">
                   </ng-container>
                 }
-                @if (photos.right){
+                @if (photos.right.preview){
                   <button class="delete-photo-ava" (click)="removePhoto('right', $event)">
                     <img src="assets/icons/delete.svg" alt="">
                   </button>

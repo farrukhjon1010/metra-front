@@ -68,13 +68,13 @@
               <button
                 class="gender-btn"
                 [class.active]="gender === 'male'"
-                (click)="gender = 'male'">
+                (click)="gender = gender">
                 Мужской
               </button>
               <button
                 class="gender-btn"
                 [class.active]="gender === 'female'"
-                (click)="gender = 'female'">
+                (click)="gender = gender">
                 Женский
               </button>
             </div>
@@ -99,15 +99,15 @@
               <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
             </div>
             <div class="front-photo">
-              @if (photos.front) {
-                <img class="with-photo" [src]="photos.front" alt="Front Photo">
+              @if (photos.front.preview) {
+                <img class="with-photo" [src]="photos.front.preview" alt="Front Photo">
               }
-              @if (!photos.front) {
+              @if (!photos.front.preview) {
                 <ng-container>
                   <img class="empty-photo" src="assets/icons/vector-front.svg" alt="Front Photo">
                 </ng-container>
               }
-              @if (photos.front) {
+              @if (photos.front.preview) {
                 <button class="delete-photo"
                         style="position:absolute; top:4px; right:4px;"
                         (click)="removePhoto('front', $event)">
@@ -137,15 +137,15 @@
               <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
             </div>
             <div class="front-photo">
-              @if (photos.left) {
-                <img class="with-photo" [src]="photos.left" alt="Left Photo">
+              @if (photos.left.preview) {
+                <img class="with-photo" [src]="photos.left.preview" alt="Left Photo">
               }
-              @if (!photos.left) {
+              @if (!photos.left.preview) {
                 <ng-container>
                   <img class="empty-photo" src="assets/icons/vector-left.svg" alt="Left Photo">
                 </ng-container>
               }
-              @if (photos.left) {
+              @if (photos.left.preview) {
                 <button class="delete-photo"
                         style="position:absolute; top:4px; right:4px;"
                         (click)="removePhoto('left', $event)">
@@ -177,15 +177,15 @@
             </div>
 
             <div class="front-photo">
-              @if (photos.right) {
-                <img class="with-photo" [src]="photos.right" alt="Right Photo">
+              @if (photos.right.preview) {
+                <img class="with-photo" [src]="photos.right.preview" alt="Right Photo">
               }
-              @if (!photos.right) {
+              @if (!photos.right.preview) {
                 <ng-container>
                   <img class="empty-photo" src="assets/icons/vector-right.svg" alt="Right Photo">
                 </ng-container>
               }
-              @if (photos.right) {
+              @if (photos.right.preview) {
                 <button class="delete-photo"
                         style="position:absolute; top:4px; right:4px;"
                         (click)="removePhoto('right', $event)">
@@ -228,10 +228,10 @@
           @for (avatar of generatedAvatars; track avatar) {
             <div [class.selected]="isSelected(avatar)" class="avatar-card">
               <div class="avatar-image-wrapper">
-                @if (photos.front) {
-                  <img [src]="photos.front" alt="Front Photo" class="avatar-image"/>
+                @if (avatar) {
+                  <img [src]="avatar" alt="Generated Avatar" class="avatar-image"/>
                 }
-                @if (!photos.front) {
+                @else {
                   <ng-container>
                     <img src="assets/icons/vector-front.svg" alt="Front Placeholder" class="avatar-image"/>
                   </ng-container>
