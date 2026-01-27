@@ -3,15 +3,15 @@
     <h2 class="profile-title">Профиль</h2>
   </header>
   <div class="profile-content">
-    @if (!router.url.includes('add-avatar')){
-    <div class="profile-card">
-      <h3 class="card-title">Ваш аватар</h3>
-      <div class="avatar-circle">
+    @if (!router.url.includes('add-avatar')) {
+      <div class="profile-card">
+        <h3 class="card-title">Ваш аватар</h3>
+        <div class="avatar-circle">
           <div class="avatars-display">
-            @for (avatar of selectedAvatars; track avatar){
-            <div class="avatar-item">
-              <img [src]="avatar" alt="Avatar" class="profile-avatar" />
-            </div>
+            @for (avatar of selectedAvatars; track avatar) {
+              <div class="avatar-item">
+                <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
+              </div>
             }
             <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
               <span class="user-empty">
@@ -20,10 +20,10 @@
             </div>
           </div>
           <div class="avatars-display">
-            @for (avatar of selectedAvatars; track avatar){
-            <div class="avatar-item">
-              <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
-            </div>
+            @for (avatar of selectedAvatars; track avatar) {
+              <div class="avatar-item">
+                <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
+              </div>
             }
             <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
               <span class="user-empty">
@@ -32,10 +32,10 @@
             </div>
           </div>
           <div class="avatars-display">
-            @for (avatar of selectedAvatars; track avatar){
-            <div class="avatar-item">
-              <img [src]="avatar" alt="Avatar" class="profile-avatar" />
-            </div>
+            @for (avatar of selectedAvatars; track avatar) {
+              <div class="avatar-item">
+                <img [src]="avatar" alt="Avatar" class="profile-avatar"/>
+              </div>
             }
             <div class="avatar-item add-avatar" (click)="addMoreAvatars()">
               <span class="user-empty">
@@ -43,21 +43,21 @@
               </span>
             </div>
           </div>
-      </div>
+        </div>
 
-      <app-button type="primary" icon="assets/icons/add.svg"
-                  routerLink="/profile/add-avatar" (click)="goToAddAvatar()">Добавить аватар
-      </app-button>
-    </div>
+        <app-button type="primary" icon="assets/icons/add.svg"
+                    routerLink="/profile/add-avatar" (click)="goToAddAvatar()">Добавить аватар
+        </app-button>
+      </div>
     }
-    @if (!router.url.includes('balance')){
-    <div class="profile-card">
-      <h3 class="card-title">Баланс</h3>
-      <p class="balance-text">120 токенов</p>
-      <app-button type="primary" icon="assets/icons/add.svg" (click)="goToReplenish()">
-        Пополнить
-      </app-button>
-    </div>
+    @if (!router.url.includes('balance')) {
+      <div class="profile-card">
+        <h3 class="card-title">Баланс</h3>
+        <p class="balance-text">120 токенов</p>
+        <app-button type="primary" icon="assets/icons/add.svg" (click)="goToReplenish()">
+          Пополнить
+        </app-button>
+      </div>
     }
     <div class="profile-card">
       <h3 class="card-title">Подписка</h3>
@@ -73,14 +73,14 @@
         Обновить
       </app-button>
     </div>
-    @if (!router.url.includes('affiliate-program')){
-    <div class="profile-card">
-      <h3 class="card-title">Партнерская программа</h3>
-      <p class="partnership-text">4 500 руб</p>
-      <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToAffiliateProgram()">
-        Подробнее
-      </app-button>
-    </div>
+    @if (!router.url.includes('affiliate-program')) {
+      <div class="profile-card">
+        <h3 class="card-title">Партнерская программа</h3>
+        <p class="partnership-text">4 500 руб</p>
+        <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToAffiliateProgram()">
+          Подробнее
+        </app-button>
+      </div>
     }
     <div class="profile-card">
       <h3 class="card-title">Помощь</h3>

@@ -1,0 +1,42 @@
+<div class="select-screen">
+  <div class="success-badge">
+    <img src="assets/icons/check-circle.svg" alt="">
+    <div class="check-icon">
+      <span class="success-text">Ваш аватар создан</span>
+      <p class="subtitle">Выберите до 3х изображений</p>
+    </div>
+  </div>
+
+  <div class="avatar-grid">
+    @for (avatar of generatedAvatars; track avatar) {
+      <div [class.selected]="isSelected(avatar)" class="avatar-card">
+        <div class="avatar-image-wrapper">
+          @if (avatar) {
+            <img [src]="avatar" alt="Generated Avatar" class="avatar-image"/>
+          }
+          @if (!avatar) {
+            <ng-container>
+              <img src="assets/icons/vector-front.svg" alt="Avatar Placeholder" class="avatar-image"/>
+            </ng-container>
+          }
+        </div>
+
+        <button
+          class="btn-select"
+          [class.selected]="isSelected(avatar)"
+          (click)="toggle.emit(avatar)"
+        >
+          {{ isSelected(avatar) ? 'Выбран' : 'Выбрать' }}
+        </button>
+      </div>
+    }
+  </div>
+
+  <app-button
+    [type]="'primary'"
+    [icon]="'assets/icons/arrow-forward.svg'"
+    [disabled]="selectedAvatars.length === 0"
+    (click)="confirm.emit()">
+    Продолжить
+  </app-button>
+</div>

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {CreateGrid} from './create-grid/create-grid';
 import {CreateDetail} from './create-detail/create-detail';
 
@@ -45,7 +45,7 @@ export class CreateComponent {
       category: 'Видео',
     },
     {
-      id: 'lipsync',
+      id: 'lip-sync',
       title: 'LipSync',
       icon: 'assets/icons/lips.svg',
       category: 'Видео',
@@ -70,13 +70,13 @@ export class CreateComponent {
       id: 'female-style',
       title: 'Женский стиль',
       icon: 'assets/icons/wedding-dress.svg',
-      category: 'Wardrobe',
+      category: 'Wardrobe (примерка одежды)',
     },
     {
       id: 'male-style',
       title: 'Мужской стиль',
       icon: 'assets/icons/suit.svg',
-      category: 'Wardrobe',
+      category: 'Wardrobe (примерка одежды)',
     },
   ];
 

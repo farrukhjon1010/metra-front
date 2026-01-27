@@ -10,9 +10,9 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 })
 export class ImprovingQuality {
 
-  @ViewChild('photoInput', { static: false }) photoInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('photoInput', {static: false}) photoInput!: ElementRef<HTMLInputElement>;
 
-  photos: { photo: string | null } = { photo: null };
+  photos: { photo: string | null } = {photo: null};
   enhancedPhoto: string | null = null;
   isProcessing = false;
   isStarted = false;
@@ -25,7 +25,7 @@ export class ImprovingQuality {
     this.router.navigate(['/history']);
   }
 
-  onPhotoSelected(event: Event, type: 'photo' ) {
+  onPhotoSelected(event: Event, type: 'photo') {
     const photo = (event.target as HTMLInputElement)?.files?.[0];
     if (!photo) return;
 

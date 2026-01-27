@@ -5,11 +5,10 @@ export type ButtonType = 'primary' | 'secondary' | 'ghost' | 'danger' | 'green';
 
 @Component({
   selector: 'app-button',
-  imports: [
-    NgClass,
-  ],
+  standalone: true,
+  imports: [NgClass],
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css',
+  styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
   @Input() type: ButtonType = 'primary';

@@ -1,0 +1,25 @@
+<div class="splash-container">
+  <div class="content">
+    <div class="logo-container">
+      <div class="logo-m">
+        <img src="assets/icons/metra-logo.svg" alt="logo">
+      </div>
+      <h1 class="brand-name">METRA</h1>
+    </div>
+    <div class="features">
+      <p class="feature-text">Генерация образов и фото с помощью персонального аватара.</p>
+      <p class="feature-text">Сцены, стили и примерка одежды — в одном пространстве.</p>
+      <p class="feature-text-metra">Для доступа ко всем возможностям METRA используется аватар.</p>
+    </div>
+    <div class="actions">
+      <app-button type="primary" icon="assets/icons/add.svg" (click)="create.emit()">
+        Создать аватар
+      </app-button>
+
+      <app-button type="secondary" (click)="demo.emit()">
+        Посмотреть, как это работает
+      </app-button>
+    </div>
+  </div>
+</div>
+

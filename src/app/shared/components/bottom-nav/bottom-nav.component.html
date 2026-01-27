@@ -6,9 +6,9 @@
 
   @for (item of navItems; track item; let i = $index) {
     <a (click)="setActive(i)"
-      [routerLink]="item.link"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }">
+       [routerLink]="item.link"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
 
       <div class="nav-icon">
         <img [src]="item.icon" alt="">

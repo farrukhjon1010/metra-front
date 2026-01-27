@@ -15,7 +15,8 @@ export class HistoryComponent implements OnInit {
   selectedFilter: 'all' | 'photo' | 'video' = 'all';
   history: any[] = [];
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: ApiService, private router: Router) {
+  }
 
   ngOnInit() {
     this.api.getScenes().subscribe((data: any) => {

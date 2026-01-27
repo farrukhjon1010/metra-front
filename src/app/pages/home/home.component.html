@@ -20,11 +20,11 @@
     </app-scenes-grid>
   }
 
-  @if (selectedScene){
-    <app-scene-card
+  @if (selectedScene) {
+    <app-scenes-card
       [scene]="selectedScene"
       (back)="backToGrid()">
-    </app-scene-card>
+    </app-scenes-card>
   }
 
   <div class="home__content">
@@ -77,7 +77,7 @@
   </div>
 </div>
 @if (showPaidDialog()) {
-<app-paid-dialog (click)="closeDialog()">
+  <app-paid-dialog (click)="closeDialog()">
 
-</app-paid-dialog>
+  </app-paid-dialog>
 }

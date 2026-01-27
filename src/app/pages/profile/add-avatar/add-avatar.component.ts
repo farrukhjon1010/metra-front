@@ -1,21 +1,22 @@
 import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {CommonModule, NgStyle } from '@angular/common';
+import {CommonModule, NgStyle} from '@angular/common';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
+import {Loading} from '../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-add-avatar',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule, Loading],
   templateUrl: './add-avatar.component.html',
   styleUrls: ['./add-avatar.component.scss'],
 })
 export class AddAvatarComponent {
 
-  @ViewChild('frontInput', { static: false }) frontInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('frontInput', {static: false}) frontInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('leftInput', {static: false}) leftInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('rightInput', {static: false}) rightInput!: ElementRef<HTMLInputElement>;
 
   gender: 'male' | 'female' = 'male';
   currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
@@ -33,7 +34,8 @@ export class AddAvatarComponent {
 
 
   constructor(private router: Router,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef) {
+  }
 
   isSelected(avatar: string): boolean {
     return this.selectedAvatars.includes(avatar);
@@ -70,7 +72,7 @@ export class AddAvatarComponent {
     const reader = new FileReader();
     reader.onload = () => {
       this.photos[type] = reader.result as string;
-      this.cdr.detectChanges(); // обновляем UI сразу после загрузки
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(files);
   }

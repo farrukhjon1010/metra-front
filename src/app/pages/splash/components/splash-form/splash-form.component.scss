@@ -1,0 +1,175 @@
+.create-avatar-container {
+  padding: 0 16px;
+}
+
+.header {
+  padding: 24px 0;
+  margin: 0;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-label {
+  font-size: 13px;
+  color: #a9b2c8;
+}
+
+.form-input {
+  width: 326px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: system-ui;
+}
+
+.gender-buttons {
+  position: relative;
+  display: flex;
+  background: #181826;
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.0588235294);
+  margin-top: 8px;
+}
+
+.gender-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #777;
+  padding: 12px 0;
+  z-index: 1;
+}
+
+.gender-btn.active {
+  color: #fff;
+}
+
+.slider-splash {
+  position: absolute;
+  inset: 4px;
+  width: calc(50% - 4px);
+  background: linear-gradient(90deg, #6a5cff, #a890ff);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.photo-load {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.upload-area-small {
+  padding: 6px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid #FFFFFF0F;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
+}
+
+.upload-text-small {
+  font-size: 15px;
+}
+
+.upload-formats {
+  font-size: 10px;
+  opacity: .6;
+  font-family: system-ui;
+}
+
+.upload-row {
+  width: 252px;
+  margin-top: 8px;
+}
+
+.upload-hint-small {
+  margin: 8px 0 0 0;
+  font-size: 12px;
+  color: #7A859E;
+}
+
+.front-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-photo {
+  top: 5px;
+  display: flex;
+  position: relative;
+  object-fit: cover;
+}
+
+.with-photo {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.delete-photo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff4d4f;
+  border: none;
+  cursor: pointer;
+  padding: 2px 1px 1px 1px;
+}
+
+
+.input-wrapper {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  backdrop-filter: blur(40px);
+  transition: border-color 0.2s;
+  margin-top: 8px;
+}
+
+.input-wrapper.invalid {
+  border-color: #FF4B55;
+}
+
+.input-wrapper.valid {
+  border-color: #2EC57A;
+}
+
+.alert {
+  font-size: 12px;
+  color: #FF4B55;
+  padding: 2px 5px 0 5px;
+}
+

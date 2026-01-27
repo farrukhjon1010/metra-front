@@ -18,9 +18,9 @@ export class CreateDetail {
 
   @Input() card!: CreateCard;
   @Output() back = new EventEmitter<void>();
-  @ViewChild('photoGenerate', { static: false }) photoGenerate!: ElementRef<HTMLInputElement>;
+  @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
 
-  photos: { generate: string | null } = { generate: null };
+  photos: { generate: string | null } = {generate: null};
   generationHistory: any[] = [];
 
   constructor(private cdr: ChangeDetectorRef,
@@ -31,7 +31,7 @@ export class CreateDetail {
     this.back.emit();
   }
 
-  onPhotoSelected(event: Event, type: 'generate' ) {
+  onPhotoSelected(event: Event, type: 'generate') {
     const generate = (event.target as HTMLInputElement)?.files?.[0];
     if (!generate) return;
 

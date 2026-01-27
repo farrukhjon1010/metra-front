@@ -2,16 +2,13 @@
   class="ui-button"
   [ngClass]="type"
   [disabled]="disabled"
+  [attr.type]="buttonType"
 >
   <span class="label">
     <ng-content></ng-content>
   </span>
 
   @if (icon) {
-    <img
-      [src]="icon"
-      class="icon"
-      alt=""
-    />
+    <img [src]="icon" class="icon" alt=""/>
   }
 </button>

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
   private tokenKey = 'token';
 
@@ -20,5 +20,6 @@ export class AuthService {
     return !!localStorage.getItem(this.tokenKey);
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 }

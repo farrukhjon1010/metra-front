@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 
@@ -11,7 +11,9 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 export class AffiliateProgramComponent {
   link: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
+
   goBack() {
     this.router.navigate(['/profile']);
   }
@@ -20,18 +22,18 @@ export class AffiliateProgramComponent {
   copied = false;
 
   copyLink() {
-      const textToCopy = 'Привет!';
+    const textToCopy = 'Привет!';
 
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        this.copied = true;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      this.copied = true;
 
-        setTimeout(() => {
-          this.copied = false;
-        }, 2000);
-      }).catch(err => {
-        console.error('Не удалось скопировать текст: ', err);
-      });
-    }
+      setTimeout(() => {
+        this.copied = false;
+      }, 2000);
+    }).catch(err => {
+      console.error('Не удалось скопировать текст: ', err);
+    });
+  }
 
   goToWithdraw() {
 

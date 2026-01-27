@@ -30,9 +30,9 @@
                     />
                   </div>
                   @if (myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid) {
-                  <div class="alert">
-                    Не указано имя
-                  </div>
+                    <div class="alert">
+                      Не указано имя
+                    </div>
                   }
                 </div>
               </form>
@@ -78,19 +78,19 @@
                 <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
               </div>
               <div class="front-photo-ava">
-                @if (photos.front){
-                    <img class="with-photo-ava" [src]="photos.front" alt="Front Photo">
+                @if (photos.front) {
+                  <img class="with-photo-ava" [src]="photos.front" alt="Front Photo">
                 }
-                @if (!photos.front){
-                    <ng-container>
-                      <img class="empty-photo-ava" src="assets/icons/vector-front.svg" alt="Front Photo">
-                    </ng-container>
+                @if (!photos.front) {
+                  <ng-container>
+                    <img class="empty-photo-ava" src="assets/icons/vector-front.svg" alt="Front Photo">
+                  </ng-container>
                 }
-                @if (photos.front){
-                    <button class="delete-photo-ava" (click)="removePhoto('front', $event)">
-                      <img src="assets/icons/delete.svg" alt="">
-                    </button>
-                  }
+                @if (photos.front) {
+                  <button class="delete-photo-ava" (click)="removePhoto('front', $event)">
+                    <img src="assets/icons/delete.svg" alt="">
+                  </button>
+                }
               </div>
             </div>
             <div class="photo-load">
@@ -114,15 +114,15 @@
                 <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
               </div>
               <div class="front-photo-ava">
-                @if (photos.left){
-                    <img class="with-photo-ava" [src]="photos.left" alt="Left Photo">
+                @if (photos.left) {
+                  <img class="with-photo-ava" [src]="photos.left" alt="Left Photo">
                 }
                 @if (!photos.left) {
                   <ng-container>
                     <img class="empty-photo-ava" src="assets/icons/vector-left.svg" alt="Left Left">
                   </ng-container>
                 }
-                @if (photos.left){
+                @if (photos.left) {
                   <button class="delete-photo-ava" (click)="removePhoto('left', $event)">
                     <img src="assets/icons/delete.svg" alt="">
                   </button>
@@ -151,7 +151,7 @@
               </div>
 
               <div class="front-photo-ava">
-                @if (photos.right){
+                @if (photos.right) {
                   <img class="with-photo-ava" [src]="photos.right" alt="Right Photo">
                 }
                 @if (!photos.right) {
@@ -159,7 +159,7 @@
                     <img class="empty-photo-ava" src="assets/icons/vector-right.svg" alt="Right Right">
                   </ng-container>
                 }
-                @if (photos.right){
+                @if (photos.right) {
                   <button class="delete-photo-ava" (click)="removePhoto('right', $event)">
                     <img src="assets/icons/delete.svg" alt="">
                   </button>
@@ -180,44 +180,39 @@
       </div>
     </div>
   }
-
   @case ('loading') {
-    <div class="loading-screen">
-      <div class="spinner"></div>
-      <p>Создаём аватар…</p>
-    </div>
+    <app-loading></app-loading>
   }
-
   @case ('select') {
     <div class="select-screen">
       <div class="success-badge">
         <img src="assets/icons/check-circle.svg" alt="">
         <div class="check-icon">
           <span class="success-text">Ваш аватар создан</span>
-           <p class="subtitle">Выберите одно изображений</p>
+          <p class="subtitle">Выберите одно изображений</p>
         </div>
       </div>
-      @if (generatedAvatars.length){
-      <div class="avatar-grid">
-        @for (avatar of generatedAvatars; track avatar){
-        <div class="avatar-card " [class.selected]="isSelected(avatar)">
-            <div class="avatar-image-wrapper">
-              <img [src]="avatar" alt="Avatar" class="avatar-image"/>
+      @if (generatedAvatars.length) {
+        <div class="avatar-grid">
+          @for (avatar of generatedAvatars; track avatar) {
+            <div class="avatar-card " [class.selected]="isSelected(avatar)">
+              <div class="avatar-image-wrapper">
+                <img [src]="avatar" alt="Avatar" class="avatar-image"/>
+              </div>
+              <div class="avatar-wrapper">
+                @if (isSelected(avatar)) {
+                  <app-button type="primary" (click)="toggleAvatar(avatar)">
+                    Выбран
+                  </app-button>
+                } @else {
+                  <app-button type="secondary" (click)="toggleAvatar(avatar)">
+                    Выбрать
+                  </app-button>
+                }
+              </div>
             </div>
-            <div class="avatar-wrapper">
-            @if (isSelected(avatar)) {
-              <app-button type="primary" (click)="toggleAvatar(avatar)">
-                Выбран
-              </app-button>
-            } @else {
-              <app-button type="secondary" (click)="toggleAvatar(avatar)">
-                Выбрать
-              </app-button>
-            }
-            </div>
+          }
         </div>
-        }
-      </div>
       } @else {
         <p class="empty-message">Аватары генерируются…</p>
       }
@@ -226,7 +221,6 @@
       </app-button>
     </div>
   }
-
   @case ('success') {
     <div class="success-screen">
       <div class="success-icon">

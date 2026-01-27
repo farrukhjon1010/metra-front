@@ -1,8 +1,13 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import {NgClass, NgStyle} from '@angular/common';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ButtonComponent} from '../../shared/components/button/button.component';
+import {AvatarsService} from './service/avatars.service';
+import {CreateAvatarDto} from './models/avatar.model';
+import {SplashFormComponent} from './components/splash-form/splash-form.component';
+import {SplashSelectComponent} from './components/splash-select/splash-select.component';
+import {SplashSuccessComponent} from './components/splash-success/splash-success.component';
+import {SplashCaseComponent} from './components/splash-case/splash-case.component';
+import {Loading} from '../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-splash',
@@ -10,18 +15,20 @@ import {ButtonComponent} from '../../shared/components/button/button.component';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    NgStyle,
-    ButtonComponent,
-    NgClass,
+    SplashCaseComponent,
+    SplashFormComponent,
+    Loading,
+    SplashSelectComponent,
+    SplashSuccessComponent,
+    SplashFormComponent,
+    SplashSelectComponent,
+    SplashSuccessComponent,
+    Loading,
   ],
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
 })
 export class SplashComponent {
-
-  @ViewChild('frontInput', { static: false }) frontInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
 
   currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
   gender: 'male' | 'female' = 'male';
@@ -33,12 +40,16 @@ export class SplashComponent {
     right: null as string | null,
   };
 
+  photoFiles: { front?: File; left?: File; right?: File } = {};
+
   myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
 
   constructor(private router: Router,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              private avatarsService: AvatarsService) {
+  }
 
   navigateToCreate(): void {
     this.currentStep = 'form';
@@ -48,31 +59,16 @@ export class SplashComponent {
     this.router.navigate(['/home']);
   }
 
-  triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
-    const map = {
-      front: this.frontInput,
-      left: this.leftInput,
-      right: this.rightInput,
-    };
-    map[type]?.nativeElement.click();
+  handlePhotoUploaded(event: { type: 'front' | 'left' | 'right'; dataUrl: string; file: File }) {
+    this.photos[event.type] = event.dataUrl;
+    this.photoFiles[event.type] = event.file;
+    this.cdr.detectChanges();
   }
 
-  removePhoto(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
+  handlePhotoRemoved(type: 'front' | 'left' | 'right') {
     this.photos[type] = null;
-  }
-
-  onFileSelected(event: Event, type: 'front' | 'left' | 'right') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photos[type] = reader.result as string;
-      this.cdr.detectChanges(); // обновляем UI сразу после загрузки
-    };
-    reader.readAsDataURL(file);
+    delete this.photoFiles[type];
+    this.cdr.detectChanges();
   }
 
   canCreate() {
@@ -113,6 +109,7 @@ export class SplashComponent {
       alert('Пожалуйста, заполните все поля и загрузите фото');
       return;
     }
+
     this.currentStep = 'loading';
     this.cdr.detectChanges();
 

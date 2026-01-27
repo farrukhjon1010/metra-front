@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
-import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
-import { CommonModule } from '@angular/common';
-import { filter } from 'rxjs';
+import {Component, signal} from '@angular/core';
+import {RouterOutlet, Router, NavigationEnd} from '@angular/router';
+import {BottomNavComponent} from './shared/components/bottom-nav/bottom-nav.component';
+import {CommonModule} from '@angular/common';
+import {filter} from 'rxjs';
 
 @Component({
   selector: 'app-root',
