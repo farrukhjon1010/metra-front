@@ -33,15 +33,58 @@
       </div>
 
     </div>
-    <div class="create-of-history">
-      <div class="no-create-image-wrapper">
-        <div><img src="assets/icons/error.svg" alt=""></div>
-        <span>Вы ещё ничего не создали</span>
-      </div>
-    </div>
 
-    <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()">
-      Создать изображение
-    </app-button>
+    @if (history.length === 1) {
+      <div class="create-of-history">
+        <div class="no-create-image-wrapper">
+          <div><img src="assets/icons/error.svg" alt=""></div>
+          <span>Вы ещё ничего не создали</span>
+        </div>
+      </div>
+
+      <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()">
+        Создать изображение
+      </app-button>
+    } @else {
+      <div class="history-content-detail">
+        <div class="history-generate-detail">
+          <div class="left-text-detail">
+            <div class="date-detail">
+              <label>Дата</label>
+              <span>15.12.2025 / 16:40</span>
+            </div>
+
+            <div class="scenes-pro-detail">
+              <label>Сцены</label>
+              <span>Nano Banana</span>
+            </div>
+
+            <div class="date-detail-prom">
+              <span class="lab-prom">Promt</span>
+              <span class="prom-text">
+            кошка тигр, с желтыми глазами, покрытая снегом,
+            кинематографический стиль, средний снимок,
+            профессиональная фотография, макросъемка 200 мм 1.4f
+          </span>
+            </div>
+          </div>
+
+          <div class="right-photo-detail">
+            <div class="photo-detail"></div>
+
+            <app-button type="primary" icon="assets/icons/update.svg">
+              Повторить
+            </app-button>
+            <app-button type="secondary" icon="assets/icons/download.svg">
+              Скачать
+            </app-button>
+            <app-button type="secondary" icon="assets/icons/photo-size.svg">
+              Upscale
+            </app-button>
+          </div>
+        </div>
+      </div>
+    }
+
   </div>
 </div>

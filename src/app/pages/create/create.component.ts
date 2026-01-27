@@ -22,8 +22,6 @@ export class CreateComponent {
 
   selectedCard: CreateCard | null = null;
 
-
-
   selectCard(card: CreateCard) {
     this.selectedCard = card;
   }
