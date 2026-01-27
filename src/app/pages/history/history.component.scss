@@ -7,16 +7,19 @@
   z-index: 10;
   padding: 24px 16px;
 }
+
 .history-header h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
 }
+
 .history-container {
   display: flex;
   flex-direction: column;
   padding: 0 16px 16px 16px;
 }
+
 .filter-buttons {
   display: flex;
   padding: 4px;
@@ -25,6 +28,7 @@
   border-radius: 12px;
   height: 40px;
 }
+
 .gender-buttons {
   position: relative;
   display: flex;
@@ -71,6 +75,7 @@
   margin-top: 16px;
   margin-bottom: 16px;
 }
+
 .no-create-image-wrapper {
   display: flex;
   flex-direction: column;
@@ -81,4 +86,92 @@
     font-size: 17px;
     font-weight: 500;
   }
+}
+
+.history-generate-detail {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.0588235294);
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  box-shadow: 0 4px 6px 0 #000000;
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.photo-detail {
+  width: 141px;
+  height: 141px;
+  border-radius: 12px;
+  border: 1px solid #FFFFFF33;
+}
+
+.right-photo-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prom-text {
+  font-size: 13px;
+  font-family: system-ui;
+  color: #E8EEFF;
+}
+
+.lab-prom {
+  font-size: 13px;
+  font-family: system-ui;
+  color: #A9B2C8;
+  margin-bottom: 2px;
+}
+
+.date-detail-prom {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.scenes-pro-detail {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 13px;
+    font-family: system-ui;
+    color: #A9B2C8;
+    margin-bottom: 2px;
+  }
+
+  span {
+    font-size: 17px;
+    font-weight: 600;
+  }
+}
+
+.date-detail {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 13px;
+    font-family: system-ui;
+    color: #A9B2C8;
+    margin-bottom: 2px;
+  }
+
+  span {
+    font-size: 17px;
+    font-weight: 600;
+  }
+}
+
+.left-text-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 167px;
 }

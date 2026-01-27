@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ScenesHeader} from '../scenes-header/scenes-header';
 
 @Component({
   selector: 'app-scenes-grid',
   standalone: true,
-  imports: [ ScenesHeader],
+  imports: [ScenesHeader],
   templateUrl: './scenes-grid.html',
   styleUrls: ['./scenes-grid.scss'],
 })

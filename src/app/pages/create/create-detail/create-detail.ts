@@ -29,7 +29,7 @@ export class CreateDetail implements OnInit{
 
   @Input() card!: CreateCard;
   @Output() back = new EventEmitter<void>();
-  @ViewChild('photoGenerate', { static: false }) photoGenerate!: ElementRef<HTMLInputElement>;
+  @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
 
   selectedFile: File | null = null;
   photos: { generate: string | null } = { generate: null };

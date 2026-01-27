@@ -10,7 +10,7 @@ import { FileService } from '../../../core/services/file.service';
 @Component({
   selector: 'app-add-avatar',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule, Loading],
   templateUrl: './add-avatar.component.html',
   styleUrls: ['./add-avatar.component.scss'],
 })

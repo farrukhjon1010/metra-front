@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {filter} from 'rxjs';
@@ -8,16 +8,16 @@ import {filter} from 'rxjs';
   templateUrl: './bottom-nav.component.html',
   standalone: true,
   imports: [CommonModule, RouterModule, RouterLink],
-  styleUrls: ['./bottom-nav.component.css']
+  styleUrls: ['./bottom-nav.component.scss']
 })
 export class BottomNavComponent {
 
   navItems = [
-    { link: '/home', label: 'Главная', icon: 'assets/icons/home.svg' },
-    { link: '/create', label: 'Создать', icon: 'assets/icons/create.svg' },
-    { link: '/scenes', label: 'Сцены', icon: 'assets/icons/scenes.svg' },
-    { link: '/history', label: 'История', icon: 'assets/icons/history.svg' },
-    { link: '/profile', label: 'Профиль', icon: 'assets/icons/profile.svg' },
+    {link: '/home', label: 'Главная', icon: 'assets/icons/home.svg'},
+    {link: '/create', label: 'Создать', icon: 'assets/icons/create.svg'},
+    {link: '/scenes', label: 'Сцены', icon: 'assets/icons/scenes.svg'},
+    {link: '/history', label: 'История', icon: 'assets/icons/history.svg'},
+    {link: '/profile', label: 'Профиль', icon: 'assets/icons/profile.svg'},
   ];
 
   activeIndex = 0;

@@ -4,37 +4,44 @@
   padding: 16px;
   gap: 160px;
 }
+
 .affiliate-program-header {
   display: flex;
   margin: 8px 0;
   gap: 16px;
 }
+
 .affiliate-program-header p {
   font-size: 20px;
   font-weight: 700;
   margin: 0;
 }
+
 .affiliate-program-header span {
   font-size: 15px;
   font-weight: 400;
   color: #C5CCE0;
   font-family: system-ui;
 }
+
 .affiliate-program-header img {
   width: 20px;
   height: 20px;
 }
+
 .text-header-affiliate {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+
 .affiliate-link-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .your-link {
   width: 100%;
   max-width: 324px;
@@ -46,6 +53,7 @@
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
 }
+
 .your-link p {
   margin: 0;
   font-size: 13px;
@@ -53,6 +61,7 @@
   color: #A9B2C8;
   font-family: system-ui;
 }
+
 .copy-link-container {
   display: flex;
   align-items: center;
@@ -64,6 +73,7 @@
   margin: 8px 0 16px 0;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
 }
+
 .copy-link-container input {
   flex: 1;
   border: none;
@@ -79,6 +89,7 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
 .balance-content p {
   font-size: 13px;
   font-weight: 500;
@@ -86,10 +97,12 @@
   margin-bottom: 4px;
   font-family: system-ui;
 }
+
 .balance-content span {
   font-size: 17px;
   font-weight: 600;
 }
+
 .button-affiliate {
   margin-top: 16px;
 }

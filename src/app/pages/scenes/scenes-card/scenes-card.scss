@@ -1,12 +1,13 @@
 .scenes {
   padding: 0 16px 80px 16px;
 }
+
 .card-header {
   position: sticky;
   top: 0;
   z-index: 10;
-
 }
+
 .header-card {
   display: flex;
   flex-direction: row;
@@ -21,6 +22,7 @@
     font-weight: 700;
   }
 }
+
 .scenes-image {
   display: flex;
   flex-direction: row-reverse;
@@ -29,11 +31,13 @@
   box-shadow: 0 4px 12px rgba(106, 92, 255, 0.5);
   padding: 8px 8px 8px 24px
 }
+
 .scenes-image img {
   width: 155px;
   height: 155px;
   border-radius: 16px;
 }
+
 .scenes-info {
   padding-right: 16px;
 
@@ -43,7 +47,8 @@
     margin: 0;
     padding-top: 24px;
   }
-  p{
+
+  p {
     font-size: 15px;
     font-family: system-ui;
   }
@@ -74,25 +79,29 @@
     color: #A9B2C8;
     font-family: system-ui;
   }
-  p{
+
+  p {
     font-size: 17px;
     font-weight: 600;
     margin: 0;
     padding-bottom: 4px;
   }
 }
+
 .circle-ava {
   display: flex;
   width: 92px;
   height: 92px;
   border: 2px solid #8b5cf6;
   border-radius: 50%;
+  justify-content: center;
 
   img {
     border-radius: 50%;
     object-fit: cover;
   }
 }
+
 .scenes-card-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

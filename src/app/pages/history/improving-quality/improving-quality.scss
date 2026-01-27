@@ -2,23 +2,25 @@
   display: flex;
   flex-direction: row;
   gap: 16px;
+  top: 0;
   padding: 24px 16px;
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: sticky;
-  top: 0;
   z-index: 10;
 }
 
 .text-header-history {
   display: flex;
   flex-direction: column;
+
   p {
     margin: 0;
     font-size: 20px;
     font-weight: 700;
   }
+
   span {
     font-size: 15px;
     font-weight: 400;
@@ -26,6 +28,7 @@
     color: #C5CCE0;
   }
 }
+
 .quality-content {
   display: flex;
   flex-direction: column;
@@ -37,12 +40,14 @@
   display: flex;
   flex-direction: column;
 }
+
 .form-label-quality {
   font-size: 13px;
   font-family: system-ui;
   color: #A9B2C8;
   margin-bottom: 8px;
 }
+
 .upload-row-quality {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
@@ -56,20 +61,24 @@
   display: flex;
   flex-direction: column;
 }
+
 .upload-text-small {
   font-size: 15px;
   font-weight: 600;
 }
+
 .upload-formats {
   font-size: 10px;
   font-family: system-ui;
   color: #7A859E;
 }
+
 .upload-area-small {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
 .result-content {
   display: flex;
   flex-direction: column;
@@ -88,6 +97,7 @@
     margin: 0;
   }
 }
+
 .before-photo {
   width: 324px;
   height: 324px;
@@ -114,6 +124,7 @@
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
 }
+
 .bf-text {
   max-width: 20px;
   padding: 3px 8px;
@@ -137,40 +148,48 @@
   top: 8px;
   left: 8px;
 }
+
 .center-text-quality {
   color: #C5CCE0;
   font-size: 15px;
   font-weight: 400;
 }
+
 .photo-quality {
-  border-radius: 12px;
+  position: relative; // чтобы delete кнопка позиционировалась относительно фото
   width: 65px;
   height: 65px;
   margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden; // чтобы фото и delete не выходили за пределы
+
   img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 12px;
+    display: block;
   }
-}
 
-.with-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+  .delete-photo {
+    position: absolute;
+    top: 2px;
+    right: 1px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ff4d4f;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-.delete-photo {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #ff4d4f;
-  border: none;
-  cursor: pointer;
-  padding: 2px 2px;
-  display: flex;
-  position: absolute;
-  top: 200px;
-  left: 55px;
-  flex-direction: row;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 
 .result-img {
@@ -183,6 +202,7 @@
   opacity: 0.6;
   text-align: center;
 }
+
 .result-actions {
   display: flex;
   flex-direction: column;

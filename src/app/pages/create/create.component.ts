@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {CreateGrid} from './create-grid/create-grid';
 import {CreateDetail} from './create-detail/create-detail';
 import { GenerationType } from '../../core/models/generation.model';

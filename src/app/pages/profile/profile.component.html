@@ -30,14 +30,14 @@
       </app-button>
     </div>
     }
-    @if (!router.url.includes('balance')){
-    <div class="profile-card">
-      <h3 class="card-title">Баланс</h3>
-      <p class="balance-text">120 токенов</p>
-      <app-button type="primary" icon="assets/icons/add.svg" (click)="goToReplenish()">
-        Пополнить
-      </app-button>
-    </div>
+    @if (!router.url.includes('balance')) {
+      <div class="profile-card">
+        <h3 class="card-title">Баланс</h3>
+        <p class="balance-text">120 токенов</p>
+        <app-button type="primary" icon="assets/icons/add.svg" (click)="goToReplenish()">
+          Пополнить
+        </app-button>
+      </div>
     }
     <div class="profile-card">
       <h3 class="card-title">Подписка</h3>
@@ -53,14 +53,14 @@
         Обновить
       </app-button>
     </div>
-    @if (!router.url.includes('affiliate-program')){
-    <div class="profile-card">
-      <h3 class="card-title">Партнерская программа</h3>
-      <p class="partnership-text">4 500 руб</p>
-      <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToAffiliateProgram()">
-        Подробнее
-      </app-button>
-    </div>
+    @if (!router.url.includes('affiliate-program')) {
+      <div class="profile-card">
+        <h3 class="card-title">Партнерская программа</h3>
+        <p class="partnership-text">4 500 руб</p>
+        <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToAffiliateProgram()">
+          Подробнее
+        </app-button>
+      </div>
     }
     <div class="profile-card">
       <h3 class="card-title">Помощь</h3>

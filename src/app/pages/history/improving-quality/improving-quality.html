@@ -27,21 +27,21 @@
       </div>
     </div>
     @if (photos.photo) {
-    <div class="photo-quality">
+      <div class="photo-quality">
         <img class="with-photo" [src]="photos.photo" alt="Photo">
 
-      @if (photos.photo){
-        <button class="delete-photo" (click)="removePhoto('photo', $event)">
-          <img src="assets/icons/delete.svg" alt="">
-        </button>
-      }
-    </div>
+        @if (photos.photo) {
+          <button class="delete-photo" (click)="removePhoto('photo', $event)">
+            <img src="assets/icons/delete.svg" alt="">
+          </button>
+        }
+      </div>
     }
   </div>
 
   <div class="btn-quality">
     <app-button type="primary" icon="assets/icons/photo-size.svg" (click)="enhanceImage()" [disabled]="!photos.photo">
-      Улучшить  изображение
+      Улучшить изображение
     </app-button>
   </div>
 

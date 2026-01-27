@@ -14,7 +14,8 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 export class BalanceComponent implements OnInit {
   balance = 0;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   ngOnInit() {
 

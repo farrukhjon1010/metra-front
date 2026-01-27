@@ -1,31 +1,11 @@
 @switch (currentStep) {
+
   @case ('splash') {
-    <div class="splash-container">
-      <div class="content">
-        <div class="logo-container">
-          <div class="logo-m">
-            <img src="assets/icons/metra-logo.svg" alt="logo">
-          </div>
-          <h1 class="brand-name">METRA</h1>
-        </div>
-        <div class="features">
-          <p class="feature-text">Генерация образов и фото с помощью персонального аватара.</p>
-          <p class="feature-text">Сцены, стили и примерка одежды — в одном пространстве.</p>
-          <p class="feature-text-metra">Для доступа ко всем возможностям METRA используется аватар.</p>
-        </div>
-        <div class="actions">
-          <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()">
-            Создать аватар
-          </app-button>
-
-          <app-button type="secondary" (click)="navigateToDemo()">
-            Посмотреть, как это работает
-          </app-button>
-        </div>
-      </div>
-    </div>
+    <app-splash-case
+      (create)="navigateToCreate()"
+      (demo)="navigateToDemo()">
+    </app-splash-case>
   }
-
   @case ('form') {
     <div class="create-avatar-container">
       <div class="header">
@@ -206,14 +186,9 @@
       </div>
     </div>
   }
-
   @case ('loading') {
-    <div class="loading-screen">
-      <div class="spinner"></div>
-      <p>Создаём аватар…</p>
-    </div>
+    <app-loading></app-loading>
   }
-
   @case ('select') {
     <div class="select-screen">
       <div class="success-badge">
@@ -258,38 +233,9 @@
       </app-button>
     </div>
   }
-
   @case ('success') {
-    <div class="success-screen">
-      <div class="success-icon">
-        <img src="assets/icons/check-circle.svg" alt="check">
-      </div>
-      <h2 class="success-title">Ваши аватары сохранены</h2>
-      <div class="gift-card">
-        <div class="text-wrapper">
-          <h3 class="gift-title">Вы получили подарок</h3>
-          <h4 class="gift-name">METRA Basic на 7 дней</h4>
-          <div class="checked-icon-list">
-            <span>
-              <img src="assets/icons/check-confirm.svg" alt="">
-              <span>120 токенов в месяц</span>
-            </span>
-              <span>
-               <img src="assets/icons/check-confirm.svg" alt="">
-              <span>Доступ к сценам METRA</span>
-            </span>
-              <span>
-              <img src="assets/icons/check-confirm.svg" alt="">
-              <span>Доступ к Nano Banana</span>
-            </span>
-          </div>
-        </div>
-        <div class="btn">
-          <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToMetra()">
-            Начать использовать METRA
-          </app-button>
-        </div>
-      </div>
-    </div>
+    <app-splash-success
+      (start)="goToMetra()">
+    </app-splash-success>
   }
 }

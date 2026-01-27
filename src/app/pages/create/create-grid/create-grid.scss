@@ -1,6 +1,13 @@
 .create__category-title {
   font-size: 18px;
   margin-bottom: 12px;
+
+  span {
+    font-weight: 400;
+    font-size: 15px;
+    font-family: system-ui;
+    color: #C5CCE0;
+  }
 }
 
 .create__cards-grid {
@@ -60,7 +67,6 @@
       padding-bottom: 8px;
     }
   }
-
 
 
   &__card {

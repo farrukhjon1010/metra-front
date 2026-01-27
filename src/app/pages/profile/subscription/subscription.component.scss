@@ -1,6 +1,5 @@
 .subscription-header {
   display: flex;
-  flex-direction: row;
   gap: 16px;
   padding: 24px 16px;
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
@@ -8,7 +7,7 @@
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
 }
 
 .subscription-header-balance span {
@@ -16,6 +15,7 @@
   font-weight: 700;
   margin: 0;
 }
+
 .metra-basic-card {
   border: 1px solid #6A5CFF66;
   background: linear-gradient(90deg, rgba(106, 92, 255, 0.6), rgba(168, 144, 255, 0.1));
@@ -37,6 +37,7 @@
   flex-direction: column;
   padding: 24px;
 }
+
 .text-card h2 {
   margin: 0;
 }
@@ -106,11 +107,8 @@
 }
 
 .span-card-pro img {
-  filter: brightness(0) saturate(31%) invert(27%)
-  sepia(83%) saturate(2899%) hue-rotate(343deg)
-  brightness(97%) contrast(101%)
+  filter: brightness(0) saturate(31%) invert(27%) sepia(83%) saturate(2899%) hue-rotate(343deg) brightness(97%) contrast(101%)
 }
-
 
 
 .metra-max-card {
@@ -145,9 +143,7 @@
 }
 
 .span-card-max img {
-  filter: brightness(69) saturate(70%)
-  invert(27%) sepia(112%) saturate(2899%)
-  hue-rotate(430deg) brightness(200%) contrast(50%)
+  filter: brightness(69) saturate(70%) invert(27%) sepia(112%) saturate(2899%) hue-rotate(430deg) brightness(200%) contrast(50%)
 }
 
 .btn-card-max {
