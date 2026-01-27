@@ -58,7 +58,7 @@ export class CreateDetail implements OnInit{
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
 
-    this.selectedFile = file; // Сохраняем файл
+    this.selectedFile = file; 
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -132,8 +132,8 @@ export class CreateDetail implements OnInit{
       },
       error: (err) => {
         console.error('Ошибка в цепочке:', err);
-        this.createState = 'idle'; // Возвращаем в исходное при ошибке
-        alert('Ошибка при генерации. Проверьте URL бэкенда.');
+        this.createState = 'idle'; 
+        alert('Ошибка генерации. Проверьте URL бэкенда');
         this.cdr.detectChanges();
       }
     });
