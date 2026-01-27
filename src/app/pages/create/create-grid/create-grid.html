@@ -1,16 +1,127 @@
-@for (category of categories; track category) {
-  <div class="create__category">
-    <h3 class="create__category-title">{{ category }}</h3>
+<div class="create__category">
+  <h3 class="create__category-title">Фото</h3>
 
-    <div class="create__cards-grid">
-      @for (card of cardsByCategory(category); track card.id) {
-        <div class="create__card" (click)="selectCard(card)">
-          <div class="create__icon">
-            <img [src]="card.icon" alt="">
-          </div>
-          <div class="create__text">{{ card.title }}</div>
-        </div>
-      }
+  <div class="create__cards-grid">
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'photo-scene',
+                  title: 'Фото по сцене',
+                  icon: 'assets/icons/photo-camera-front.svg',
+                  category: 'Фото'
+               })">
+      <div class="create__icon">
+        <img src="assets/icons/photo-camera-front.svg" alt="">
+      </div>
+      <div class="create__text">Фото по сцене</div>
+    </div>
+
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'photo-reference',
+                  title: 'Фото по референсу (Image to Image)',
+                  icon: 'assets/icons/photo-based-on-reference.svg',
+                  category: 'Фото'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/photo-based-on-reference.svg" alt="">
+      </div>
+      <div class="create__text">Фото по референсу (Image to Image)</div>
     </div>
   </div>
-}
+</div>
+
+<div class="create__category">
+  <h3 class="create__category-title">Видео</h3>
+
+  <div class="create__cards-grid">
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'animate-photo',
+                  title: 'Оживление фото',
+                  icon: 'assets/icons/emotions.svg',
+                  category: 'Видео'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/emotions.svg" alt="">
+      </div>
+      <div class="create__text">Оживление фото</div>
+    </div>
+
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'lip-sync',
+                  title: 'LipSync',
+                  icon: 'assets/icons/lips.svg',
+                  category: 'Видео'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/lips.svg" alt="">
+      </div>
+      <div class="create__text">LipSync</div>
+    </div>
+  </div>
+</div>
+
+<div class="create__category">
+  <h3 class="create__category-title">Генерация</h3>
+
+  <div class="create__cards-grid">
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'nano-banana',
+                  title: 'Nano Banana',
+                  icon: 'assets/icons/nano-banana.svg',
+                  category: 'Генерация'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/nano-banana.svg" alt="">
+      </div>
+      <div class="create__text">Nano Banana</div>
+    </div>
+
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'nano-banana-pro',
+                  title: 'Nano Banana PRO',
+                  icon: 'assets/icons/nano-banana-pro.svg',
+                  category: 'Генерация'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/nano-banana-pro.svg" alt="">
+      </div>
+      <div class="create__text">Nano Banana PRO</div>
+    </div>
+  </div>
+</div>
+
+<div class="create__category">
+  <h3 class="create__category-title">Wardrobe <span>(примерка одежды)</span></h3>
+
+  <div class="create__cards-grid">
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'female-style',
+                  title: 'Женский стиль',
+                  icon: 'assets/icons/wedding-dress.svg',
+                  category: 'Wardrobe'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/wedding-dress.svg" alt="">
+      </div>
+      <div class="create__text">Женский стиль</div>
+    </div>
+
+    <div class="create__card"
+         (click)="selectCard({
+                  id: 'male-style',
+                  title: 'Мужской стиль',
+                  icon: 'assets/icons/suit.svg',
+                  category: 'Wardrobe'
+                })">
+      <div class="create__icon">
+        <img src="assets/icons/suit.svg" alt="">
+      </div>
+      <div class="create__text">Мужской стиль</div>
+    </div>
+  </div>
+</div>

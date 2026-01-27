@@ -95,9 +95,18 @@ export class SplashComponent {
   }
 
   confirmAvatars() {
-    if (this.selectedAvatars.length > 0) {
-      this.currentStep = 'success';
-    }
+    if (this.selectedAvatars.length === 0) return;
+
+    const userId = localStorage.getItem('userId') || undefined;
+    this.avatarsService.confirmSelection(userId ?? '', this.selectedAvatars).subscribe({
+      next: () => {
+        this.currentStep = 'success';
+      },
+      error: (err) => {
+        console.error('Confirm selection error', err);
+        alert('Не удалось подтвердить выбор. Попробуйте ещё раз.');
+      }
+    });
   }
 
   goToMetra() {
@@ -113,16 +122,39 @@ export class SplashComponent {
     this.currentStep = 'loading';
     this.cdr.detectChanges();
 
-    setTimeout(() => {
-      this.generatedAvatars = [
-        this.photos.front!,
-        'assets/avatars/avatar-2.png',
-        'assets/avatars/avatar-3.png',
-        'assets/avatars/avatar-4.png',
-      ];
-      this.currentStep = 'select'; // переходим на следующий шаг
-      this.cdr.detectChanges();
-    }, 2000);
+    this.avatarsService.uploadPhotos(this.photoFiles).subscribe({
+      next: (res) => {
+        const urls = res.images.map(i => i.url);
+
+        const avatarName = (this.myForm.controls['avatarName'].value ?? '').toString().trim();
+
+        const dto: CreateAvatarDto = {
+          name: avatarName,
+          gender: this.gender,
+          images: urls,
+        };
+
+        this.avatarsService.generateAvatars(dto).subscribe({
+          next: (avatars) => {
+            this.generatedAvatars = avatars.map(a => a.imageURL);
+            this.currentStep = 'select';
+            this.cdr.detectChanges();
+          },
+          error: (err) => {
+            console.error('Generate avatars error', err);
+            alert('Не удалось создать аватар. Попробуйте ещё раз.');
+            this.currentStep = 'form';
+            this.cdr.detectChanges();
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Upload photos error', err);
+        alert('Не удалось загрузить фото. Проверьте формат и попробуйте снова.');
+        this.currentStep = 'form';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   submit() {
