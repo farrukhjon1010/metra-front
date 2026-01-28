@@ -5,6 +5,7 @@ import { ScenesGrid } from '../scenes/scenes-grid/scenes-grid';
 import { ScenesCard } from '../scenes/scenes-card/scenes-card';
 import { AvatarService } from '../../core/services/avatar.service';
 
+
 @Component({
   selector: 'app-home',
   imports: [CommonModule, PaidDialog, ScenesGrid, ScenesCard],

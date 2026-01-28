@@ -14,15 +14,9 @@ import { HelperService } from '../../core/services/helper.service';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    SplashCaseComponent,
-    SplashFormComponent,
-    Loading,
-    SplashSelectComponent,
-    SplashSuccessComponent,
-    SplashFormComponent,
-    SplashSelectComponent,
-    SplashSuccessComponent,
-    Loading,
+    NgStyle,
+    ButtonComponent,
+    NgClass,
   ],
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
@@ -46,8 +40,6 @@ export class SplashComponent {
     right: { file: null as File | null, preview: null as string | null },
   };
 
-  photoFiles: { front?: File; left?: File; right?: File } = {};
-
   myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
@@ -66,10 +58,14 @@ export class SplashComponent {
     this.router.navigate(['/home']);
   }
 
-  handlePhotoUploaded(event: { type: 'front' | 'left' | 'right'; dataUrl: string; file: File }) {
-    this.photos[event.type] = event.dataUrl;
-    this.photoFiles[event.type] = event.file;
-    this.cdr.detectChanges();
+  triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
+    event.stopPropagation();
+    const map = {
+      front: this.frontInput,
+      left: this.leftInput,
+      right: this.rightInput,
+    };
+    map[type]?.nativeElement.click();
   }
 
   removePhoto(type: 'front' | 'left' | 'right', event: Event) {
