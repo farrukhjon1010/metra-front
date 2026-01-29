@@ -2,12 +2,21 @@
   <header class="history-header">
     <h2>История</h2>
   </header>
+
   <div class="history-container">
+
     <div class="form-group">
       <div class="filter-buttons">
-        <div class="slider"
-             [ngStyle]="{'transform': selectedFilter === 'all' ? 'translateX(0%)' :
-                    selectedFilter === 'photo' ? 'translateX(100%)' : 'translateX(200%)'}">
+        <div
+          class="slider"
+          [ngStyle]="{
+            transform:
+              selectedFilter === 'all'
+                ? 'translateX(0%)'
+                : selectedFilter === 'photo'
+                ? 'translateX(100%)'
+                : 'translateX(200%)'
+          }">
         </div>
 
         <button
@@ -31,17 +40,84 @@
           Видео
         </button>
       </div>
-
     </div>
-    <div class="create-of-history">
-      <div class="no-create-image-wrapper">
-          <div><img src="assets/icons/error.svg" alt=""></div>
-          <span>Вы ещё ничего не создали</span>
+
+    @if (generationHistory.length < 1) {
+      <div class="history-not">
+        <div class="create-of-history">
+          <div class="no-create-image-wrapper">
+            <div>
+              <img src="assets/icons/error.svg" alt="">
+            </div>
+            <span>Вы ещё ничего не создали</span>
+          </div>
+        </div>
+
+        <app-button
+          type="primary"
+          icon="assets/icons/add.svg"
+          (click)="navigateToCreate()">
+          Создать изображение
+        </app-button>
       </div>
-    </div>
+    } @else {
+      <div class="history-content-detail">
+        @for (generation of generationHistory; track generation.id) {
+          <div class="history-generate-detail">
 
-    <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()" >
-      Создать изображение
-    </app-button>
+            <div class="left-text-detail">
+              <div class="date-detail">
+                <label>Дата</label>
+                <span>
+                  {{ generation.createdAt | date:'dd.MM.yyyy / HH:mm' }}
+                </span>
+              </div>
+
+              <div class="scenes-pro-detail">
+                <label>Сцены</label>
+                <span>{{ generation.type }}</span>
+              </div>
+
+              <div class="date-detail-prom">
+                <span class="lab-prom">Prompt</span>
+                <div class="prom-text">
+                  {{ generation.prompt }}
+                </div>
+              </div>
+            </div>
+
+            <div class="right-photo-detail">
+              <div class="photo-detail">
+                <img
+                  class="photo-history"
+                  [src]="generation.imageURL"
+                  alt="">
+              </div>
+
+              <app-button
+                type="primary"
+                icon="assets/icons/update.svg"
+                (click)="repeatGeneration(generation)">
+                Повторить
+              </app-button>
+
+              <app-button
+                type="secondary"
+                icon="assets/icons/download.svg"
+                (click)="downloadFile(generation.imageURL, 'image')">
+                Скачать
+              </app-button>
+
+              <app-button
+                type="secondary"
+                icon="assets/icons/photo-size.svg"
+                (click)="goToUpscale(generation.imageURL)">
+                Upscale
+              </app-button>
+            </div>
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>
