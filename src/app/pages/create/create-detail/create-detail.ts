@@ -99,11 +99,13 @@ export class CreateDetail implements OnInit {
   }
 
   loadGenerationsHistory() {
-    this.generationService.findByUser(this.UUID, this.card.type).subscribe({
+    this.generationService.findByUser(this.UUID).subscribe({
       next: (data) => {
-        this.generationHistory = data;
+        this.generationHistory = data.filter(
+          gen => gen.type === this.card.type
+        );
         this.cdr.detectChanges();
-        console.log('Генерации загружены:', data);
+        console.log('Генерации для карточки', this.card.title, ':', this.generationHistory);
       },
       error: (err) => {
         console.error('Ошибка при загрузке:', err);

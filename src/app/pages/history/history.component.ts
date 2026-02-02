@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {DatePipe, NgStyle} from '@angular/common';
 import {ButtonComponent} from '../../shared/components/button/button.component';
 import {Router} from '@angular/router';
@@ -13,7 +13,7 @@ import {GenerationType} from '../../core/models/generation.model';
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss'],
 })
-export class HistoryComponent implements OnChanges, OnInit {
+export class HistoryComponent implements OnInit {
 
   @Input() card!: CreateCard;
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
@@ -23,31 +23,33 @@ export class HistoryComponent implements OnChanges, OnInit {
   constructor(
     private router: Router,
     private generationService: GenerationService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit() {
     this.loadGenerationsHistory();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['card'] && this.card) {
-      this.loadGenerationsHistory();
-    }
+  loadGenerationsHistory() {
+    this.generationService
+      .findByUser(this.UUID, this.selectedFilter)
+      .subscribe({
+        next: (data) => {
+          this.generationHistory = data;
+          console.log('Фильтр:', this.selectedFilter);
+          console.log('Генерации:', data);
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Ошибка при загрузке:', err);
+        }
+      });
   }
 
-  loadGenerationsHistory() {
-    const type = this.card?.type;
-    this.generationService.findByUser(this.UUID, type).subscribe({
-      next: (data) => {
-        this.generationHistory = data;
-        this.cdr.markForCheck();
-        console.log('Генерации загружены:', data);
-      },
-      error: (err) => {
-        console.error('Ошибка при загрузке:', err);
-      }
-    });
+  changeFilter(filter: 'all' | 'photo' | 'video') {
+    this.selectedFilter = filter;
+    this.loadGenerationsHistory();
   }
 
   navigateToCreate() {
@@ -68,9 +70,6 @@ export class HistoryComponent implements OnChanges, OnInit {
 
         a.click();
         URL.revokeObjectURL(objectUrl);
-      })
-      .catch(err => {
-        console.error('Ошибка загрузки', err);
       });
   }
 
@@ -82,16 +81,13 @@ export class HistoryComponent implements OnChanges, OnInit {
   }
 
   repeatGeneration(generation: any) {
-    const generationType: GenerationType = generation.type;
-
     this.router.navigate(['/create'], {
       state: {
         id: generation.id,
         prompt: generation.prompt,
         imageUrl: generation.imageURL,
-        type: generationType
+        type: generation.type as GenerationType
       }
     });
   }
-
 }

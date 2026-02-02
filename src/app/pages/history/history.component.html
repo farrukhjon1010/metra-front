@@ -22,21 +22,21 @@
         <button
           class="filter-btn"
           [class.active]="selectedFilter === 'all'"
-          (click)="selectedFilter = 'all'">
+          (click)="changeFilter('all')">
           Все
         </button>
 
         <button
           class="filter-btn"
           [class.active]="selectedFilter === 'photo'"
-          (click)="selectedFilter = 'photo'">
+          (click)="changeFilter('photo')">
           Фото
         </button>
 
         <button
           class="filter-btn"
           [class.active]="selectedFilter === 'video'"
-          (click)="selectedFilter = 'video'">
+          (click)="changeFilter('video')">
           Видео
         </button>
       </div>
