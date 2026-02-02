@@ -2,8 +2,8 @@
 <div class="scenes-grid">
   @for (scene of scenes; track scene) {
     <div class="scene-card" (click)="select(scene)">
-      <img [src]="scene.image" alt="{{ scene.title }}">
-      <h3>{{ scene.title }}</h3>
+      <img [src]="scene.image" alt="{{ scene.name }}">
+      <h3>{{ scene.name }}</h3>
       <p>{{ scene.description }}</p>
     </div>
   }

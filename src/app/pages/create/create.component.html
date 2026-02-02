@@ -5,7 +5,9 @@
     <h2 class="create__title">Создать</h2>
   </header>
 
-  <app-create-grid [cards]="cards" (select)="selectCard($event)">
+  <app-create-grid
+    [cards]="cards"
+    (select)="selectCard($event)">
   </app-create-grid>
   }
 
@@ -17,5 +19,4 @@
       (back)="back()">
     </app-create-detail>
   }
-
 </div>

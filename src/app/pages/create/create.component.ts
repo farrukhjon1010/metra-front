@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CreateGrid } from './create-grid/create-grid';
 import { CreateDetail } from './create-detail/create-detail';
 import { GenerationType } from '../../core/models/generation.model';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 export interface CreateCard {
   id: string;
@@ -26,6 +26,23 @@ export class CreateComponent implements OnInit {
   selectedCard: CreateCard | null = null;
   initialPrompt: string = '';
   initialImageUrl: string | null = null;
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    const navigation = this.router.getCurrentNavigation?.();
+    const state = navigation?.extras?.state ?? history.state;
+
+    if (state?.type) {
+      const matched = this.cards.find(c => c.type === state.type);
+
+      if (matched) {
+        this.selectedCard = matched;
+        this.initialPrompt = state.prompt ?? '';
+        this.initialImageUrl = state.imageUrl ?? null;
+      }
+    }
+  }
 
   cards: CreateCard[] = [
     {
@@ -86,22 +103,6 @@ export class CreateComponent implements OnInit {
     },
   ];
 
-  constructor(private router: Router) {}
-
-  ngOnInit() {
-    const navigation = this.router.getCurrentNavigation?.();
-    const state = navigation?.extras?.state ?? (history.state || null);
-
-    if (state && state.type) {
-      const matched = this.cards.find(c => c.type === state.type);
-      if (matched) {
-        this.selectedCard = matched;
-        this.initialPrompt = state.prompt ?? '';
-        this.initialImageUrl = state.imageUrl ?? state.imageURL ?? null;
-      }
-    }
-  }
-
   selectCard(card: CreateCard) {
     this.selectedCard = card;
   }
@@ -111,4 +112,5 @@ export class CreateComponent implements OnInit {
     this.initialPrompt = '';
     this.initialImageUrl = null;
   }
+
 }

@@ -1,11 +1,13 @@
 <div class="create-page">
-  <header class="header-card">
-    <img src="assets/icons/arrow-back.svg" alt="Назад" (click)="goBack()">
-    <div class="head-text">
-      <p>{{ card.title }}</p>
-      <span>Генерация изображений по вашему описанию</span>
+
+    <div class="create-header-card">
+      <img src="assets/icons/arrow-back.svg" alt="Назад" (click)="goBack()">
+      <div class="head-text">
+        <p>{{ card.title }}</p>
+        <span>Генерация изображений по вашему описанию</span>
+      </div>
     </div>
-  </header>
+
   <div class="create-detail-wrapper">
     @switch (createState) {
 
@@ -14,8 +16,11 @@
       <div class="text-ai-generation">
         <label>Введите запрос</label>
         <img src="assets/icons/awesome.svg" alt="">
-        <textarea [(ngModel)]="prompt" placeholder="Опишите ваше изображение" rows="4">
-          </textarea>
+        <textarea
+          [(ngModel)]="prompt"
+          placeholder="Опишите ваше изображение"
+          rows="4">
+        </textarea>
       </div>
 
       <div class="photo-upload-section">
@@ -26,7 +31,7 @@
             <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
               (change)="onPhotoSelected($event, 'generate')" style="display: none;">
 
-            <div class="upload-content-quality">
+            <div class="upload-create-quality">
               <span class="upload-text-small">Загрузить</span>
               <span class="upload-formats">
                 JPEG, JPG, PNG, HEIC, WEBP

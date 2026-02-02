@@ -8,45 +8,57 @@
   <div class="scenes-image">
     <img [src]="scene?.image" alt="{{ scene?.title }}">
     <div class="scenes-info">
-      <h3>{{ scene?.title }}</h3>
+      <h3>{{ scene?.type }}</h3>
       <p>{{ scene?.description }}</p>
     </div>
   </div>
   <div class="card-templates-content">
     <h2>Templates</h2>
     <div class="scenes-card-content">
-      @for (card of [1, 2, 3, 4, 5, 6]; track card) {
-        <div class="scenes-card-templates">
-          <div class="circle-ava">
-            <img src="assets/icons/3d-avatar.svg" alt="">
-          </div>
-          <div class="circle-ava-text">
-            <p>Название</p>
-            <span>Краткое описание</span>
-          </div>
-        </div>
-      }
-    </div>
-  </div>
-  @if (showFreeStyle) {
-    <div class="card-templates-content">
-      <h2>FreeStyle</h2>
-      <div class="scenes-card-content">
-        @for (card of secondCards; track card) {
-          <div class="scenes-card-templates">
+
+      @if (templates.length > 0) {
+        @for (t of templates; track t) {
+          <div class="scenes-card-templates"
+               (click)="openTemplate(t)">
             <div class="circle-ava">
               <img src="assets/icons/3d-avatar.svg" alt="">
             </div>
             <div class="circle-ava-text">
-              <p>Название</p>
-              <span>Краткое описание</span>
+              <p>{{t.name}}</p>
+              <span>{{t.prompt}}</span>
             </div>
           </div>
         }
-      </div>
+      } @else {
+        <div class="empty-scenes">
+          <img src="assets/icons/error.svg" alt="">
+          <p class="empty-title">Шаблонов пока нет</p>
+        </div>
+      }
     </div>
-  }
-  <app-button type="secondary" icon="assets/icons/add.svg" (click)="showFreeStyle = true">
-    Показать еще
-  </app-button>
-</div>
+
+      <app-button type="secondary" icon="assets/icons/add.svg" (click)="showFreeStyle = true">
+        Показать еще
+      </app-button>
+
+    @if (showFreeStyle) {
+      <div class="card-templates-content">
+        <h2>FreeStyle</h2>
+        <div class="scenes-card-content">
+          @for (card of [1, 2, 3, 4, 5, 6]; track card) {
+            <div class="scenes-card-templates">
+              <div class="circle-ava">
+                <img src="assets/icons/3d-avatar.svg" alt="">
+              </div>
+              <div class="circle-ava-text">
+                <p>Название</p>
+                <span>Краткое описание</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  </div>
