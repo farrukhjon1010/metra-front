@@ -2,91 +2,122 @@
   <header class="history-header">
     <h2>История</h2>
   </header>
+
   <div class="history-container">
+
     <div class="form-group">
       <div class="filter-buttons">
-        <div class="slider"
-             [ngStyle]="{'transform': selectedFilter === 'all' ? 'translateX(0%)' :
-                    selectedFilter === 'photo' ? 'translateX(100%)' : 'translateX(200%)'}">
+        <div
+          class="slider"
+          [ngStyle]="{
+            transform:
+              selectedFilter === 'all'
+                ? 'translateX(0%)'
+                : selectedFilter === 'photo'
+                ? 'translateX(100%)'
+                : 'translateX(200%)'
+          }">
         </div>
 
         <button
           class="filter-btn"
           [class.active]="selectedFilter === 'all'"
-          (click)="selectedFilter = 'all'">
+          (click)="changeFilter('all')">
           Все
         </button>
 
         <button
           class="filter-btn"
           [class.active]="selectedFilter === 'photo'"
-          (click)="selectedFilter = 'photo'">
+          (click)="changeFilter('photo')">
           Фото
         </button>
 
         <button
           class="filter-btn"
           [class.active]="selectedFilter === 'video'"
-          (click)="selectedFilter = 'video'">
+          (click)="changeFilter('video')">
           Видео
         </button>
       </div>
-
     </div>
 
-    @if (history.length === 1) {
-      <div class="create-of-history">
-        <div class="no-create-image-wrapper">
-          <div><img src="assets/icons/error.svg" alt=""></div>
-          <span>Вы ещё ничего не создали</span>
+    @if (generationHistory.length < 1) {
+      <div class="history-not">
+        <div class="create-of-history">
+          <div class="no-create-image-wrapper">
+            <div>
+              <img src="assets/icons/error.svg" alt="">
+            </div>
+            <span>Вы ещё ничего не создали</span>
+          </div>
         </div>
-      </div>
 
-      <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()">
-        Создать изображение
-      </app-button>
+        <app-button
+          type="primary"
+          icon="assets/icons/add.svg"
+          (click)="navigateToCreate()">
+          Создать изображение
+        </app-button>
+      </div>
     } @else {
       <div class="history-content-detail">
-        <div class="history-generate-detail">
-          <div class="left-text-detail">
-            <div class="date-detail">
-              <label>Дата</label>
-              <span>15.12.2025 / 16:40</span>
+        @for (generation of generationHistory; track generation.id) {
+          <div class="history-generate-detail">
+
+            <div class="left-text-detail">
+              <div class="date-detail">
+                <label>Дата</label>
+                <span>
+                  {{ generation.createdAt | date:'dd.MM.yyyy / HH:mm' }}
+                </span>
+              </div>
+
+              <div class="scenes-pro-detail">
+                <label>Сцены</label>
+                <span>{{ generation.type }}</span>
+              </div>
+
+              <div class="date-detail-prom">
+                <span class="lab-prom">Prompt</span>
+                <div class="prom-text">
+                  {{ generation.prompt }}
+                </div>
+              </div>
             </div>
 
-            <div class="scenes-pro-detail">
-              <label>Сцены</label>
-              <span>Nano Banana</span>
-            </div>
+            <div class="right-photo-detail">
+              <div class="photo-detail">
+                <img
+                  class="photo-history"
+                  [src]="generation.imageURL"
+                  alt="">
+              </div>
 
-            <div class="date-detail-prom">
-              <span class="lab-prom">Promt</span>
-              <span class="prom-text">
-                кошка тигр, с желтыми глазами, покрытая снегом,
-                кинематографический стиль, средний снимок,
-                профессиональная фотография, макросъемка 200 мм 1.4f
-              </span>
+              <app-button
+                type="primary"
+                icon="assets/icons/update.svg"
+                (click)="repeatGeneration(generation)">
+                Повторить
+              </app-button>
+
+              <app-button
+                type="secondary"
+                icon="assets/icons/download.svg"
+                (click)="downloadFile(generation.imageURL, 'image')">
+                Скачать
+              </app-button>
+
+              <app-button
+                type="secondary"
+                icon="assets/icons/photo-size.svg"
+                (click)="goToUpscale(generation.imageURL)">
+                Upscale
+              </app-button>
             </div>
           </div>
-
-          <div class="right-photo-detail">
-            <div class="photo-detail">
-              <!-- Фото -->
-            </div>
-
-            <app-button type="primary" icon="assets/icons/update.svg">
-              Повторить
-            </app-button>
-            <app-button type="secondary" icon="assets/icons/download.svg">
-              Скачать
-            </app-button>
-            <app-button type="secondary" icon="assets/icons/photo-size.svg">
-              Upscale
-            </app-button>
-          </div>
-        </div>
+        }
       </div>
     }
-
   </div>
 </div>

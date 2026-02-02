@@ -357,10 +357,17 @@
   }
 }
 
-.prom-text {
-  font-size: 13px;
-  font-family: system-ui;
-  color: #E8EEFF;
+.create-prom-text {
+    font-size: 13px;
+    color: #E8EEFF;
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 12;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .lab-prom {

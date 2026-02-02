@@ -22,7 +22,7 @@ type CreateState = 'idle' | 'loading' | 'result';
   templateUrl: './create-detail.html',
   styleUrls: ['./create-detail.scss'],
 })
-export class CreateDetail implements OnInit{
+export class CreateDetail implements OnInit {
 
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
 
@@ -33,7 +33,7 @@ export class CreateDetail implements OnInit{
   @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
 
   selectedFile: File | null = null;
-  photos: { generate: string | null } = { generate: null };
+  photos: { generate: string | null } = {generate: null};
   createState: CreateState = 'idle';
   generationHistory: any[] = [];
   resultImageUrl: string | null = null;
@@ -45,7 +45,8 @@ export class CreateDetail implements OnInit{
     private fileService: FileService,
     private generationService: GenerationService,
     private imageGenService: GenerationService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.loadGenerationsHistory();
@@ -89,6 +90,8 @@ export class CreateDetail implements OnInit{
   removePhoto(type: 'generate', event: Event) {
     event.stopPropagation();
     this.photos[type] = null;
+    this.selectedFile = null;
+    this.resultImageUrl = null;
   }
 
   navigateToHistory() {
@@ -96,11 +99,13 @@ export class CreateDetail implements OnInit{
   }
 
   loadGenerationsHistory() {
-    this.generationService.findByUser(this.UUID, this.card.type).subscribe({
+    this.generationService.findByUser(this.UUID).subscribe({
       next: (data) => {
-        this.generationHistory = data;
+        this.generationHistory = data.filter(
+          gen => gen.type === this.card.type
+        );
         this.cdr.detectChanges();
-        console.log('Генерации загружены:', data);
+        console.log('Генерации для карточки', this.card.title, ':', this.generationHistory);
       },
       error: (err) => {
         console.error('Ошибка при загрузке:', err);
@@ -109,6 +114,41 @@ export class CreateDetail implements OnInit{
   }
 
   createImage() {
+    if (!this.selectedFile && this.initialImageUrl) {
+      this.createState = 'loading';
+      const genDto: GenerateImageDto = {
+        type: this.card.type as GenerationType,
+        prompt: this.prompt,
+        image: this.initialImageUrl
+      };
+
+      this.imageGenService.generateImage(genDto).pipe(
+        switchMap((genRes: any) => {
+          this.resultImageUrl = genRes.processedImage;
+          const saveDto: CreateGenerationDto = {
+            userId: this.UUID,
+            type: this.card.type,
+            prompt: this.prompt,
+            imageURL: genRes.processedImage,
+            externalTaskId: genRes.externalTaskId
+          };
+          return this.generationService.create(saveDto);
+        })
+      ).subscribe({
+        next: () => {
+          this.createState = 'result';
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Ошибка в цепочке:', err);
+          this.createState = 'idle';
+          alert('Ошибка генерации. Проверьте URL бэкенда');
+          this.cdr.detectChanges();
+        }
+      });
+      return;
+    }
+
     if (!this.selectedFile) return;
 
     this.createState = 'loading';

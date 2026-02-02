@@ -40,7 +40,11 @@
   </div>
 
   <div class="btn-quality">
-    <app-button type="primary" icon="assets/icons/photo-size.svg" (click)="enhanceImage()" [disabled]="!photos.photo">
+    <app-button
+      type="primary"
+      icon="assets/icons/photo-size.svg"
+      (click)="enhanceImage()"
+      [disabled]="!photos.photo || isProcessing">
       Улучшить изображение
     </app-button>
   </div>
@@ -50,8 +54,8 @@
 
     <div class="before-photo">
       <div class="bf-text">До</div>
-      @if (photos.photo && isProcessing) {
-        <img class="result-img" [src]="photos.photo" alt="Before">
+      @if (originalImage) {
+        <img [src]="originalImage" class="result-img" alt="Before">
       } @else {
         <div class="center-text-quality">Ваше изображение</div>
       }
@@ -59,20 +63,27 @@
 
     <div class="after-photo">
       <div class="aft-text">После</div>
-      @if (enhancedPhoto) {
-        <img class="result-img" [src]="enhancedPhoto" alt="After">
+      @if (improvedImage) {
+        <img [src]="improvedImage" class="result-img" alt="After">
       } @else {
         <div class="center-text-quality">После улучшения</div>
       }
     </div>
 
-    @if (photos.photo && isProcessing) {
+    @if (originalImage) {
       <div class="result-actions">
-        <app-button type="secondary" icon="assets/icons/download.svg" (click)="downloadImage()">
+        <app-button
+          type="secondary"
+          icon="assets/icons/download.svg"
+          (click)="downloadImage()"
+          [disabled]="!improvedImage">
           Скачать
         </app-button>
 
-        <app-button type="primary" icon="assets/icons/update.svg" (click)="repeatImage()">
+        <app-button
+          type="primary"
+          icon="assets/icons/update.svg"
+          (click)="repeatImage()">
           Повторить
         </app-button>
       </div>
