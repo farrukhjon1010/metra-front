@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateGrid } from './create-grid/create-grid';
 import { CreateDetail } from './create-detail/create-detail';
 import { GenerationType } from '../../core/models/generation.model';
+import {Router} from '@angular/router';
 
 export interface CreateCard {
   id: string;
@@ -20,12 +21,30 @@ export interface CreateCard {
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent {
+export class CreateComponent implements OnInit {
 
   selectedCard: CreateCard | null = null;
+  initialPrompt: string = '';
+  initialImageUrl: string | null = null;
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    const navigation = this.router.getCurrentNavigation?.();
+    const state = navigation?.extras?.state ?? history.state;
+
+    if (state?.type) {
+      const matched = this.cards.find(c => c.type === state.type);
+
+      if (matched) {
+        this.selectedCard = matched;
+        this.initialPrompt = state.prompt ?? '';
+        this.initialImageUrl = state.imageUrl ?? null;
+      }
+    }
+  }
 
   cards: CreateCard[] = [
-    // Фото
     {
       id: 'photo-scene',
       title: 'Фото по сцене',
@@ -40,8 +59,6 @@ export class CreateComponent {
       category: 'Фото',
       type: GenerationType.PHOTO_BY_REFERENCE
     },
-
-    // Видео
     {
       id: 'animate-photo',
       title: 'Оживление фото',
@@ -56,8 +73,6 @@ export class CreateComponent {
       category: 'Видео',
       type: GenerationType.LIP_SYNC
     },
-
-    // Генерация
     {
       id: 'nano-banana',
       title: 'Nano Banana',
@@ -72,8 +87,6 @@ export class CreateComponent {
       category: 'Генерация',
       type: GenerationType.NANO_BANANA_PRO
     },
-
-    // Wardrobe
     {
       id: 'female-style',
       title: 'Женский стиль',
@@ -97,4 +110,5 @@ export class CreateComponent {
   back() {
     this.selectedCard = null;
   }
+
 }

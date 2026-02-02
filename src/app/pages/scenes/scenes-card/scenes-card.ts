@@ -1,5 +1,8 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
+import {SceneService} from '../../../core/services/scene.service';
+import {GenerationType} from '../../../core/models/generation.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-scenes-card',
@@ -8,18 +11,53 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
   standalone: true,
   imports: [ButtonComponent]
 })
-export class ScenesCard {
+export class ScenesCard implements OnChanges {
 
-  @Input() scene: { title: string; description: string; image: string } | null = null;
+  @Input() scene: any | null = null;
   @Output() back = new EventEmitter<void>();
+
+  templates: { name: string; prompt: string }[] = [];
+  freeStyle: { name: string; prompt: string }[] = [];
+  secondCards: any;
+
+  showFreeStyle: boolean = false;
+
+
+  constructor(private sceneService: SceneService,
+              private cdr: ChangeDetectorRef,
+              private router: Router,) {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['scene'] && this.scene) {
+      this.loadTemplates(this.scene.type);
+    }
+  }
 
   backToGrid() {
     this.back.emit();
   }
 
-  firstCards = Array(6).fill(0);
+  private loadTemplates(type: string) {
+    this.templates = [];
+    this.sceneService.getScenes({type}).subscribe({
+      next: (data: any[]) => {
+        this.templates = data.map(s => ({name: s.name, prompt: s.prompt}));
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load scene templates', err);
+      }
+    });
+  }
 
-  secondCards = Array(6).fill(0);
+  openTemplate(t: { name: string; prompt: string }) {
+    this.router.navigate(['/create'], {
+      state: {
+        type: GenerationType.PHOTO_BY_STAGE,
+        prompt: t.prompt
+      }
+    });
+  }
 
-  showFreeStyle = false;
 }

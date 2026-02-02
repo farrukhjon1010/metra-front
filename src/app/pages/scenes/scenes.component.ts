@@ -13,38 +13,44 @@ export class ScenesComponent {
 
   scenes = [
     {
-      title: 'Домашний портрет',
+      name: 'Домашний портрет',
       description: 'Мягкий свет, уют, естественность',
+      type: 'Домашний портрет',
       image: 'assets/images/home-portrait.png'
     },
     {
-      title: 'Студийный образ',
+      name: 'Студийный образ',
       description: 'Чистый фон, аккуратный свет',
+      type: 'Студийный образ',
       image: 'assets/images/studio-image.png'},
     {
-      title: 'Городской вечер',
+      name: 'Городской вечер',
       description: 'Уличный свет, глубина, атмосфера',
+      type: 'Городской вечер',
       image: 'assets/images/city-evening.png'
     },
     {
-      title: 'Зимний образ',
+      name: 'Зимний образ',
       description: 'Холодный свет, текстуры, объём',
+      type: 'Зимний образ',
       image: 'assets/images/winter-look.png'
     },
     {
-      title: 'Профиль / Аватар',
+      name: 'Профиль / Аватар',
       description: 'Идеально для соцсетей',
+      type: 'Профиль / Аватар',
       image: 'assets/images/profile-avatar.png'
     },
     {
-      title: 'Пара / Duo',
+      name: 'Пара / Duo',
       description: 'Два человека в одном кадре',
+      type: 'Пара / Duo',
       image: 'assets/images/pair-duo.png'},
   ];
 
-  selectedScene: { title: string; description: string; image: string } | null = null;
+  selectedScene: { name: string; description: string; image: string } | null = null;
 
-  onSceneSelect(scene: { title: string; description: string; image: string }) {
+  onSceneSelect(scene: any) {
     this.selectedScene = scene;
   }
 

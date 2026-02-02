@@ -7,8 +7,8 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  getScenes() {
-    return this.http.get('/scenes');
+  getScenes(params?: any) {
+    return this.http.get('/scenes', { params });
   }
 
   createScene(data: any) {

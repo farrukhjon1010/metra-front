@@ -6,7 +6,7 @@ import { FileService } from '../../../core/services/file.service';
 import { GenerationService } from '../../../core/services/generation.service';
 import { CreateGenerationDto, GenerateImageDto, GenerationType } from '../../../core/models/generation.model';
 import { switchMap } from 'rxjs';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 type CreateState = 'idle' | 'loading' | 'result';
@@ -15,7 +15,6 @@ type CreateState = 'idle' | 'loading' | 'result';
   selector: 'app-create-detail',
   imports: [
     ButtonComponent,
-    NgClass,
     FormsModule,
     DatePipe
   ],
@@ -28,6 +27,8 @@ export class CreateDetail implements OnInit{
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
 
   @Input() card!: CreateCard;
+  @Input() initialPrompt: string = '';
+  @Input() initialImageUrl: string | null = null;
   @Output() back = new EventEmitter<void>();
   @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
 
@@ -48,6 +49,15 @@ export class CreateDetail implements OnInit{
 
   ngOnInit() {
     this.loadGenerationsHistory();
+
+    if (this.initialPrompt) {
+      this.prompt = this.initialPrompt;
+    }
+
+    if (this.initialImageUrl) {
+      this.photos.generate = this.initialImageUrl;
+      this.resultImageUrl = this.initialImageUrl;
+    }
   }
 
   goBack() {
@@ -58,7 +68,7 @@ export class CreateDetail implements OnInit{
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
 
-    this.selectedFile = file; 
+    this.selectedFile = file;
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -80,7 +90,6 @@ export class CreateDetail implements OnInit{
     event.stopPropagation();
     this.photos[type] = null;
   }
-
 
   navigateToHistory() {
     this.router.navigate(['/history'])
@@ -126,13 +135,13 @@ export class CreateDetail implements OnInit{
         return this.generationService.create(saveDto);
       })
     ).subscribe({
-      next: (dbRes) => {
+      next: () => {
         this.createState = 'result';
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Ошибка в цепочке:', err);
-        this.createState = 'idle'; 
+        this.createState = 'idle';
         alert('Ошибка генерации. Проверьте URL бэкенда');
         this.cdr.detectChanges();
       }

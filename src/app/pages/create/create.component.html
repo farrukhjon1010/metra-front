@@ -5,13 +5,18 @@
     <h2 class="create__title">Создать</h2>
   </header>
 
-  <app-create-grid [cards]="cards" (select)="selectCard($event)">
+  <app-create-grid
+    [cards]="cards"
+    (select)="selectCard($event)">
   </app-create-grid>
   }
 
   @if (selectedCard) {
-  <app-create-detail [card]="selectedCard" (back)="back()">
-  </app-create-detail>
+    <app-create-detail
+      [card]="selectedCard"
+      [initialPrompt]="initialPrompt"
+      [initialImageUrl]="initialImageUrl"
+      (back)="back()">
+    </app-create-detail>
   }
-
 </div>
