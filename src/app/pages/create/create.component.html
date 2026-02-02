@@ -10,8 +10,12 @@
   }
 
   @if (selectedCard) {
-  <app-create-detail [card]="selectedCard" (back)="back()">
-  </app-create-detail>
+    <app-create-detail
+      [card]="selectedCard"
+      [initialPrompt]="initialPrompt"
+      [initialImageUrl]="initialImageUrl"
+      (back)="back()">
+    </app-create-detail>
   }
 
 </div>
