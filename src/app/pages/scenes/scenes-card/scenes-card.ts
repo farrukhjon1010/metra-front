@@ -2,13 +2,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 
 @Component({
-  selector: 'app-scene-card',
+  selector: 'app-scenes-card',
   templateUrl: './scenes-card.html',
   styleUrls: ['./scenes-card.scss'],
   standalone: true,
-  imports: [
-    ButtonComponent
-  ]
+  imports: [ButtonComponent]
 })
 export class ScenesCard {
 
@@ -21,9 +19,7 @@ export class ScenesCard {
 
   firstCards = Array(6).fill(0);
 
-  // Вторые 6 карточек для FreeStyle
   secondCards = Array(6).fill(0);
 
-  // Показывать второй блок или нет
   showFreeStyle = false;
 }

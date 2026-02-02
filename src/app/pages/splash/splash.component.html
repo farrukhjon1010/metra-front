@@ -1,295 +1,259 @@
 @switch (currentStep) {
-  @case ('splash') {
-    <div class="splash-container">
-      <div class="content">
-        <div class="logo-container">
-          <div class="logo-m">
-            <img src="assets/icons/metra-logo.svg" alt="logo">
-          </div>
-          <h1 class="brand-name">METRA</h1>
-        </div>
-        <div class="features">
-          <p class="feature-text">Генерация образов и фото с помощью персонального аватара.</p>
-          <p class="feature-text">Сцены, стили и примерка одежды — в одном пространстве.</p>
-          <p class="feature-text-metra">Для доступа ко всем возможностям METRA используется аватар.</p>
-        </div>
-        <div class="actions">
-          <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()">
-            Создать аватар
-          </app-button>
-
-          <app-button type="secondary" (click)="navigateToDemo()">
-            Посмотреть, как это работает
-          </app-button>
-        </div>
+@case ('splash') {
+<div class="splash-container">
+  <div class="content">
+    <div class="logo-container">
+      <div class="logo-m">
+        <img src="assets/icons/metra-logo.svg" alt="logo">
       </div>
+      <h1 class="brand-name">METRA</h1>
     </div>
-  }
-
-  @case ('form') {
-    <div class="create-avatar-container">
-      <div class="header">
-        <h1 class="title">Создать аватар</h1>
-      </div>
-      <div class="content">
-
-        <div class="form-content">
-              <form [formGroup]="myForm" (ngSubmit)="submit()" novalidate>
-              <div class="form-group">
-                <label class="form-label">Имя аватара</label>
-                <div class="input-wrapper"
-                    [ngClass]="{
-                      'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
-                      'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
-                    }"
-                >
-                  <input
-                    type="text"
-                    name="avatarName"
-                    formControlName="avatarName"
-                    class="form-input"
-                    placeholder="Введите имя своего аватара"
-                  />
-                </div>
-                @if (myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid){
-                <div class="alert">
-                  Не указано имя
-                </div>
-                }
-              </div>
-            </form>
-          <div class="form-group">
-            <label class="form-label">Пол</label>
-            <div class="gender-buttons">
-              <div class="slider"
-                   [ngStyle]="{'transform': gender === 'male'
-                   ? 'translateX(0%)' : 'translateX(100%)'}">
-              </div>
-              <button
-                class="gender-btn"
-                [class.active]="gender === 'male'"
-                (click)="gender = gender">
-                Мужской
-              </button>
-              <button
-                class="gender-btn"
-                [class.active]="gender === 'female'"
-                (click)="gender = gender">
-                Женский
-              </button>
-            </div>
-          </div>
-          <div class="photo-load">
-            <div class="photo-upload-section">
-              <label class="form-label">Загрузите фото с фронтальной стороны</label>
-              <div class="upload-row">
-                <div class="upload-area-small" (click)="triggerFileInput('front',$event)">
-                  <input #frontInput
-                         type="file"
-                         accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
-                         (change)="onFileSelected($event, 'front')"
-                         style="display: none;">
-                  <div class="upload-content">
-                    <span class="upload-text-small">Загрузить</span>
-                    <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
-                  </div>
-                  <img src="assets/icons/upload.svg" alt="upload">
-                </div>
-              </div>
-              <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
-            </div>
-            <div class="front-photo">
-              @if (photos.front.preview) {
-                <img class="with-photo" [src]="photos.front.preview" alt="Front Photo">
-              }
-              @if (!photos.front.preview) {
-                <ng-container>
-                  <img class="empty-photo" src="assets/icons/vector-front.svg" alt="Front Photo">
-                </ng-container>
-              }
-              @if (photos.front.preview) {
-                <button class="delete-photo"
-                        style="position:absolute; top:4px; right:4px;"
-                        (click)="removePhoto('front', $event)">
-                  <img src="assets/icons/delete.svg" alt="delete">
-                </button>
-              }
-            </div>
-          </div>
-          <div class="photo-load">
-            <div class="photo-upload-section">
-              <label class="form-label">Загрузите фото с левого профиля</label>
-              <div class="upload-row">
-                <div class="upload-area-small" (click)="triggerFileInput('left', $event)">
-                  <input
-                    #leftInput
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
-                    (change)="onFileSelected($event, 'left')"
-                    style="display: none;">
-                  <div class="upload-content">
-                    <span class="upload-text-small">Загрузить</span>
-                    <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
-                  </div>
-                  <img src="assets/icons/upload.svg" alt="upload">
-                </div>
-              </div>
-              <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
-            </div>
-            <div class="front-photo">
-              @if (photos.left.preview) {
-                <img class="with-photo" [src]="photos.left.preview" alt="Left Photo">
-              }
-              @if (!photos.left.preview) {
-                <ng-container>
-                  <img class="empty-photo" src="assets/icons/vector-left.svg" alt="Left Photo">
-                </ng-container>
-              }
-              @if (photos.left.preview) {
-                <button class="delete-photo"
-                        style="position:absolute; top:4px; right:4px;"
-                        (click)="removePhoto('left', $event)">
-                  <img src="assets/icons/delete.svg" alt="delete">
-                </button>
-              }
-            </div>
-          </div>
-
-          <div class="photo-load">
-            <div class="photo-upload-section">
-              <label class="form-label">Загрузите фото с правого профиля</label>
-              <div class="upload-row">
-                <div class="upload-area-small" (click)="triggerFileInput('right', $event)">
-                  <input
-                    #rightInput
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
-                    (change)="onFileSelected($event, 'right')"
-                    style="display: none;">
-                  <div class="upload-content">
-                    <span class="upload-text-small">Загрузить</span>
-                    <div class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</div>
-                  </div>
-                  <img src="assets/icons/upload.svg" alt="upload">
-                </div>
-              </div>
-              <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
-            </div>
-
-            <div class="front-photo">
-              @if (photos.right.preview) {
-                <img class="with-photo" [src]="photos.right.preview" alt="Right Photo">
-              }
-              @if (!photos.right.preview) {
-                <ng-container>
-                  <img class="empty-photo" src="assets/icons/vector-right.svg" alt="Right Photo">
-                </ng-container>
-              }
-              @if (photos.right.preview) {
-                <button class="delete-photo"
-                        style="position:absolute; top:4px; right:4px;"
-                        (click)="removePhoto('right', $event)">
-                  <img src="assets/icons/delete.svg" alt="delete">
-                </button>
-              }
-            </div>
-          </div>
-          <app-button
-            type="primary"
-            buttonType="submit"
-            icon="assets/icons/add.svg"
-            [disabled]="!canCreate()"
-            (click)="createAvatar()">
-            <span>Создать аватар</span>
-          </app-button>
-        </div>
-      </div>
+    <div class="features">
+      <p class="feature-text">Генерация образов и фото с помощью персонального аватара.</p>
+      <p class="feature-text">Сцены, стили и примерка одежды — в одном пространстве.</p>
+      <p class="feature-text-metra">Для доступа ко всем возможностям METRA используется аватар.</p>
     </div>
-  }
+    <div class="actions">
+      <app-button type="primary" icon="assets/icons/add.svg" (click)="navigateToCreate()">
+        Создать аватар
+      </app-button>
 
-  @case ('loading') {
-    <div class="loading-screen">
-      <div class="spinner"></div>
-      <p>Создаём аватар…</p>
-    </div>
-  }
-
-  @case ('select') {
-    <div class="select-screen">
-      <div class="success-badge">
-          <span class="check-icon">
-            <img src="assets/icons/check-circle.svg" alt="">
-             <span class="success-text">Ваш аватар создан</span>
-          </span>
-        <p class="subtitle">Выберите до 3х изображений</p>
-      </div>
-      @if (generatedAvatars.length) {
-        <div class="avatar-grid">
-          @for (avatar of generatedAvatars; track avatar) {
-            <div [class.selected]="isSelected(avatar)" class="avatar-card">
-              <div class="avatar-image-wrapper">
-                @if (avatar) {
-                  <img [src]="avatar" alt="Generated Avatar" class="avatar-image"/>
-                }
-                @else {
-                  <ng-container>
-                    <img src="assets/icons/vector-front.svg" alt="Front Placeholder" class="avatar-image"/>
-                  </ng-container>
-                }
-              </div>
-
-              <button
-                class="btn-select"
-                [class.selected]="isSelected(avatar)"
-                (click)="toggleAvatar(avatar)"
-              >
-                {{ isSelected(avatar) ? 'Выбран' : 'Выбрать' }}
-              </button>
-            </div>
-          }
-        </div>
-      } @else {
-        <p class="empty-message">Аватары генерируются…</p>
-      }
-
-      <app-button type="primary" icon="assets/icons/arrow-forward.svg" [disabled]="selectedAvatars.length === 0"
-                  (click)="confirmAvatars()">
-        Продолжить
+      <app-button type="secondary" (click)="navigateToDemo()">
+        Посмотреть, как это работает
       </app-button>
     </div>
+  </div>
+</div>
+}
+
+@case ('form') {
+<div class="create-avatar-container">
+  <div class="header">
+    <h1 class="title">Создать аватар</h1>
+  </div>
+  <div class="content">
+
+    <div class="form-content">
+      <form [formGroup]="myForm" (ngSubmit)="submit()" novalidate>
+        <div class="form-group">
+          <label class="form-label">Имя аватара</label>
+          <div class="input-wrapper" [ngClass]="{
+                      'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
+                      'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
+                    }">
+            <input type="text" name="avatarName" formControlName="avatarName" class="form-input"
+              placeholder="Введите имя своего аватара" />
+          </div>
+          @if (myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid){
+          <div class="alert">
+            Не указано имя
+          </div>
+          }
+        </div>
+      </form>
+      <div class="form-group">
+        <label class="form-label">Пол</label>
+        <div class="gender-buttons">
+          <div class="slider" [ngStyle]="{'transform': gender === 'male'
+                   ? 'translateX(0%)' : 'translateX(100%)'}">
+          </div>
+          <button class="gender-btn" [class.active]="gender === 'male'" (click)="gender = gender">
+            Мужской
+          </button>
+          <button class="gender-btn" [class.active]="gender === 'female'" (click)="gender = gender">
+            Женский
+          </button>
+        </div>
+      </div>
+      <div class="photo-load">
+        <div class="photo-upload-section">
+          <label class="form-label">Загрузите фото с фронтальной стороны</label>
+          <div class="upload-row">
+            <div class="upload-area-small" (click)="triggerFileInput('front',$event)">
+              <input #frontInput type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                (change)="onFileSelected($event, 'front')" style="display: none;">
+              <div class="upload-content">
+                <span class="upload-text-small">Загрузить</span>
+                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+              </div>
+              <img src="assets/icons/upload.svg" alt="upload">
+            </div>
+          </div>
+          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+        </div>
+        <div class="front-photo">
+          @if (photos.front.preview) {
+          <img class="with-photo" [src]="photos.front.preview" alt="Front Photo">
+          }
+          @if (!photos.front.preview) {
+          <ng-container>
+            <img class="empty-photo" src="assets/icons/vector-front.svg" alt="Front Photo">
+          </ng-container>
+          }
+          @if (photos.front.preview) {
+          <button class="delete-photo" style="position:absolute; top:4px; right:4px;"
+            (click)="removePhoto('front', $event)">
+            <img src="assets/icons/delete.svg" alt="delete">
+          </button>
+          }
+        </div>
+      </div>
+      <div class="photo-load">
+        <div class="photo-upload-section">
+          <label class="form-label">Загрузите фото с левого профиля</label>
+          <div class="upload-row">
+            <div class="upload-area-small" (click)="triggerFileInput('left', $event)">
+              <input #leftInput type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                (change)="onFileSelected($event, 'left')" style="display: none;">
+              <div class="upload-content">
+                <span class="upload-text-small">Загрузить</span>
+                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+              </div>
+              <img src="assets/icons/upload.svg" alt="upload">
+            </div>
+          </div>
+          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+        </div>
+        <div class="front-photo">
+          @if (photos.left.preview) {
+          <img class="with-photo" [src]="photos.left.preview" alt="Left Photo">
+          }
+          @if (!photos.left.preview) {
+          <ng-container>
+            <img class="empty-photo" src="assets/icons/vector-left.svg" alt="Left Photo">
+          </ng-container>
+          }
+          @if (photos.left.preview) {
+          <button class="delete-photo" style="position:absolute; top:4px; right:4px;"
+            (click)="removePhoto('left', $event)">
+            <img src="assets/icons/delete.svg" alt="delete">
+          </button>
+          }
+        </div>
+      </div>
+
+      <div class="photo-load">
+        <div class="photo-upload-section">
+          <label class="form-label">Загрузите фото с правого профиля</label>
+          <div class="upload-row">
+            <div class="upload-area-small" (click)="triggerFileInput('right', $event)">
+              <input #rightInput type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                (change)="onFileSelected($event, 'right')" style="display: none;">
+              <div class="upload-content">
+                <span class="upload-text-small">Загрузить</span>
+                <div class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</div>
+              </div>
+              <img src="assets/icons/upload.svg" alt="upload">
+            </div>
+          </div>
+          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+        </div>
+
+        <div class="front-photo">
+          @if (photos.right.preview) {
+          <img class="with-photo" [src]="photos.right.preview" alt="Right Photo">
+          }
+          @if (!photos.right.preview) {
+          <ng-container>
+            <img class="empty-photo" src="assets/icons/vector-right.svg" alt="Right Photo">
+          </ng-container>
+          }
+          @if (photos.right.preview) {
+          <button class="delete-photo" style="position:absolute; top:4px; right:4px;"
+            (click)="removePhoto('right', $event)">
+            <img src="assets/icons/delete.svg" alt="delete">
+          </button>
+          }
+        </div>
+      </div>
+      <app-button type="primary" buttonType="submit" icon="assets/icons/add.svg" [disabled]="!canCreate()"
+        (click)="createAvatar()">
+        <span>Создать аватар</span>
+      </app-button>
+    </div>
+  </div>
+</div>
+}
+
+@case ('loading') {
+<div class="loading-screen">
+  <div class="spinner"></div>
+  <p>Создаём аватар…</p>
+</div>
+}
+
+@case ('select') {
+<div class="select-screen">
+  <div class="success-badge">
+    <span class="check-icon">
+      <img src="assets/icons/check-circle.svg" alt="">
+      <span class="success-text">Ваш аватар создан</span>
+    </span>
+    <p class="subtitle">Выберите до 3х изображений</p>
+  </div>
+  @if (generatedAvatars.length) {
+  <div class="avatar-grid">
+    @for (avatar of generatedAvatars; track avatar) {
+    <div [class.selected]="isSelected(avatar)" class="avatar-card">
+      <div class="avatar-image-wrapper">
+        @if (avatar) {
+        <img [src]="avatar" alt="Generated Avatar" class="avatar-image" />
+        }
+        @else {
+        <ng-container>
+          <img src="assets/icons/vector-front.svg" alt="Front Placeholder" class="avatar-image" />
+        </ng-container>
+        }
+      </div>
+
+      <button class="btn-select" [class.selected]="isSelected(avatar)" (click)="toggleAvatar(avatar)">
+        {{ isSelected(avatar) ? 'Выбран' : 'Выбрать' }}
+      </button>
+    </div>
+    }
+  </div>
+  } @else {
+  <p class="empty-message">Аватары генерируются…</p>
   }
 
-  @case ('success') {
-    <div class="success-screen">
-      <div class="success-icon">
-        <img src="assets/icons/check-circle.svg" alt="check">
-      </div>
-      <h2 class="success-title">Ваши аватары сохранены</h2>
-      <div class="gift-card">
-        <div class="text-wrapper">
-          <h3 class="gift-title">Вы получили подарок</h3>
-          <h4 class="gift-name">METRA Basic на 7 дней</h4>
-          <div class="checked-icon-list">
-            <span>
-              <img src="assets/icons/check-confirm.svg" alt="">
-              <span>120 токенов в месяц</span>
-            </span>
-              <span>
-               <img src="assets/icons/check-confirm.svg" alt="">
-              <span>Доступ к сценам METRA</span>
-            </span>
-              <span>
-              <img src="assets/icons/check-confirm.svg" alt="">
-              <span>Доступ к Nano Banana</span>
-            </span>
-          </div>
-        </div>
-        <div class="btn">
-          <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToMetra()">
-            Начать использовать METRA
-          </app-button>
-        </div>
+  <app-button type="primary" icon="assets/icons/arrow-forward.svg" [disabled]="selectedAvatars.length === 0"
+    (click)="confirmAvatars()">
+    Продолжить
+  </app-button>
+</div>
+}
+
+@case ('success') {
+<div class="success-screen">
+  <div class="success-icon">
+    <img src="assets/icons/check-circle.svg" alt="check">
+  </div>
+  <h2 class="success-title">Ваши аватары сохранены</h2>
+  <div class="gift-card">
+    <div class="text-wrapper">
+      <h3 class="gift-title">Вы получили подарок</h3>
+      <h4 class="gift-name">METRA Basic на 7 дней</h4>
+      <div class="checked-icon-list">
+        <span>
+          <img src="assets/icons/check-confirm.svg" alt="">
+          <span>120 токенов в месяц</span>
+        </span>
+        <span>
+          <img src="assets/icons/check-confirm.svg" alt="">
+          <span>Доступ к сценам METRA</span>
+        </span>
+        <span>
+          <img src="assets/icons/check-confirm.svg" alt="">
+          <span>Доступ к Nano Banana</span>
+        </span>
       </div>
     </div>
-  }
+    <div class="btn">
+      <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToMetra()">
+        Начать использовать METRA
+      </app-button>
+    </div>
+  </div>
+</div>
+}
 }

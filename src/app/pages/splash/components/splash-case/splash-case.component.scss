@@ -1,0 +1,60 @@
+.content {
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-m {
+  position: relative;
+}
+
+.brand-name {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.features {
+  text-align: center;
+  font-size: 14px;
+  opacity: .9;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px 0;
+
+}
+
+.feature-text {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: 17px;
+  margin: 0;
+}
+
+.feature-text-metra {
+  font-size: 15px;
+  margin: 32px 0;
+}
+
+.actions {
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+}

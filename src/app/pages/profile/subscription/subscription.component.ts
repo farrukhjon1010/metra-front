@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 
@@ -12,6 +12,7 @@ export class SubscriptionComponent {
 
   constructor(private router: Router) {
   }
+
   goBack() {
     this.router.navigate(['/profile']);
   }

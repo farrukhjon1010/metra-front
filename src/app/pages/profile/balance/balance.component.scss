@@ -1,6 +1,7 @@
 balance-content {
   width: 100%;
 }
+
 .funds-buttons {
   display: flex;
   padding: 15px 24px;
@@ -21,10 +22,12 @@ balance-content {
   gap: 16px;
   padding: 0 16px;
 }
+
 .card {
   display: flex;
   gap: 16px;
 }
+
 .card p {
   font-size: 20px;
   font-weight: 700;
@@ -37,10 +40,12 @@ balance-content {
   font-family: system-ui;
   color: #C5CCE0;
 }
+
 .card img {
   width: 20px;
   height: 20px;
 }
+
 .text-header-balance {
   display: flex;
   flex-direction: column;
@@ -53,11 +58,13 @@ balance-content {
   margin: 0;
   padding-bottom: 4px;
 }
+
 .token-text span {
   color: #A9B2C8;
   font-size: 13px;
   font-weight: 500;
 }
+
 .danger-buttons {
   display: flex;
   padding: 15px 24px;
@@ -71,6 +78,7 @@ balance-content {
   mask-composite: exclude;
   background: linear-gradient(90deg, rgba(255, 75, 85, 0.6), rgba(255, 75, 85, 0.1));
 }
+
 .danger {
   display: flex;
   align-items: center;
@@ -82,12 +90,12 @@ balance-content {
   font-size: 15px;
   font-weight: 600;
   color: #ffffff;
-  text-shadow: 0 0 1px rgba(0,0,0,0.2);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
   background: linear-gradient(
-    90deg,
-    rgba(255, 75, 85, 0.4) 0%,
-    rgba(255, 75, 85, 0.05) 100%
-  )!important;
+      90deg,
+      rgba(255, 75, 85, 0.4) 0%,
+      rgba(255, 75, 85, 0.05) 100%
+  ) !important;
 }
 
 .price-text {
@@ -103,6 +111,7 @@ balance-content {
   border-bottom-left-radius: 12px;
   z-index: 1;
 }
+
 .price-text img {
   padding-right: 4px;
 }

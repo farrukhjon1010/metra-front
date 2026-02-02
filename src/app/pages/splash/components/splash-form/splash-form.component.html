@@ -1,0 +1,178 @@
+<div class="create-avatar-container">
+  <div class="header">
+    <h1 class="title">Создать аватар</h1>
+  </div>
+  <div class="content">
+    <div class="form-content">
+      <form [formGroup]="myForm" (ngSubmit)="submit()" novalidate>
+        <div class="form-group">
+          <label class="form-label">Имя аватара</label>
+          <div class="input-wrapper"
+               [ngClass]="{
+              'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
+              'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
+            }"
+          >
+            <input
+              type="text"
+              name="avatarName"
+              formControlName="avatarName"
+              class="form-input"
+              placeholder="Введите имя своего аватара"
+            />
+          </div>
+          @if (myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid) {
+            <div class="alert">
+              Не указано имя
+            </div>
+          }
+        </div>
+      </form>
+
+      <div class="form-group">
+        <label class="form-label">Пол</label>
+        <div class="gender-buttons">
+          <div class="slider-splash"
+               [ngStyle]="{'transform': gender === 'male' ? 'translateX(0%)' : 'translateX(100%)'}">
+          </div>
+          <button
+            class="gender-btn"
+            [class.active]="gender === 'male'"
+            (click)="genderChange.emit('male')">
+            Мужской
+          </button>
+          <button
+            class="gender-btn"
+            [class.active]="gender === 'female'"
+            (click)="genderChange.emit('female')">
+            Женский
+          </button>
+        </div>
+      </div>
+
+      <div class="photo-load">
+        <div class="photo-upload-section">
+          <label class="form-label">Загрузите фото с фронтальной стороны</label>
+          <div class="upload-row">
+            <div class="upload-area-small" (click)="triggerFileInput('front',$event)">
+              <input #frontInput
+                     type="file"
+                     accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                     (change)="onFileSelected($event, 'front')"
+                     style="display: none;">
+              <div class="upload-content">
+                <span class="upload-text-small">Загрузить</span>
+                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+              </div>
+              <img src="assets/icons/upload.svg" alt="upload">
+            </div>
+          </div>
+          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+        </div>
+        <div class="front-photo">
+          @if (photos.front) {
+            <img class="with-photo" [src]="photos.front" alt="Front Photo">
+          }
+          @if (!photos.front) {
+            <ng-container>
+              <img class="empty-photo" src="assets/icons/vector-front.svg" alt="Front Photo">
+            </ng-container>
+          }
+          @if (photos.front) {
+            <button class="delete-photo" style="position:absolute; top:4px; right:4px;"
+                    (click)="removePhoto('front', $event)">
+              <img src="assets/icons/delete.svg" alt="delete">
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="photo-load">
+        <div class="photo-upload-section">
+          <label class="form-label">Загрузите фото с левого профиля</label>
+          <div class="upload-row">
+            <div class="upload-area-small" (click)="triggerFileInput('left', $event)">
+              <input
+                #leftInput
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                (change)="onFileSelected($event, 'left')"
+                style="display: none;">
+              <div class="upload-content">
+                <span class="upload-text-small">Загрузить</span>
+                <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
+              </div>
+              <img src="assets/icons/upload.svg" alt="upload">
+            </div>
+          </div>
+          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+        </div>
+        <div class="front-photo">
+          @if (photos.left) {
+            <img class="with-photo" [src]="photos.left" alt="Left Photo">
+          }
+          @if (!photos.left) {
+            <ng-container>
+              <img class="empty-photo" src="assets/icons/vector-left.svg" alt="Left Photo">
+            </ng-container>
+          }
+          @if (photos.left) {
+            <button class="delete-photo" style="position:absolute; top:4px; right:4px;"
+                    (click)="removePhoto('left', $event)">
+              <img src="assets/icons/delete.svg" alt="delete">
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="photo-load">
+        <div class="photo-upload-section">
+          <label class="form-label">Загрузите фото с правого профиля</label>
+          <div class="upload-row">
+            <div class="upload-area-small" (click)="triggerFileInput('right', $event)">
+              <input
+                #rightInput
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+                (change)="onFileSelected($event, 'right')"
+                style="display: none;">
+              <div class="upload-content">
+                <span class="upload-text-small">Загрузить</span>
+                <div class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</div>
+              </div>
+              <img src="assets/icons/upload.svg" alt="upload">
+            </div>
+          </div>
+          <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+        </div>
+
+        <div class="front-photo">
+          @if (photos.right) {
+            <img class="with-photo" [src]="photos.right" alt="Right Photo">
+          }
+          @if (!photos.right) {
+            <ng-container>
+              <img class="empty-photo" src="assets/icons/vector-right.svg" alt="Right Photo">
+            </ng-container>
+          }
+          @if (photos.right) {
+            <button class="delete-photo" style="position:absolute; top:4px; right:4px;"
+                    (click)="removePhoto('right', $event)">
+              <img src="assets/icons/delete.svg" alt="delete">
+            </button>
+          }
+        </div>
+      </div>
+
+      <app-button
+        type="primary"
+        [buttonType]="'submit'"
+        [icon]="'assets/icons/add.svg'"
+        [disabled]="!canCreate()"
+        (click)="triggerCreate.emit()">
+        <span>Создать аватар</span>
+      </app-button>
+
+    </div>
+  </div>
+</div>

@@ -30,9 +30,9 @@
                     />
                   </div>
                   @if (myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid) {
-                  <div class="alert">
-                    Не указано имя
-                  </div>
+                    <div class="alert">
+                      Не указано имя
+                    </div>
                   }
                 </div>
               </form>
@@ -180,44 +180,39 @@
       </div>
     </div>
   }
-
   @case ('loading') {
-    <div class="loading-screen">
-      <div class="spinner"></div>
-      <p>Создаём аватар…</p>
-    </div>
+    <app-loading></app-loading>
   }
-
   @case ('select') {
     <div class="select-screen">
       <div class="success-badge">
         <img src="assets/icons/check-circle.svg" alt="">
         <div class="check-icon">
           <span class="success-text">Ваш аватар создан</span>
-           <p class="subtitle">Выберите одно изображений</p>
+          <p class="subtitle">Выберите одно изображений</p>
         </div>
       </div>
-      @if (generatedAvatars.length){
-      <div class="avatar-grid">
-        @for (avatar of generatedAvatars; track avatar){
-        <div class="avatar-card " [class.selected]="isSelected(avatar)">
-            <div class="avatar-image-wrapper">
-              <img [src]="avatar" alt="Avatar" class="avatar-image"/>
+      @if (generatedAvatars.length) {
+        <div class="avatar-grid">
+          @for (avatar of generatedAvatars; track avatar) {
+            <div class="avatar-card " [class.selected]="isSelected(avatar)">
+              <div class="avatar-image-wrapper">
+                <img [src]="avatar" alt="Avatar" class="avatar-image"/>
+              </div>
+              <div class="avatar-wrapper">
+                @if (isSelected(avatar)) {
+                  <app-button type="primary" (click)="toggleAvatar(avatar)">
+                    Выбран
+                  </app-button>
+                } @else {
+                  <app-button type="secondary" (click)="toggleAvatar(avatar)">
+                    Выбрать
+                  </app-button>
+                }
+              </div>
             </div>
-            <div class="avatar-wrapper">
-            @if (isSelected(avatar)) {
-              <app-button type="primary" (click)="toggleAvatar(avatar)">
-                Выбран
-              </app-button>
-            } @else {
-              <app-button type="secondary" (click)="toggleAvatar(avatar)">
-                Выбрать
-              </app-button>
-            }
-            </div>
+          }
         </div>
-        }
-      </div>
       } @else {
         <p class="empty-message">Аватары генерируются…</p>
       }
@@ -226,7 +221,6 @@
       </app-button>
     </div>
   }
-
   @case ('success') {
     <div class="success-screen">
       <div class="success-icon">

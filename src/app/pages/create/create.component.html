@@ -1,14 +1,12 @@
 <div class="create">
 
   @if (!selectedCard) {
-    <header class="create-header">
-      <h2 class="create__title">Создать</h2>
-    </header>
+  <header class="create-header">
+    <h2 class="create__title">Создать</h2>
+  </header>
 
-    <app-create-grid
-      [cards]="cards"
-      (select)="selectCard($event)">
-    </app-create-grid>
+  <app-create-grid [cards]="cards" (select)="selectCard($event)">
+  </app-create-grid>
   }
 
   @if (selectedCard) {

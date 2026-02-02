@@ -6,11 +6,12 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { Gender } from '../../../core/models/avatar.model';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { FileService } from '../../../core/services/file.service';
+import { Loading } from '../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-add-avatar',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule, Loading],
   templateUrl: './add-avatar.component.html',
   styleUrls: ['./add-avatar.component.scss'],
 })
