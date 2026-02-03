@@ -109,6 +109,8 @@ export class CreateComponent implements OnInit {
 
   back() {
     this.selectedCard = null;
+    this.initialPrompt = '';
+    this.initialImageUrl = null;
   }
 
 }
