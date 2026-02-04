@@ -13,19 +13,10 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  align-items: baseline;
 }
 
 .header-card-detail {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 24px 16px;
-  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.1) 100%);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 10;
 
   img {
     cursor: pointer;
@@ -165,20 +156,6 @@
   justify-content: space-between;
 }
 
-.photo-generate {
-  width: 65px;
-  height: 65px;
-  border-radius: 12px;
-  margin-top: 8px;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-}
-
 .delete-photo-generation {
   position: absolute;
   width: 24px;
@@ -195,10 +172,8 @@
 .create-of-detail {
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 16px;
-  width: 356px;
-  height: 222px;
+  width: 100%;
+  min-height: 222px;
   display: flex;
   border-radius: 12px;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
@@ -206,6 +181,13 @@
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.0588235294);
+}
+
+.no-create-image-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .result-detail {
@@ -241,9 +223,16 @@
   }
 }
 
+.image-generation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+}
+
 .image-generation img {
-  width: 300px;
-  height: 300px;
+  width: 324px;
+  height: 324px;
   overflow: hidden;
   border-radius: 12px;
   object-fit: cover;
@@ -259,7 +248,6 @@
   display: block;
 }
 
-
 .btn-detail {
   display: flex;
   flex-direction: row;
@@ -274,18 +262,6 @@
   font-size: 20px;
   font-weight: 700;
   margin: 24px 0 16px 0;
-}
-
-.not-create-image-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-
-  span {
-    font-size: 17px;
-    font-weight: 500;
-  }
 }
 
 .create-generate-detail {
@@ -380,16 +356,11 @@
 .date-detail-prom {
   display: flex;
   flex-direction: column;
-
-}
-
-.history-content-detail {
-  padding-bottom: 80px;
 }
 
 .loading-screen {
   width: 100%;
-  height: auto;
+  min-height: 484px;
   inset: 0;
   display: flex;
   flex-direction: column;

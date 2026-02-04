@@ -31,6 +31,7 @@ export class CreateDetail implements OnInit {
   @Input() initialImageUrl: string | null = null;
   @Output() back = new EventEmitter<void>();
   @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
+  @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
 
   selectedFile: File | null = null;
   photos: { generate: string | null } = {generate: null};
@@ -185,6 +186,77 @@ export class CreateDetail implements OnInit {
         alert('Ошибка генерации. Проверьте URL бэкенда');
         this.cdr.detectChanges();
       }
+    });
+  }
+
+  downloadFile(url: string, type: 'image' | 'video') {
+    fetch(url)
+      .then(res => res.blob())
+      .then(n => {
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(n);
+
+        a.href = objectUrl;
+        a.download = type === 'image'
+          ? 'generation-image.jpg'
+          : 'generation-video.mp4';
+
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      });
+  }
+
+  goToUpscale(imageUrl: string) {
+    this.router.navigate(
+      ['/history/improving-quality'],
+      {state: {imageUrl}}
+    );
+  }
+
+
+  repeatGeneration(generation: any) {
+    this.prompt = generation.prompt;
+
+    setTimeout(() => {
+      const textarea = this.textarea.nativeElement;
+
+      textarea.focus();
+      textarea.style.fontStyle = 'normal';
+      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+    });
+  }
+
+
+  downloadResultFile(file: string, type: 'image' | 'video') {
+    fetch(file)
+      .then(res => res.blob())
+      .then(blob => {
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+
+        a.href = objectUrl;
+        a.download = type === 'image'
+          ? 'generation-image.jpg'
+          : 'generation-video.mp4';
+
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      });
+  }
+
+  editFile() {
+    this.createState = 'idle';
+    this.photos.generate = this.resultImageUrl;
+    this.selectedFile = null;
+
+    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      const textarea = this.textarea?.nativeElement;
+      if (!textarea) return;
+
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
     });
   }
 

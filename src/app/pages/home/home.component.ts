@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit{
         this.isLoading = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
         this.cdr.detectChanges();
       }

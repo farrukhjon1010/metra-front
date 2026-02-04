@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import {ReferralInfo} from '../../../core/models/balance.model';
@@ -21,6 +21,8 @@ export class AffiliateProgramComponent implements OnInit {
   copied = false;
   loading = true;
 
+  @Output() incomeChange = new EventEmitter<number>();
+
   constructor(
     private router: Router,
     private referralService: ReferralService,
@@ -40,6 +42,10 @@ export class AffiliateProgramComponent implements OnInit {
         this.income = data.stats.income;
         this.currency = data.stats.currency;
         this.loading = false;
+        this.referralService.setIncome({
+          income: this.income,
+          currency: this.currency
+        });
 
         this.cdr.markForCheck();
       },

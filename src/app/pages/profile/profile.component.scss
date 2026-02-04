@@ -4,17 +4,6 @@
   padding: 0;
 }
 
-.container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16162a 100%);
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  padding: 40px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
 .profile-screen {
   width: 100%;
   min-width: 390px;
@@ -31,14 +20,14 @@
   position: sticky;
   top: 0;
   z-index: 10;
-}
 
-.profile-title {
-  display: flex;
-  padding: 24px 16px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
+  h2 {
+    display: flex;
+    padding: 24px 16px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+  }
 }
 
 .profile-content {
@@ -77,43 +66,66 @@
 }
 
 .avatar-item {
-  width: 60px;
-  height: 60px;
+  width: 98px;
+  height: 98px;
   border-radius: 50%;
-  background: rgba(60, 60, 80, 0.8);
-  border: 2px solid rgba(139, 92, 246, 0.3);
+  border: 2px solid rgb(117, 71, 220);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0, 0.2, 1),
+    border-color 0.25s ease;
+
+  will-change: transform;
+
+  img {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    border-color: rgba(139, 92, 246, 1);
+    transform: scale(1.02);
+
+    img {
+      transform: scale(1.02);
+    }
+  }
 }
 
-.avatar-item.add-avatar {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-color: #8b5cf6;
-  width: 92px;
-  height: 92px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar-item.add-avatar:hover {
-  border-color: rgba(139, 92, 246, 1);
-  background: rgba(70, 70, 90, 1);
-}
-
-.user-empty {
+.add-avatar {
   width: 98px;
   height: 98px;
-  font-size: 24px;
-  color: rgba(255, 255, 255, 0.7);
-}
+  border-radius: 50%;
+  border: 2px solid rgb(117, 71, 220);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0, 0.2, 1),
+    border-color 0.25s ease;
 
-.profile-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  will-change: transform;
+
+  img {
+    width: 98px;
+    height: 98px;
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    border-color: rgba(139, 92, 246, 1);
+    transform: scale(1.02);
+
+    img {
+      transform: scale(1.02);
+    }
+  }
 }
 
 .balance-text {
@@ -134,8 +146,7 @@
   color: #ffffff;
 }
 
-.subscription-details,
-.help-text {
+.subscription-details {
   font-size: 13px;
   font-weight: 500;
   color: #A9B2C8;

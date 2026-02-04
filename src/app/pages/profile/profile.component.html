@@ -1,6 +1,6 @@
 <div class="profile-screen">
   <header class="profile-header">
-    <h2 class="profile-title">Профиль</h2>
+    <h2>Профиль</h2>
   </header>
   <div class="profile-content">
     @if (!router.url.includes('add-avatar')) {
@@ -10,15 +10,15 @@
         <div class="avatars-display">
 
           @for (avatar of selectedAvatars; track avatar) {
-          <div class="avatar-item add-avatar">
-            <img [src]="avatar" alt="Avatar" class="profile-avatar" />
+          <div class="avatar-item">
+            <img [src]="avatar" alt="Avatar"/>
           </div>
           }
 
           @for (empty of [].constructor(3 - selectedAvatars.length > 0 ? 3 - selectedAvatars.length : 0); track $index)
           {
-          <div class="avatar-item add-avatar" (click)="goToAddAvatar()">
-            <img src="assets/icons/user-empty.svg" alt="Empty" class="profile-avatar" />
+          <div class="add-avatar" (click)="goToAddAvatar()">
+            <img src="assets/icons/user-empty.svg" alt="Empty"/>
           </div>
           }
 
@@ -57,7 +57,7 @@
     @if (!router.url.includes('affiliate-program')) {
       <div class="profile-card">
         <h3 class="card-title">Партнерская программа</h3>
-        <p class="partnership-text">4 500 руб</p>
+        <p class="partnership-text">{{ income }} {{ currency }}</p>
         <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goToAffiliateProgram()">
           Подробнее
         </app-button>

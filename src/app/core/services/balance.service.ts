@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import {Referral, ReferralInfo} from '../models/balance.model';
-import {environment} from '../../../environment/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Referral, ReferralInfo } from '../models/balance.model';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,17 @@ export class ReferralService {
   private readonly apiUrl = `${environment.apiUrl}/referral`;
 
   constructor(private http: HttpClient) {}
+
+  private incomeSubject = new BehaviorSubject<{ income: number; currency: string }>({
+    income: 0,
+    currency: ''
+  });
+
+  income$ = this.incomeSubject.asObservable();
+
+  setIncome(data: { income: number; currency: string }) {
+    this.incomeSubject.next(data);
+  }
 
   getReferralInfo(): Observable<ReferralInfo> {
     return this.http.get<ReferralInfo>(`${this.apiUrl}/info`);
