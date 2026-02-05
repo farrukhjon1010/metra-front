@@ -1,12 +1,14 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgClass, NgStyle } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonComponent } from '../../shared/components/button/button.component';
-import { AvatarService } from '../../core/services/avatar.service';
-import { CreateAvatarDto, Gender, GenerateAvatarDto } from '../../core/models/avatar.model';
-import { FileService } from '../../core/services/file.service';
-import { HelperService } from '../../core/services/helper.service';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AvatarService} from '../../core/services/avatar.service';
+import {Gender} from '../../core/models/avatar.model';
+import {FileService} from '../../core/services/file.service';
+import {SplashCaseComponent} from './components/splash-case/splash-case.component';
+import {SplashFormComponent} from './components/splash-form/splash-form.component';
+import {SplashSelectComponent} from './components/splash-select/splash-select.component';
+import {SplashSuccessComponent} from './components/splash-success/splash-success.component';
+import {Loading} from '../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-splash',
@@ -14,9 +16,11 @@ import { HelperService } from '../../core/services/helper.service';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    NgStyle,
-    ButtonComponent,
-    NgClass,
+    SplashCaseComponent,
+    SplashFormComponent,
+    SplashSelectComponent,
+    SplashSuccessComponent,
+    Loading,
   ],
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
@@ -25,30 +29,34 @@ export class SplashComponent {
 
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
 
-  @ViewChild('frontInput', { static: false }) frontInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
-
   currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
   gender: Gender = Gender.MALE
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
 
   photos = {
-    front: { file: null as File | null, preview: null as string | null },
-    left: { file: null as File | null, preview: null as string | null },
-    right: { file: null as File | null, preview: null as string | null },
+    front: {file: null as File | null, preview: null as string | null},
+    left: {file: null as File | null, preview: null as string | null},
+    right: {file: null as File | null, preview: null as string | null},
   };
+
+  get photosPreview() {
+    return {
+      front: this.photos.front.preview,
+      left: this.photos.left.preview,
+      right: this.photos.right.preview
+    };
+  }
 
   myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
 
   constructor(private router: Router,
-    private cdr: ChangeDetectorRef,
-    private avatarService: AvatarService,
-    private fileService: FileService,
-    private helperService: HelperService) { }
+              private cdr: ChangeDetectorRef,
+              private avatarService: AvatarService,
+              private fileService: FileService) {
+  }
 
   navigateToCreate(): void {
     this.currentStep = 'form';
@@ -58,35 +66,20 @@ export class SplashComponent {
     this.router.navigate(['/home']);
   }
 
-  triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
-    const map = {
-      front: this.frontInput,
-      left: this.leftInput,
-      right: this.rightInput,
-    };
-    map[type]?.nativeElement.click();
+  onGenderChange(newGender: Gender | 'male' | 'female'): void {
+    this.gender = newGender as Gender;
   }
 
-  removePhoto(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
+  onPhotoUploaded(event: { type: 'front' | 'left' | 'right'; dataUrl: string; file: File }): void {
+    this.photos[event.type].file = event.file;
+    this.photos[event.type].preview = event.dataUrl;
+    this.cdr.detectChanges();
+  }
+
+  onPhotoRemoved(type: 'front' | 'left' | 'right'): void {
     this.photos[type].file = null;
     this.photos[type].preview = null;
-  }
-
-  onFileSelected(event: Event, type: 'front' | 'left' | 'right') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) return;
-
-    // Сохраняем сам файл для отправки
-    this.photos[type].file = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photos[type].preview = reader.result as string;
-      this.cdr.detectChanges(); // обновляем UI сразу после загрузки
-    };
-    reader.readAsDataURL(file);
+    this.cdr.detectChanges();
   }
 
   canCreate() {
@@ -97,10 +90,6 @@ export class SplashComponent {
       this.photos.left &&
       this.photos.right
     );
-  }
-
-  isSelected(avatar: string): boolean {
-    return this.selectedAvatars.includes(avatar);
   }
 
   toggleAvatar(avatar: string) {
@@ -119,22 +108,19 @@ export class SplashComponent {
     this.cdr.detectChanges();
 
     try {
-      // 1. Скачиваем каждую картинку по ссылке и превращаем в File
       const uploadPromises = this.selectedAvatars.map(async (url, index) => {
         const response = await fetch(url);
         const blob = await response.blob();
-        return new File([blob], `${this.UUID}${index}.png`, { type: blob.type });
+        return new File([blob], `${this.UUID}${index}.png`, {type: blob.type});
       });
 
       const filesToUpload = await Promise.all(uploadPromises);
 
-      // 2. Загружаем на Cloudinary
       this.fileService.uploadGeneratedAvatars(filesToUpload, this.UUID).subscribe({
         next: (event: any) => {
           if (event.body) {
             const cloudinaryUrls = event.body.map((img: any) => img.url);
 
-            // 3. Сохраняем в БД
             this.avatarService.create({
               userId: this.UUID,
               name: this.myForm.value.avatarName || "New Avatar",
@@ -170,7 +156,6 @@ export class SplashComponent {
 
     const userId = this.UUID;
 
-    // Загрузка файлов
     this.fileService.uploadAvatars(filesToUpload, userId).subscribe({
       next: (event: any) => {
         if (event.body) {
@@ -184,7 +169,6 @@ export class SplashComponent {
             imageRight: urls[2]
           };
 
-          // Генерация
           this.avatarService.generateAvatar(generateDto).subscribe({
             next: (response: any) => {
               if (response.images) {
@@ -210,10 +194,5 @@ export class SplashComponent {
         this.cdr.detectChanges();
       }
     });
-  }
-
-  submit() {
-    if (this.myForm.invalid) return;
-    console.log('Форма отправлена', this.myForm.value);
   }
 }

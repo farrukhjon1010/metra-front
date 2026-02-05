@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ButtonComponent} from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-splash-select',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './splash-select.component.html',
   styleUrls: ['./splash-select.component.scss'],
 })
