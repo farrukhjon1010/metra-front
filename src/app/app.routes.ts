@@ -1,11 +1,11 @@
-import { Routes } from '@angular/router';
-import { SplashComponent } from './pages/splash/splash.component';
-import { CreateComponent } from './pages/create/create.component';
+import {Routes} from '@angular/router';
+import {SplashComponent} from './pages/splash/splash.component';
+import {CreateComponent} from './pages/create/create.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'splash', pathMatch: 'full' },
-  { path: 'splash', component: SplashComponent },
-  { path: 'create', component: CreateComponent },
+  {path: '', redirectTo: 'splash', pathMatch: 'full'},
+  {path: 'splash', component: SplashComponent},
+  {path: 'create', component: CreateComponent},
 
   {
     path: 'profile',
@@ -50,6 +50,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/history/history.component').then(m => m.HistoryComponent),
     children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/history/history-list/history-list.component')
+            .then(m => m.HistoryListComponent)
+      },
       {
         path: 'improving-quality',
         loadComponent: () =>

@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import {ReferralInfo} from '../../../core/models/balance.model';
-import {ReferralService} from '../../../core/services/balance.service';
+import {ReferralInfo} from '../../../core/models/referral.model';
+import {ReferralService} from '../../../core/services/referral.service';
 
 @Component({
   selector: 'app-affiliate-program',

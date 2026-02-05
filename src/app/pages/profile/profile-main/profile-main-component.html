@@ -7,7 +7,7 @@
     <div class="profile-card">
       <h3 class="card-title">Ваш аватар</h3>
       <div class="avatar-circle">
-        <div class="avatars-display">
+        <div class="avatars-display" >
           @for (avatar of selectedAvatars; track avatar){
           <div class="avatar-item">
             <img [src]="avatar" alt="Avatar" />
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      @if (selectedAvatars.length >= 3){
+      @if (selectedAvatars.length < 3){
       <app-button
         type="primary"
         icon="assets/icons/add.svg"
@@ -33,7 +33,7 @@
 
     <div class="profile-card">
       <h3 class="card-title">Баланс</h3>
-      <p class="balance-text">120 токенов</p>
+      <p class="balance-text">{{ balance$ | async}} токенов</p>
       <app-button
         type="primary"
         icon="assets/icons/add.svg"
@@ -62,7 +62,7 @@
 
     <div class="profile-card">
       <h3 class="card-title">Партнерская программа</h3>
-      <p class="partnership-text">{{ income }} {{ currency }}</p>
+      <p class="partnership-text"> {{ income$ | async }} {{ currency$ | async }}</p>
 
       <app-button
         type="primary"

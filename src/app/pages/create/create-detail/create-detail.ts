@@ -1,13 +1,13 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { CreateCard } from '../create.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { Router } from '@angular/router';
-import { FileService } from '../../../core/services/file.service';
-import { GenerationService } from '../../../core/services/generation.service';
-import { CreateGenerationDto, GenerateImageDto, GenerationType } from '../../../core/models/generation.model';
-import { switchMap } from 'rxjs';
-import { DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {CreateCard} from '../create.component';
+import {ButtonComponent} from '../../../shared/components/button/button.component';
+import {Router} from '@angular/router';
+import {FileService} from '../../../core/services/file.service';
+import {GenerationService} from '../../../core/services/generation.service';
+import {CreateGenerationDto, GenerateImageDto, GenerationType} from '../../../core/models/generation.model';
+import {switchMap} from 'rxjs';
+import {DatePipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 type CreateState = 'idle' | 'loading' | 'result';
 
@@ -213,7 +213,6 @@ export class CreateDetail implements OnInit {
     );
   }
 
-
   repeatGeneration(generation: any) {
     this.prompt = generation.prompt;
 
@@ -225,7 +224,6 @@ export class CreateDetail implements OnInit {
       textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
     });
   }
-
 
   downloadResultFile(file: string, type: 'image' | 'video') {
     fetch(file)

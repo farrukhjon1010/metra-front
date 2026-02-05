@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: column;
 
-  p{
+  p {
     font-size: 20px;
     font-family: system-ui;
     font-weight: 700;
@@ -58,6 +58,7 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
   }
+
   span {
     font-size: 14px;
     font-family: system-ui;
@@ -334,16 +335,16 @@
 }
 
 .create-prom-text {
-    font-size: 13px;
-    color: #E8EEFF;
-    flex: 1;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 12;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    word-break: break-word;
-    white-space: normal;
+  font-size: 13px;
+  color: #E8EEFF;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 12;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .lab-prom {
@@ -388,6 +389,7 @@
 .create-detail-content {
   padding: 0 16px;
 }
+
 .with-photo {
   width: 65px;
   height: 65px;

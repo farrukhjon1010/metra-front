@@ -1,12 +1,13 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {UpscaleService} from '../../../core/services/upscale.service';
 import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-improving-quality',
-  imports: [ButtonComponent],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './improving-quality.html',
   styleUrls: ['./improving-quality.scss'],
 })

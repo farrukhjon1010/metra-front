@@ -1,18 +1,15 @@
-export interface ReferralInfo {
-  referralLink: string;
-  stats: ReferralStats;
+export interface TokenBalance {
+  id: string
+  balance: number
+  user: User
 }
 
-export interface ReferralStats {
-  clicks: number;
-  purchases: number;
-  income: number;
-  currency: string;
-}
-
-export interface Referral {
-  id: string;
-  inviterId: string;
-  invitedUserId: string;
-  createdAt: string;
+export interface User {
+  id: string
+  telegramId: string
+  username: string
+  firstName: string
+  lastName: string
+  isBlocked: boolean
+  createdAt: string
 }
