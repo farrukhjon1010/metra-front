@@ -67,9 +67,6 @@ export class HomeComponent implements OnInit{
     this.selectedScene = scene;
   }
 
-  backToGrid() {
-    this.selectedScene = null;
-  }
 
   showPaidDialog = signal(true);
 
@@ -96,7 +93,7 @@ export class HomeComponent implements OnInit{
         this.isLoading = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
         this.cdr.detectChanges();
       }

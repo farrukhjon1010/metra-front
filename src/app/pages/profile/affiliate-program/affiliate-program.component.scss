@@ -1,13 +1,11 @@
 .affiliate-program-content {
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  gap: 160px;
 }
 
 .affiliate-program-header {
   display: flex;
-  margin: 8px 0;
+  padding: 24px 16px;
   gap: 16px;
 }
 
@@ -38,10 +36,13 @@
 .affiliate-link-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+  min-height: 508px;
 }
-
+.button-invite{
+  padding: 0 16px;
+}
 .your-link {
   width: 100%;
   max-width: 324px;
@@ -63,15 +64,54 @@
 }
 
 .copy-link-container {
-  display: flex;
-  align-items: center;
-  height: 34px;
-  max-width: 300px;
-  padding: 6px 12px;
+  padding: 12px 20px;
   border-radius: 12px;
   border: 1px solid #FFFFFF33;
   margin: 8px 0 16px 0;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  transition: 0.5s;
+}
+.copied-text {
+  font-size: 12px;
+  color: #E8EEFF;
+}
+
+.copy-link-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input.success {
+  border: 1px solid #E8EEFF;
+}
+
+.field-message {
+  float: right;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 12px;
+  opacity: 0;
+  animation: slideFade 5.5s ease forwards;
+
+  &.success {
+    color: #E8EEFF;
+  }
+}
+
+@keyframes slideFade {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .copy-link-container input {
@@ -79,9 +119,45 @@
   border: none;
   outline: none;
   background: transparent;
-  color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 12px;
+  font-weight: 600;
+  font-family: system-ui;
+  color: #E8EEFF;
+}
+
+.copy-icon {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.18s ease;
+
+  img {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  &.active {
+    transform: scale(1.15);
+    opacity: 0.75;
+  }
+}
+
+.copy-icon img {
+  transform: scale(1.02);
 }
 
 .balance-content {

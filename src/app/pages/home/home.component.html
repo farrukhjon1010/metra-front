@@ -9,25 +9,28 @@
       </div>
       @if (userAvatars.length){
       <div class="home__avatar-icon">
-        <img [src]="currentAvatar">
+        <img [src]="currentAvatar" alt="">
       </div>
       }
       @else {
       <div class="home__avatar-icon">
-        <img src="assets/icons/user-empty.svg">
+        <img src="assets/icons/user-empty.svg" alt="">
       </div>
       }
     </div>
   </header>
 
   @if (!selectedScene) {
-  <app-scenes-grid [scenes]="scenes" (selectScene)="onSceneSelect($event)">
-  </app-scenes-grid>
+    <app-scenes-grid
+      [scenes]="scenes"
+      (selectScene)="onSceneSelect($event)">
+    </app-scenes-grid>
   }
 
-  @if (selectedScene){
-  <app-scenes-card [scene]="selectedScene" (back)="backToGrid()">
-  </app-scenes-card>
+  @if (selectedScene) {
+    <app-scenes-card
+      [scene]="selectedScene">
+    </app-scenes-card>
   }
 
   <div class="home__content">

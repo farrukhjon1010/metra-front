@@ -27,7 +27,7 @@ export class AddAvatarComponent {
   currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
-  
+
   photos = {
     front: { file: null as File | null, preview: null as string | null },
     left: { file: null as File | null, preview: null as string | null },

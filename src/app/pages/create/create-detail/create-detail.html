@@ -17,6 +17,7 @@
         <label>Введите запрос</label>
         <img src="assets/icons/awesome.svg" alt="">
         <textarea
+          #promptTextarea
           [(ngModel)]="prompt"
           placeholder="Опишите ваше изображение"
           rows="4">
@@ -80,10 +81,16 @@
           <img [src]="resultImageUrl" alt="">
         </div>
         <div class="btn-detail">
-          <app-button type="secondary" icon="assets/icons/download.svg">
+          <app-button
+            type="secondary"
+            icon="assets/icons/download.svg"
+            (click)="downloadResultFile(resultImageUrl!, 'image')">
             Скачать
           </app-button>
-          <app-button type="secondary" icon="assets/icons/change.svg">
+          <app-button
+            type="secondary"
+            icon="assets/icons/change.svg"
+            (click)="editFile()">
             Изменить
           </app-button>
         </div>
@@ -93,8 +100,7 @@
         Создать ещё
       </app-button>
     </div>
-    }
-
+      }
     }
   </div>
 
@@ -123,7 +129,7 @@
 
         <div class="scenes-pro-detail">
           <label>Сцены</label>
-          <span>{{ generation.type }}</span>
+          <span>{{ generation.category }}</span>
         </div>
 
         <div class="date-detail-prom">
@@ -135,28 +141,33 @@
       <div class="right-photo-detail">
         <div class="photo-detail"><img class="photo-history" [src]="generation.imageURL" alt=""></div>
 
-        <app-button type="primary" icon="assets/icons/update.svg">
+        <app-button
+          type="primary"
+          icon="assets/icons/update.svg"
+          (click)="repeatGeneration(generation)">
           Повторить
         </app-button>
 
-        <app-button type="secondary" icon="assets/icons/download.svg">
+        <app-button
+          type="secondary"
+          icon="assets/icons/download.svg"
+          (click)="downloadFile(generation.imageURL, 'image')">
           Скачать
         </app-button>
 
-        <app-button type="secondary" icon="assets/icons/photo-size.svg">
+        <app-button
+          type="secondary"
+          icon="assets/icons/photo-size.svg"
+          (click)="goToUpscale(generation.imageURL)">
           Upscale
         </app-button>
       </div>
     </div>
-
-
     }
     <app-button type="secondary" (click)="navigateToHistory()">
       Открыть историю
     </app-button>
   </div>
   }
-
-
 </div>
 </div>

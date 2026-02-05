@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
+import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { Router } from '@angular/router';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import {ReferralInfo} from '../../../core/models/balance.model';
+import {ReferralService} from '../../../core/services/balance.service';
 
 @Component({
   selector: 'app-affiliate-program',
@@ -8,30 +10,66 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
   templateUrl: './affiliate-program.component.html',
   styleUrls: ['./affiliate-program.component.scss'],
 })
-export class AffiliateProgramComponent {
-  link: any;
+export class AffiliateProgramComponent implements OnInit {
 
-  constructor(private router: Router) {
+  link = '';
+  clicks = 0;
+  purchases = 0;
+  income = 0;
+  currency = '';
+
+  copied = false;
+  loading = true;
+
+  @Output() incomeChange = new EventEmitter<number>();
+
+  constructor(
+    private router: Router,
+    private referralService: ReferralService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.loadReferralInfo();
+  }
+
+  loadReferralInfo() {
+    this.referralService.getReferralInfo().subscribe({
+      next: (data: ReferralInfo) => {
+        this.link = data.referralLink;
+        this.clicks = data.stats.clicks;
+        this.purchases = data.stats.purchases;
+        this.income = data.stats.income;
+        this.currency = data.stats.currency;
+        this.loading = false;
+        this.referralService.setIncome({
+          income: this.income,
+          currency: this.currency
+        });
+
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки рефералки', err);
+        this.loading = false;
+      }
+    });
   }
 
   goBack() {
     this.router.navigate(['/profile']);
   }
 
-
-  copied = false;
-
   copyLink() {
-    const textToCopy = 'Привет!';
+    if (!this.link) return;
 
-    navigator.clipboard.writeText(textToCopy).then(() => {
+    navigator.clipboard.writeText(this.link).then(() => {
       this.copied = true;
 
       setTimeout(() => {
         this.copied = false;
-      }, 2000);
-    }).catch(err => {
-      console.error('Не удалось скопировать текст: ', err);
+      }, 1500);
+      this.cdr.detectChanges();
     });
   }
 
@@ -39,7 +77,15 @@ export class AffiliateProgramComponent {
 
   }
 
-  goToShare() {
+  shareReferralLink() {
+    if (!this.link) return;
 
+    if (navigator.share) {
+      navigator.share({
+        url: this.link
+      }).catch(() => {});
+    } else {
+      this.copyLink();
+    }
   }
 }

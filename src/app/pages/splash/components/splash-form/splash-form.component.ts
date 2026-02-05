@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgClass, NgStyle} from '@angular/common';
 import {ButtonComponent} from '../../../../shared/components/button/button.component';
@@ -6,7 +7,7 @@ import {ButtonComponent} from '../../../../shared/components/button/button.compo
 @Component({
   selector: 'app-splash-form',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, NgStyle, NgClass, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgStyle, NgClass, ButtonComponent],
   templateUrl: './splash-form.component.html',
   styleUrls: ['./splash-form.component.scss'],
 })
