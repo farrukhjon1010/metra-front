@@ -67,9 +67,6 @@ export class HomeComponent implements OnInit{
     this.selectedScene = scene;
   }
 
-  backToGrid() {
-    this.selectedScene = null;
-  }
 
   showPaidDialog = signal(true);
 

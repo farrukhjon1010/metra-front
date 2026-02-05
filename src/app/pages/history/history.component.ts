@@ -53,7 +53,7 @@ export class HistoryComponent implements OnInit {
   }
 
   navigateToCreate() {
-    this.router.navigate(['/history/improving-quality']);
+    this.router.navigate(['/create']);
   }
 
   downloadFile(url: string, type: 'image' | 'video') {
