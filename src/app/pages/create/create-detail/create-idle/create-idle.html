@@ -1,0 +1,57 @@
+<div class="create-detail">
+  <div class="text-ai-generation">
+    <label>Введите запрос</label>
+    <img src="assets/icons/awesome.svg" alt="">
+    <textarea
+      #promptTextarea
+      [(ngModel)]="prompt"
+      placeholder="Опишите ваше изображение"
+      rows="4">
+      </textarea>
+  </div>
+
+  <div class="photo-upload-section">
+    <label class="form-label-detail">Загрузите фото</label>
+
+    <div class="upload-row-quality">
+      <div class="upload-area-small" (click)="triggerFileInput('generate', $event)">
+        <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+               (change)="onPhotoSelected($event, 'generate')" style="display: none;">
+
+        <div class="upload-create-quality">
+          <span class="upload-text-small">Загрузить</span>
+          <span class="upload-formats">
+                JPEG, JPG, PNG, HEIC, WEBP
+          </span>
+        </div>
+
+        <img src="assets/icons/upload.svg" alt="Icon">
+      </div>
+    </div>
+
+    @if (photos.generate) {
+      <div class="photo-quality">
+        <img class="with-photo" [src]="photos.generate" alt="Photo">
+
+        <button class="delete-photo-generation" (click)="removePhoto('generate', $event)">
+          <img src="assets/icons/delete.svg" alt="">
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="btn-quality">
+    <app-button
+      type="primary"
+      icon="assets/icons/add.svg"
+      (click)="createImage()"
+      [disabled]="!photos.generate && !prompt">
+      Создать изображение
+    </app-button>
+  </div>
+</div>
+
+<app-generation-history
+  [history]="generationHistory"
+  (repeat)="onRepeat($event)">
+</app-generation-history>

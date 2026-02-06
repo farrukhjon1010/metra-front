@@ -4,7 +4,8 @@ import { PaidDialog } from '../../shared/paid-dialog/paid-dialog';
 import { ScenesGrid } from '../scenes/scenes-grid/scenes-grid';
 import { ScenesCard } from '../scenes/scenes-card/scenes-card';
 import { AvatarService } from '../../core/services/avatar.service';
-
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -21,11 +22,22 @@ export class HomeComponent implements OnInit{
 
   constructor(
     private avatarService: AvatarService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.loadUserAvatars();
+
+    // Reset view when navigating back to /home
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      if (event.urlAfterRedirects === '/home') {
+        this.selectedScene = null;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   scenes = [
@@ -99,5 +111,4 @@ export class HomeComponent implements OnInit{
       }
     });
   }
-
 }

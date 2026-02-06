@@ -29,7 +29,8 @@
 
   @if (selectedScene) {
     <app-scenes-card
-      [scene]="selectedScene">
+      [scene]="selectedScene"
+      (back)="selectedScene = null">
     </app-scenes-card>
   }
 

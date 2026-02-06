@@ -1,17 +1,20 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CreateCard} from '../create.component';
+import {Component} from '@angular/core';
+import {CREATE_CARDS, CreateCard} from '../create.data';
+import {Router} from '@angular/router';
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-create-grid',
-  imports: [],
+  imports: [CommonModule],
   standalone: true,
   templateUrl: './create-grid.html',
   styleUrls: ['./create-grid.scss'],
 })
 export class CreateGrid {
 
-  @Input() cards: CreateCard[] = [];
-  @Output() select = new EventEmitter<CreateCard>();
+  cards: CreateCard[] = CREATE_CARDS;
+
+  constructor(private router: Router) {}
 
   get categories(): string[] {
     return [...new Set(this.cards.map(card => card.category))];
@@ -22,6 +25,6 @@ export class CreateGrid {
   }
 
   selectCard(card: CreateCard) {
-    this.select.emit(card);
+    this.router.navigate(['/create', card.type]);
   }
 }

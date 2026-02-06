@@ -55,4 +55,21 @@ export class FileService {
         return this.http.post(`${this.apiUrl}/files/save-generated/${userId}`, formData);
     }
 
+    downloadFile(url: string, type: 'image' | 'video') {
+        fetch(url)
+          .then(res => res.blob())
+          .then(blob => {
+            const a = document.createElement('a');
+            const objectUrl = URL.createObjectURL(blob);
+
+            a.href = objectUrl;
+            a.download = type === 'image'
+              ? 'generation-image.jpg'
+              : 'generation-video.mp4';
+
+            a.click();
+            URL.revokeObjectURL(objectUrl);
+          });
+      }
+
 }

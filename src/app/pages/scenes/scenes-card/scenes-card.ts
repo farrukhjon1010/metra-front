@@ -3,13 +3,14 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 import {SceneService} from '../../../core/services/scene.service';
 import {GenerationType} from '../../../core/models/generation.model';
 import {Router} from '@angular/router';
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-scenes-card',
   templateUrl: './scenes-card.html',
   styleUrls: ['./scenes-card.scss'],
   standalone: true,
-  imports: [ButtonComponent]
+  imports: [ButtonComponent, CommonModule]
 })
 export class ScenesCard implements OnChanges {
 
@@ -52,10 +53,10 @@ export class ScenesCard implements OnChanges {
   }
 
   openTemplate(t: { name: string; prompt: string }) {
-    this.router.navigate(['/create'], {
+    this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
       state: {
-        type: GenerationType.PHOTO_BY_STAGE,
-        prompt: t.prompt
+        prompt: t.prompt,
+        fromHistory: true // Treat it like a jump from another page
       }
     });
   }

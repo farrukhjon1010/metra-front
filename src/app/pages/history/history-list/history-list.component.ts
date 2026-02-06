@@ -2,9 +2,9 @@ import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {DatePipe, NgStyle, CommonModule} from '@angular/common';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {Router} from '@angular/router';
-import {CreateCard} from '../../create/create.component';
 import {GenerationService} from '../../../core/services/generation.service';
 import {GenerationType} from '../../../core/models/generation.model';
+import {CreateCard} from '../../create/create.data';
 
 @Component({
   selector: 'app-history-list',
