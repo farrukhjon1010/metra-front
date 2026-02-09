@@ -74,21 +74,24 @@ export class HistoryListComponent implements OnInit {
       });
   }
 
-  goToUpscale(imageUrl: string) {
+  goToUpscale(imageUrl: string, id: string) {
     this.router.navigate(
       ['/history/improving-quality'],
-      {state: {imageUrl}}
+      { state: { imageUrl, id } }
     );
   }
 
+
   repeatGeneration(generation: any) {
-    this.router.navigate(['/create'], {
-      state: {
-        id: generation.id,
-        prompt: generation.prompt,
-        imageUrl: generation.imageURL,
-        type: generation.type as GenerationType
+    this.router.navigate(
+      ['/create', generation.type],
+      {
+        state: {
+          id: generation.id,
+          prompt: generation.prompt,
+          imageUrl: generation.imageURL
+        }
       }
-    });
+    );
   }
 }

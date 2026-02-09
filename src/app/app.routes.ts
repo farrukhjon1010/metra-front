@@ -12,16 +12,19 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('./pages/create/create-grid/create-grid').then(m => m.CreateGrid)
+        loadComponent: () =>
+          import('./pages/create/create-grid/create-grid')
+            .then(m => m.CreateGrid)
       },
       {
         path: ':type',
         data: { title: 'Создать', showHeader: false },
-        loadComponent: () => import('./pages/create/create-detail/create-detail').then(m => m.CreateDetail)
+        loadComponent: () =>
+          import('./pages/create/create-detail/create-detail')
+            .then(m => m.CreateDetail)
       }
     ]
   },
-
   {
     path: 'profile',
     data: { title: 'Профиль', showHeader: true },
