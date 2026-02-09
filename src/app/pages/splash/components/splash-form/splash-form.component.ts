@@ -12,26 +12,19 @@ import {ButtonComponent} from '../../../../shared/components/button/button.compo
   styleUrls: ['./splash-form.component.scss'],
 })
 export class SplashFormComponent {
+
+  @Input() myForm!: FormGroup;
+  @Input() gender: 'male' | 'female' = 'male';
+  @Input() photos: { front: string | null; left: string | null; right: string | null } = {front: null, left: null, right: null};
   @ViewChild('frontInput', {static: false}) frontInput!: ElementRef<HTMLInputElement>;
   @ViewChild('leftInput', {static: false}) leftInput!: ElementRef<HTMLInputElement>;
   @ViewChild('rightInput', {static: false}) rightInput!: ElementRef<HTMLInputElement>;
-
-  @Input() gender: 'male' | 'female' = 'male';
   @Output() genderChange = new EventEmitter<'male' | 'female'>();
   @Output() triggerCreate = new EventEmitter<void>();
-
-  @Input() myForm!: FormGroup;
-  @Input() photos: { front: string | null; left: string | null; right: string | null } = {
-    front: null,
-    left: null,
-    right: null
-  };
-
   @Output() photoUploaded = new EventEmitter<{ type: 'front' | 'left' | 'right'; dataUrl: string; file: File }>();
   @Output() photoRemoved = new EventEmitter<'front' | 'left' | 'right'>();
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
     event.stopPropagation();

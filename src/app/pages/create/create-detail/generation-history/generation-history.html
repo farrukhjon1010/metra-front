@@ -1,10 +1,10 @@
-<div class="create-detail-content">
-  <h1 class="last-generation-text">Последние генерации</h1>
+<div class="generation-create-content">
+  <h1 class="generation-text">Последние генерации</h1>
 
   @if (history.length < 1) {
-    <div class="empty-content-detail">
-      <div class="create-of-detail">
-        <div class="no-create-image-wrapper">
+    <div class="empty-content-generation">
+      <div class="create-of-generation">
+        <div class="no-create-image-generation">
           <div>
             <img src="assets/icons/error.svg" alt="">
           </div>
@@ -15,26 +15,29 @@
   } @else {
     <div class="history-content-detail">
       @for (generation of history; track generation.id) {
-        <div class="create-generate-detail">
-          <div class="left-text-detail">
-            <div class="date-detail">
+        <div class="create-generate">
+          <div class="left-text-generation">
+            <div class="date-generation">
               <label>Дата</label>
               <span>{{ generation.createdAt | date:'MM.dd.yyyy / HH:mm' }}</span>
             </div>
 
-            <div class="scenes-pro-detail">
+            <div class="scenes-pro">
               <label>Сцены</label>
               <span>{{ generation.category }}</span>
             </div>
 
-            <div class="date-detail-prom">
-              <span class="lab-prom">Promt</span>
-              <span class="create-prom-text">{{ generation.prompt }}</span>
+            <div class="date-promt">
+              <span class="promt-generation">Promt</span>
+              <span class="promt-text-generation">{{ generation.prompt }}</span>
             </div>
           </div>
 
-          <div class="right-photo-detail">
-            <div class="photo-detail"><img class="photo-history" [src]="generation.imageURL" alt=""></div>
+          <div class="right-photo">
+            <div class="photo-detail-generation">
+              <img class="photo-history-generation"
+                  [src]="generation.imageURL" alt="">
+            </div>
 
             <app-button
               type="primary"

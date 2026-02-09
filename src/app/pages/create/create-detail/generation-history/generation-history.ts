@@ -28,9 +28,9 @@ export class GenerationHistory {
   downloadFile(url: string, type: 'image' | 'video') {
     fetch(url)
       .then(res => res.blob())
-      .then(n => {
+      .then(el => {
         const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(n);
+        const objectUrl = URL.createObjectURL(el);
 
         a.href = objectUrl;
         a.download = type === 'image'

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Router, RouterOutlet} from '@angular/router';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-history',
@@ -9,11 +9,4 @@ import {Router, RouterOutlet} from '@angular/router';
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss'],
 })
-export class HistoryComponent {
-
-  constructor(private router: Router) {}
-
-  get showHeader(): boolean {
-    return !this.router.url.includes('improving-quality');
-  }
-}
+export class HistoryComponent {}

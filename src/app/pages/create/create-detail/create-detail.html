@@ -2,7 +2,7 @@
 
   <div class="create-header-card">
     <img src="assets/icons/arrow-back.svg" alt="Назад" (click)="goBack()">
-    <div class="head-text">
+    <div class="head-text-create-detail">
       <p>{{ card.title }}</p>
       <span>Генерация изображений по вашему описанию</span>
     </div>
@@ -24,17 +24,17 @@
         </textarea>
           </div>
 
-          <div class="photo-upload-section">
+          <div class="photo-upload-create-detail">
             <label class="form-label-detail">Загрузите фото</label>
 
-            <div class="upload-row-quality">
-              <div class="upload-area-small" (click)="triggerFileInput('generate', $event)">
+            <div class="row-quality">
+              <div class="upload-small" (click)="triggerFileInput('generate', $event)">
                 <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                        (change)="onPhotoSelected($event, 'generate')" style="display: none;">
 
                 <div class="upload-create-quality">
-                  <span class="upload-text-small">Загрузить</span>
-                  <span class="upload-formats">
+                  <span class="text-small">Загрузить</span>
+                  <span class="upload-formats-small">
                 JPEG, JPG, PNG, HEIC, WEBP
               </span>
                 </div>
@@ -107,7 +107,7 @@
 
     @if (generationHistory.length < 1) {
       <div class="empty-content-detail">
-        <div class="create-of-detail">
+        <div class="empty-create-detail">
           <div class="no-create-image-wrapper">
             <div>
               <img src="assets/icons/error.svg" alt="">

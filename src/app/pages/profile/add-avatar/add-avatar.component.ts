@@ -8,7 +8,6 @@ import { AvatarService } from '../../../core/services/avatar.service';
 import { FileService } from '../../../core/services/file.service';
 import { Loading } from '../../../shared/components/loading/loading';
 
-
 @Component({
   selector: 'app-add-avatar',
   standalone: true,

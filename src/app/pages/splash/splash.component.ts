@@ -28,12 +28,10 @@ import {Loading} from '../../shared/components/loading/loading';
 export class SplashComponent {
 
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
-
   currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
   gender: Gender = Gender.MALE
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
-
   photos = {
     front: {file: null as File | null, preview: null as string | null},
     left: {file: null as File | null, preview: null as string | null},
@@ -55,8 +53,7 @@ export class SplashComponent {
   constructor(private router: Router,
               private cdr: ChangeDetectorRef,
               private avatarService: AvatarService,
-              private fileService: FileService) {
-  }
+              private fileService: FileService) {}
 
   navigateToCreate(): void {
     this.currentStep = 'form';

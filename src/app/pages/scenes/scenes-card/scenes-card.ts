@@ -18,16 +18,11 @@ export class ScenesCard implements OnChanges {
   @Output() back = new EventEmitter<void>();
 
   templates: { name: string; prompt: string }[] = [];
-  freeStyle: { name: string; prompt: string }[] = [];
-  secondCards: any;
-
   showFreeStyle: boolean = false;
-
 
   constructor(private sceneService: SceneService,
               private cdr: ChangeDetectorRef,
-              private router: Router,) {
-  }
+              private router: Router,) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['scene'] && this.scene) {
@@ -56,7 +51,7 @@ export class ScenesCard implements OnChanges {
     this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
       state: {
         prompt: t.prompt,
-        fromHistory: true // Treat it like a jump from another page
+        fromHistory: true
       }
     });
   }

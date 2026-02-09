@@ -68,7 +68,6 @@ export const routes: Routes = [
       }
     ]
   },
-
   {
     path: 'history',
     data: { title: 'История', showHeader: true },
@@ -90,7 +89,6 @@ export const routes: Routes = [
       }
     ]
   },
-
   {
     path: 'home',
     data: { title: 'Главная', showHeader: false },

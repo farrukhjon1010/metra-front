@@ -1,6 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AvatarService} from '../../../core/services/avatar.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-header',
@@ -18,8 +17,7 @@ export class HomeHeader implements OnInit {
 
   constructor(
     private avatarService: AvatarService,
-    private cdr: ChangeDetectorRef,
-    private router: Router
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {

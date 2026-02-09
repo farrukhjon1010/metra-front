@@ -17,7 +17,6 @@ export class AffiliateProgramComponent implements OnInit {
   purchases = 0;
   income = 0;
   currency = '';
-
   copied = false;
   loading = true;
 

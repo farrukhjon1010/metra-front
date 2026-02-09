@@ -132,21 +132,6 @@
   }
 }
 
-.prom-text {
-  font-size: 13px;
-  font-weight: 400;
-  color: #E8EEFF;
-  flex: 1;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 12;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  word-break: break-word;
-  white-space: normal;
-}
-
-
 .right-photo-detail {
   display: flex;
   flex-direction: column;

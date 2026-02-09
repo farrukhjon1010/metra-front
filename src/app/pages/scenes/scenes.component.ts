@@ -13,11 +13,10 @@ import {SCENES, Scene} from '../home/home.data';
   styleUrls: ['./scenes.component.scss'],
 })
 export class ScenesComponent {
+
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
   scenes = SCENES;
-
   private params = toSignal(this.route.paramMap);
 
   selectedScene = computed(() => {

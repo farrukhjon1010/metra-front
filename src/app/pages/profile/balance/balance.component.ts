@@ -17,10 +17,7 @@ export class BalanceComponent implements OnInit {
   constructor(private router: Router) {
   }
 
-  ngOnInit() {
-
-
-  }
+  ngOnInit() {}
 
   addFunds() {
 
