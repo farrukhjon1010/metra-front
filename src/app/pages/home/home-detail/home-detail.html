@@ -1,3 +1,9 @@
-<app-scenes-card
-  [scene]="scene">
-</app-scenes-card>
+<div class="home-detail">
+  <app-home-header></app-home-header>
+@if (scene) {
+  <app-scenes-card
+    [scene]="scene"
+    (back)="onBack()">
+  </app-scenes-card>
+}
+</div>

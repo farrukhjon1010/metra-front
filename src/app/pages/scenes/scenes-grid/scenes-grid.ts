@@ -1,11 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ScenesHeader } from '../scenes-header/scenes-header';
-
-export interface SceneUI {
-  name: string;
-  description: string;
-  image: string;
-}
+import { Scene } from '../../home/home.data';
 
 @Component({
   selector: 'app-scenes-grid',
@@ -15,10 +10,10 @@ export interface SceneUI {
   styleUrls: ['./scenes-grid.scss'],
 })
 export class ScenesGrid {
-  @Input() scenes: SceneUI[] = [];
-  @Output() selectScene = new EventEmitter<SceneUI>();
+  @Input() scenes: Scene[] = [];
+  @Output() selectScene = new EventEmitter<Scene>();
 
-  select(scene: SceneUI) {
+  select(scene: Scene) {
     this.selectScene.emit(scene);
   }
 }

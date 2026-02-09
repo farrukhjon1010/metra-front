@@ -95,11 +95,32 @@ export const routes: Routes = [
     path: 'home',
     data: { title: 'Главная', showHeader: false },
     loadComponent: () =>
-      import('./pages/home/home.component').then(m => m.HomeComponent)
+      import('./pages/home/home.component').then(m => m.HomeComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/home/home-main/home-main.component')
+            .then(m => m.HomeMainComponent)
+      },
+      {
+        path: ':id',
+        data: { title: 'Главная', showHeader: false },
+        loadComponent: () =>
+          import('./pages/home/home-detail/home-detail')
+            .then(m => m.HomeDetail)
+      }
+    ]
   },
   {
     path: 'scenes',
     data: { title: 'Сцены', showHeader: false },
+    loadComponent: () =>
+      import('./pages/scenes/scenes.component').then(m => m.ScenesComponent)
+  },
+  {
+    path: 'scenes/detail/:id',
+    data: { title: 'Сцена', showHeader: false },
     loadComponent: () =>
       import('./pages/scenes/scenes.component').then(m => m.ScenesComponent)
   },
