@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges
 import {FormsModule} from '@angular/forms';
 import {ButtonComponent} from '../../../../shared/components/button/button.component';
 import {CreateCard} from '../../create.data';
+import {GenerationService} from "../../../../core/services/generation.service";
 
 @Component({
   selector: 'app-create-idle',
@@ -31,9 +32,11 @@ export class CreateIdle implements OnChanges {
   selectedFile: File | null = null;
   photos: { generate: string | null } = {generate: null};
   prompt = '';
+  isLoadingPrompt = false;
 
   constructor(
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private generationService: GenerationService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -80,5 +83,33 @@ export class CreateIdle implements OnChanges {
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
+  }
+
+  generatePrompt(): void {
+    if (!this.card?.type || this.isLoadingPrompt) return;
+
+    this.isLoadingPrompt = true;
+    this.cdr.detectChanges();
+
+    this.generationService.getPrompt(this.card.type)
+        .subscribe({
+          next: res => {
+            this.prompt = res.prompt;
+
+            setTimeout(() => {
+              if (this.textarea) {
+                this.textarea.nativeElement.focus();
+                const len = this.textarea.nativeElement.value.length;
+                this.textarea.nativeElement.selectionStart = len;
+                this.textarea.nativeElement.selectionEnd = len;
+              }
+            });
+          },
+          error: err => console.error('Ошибка получения prompt:', err),
+          complete: () => {
+            this.isLoadingPrompt = false;
+            this.cdr.detectChanges();
+          }
+        });
   }
 }

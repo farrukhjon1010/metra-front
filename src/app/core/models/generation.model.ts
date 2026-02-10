@@ -12,7 +12,7 @@ export enum GenerationType {
 export interface GenerateImageDto {
   type: GenerationType;
   prompt: string;
-  image: string; // URL исходного фото
+  image: string;
 }
 
 export interface GenerationResponse {
@@ -27,4 +27,9 @@ export interface CreateGenerationDto {
   prompt: string;
   imageURL: string;
   externalTaskId?: string;
+}
+
+export interface GenerationPromptResponse {
+  type: string;
+  prompt: string;
 }

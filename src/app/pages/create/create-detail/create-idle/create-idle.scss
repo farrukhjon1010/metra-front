@@ -30,6 +30,7 @@
     font-size: 15px;
     font-family: system-ui;
     margin-top: 8px;
+    letter-spacing: 0.5px;
   }
 
   textarea::placeholder {
@@ -108,4 +109,9 @@
   width: 65px;
   height: 65px;
   border-radius: 12px;
+}
+
+.text-ai-generation img.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

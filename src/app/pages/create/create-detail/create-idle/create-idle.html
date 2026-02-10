@@ -1,12 +1,16 @@
 <div class="create-detail">
   <div class="text-ai-generation">
     <label>Введите запрос</label>
-    <img src="assets/icons/awesome.svg" alt="">
-    <textarea
-      #promptTextarea
-      [(ngModel)]="prompt"
-      placeholder="Опишите ваше изображение"
-      rows="4">
+      <img src="assets/icons/awesome.svg"
+           alt="AI"
+           (click)="generatePrompt()"
+           [class.disabled]="isLoadingPrompt">
+
+        <textarea
+            #promptTextarea
+            [(ngModel)]="prompt"
+            placeholder="Опишите ваше изображение"
+            rows="4">
         </textarea>
   </div>
 
