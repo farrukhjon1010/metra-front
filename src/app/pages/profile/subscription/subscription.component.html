@@ -1,8 +1,8 @@
 <div class="subscription-header">
-    <span (click)="goBack()">
+    <div (click)="goBack()">
       <img src="assets/icons/arrow-back.svg" alt="">
-    </span>
-  <div class="subscription-header-balance">
+    </div>
+  <div class="subscription-balance">
     <span>Подписка METRA</span>
   </div>
 </div>
@@ -19,20 +19,29 @@
         <p>Вы получаете:</p>
         <div [class]="plan.spanClass">
           @for (feature of plan.features; track feature) {
-            <span><img src="assets/icons/check-confirm.svg" alt="">{{ feature }}</span>
+            <span>
+              <img src="assets/icons/check-confirm.svg" alt="">
+              {{ feature }}
+            </span>
           }
         </div>
         <p>Пример использования:</p>
         <div [class]="plan.spanClass">
           @for (example of plan.examples; track example) {
-            <span><img src="assets/icons/awesome.svg" alt="">{{ example }}</span>
+            <span>
+              <img src="assets/icons/awesome.svg" alt="">
+              {{ example }}
+            </span>
           }
         </div>
         <div [class]="'btn-card-' + plan.id">
           <app-button type="secondary">
             {{ plan.price }} руб
           </app-button>
-          <app-button [type]="plan.buttonType" icon="assets/icons/arrow-forward.svg" (click)="selectPlan(plan)">
+          <app-button
+            [type]="plan.buttonType"
+            icon="assets/icons/arrow-forward.svg"
+            (click)="selectPlan(plan)">
             Выбрать
           </app-button>
         </div>
