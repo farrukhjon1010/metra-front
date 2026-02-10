@@ -13,7 +13,7 @@ export interface GenerateAvatarDto {
 
 export interface AvatarResponse {
   success: boolean;
-  images: string[]; 
+  images: string[];
 }
 
 export interface Avatar {
@@ -22,7 +22,7 @@ export interface Avatar {
   gender: string;
   imagesURL: string[];
   userId: string;
-  user?: any; 
+  user?: any;
 }
 
 export interface CreateAvatarDto {

@@ -1,0 +1,32 @@
+<div class="result-detail">
+  <div class="result-generate">
+    <h1>Результат</h1>
+    <span>
+      {{ prompt }}
+    </span>
+    <div class="image-generation">
+      <img [src]="resultImageUrl" alt="">
+    </div>
+    <div class="btn-detail">
+      <app-button
+        type="secondary"
+        icon="assets/icons/download.svg"
+        (click)="downloadResultFile()">
+        Скачать
+      </app-button>
+      <app-button
+        type="secondary"
+        icon="assets/icons/change.svg"
+        (click)="onEdit()">
+        Изменить
+      </app-button>
+    </div>
+  </div>
+
+  <app-button
+    type="primary"
+    icon="assets/icons/add.svg"
+    (click)="onCreateAnother()">
+    Создать ещё
+  </app-button>
+</div>

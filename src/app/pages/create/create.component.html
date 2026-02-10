@@ -1,22 +1,3 @@
 <div class="create">
-
-  @if (!selectedCard) {
-  <header class="create-header">
-    <h2 class="create__title">Создать</h2>
-  </header>
-
-  <app-create-grid
-    [cards]="cards"
-    (select)="selectCard($event)">
-  </app-create-grid>
-  }
-
-  @if (selectedCard) {
-    <app-create-detail
-      [card]="selectedCard"
-      [initialPrompt]="initialPrompt"
-      [initialImageUrl]="initialImageUrl"
-      (back)="back()">
-    </app-create-detail>
-  }
+  <router-outlet></router-outlet>
 </div>

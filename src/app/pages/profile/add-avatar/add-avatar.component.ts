@@ -27,6 +27,7 @@ export class AddAvatarComponent {
   currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
+  protected readonly Gender = Gender;
 
   photos = {
     front: { file: null as File | null, preview: null as string | null },
@@ -67,14 +68,11 @@ export class AddAvatarComponent {
 
     this.avatarService.findByUser(userId).subscribe({
       next: (existingAvatar) => {
-        // Если 0 фото -> индекс 1
-        // Если 1 фото -> индекс 2
         const currentCount = existingAvatar?.imagesURL?.length || 0;
         const nextIndex = currentCount + 1;
-
         this.uploadAndSave(selectedUrl, userId, nextIndex);
       },
-      error: (err) => {
+      error: () => {
         this.uploadAndSave(selectedUrl, userId, 1);
       }
     });
@@ -112,17 +110,15 @@ export class AddAvatarComponent {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
 
-    // Сохраняем сам файл для отправки
     this.photos[type].file = file;
 
     const reader = new FileReader();
     reader.onload = () => {
       this.photos[type].preview = reader.result as string;
-      this.cdr.detectChanges(); // обновляем UI сразу после загрузки
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
   }
-
 
   removePhoto(type: 'front' | 'left' | 'right', event: Event) {
     event.stopPropagation();
@@ -130,16 +126,12 @@ export class AddAvatarComponent {
     this.photos[type].preview = null;
   }
 
-  canCreate() {
-    const avatarName = this.myForm.controls['avatarName'].value?.trim();
-    return (
-      avatarName &&
-      this.photos.front &&
-      this.photos.left &&
-      this.photos.right
-    );
+  canCreate(): boolean {
+    return this.myForm.valid &&
+      !!this.photos.front.file &&
+      !!this.photos.left.file &&
+      !!this.photos.right.file;
   }
-
 
   createAvatar() {
     if (!this.canCreate()) return;
@@ -147,29 +139,27 @@ export class AddAvatarComponent {
     this.currentStep = 'loading';
     this.cdr.detectChanges();
 
-    const filesToUpload: File[] = [];
-    if (this.photos.front.file) filesToUpload.push(this.photos.front.file);
-    if (this.photos.left.file) filesToUpload.push(this.photos.left.file);
-    if (this.photos.right.file) filesToUpload.push(this.photos.right.file);
+    const filesUpload: File[] = [];
+    if (this.photos.front.file) filesUpload.push(this.photos.front.file);
+    if (this.photos.left.file) filesUpload.push(this.photos.left.file);
+    if (this.photos.right.file) filesUpload.push(this.photos.right.file);
 
     const userId = this.UUID;
 
-    // Загрузка файлов
-    this.fileService.uploadAvatars(filesToUpload, userId).subscribe({
+    this.fileService.uploadAvatars(filesUpload, userId).subscribe({
       next: (event: any) => {
         if (event.body) {
-          const urls = event.body.map((img: any) => img.url);
+          const url = event.body.map((img: any) => img.url);
 
-          const generateDto = {
+          const generate = {
             name: this.myForm.value.avatarName || '',
             gender: this.gender,
-            imageFront: urls[0],
-            imageLeft: urls[1],
-            imageRight: urls[2]
+            imageFront: url[0],
+            imageLeft: url[1],
+            imageRight: url[2]
           };
 
-          // Генерация
-          this.avatarService.generateAvatar(generateDto).subscribe({
+          this.avatarService.generateAvatar(generate).subscribe({
             next: (response: any) => {
               if (response.images) {
                 this.generatedAvatars = response.images.imagesURL;
@@ -182,7 +172,6 @@ export class AddAvatarComponent {
             error: (err) => {
               console.error('Ошибка генерации:', err);
               this.currentStep = 'form';
-              alert('Ошибка ИИ-сервиса');
               this.cdr.detectChanges();
             }
           });

@@ -1,0 +1,20 @@
+<header class="home__header">
+  <div class="home__header-content">
+    <div class="home__header-text">
+      <h2 class="home__page-title">Главная</h2>
+      <p class="home__page-subtitle">
+        Генерация образов и фото с помощью персонального аватара
+      </p>
+    </div>
+    @if (userAvatars.length){
+      <div class="home__avatar-icon">
+        <img [src]="currentAvatar" alt="">
+      </div>
+    }
+    @else {
+      <div class="home__avatar-icon">
+        <img src="assets/icons/user-empty.svg" alt="">
+      </div>
+    }
+  </div>
+</header>

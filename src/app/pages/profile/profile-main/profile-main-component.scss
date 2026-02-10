@@ -65,6 +65,11 @@
   align-items: center;
 }
 
+.avatar-item,
+.add-avatar {
+  flex: 0 0 auto;
+}
+
 .avatar-item {
   width: 98px;
   height: 98px;

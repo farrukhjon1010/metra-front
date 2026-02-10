@@ -8,49 +8,24 @@
   </div>
 </div>
 <div class="btn-balance">
-  <div class="funds-buttons">
-    <div class="token-text">
-      <p>100 токенов</p>
-      <span>390 руб</span>
+  @for (pkg of tokenPackages; track pkg.tokens) {
+    <div [class]="pkg.tag === 'Популярно' ? 'danger-buttons' : 'funds-buttons'">
+      @if (pkg.tag) {
+        <div class="price-text">
+          <img src="assets/icons/like.svg" alt="Tag">
+          {{ pkg.tag }}
+        </div>
+      }
+      <div class="token-text">
+        <p>{{ pkg.tokens }} токенов</p>
+        <span>{{ pkg.price }} руб</span>
+      </div>
+      <app-button
+        [type]="pkg.tag === 'Популярно' ? 'danger' : 'primary'"
+        icon="assets/icons/arrow-forward.svg"
+        (click)="buyToken(pkg)">
+        Купить
+      </app-button>
     </div>
-    <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="addFunds()">
-      Купить
-    </app-button>
-  </div>
-
-  <div class="funds-buttons">
-    <div class="token-text">
-      <p>300 токенов</p>
-      <span>990 руб</span>
-    </div>
-    <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="addFunds()">
-      Купить
-    </app-button>
-  </div>
-
-  <div class="danger-buttons">
-    <div class="price-text">
-      <img src="assets/icons/like.svg" alt="Like">Популярно
-    </div>
-    <div class="token-text">
-      <p>1000 токенов</p>
-      <span>2790 руб</span>
-    </div>
-    <app-button type="danger" icon="assets/icons/arrow-forward.svg" (click)="addFunds()">
-      Купить
-    </app-button>
-  </div>
-
-  <div class="funds-buttons">
-    <div class="price-text">
-      <img src="assets/icons/like.svg" alt="Like">Выгодно
-    </div>
-    <div class="token-text">
-      <p>5000 токенов</p>
-      <span>11 990 руб</span>
-    </div>
-    <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="addFunds()">
-      Купить
-    </app-button>
-  </div>
+  }
 </div>

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-bottom-nav',
   templateUrl: './bottom-nav.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   styleUrls: ['./bottom-nav.component.scss']
 })
 export class BottomNavComponent {
@@ -37,16 +37,12 @@ export class BottomNavComponent {
     const item = this.navItems[index];
 
     if (this.activeIndex === index) {
-      // Если текущий таб → всегда возвращаем на корень маршрута
       this.router.navigateByUrl(item.link, { replaceUrl: true });
     } else {
-      // Если другой таб → обычная навигация
       this.router.navigateByUrl(item.link);
       this.activeIndex = index;
     }
   }
-
-
 
   private setActiveFromUrl(url: string) {
     const index = this.navItems.findIndex(item =>

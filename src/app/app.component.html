@@ -1,6 +1,10 @@
+@if (showHeader()) {
+  <app-page-header
+    [title]="pageTitle()">
+  </app-page-header>
+}
 <router-outlet></router-outlet>
 
 @if (showBottomNav()) {
   <app-bottom-nav></app-bottom-nav>
 }
-

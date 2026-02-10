@@ -1,0 +1,9 @@
+::ng-deep {
+  .home-detail app-scenes-card .header-card {
+    display: none;
+  }
+
+  .home-detail app-scenes-card .scenes {
+    padding-top: 16px;
+  }
+}

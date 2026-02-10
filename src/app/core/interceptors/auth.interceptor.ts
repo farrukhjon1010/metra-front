@@ -22,6 +22,5 @@ export function prependBaseUrlInterceptor(req: HttpRequest<unknown>, next: HttpH
   } catch (e) {
 
   }
-
   return next(req);
 }

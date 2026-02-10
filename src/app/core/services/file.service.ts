@@ -1,4 +1,3 @@
-// file.service.ts (Angular)
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
 import { HttpClient } from '@angular/common/http';
@@ -38,13 +37,11 @@ export class FileService {
         })
     }
 
-
     uploadGeneratedAvatar(file: File, userId: string, index: number): Observable<any> {
         const formData = new FormData();
         formData.append('file', file);
         return this.http.post(`${this.apiUrl}/files/generated-avatar/${userId}/${index}`, formData);
     }
-
 
     uploadImageGeneration(file: File, userId: string): Observable<any> {
         const formData = new FormData();
@@ -52,12 +49,10 @@ export class FileService {
         return this.http.post(`${this.apiUrl}/files/save-for-generation/${userId}`, formData);
     }
 
-
     uploadGeneratedImage(file: File, userId: string): Observable<any> {
         const formData = new FormData();
         formData.append('file', file);
         return this.http.post(`${this.apiUrl}/files/save-generated/${userId}`, formData);
     }
-
 
 }

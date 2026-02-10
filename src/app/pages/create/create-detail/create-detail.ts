@@ -1,129 +1,91 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { CreateCard } from '../create.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { Router } from '@angular/router';
-import { FileService } from '../../../core/services/file.service';
-import { GenerationService } from '../../../core/services/generation.service';
-import { CreateGenerationDto, GenerateImageDto, GenerationType } from '../../../core/models/generation.model';
-import { switchMap } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { GenerationService } from '../../../core/services/generation.service';
+import {CreateGenerationDto, GenerateImageDto, GenerationType} from '../../../core/models/generation.model';
+import {FileService} from '../../../core/services/file.service';
+import {switchMap} from 'rxjs';
+import {CREATE_CARDS, CreateCard} from '../create.data';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Location, CommonModule} from '@angular/common';
+import {CreateHeader} from './create-header/create-header';
+import {CreateIdle} from './create-idle/create-idle';
+import {CreateResult} from './create-result/create-result';
+import {GenerationHistory} from './generation-history/generation-history';
 
 type CreateState = 'idle' | 'loading' | 'result';
 
 @Component({
   selector: 'app-create-detail',
-  imports: [
-    ButtonComponent,
-    FormsModule,
-    DatePipe
-  ],
   standalone: true,
+  imports: [
+    FormsModule,
+    CommonModule,
+    CreateHeader,
+    CreateIdle,
+    CreateResult,
+    GenerationHistory
+  ],
   templateUrl: './create-detail.html',
   styleUrls: ['./create-detail.scss'],
 })
 export class CreateDetail implements OnInit {
 
-  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
+  UUID = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
 
-  @Input() card!: CreateCard;
-  @Input() initialPrompt: string = '';
-  @Input() initialImageUrl: string | null = null;
-  @Output() back = new EventEmitter<void>();
-  @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
-  @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
-
-  selectedFile: File | null = null;
-  photos: { generate: string | null } = {generate: null};
+  card!: CreateCard;
   createState: CreateState = 'idle';
-  generationHistory: any[] = [];
+  prompt = '';
   resultImageUrl: string | null = null;
-  prompt: string = "";
+  generationHistory: any[] = [];
+  initialPrompt!: string;
+  initialImageUrl!: string | null;
+  fromHistory = false;
 
   constructor(
-    private cdr: ChangeDetectorRef,
-    private router: Router,
-    private fileService: FileService,
     private generationService: GenerationService,
-    private imageGenService: GenerationService
-  ) {
-  }
+    private fileService: FileService,
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
+  ) {}
 
   ngOnInit() {
+    const type = this.route.snapshot.paramMap.get('type') as GenerationType;
+    this.card = CREATE_CARDS.find(c => c.type === type) as CreateCard;
+
+    const state = history.state;
+    if (state) {
+        this.fromHistory = !!state.fromHistory;
+        this.initialPrompt = state.prompt ?? '';
+        this.initialImageUrl = state.imageUrl ?? null;
+        this.prompt = state.prompt ?? '';
+    }
+
     this.loadGenerationsHistory();
-
-    if (this.initialPrompt) {
-      this.prompt = this.initialPrompt;
-    }
-
-    if (this.initialImageUrl) {
-      this.photos.generate = this.initialImageUrl;
-      this.resultImageUrl = this.initialImageUrl;
-    }
   }
 
-  goBack() {
-    this.back.emit();
+  repeatGeneration(generation: any) {
+    this.prompt = generation.prompt;
+    this.initialImageUrl = generation.imageURL;
+    this.createState = 'idle';
   }
 
-  onPhotoSelected(event: Event, type: 'generate') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) return;
-
-    this.selectedFile = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photos[type] = reader.result as string;
-      this.cdr.detectChanges();
-    };
-    reader.readAsDataURL(file);
+  onCreate(data: { prompt: string; imageUrl: string | null; file: File | null }) {
+    this.prompt = data.prompt;
+    this.startGeneration(data.imageUrl, data.file);
   }
 
-  triggerFileInput(type: 'generate', event: Event) {
-    event.stopPropagation();
-    const map = {
-      generate: this.photoGenerate,
-    };
-    map[type]?.nativeElement.click();
-  }
+  startGeneration(imageUrl: string | null, file: File | null) {
+    this.createState = 'loading';
 
-  removePhoto(type: 'generate', event: Event) {
-    event.stopPropagation();
-    this.photos[type] = null;
-    this.selectedFile = null;
-    this.resultImageUrl = null;
-  }
-
-  navigateToHistory() {
-    this.router.navigate(['/history'])
-  }
-
-  loadGenerationsHistory() {
-    this.generationService.findByUser(this.UUID).subscribe({
-      next: (data) => {
-        this.generationHistory = data.filter(
-          gen => gen.type === this.card.type
-        );
-        this.cdr.detectChanges();
-        console.log('Генерации для карточки', this.card.title, ':', this.generationHistory);
-      },
-      error: (err) => {
-        console.error('Ошибка при загрузке:', err);
-      }
-    });
-  }
-
-  createImage() {
-    if (!this.selectedFile && this.initialImageUrl) {
-      this.createState = 'loading';
+    const handleGeneration = (imgUrl: string) => {
       const genDto: GenerateImageDto = {
         type: this.card.type as GenerationType,
         prompt: this.prompt,
-        image: this.initialImageUrl
+        image: imgUrl
       };
-
-      this.imageGenService.generateImage(genDto).pipe(
+      return this.generationService.generateImage(genDto).pipe(
         switchMap((genRes: any) => {
           this.resultImageUrl = genRes.processedImage;
           const saveDto: CreateGenerationDto = {
@@ -135,129 +97,56 @@ export class CreateDetail implements OnInit {
           };
           return this.generationService.create(saveDto);
         })
-      ).subscribe({
-        next: () => {
-          this.createState = 'result';
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Ошибка в цепочке:', err);
-          this.createState = 'idle';
-          alert('Ошибка генерации. Проверьте URL бэкенда');
-          this.cdr.detectChanges();
-        }
-      });
-      return;
-    }
+      );
+    };
 
-    if (!this.selectedFile) return;
+    const source$ = file
+      ? this.fileService.uploadImageGeneration(file, this.UUID).pipe(switchMap((upload: any) => handleGeneration(upload.url)))
+      : handleGeneration(imageUrl!);
 
-    this.createState = 'loading';
-    const userId = this.UUID;
-
-    this.fileService.uploadImageGeneration(this.selectedFile, userId).pipe(
-      switchMap((uploadRes: any) => {
-        const genDto: GenerateImageDto = {
-          type: this.card.type as GenerationType,
-          prompt: this.prompt,
-          image: uploadRes.url
-        };
-        return this.imageGenService.generateImage(genDto);
-      }),
-      switchMap((genRes: any) => {
-        this.resultImageUrl = genRes.processedImage;
-        const saveDto: CreateGenerationDto = {
-          userId: userId,
-          type: this.card.type,
-          prompt: this.prompt,
-          imageURL: genRes.processedImage,
-          externalTaskId: genRes.externalTaskId
-        };
-        return this.generationService.create(saveDto);
-      })
-    ).subscribe({
+    source$.subscribe({
       next: () => {
         this.createState = 'result';
+        this.loadGenerationsHistory();
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Ошибка в цепочке:', err);
+        console.error('Ошибка генерации:', err);
         this.createState = 'idle';
-        alert('Ошибка генерации. Проверьте URL бэкенда');
         this.cdr.detectChanges();
       }
     });
   }
 
-  downloadFile(url: string, type: 'image' | 'video') {
-    fetch(url)
-      .then(res => res.blob())
-      .then(n => {
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(n);
-
-        a.href = objectUrl;
-        a.download = type === 'image'
-          ? 'generation-image.jpg'
-          : 'generation-video.mp4';
-
-        a.click();
-        URL.revokeObjectURL(objectUrl);
-      });
-  }
-
-  goToUpscale(imageUrl: string) {
-    this.router.navigate(
-      ['/history/improving-quality'],
-      {state: {imageUrl}}
-    );
-  }
-
-
-  repeatGeneration(generation: any) {
-    this.prompt = generation.prompt;
-
-    setTimeout(() => {
-      const textarea = this.textarea.nativeElement;
-
-      textarea.focus();
-      textarea.style.fontStyle = 'normal';
-      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+  loadGenerationsHistory() {
+    this.generationService.findByUser(this.UUID).subscribe({
+      next: (data) => {
+        this.generationHistory = data.filter(gen => gen.type === this.card.type);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 
-
-  downloadResultFile(file: string, type: 'image' | 'video') {
-    fetch(file)
-      .then(res => res.blob())
-      .then(blob => {
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-
-        a.href = objectUrl;
-        a.download = type === 'image'
-          ? 'generation-image.jpg'
-          : 'generation-video.mp4';
-
-        a.click();
-        URL.revokeObjectURL(objectUrl);
-      });
+  goBack() {
+    if (this.createState === 'result') {
+      this.createState = 'idle';
+    } else if (this.fromHistory) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/create']);
+    }
   }
 
-  editFile() {
+  onEditResult() {
     this.createState = 'idle';
-    this.photos.generate = this.resultImageUrl;
-    this.selectedFile = null;
-
-    this.cdr.detectChanges();
-
-    setTimeout(() => {
-      const textarea = this.textarea?.nativeElement;
-      if (!textarea) return;
-
-      textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
-    });
+    this.initialImageUrl = this.resultImageUrl;
   }
 
+  onCreateAnother() {
+    this.createState = 'idle';
+    this.prompt = '';
+    this.initialImageUrl = null;
+    this.resultImageUrl = null;
+  }
 }

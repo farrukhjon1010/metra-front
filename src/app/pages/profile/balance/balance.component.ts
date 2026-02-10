@@ -1,8 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
+
+interface TokenPackage {
+  tokens: number;
+  price: number;
+  tag?: 'Популярно' | 'Выгодно';
+}
 
 @Component({
   selector: 'app-balance',
@@ -11,19 +17,20 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent {
   balance = 0;
 
-  constructor(private router: Router) {
-  }
+  tokenPackages: TokenPackage[] = [
+    { tokens: 100, price: 390 },
+    { tokens: 300, price: 990 },
+    { tokens: 1000, price: 2790, tag: 'Популярно' },
+    { tokens: 5000, price: 11990, tag: 'Выгодно' },
+  ];
 
-  ngOnInit() {
+  constructor(private router: Router) {}
 
-
-  }
-
-  addFunds() {
-
+  buyToken(pkg: TokenPackage) {
+    console.log('Покупка пакета:', pkg);
   }
 
   goBack() {

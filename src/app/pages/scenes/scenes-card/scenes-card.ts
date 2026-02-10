@@ -3,13 +3,14 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 import {SceneService} from '../../../core/services/scene.service';
 import {GenerationType} from '../../../core/models/generation.model';
 import {Router} from '@angular/router';
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-scenes-card',
   templateUrl: './scenes-card.html',
   styleUrls: ['./scenes-card.scss'],
   standalone: true,
-  imports: [ButtonComponent]
+  imports: [ButtonComponent, CommonModule]
 })
 export class ScenesCard implements OnChanges {
 
@@ -17,16 +18,11 @@ export class ScenesCard implements OnChanges {
   @Output() back = new EventEmitter<void>();
 
   templates: { name: string; prompt: string }[] = [];
-  freeStyle: { name: string; prompt: string }[] = [];
-  secondCards: any;
-
   showFreeStyle: boolean = false;
-
 
   constructor(private sceneService: SceneService,
               private cdr: ChangeDetectorRef,
-              private router: Router,) {
-  }
+              private router: Router,) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['scene'] && this.scene) {
@@ -52,10 +48,10 @@ export class ScenesCard implements OnChanges {
   }
 
   openTemplate(t: { name: string; prompt: string }) {
-    this.router.navigate(['/create'], {
+    this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
       state: {
-        type: GenerationType.PHOTO_BY_STAGE,
-        prompt: t.prompt
+        prompt: t.prompt,
+        fromHistory: true
       }
     });
   }

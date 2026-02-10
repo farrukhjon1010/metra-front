@@ -1,56 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Referral, ReferralInfo } from '../models/balance.model';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { environment } from '../../../environment/environment';
+import {TokenBalance} from '../models/balance.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ReferralService {
+export class BalanceService {
 
-  private readonly apiUrl = `${environment.apiUrl}/referral`;
+  private readonly apiUrl = `${environment.apiUrl}/token-balances`;
+
+  private balanceSubject = new BehaviorSubject<number>(0);
+  balance$ = this.balanceSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  private incomeSubject = new BehaviorSubject<{ income: number; currency: string }>({
-    income: 0,
-    currency: ''
-  });
-
-  income$ = this.incomeSubject.asObservable();
-
-  setIncome(data: { income: number; currency: string }) {
-    this.incomeSubject.next(data);
+  loadUserBalance(): void {
+    this.http.get<{ balance: number }>(`${environment.apiUrl}/token-balances/by-user`)
+      .subscribe({
+        next: (data) => this.balanceSubject.next(data.balance),
+        error: () => this.balanceSubject.next(0)
+      });
   }
 
-  getReferralInfo(): Observable<ReferralInfo> {
-    return this.http.get<ReferralInfo>(`${this.apiUrl}/info`);
+  getAllTokenBalances(): Observable<TokenBalance[]> {
+    return this.http.get<TokenBalance[]>(this.apiUrl);
   }
 
-  generateReferralLink(): Observable<{ referralLink: string }> {
-    return this.http.post<{ referralLink: string }>(
-      `${this.apiUrl}/generate-link`,
-      {}
-    );
-  }
-
-  clickReferralLink(code: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/click-link/${code}`, {});
-  }
-
-  createReferral(payload: {
-    inviterId: string;
-    invitedUserId: string;
-  }): Observable<Referral> {
-    return this.http.post<Referral>(this.apiUrl, payload);
-  }
-
-  getAllReferrals(): Observable<Referral[]> {
-    return this.http.get<Referral[]>(this.apiUrl);
-  }
-
-  getReferralsByInviter(): Observable<Referral[]> {
-    return this.http.get<Referral[]>(`${this.apiUrl}/by-inviter`);
+  getUserTokenBalance(): Observable<TokenBalance> {
+    return this.http.get<TokenBalance>(`${this.apiUrl}/by-user`);
   }
 }
