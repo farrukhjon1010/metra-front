@@ -1,48 +1,55 @@
 <div class="create-detail">
   <div class="text-ai-generation">
     <label>Введите запрос</label>
-    <img src="assets/icons/awesome.svg" alt="">
-    <textarea
-      #promptTextarea
-      [(ngModel)]="prompt"
-      placeholder="Опишите ваше изображение"
-      rows="4">
-        </textarea>
+    <div class="textarea-wrapper">
+      <div class="icon-wrapper"
+           (click)="generatePrompt()"
+           [class.disabled]="isLoadingPrompt">
+        @if (!isLoadingPrompt) {
+          <img src="assets/icons/awesome.svg" alt="AI">
+        } @else {
+          <div class="spinner-promt"></div>
+        }
+      </div>
+      <textarea
+        #promptTextarea
+        [(ngModel)]="prompt"
+        placeholder="Опишите ваше изображение"
+        rows="4">
+      </textarea>
+    </div>
   </div>
 
   <div class="photo-upload-create-detail">
     <label class="form-label-detail">Загрузите фото</label>
-
     <div class="row-quality">
-      <div class="upload-small" (click)="triggerFileInput('generate', $event)">
+      <div class="upload-small"
+           (click)="triggerFileInput('generate', $event)">
         <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                (change)="onPhotoSelected($event, 'generate')" style="display: none;">
-
         <div class="upload-create-quality">
           <span class="text-small">Загрузить</span>
-          <span class="upload-formats-small">
-                JPEG, JPG, PNG, HEIC, WEBP
-              </span>
+          <span class="upload-formats-small">JPEG, JPG, PNG, HEIC, WEBP</span>
         </div>
-
         <img src="assets/icons/upload.svg" alt="Icon">
       </div>
     </div>
-
     @if (photos.generate) {
       <div class="photo-quality">
         <img class="with-photo" [src]="photos.generate" alt="Photo">
-
-        <button class="delete-photo-generation" (click)="removePhoto('generate', $event)">
+        <button class="delete-photo-generation"
+                (click)="removePhoto('generate', $event)">
           <img src="assets/icons/delete.svg" alt="">
         </button>
       </div>
     }
   </div>
-
   <div class="btn-quality">
-    <app-button type="primary" icon="assets/icons/add.svg" (click)="createImage()"
-                [disabled]="!photos.generate">
+    <app-button
+      type="primary"
+      icon="assets/icons/add.svg"
+      (click)="createImage()"
+      [disabled]="!photos.generate">
       Создать изображение
     </app-button>
   </div>

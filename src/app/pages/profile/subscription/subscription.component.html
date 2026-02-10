@@ -1,96 +1,51 @@
 <div class="subscription-header">
-    <span (click)="goBack()">
+    <div (click)="goBack()">
       <img src="assets/icons/arrow-back.svg" alt="">
-    </span>
-  <div class="subscription-header-balance">
+    </div>
+  <div class="subscription-balance">
     <span>Подписка METRA</span>
   </div>
 </div>
 <div class="subscription-content">
-  <div class="metra-basic-card">
-    <div class="text-card">
-      <h2>Metra Basic</h2>
-      <p>Вы получаете:</p>
-      <div class="span-card-basic">
-        <span><img src="assets/icons/check-confirm.svg" alt="">120 токенов в месяц</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Доступ к сценам METRA</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Доступ к Nano Banana</span>
-      </div>
-      <p>Пример использования::</p>
-      <div class="span-card-basic">
-        <span><img src="assets/icons/awesome.svg" alt="">~24 генераций в Nano Banana</span>
-        <span><img src="assets/icons/awesome.svg" alt="">или 12 генераций в Nano Banana PRO</span>
-        <span><img src="assets/icons/awesome.svg" alt=""> комбинируйте режимы как удобно</span>
-      </div>
-      <div class="btn-card-basic">
-        <app-button type="secondary">
-          990 руб
-        </app-button>
-        <app-button type="primary" icon="assets/icons/arrow-forward.svg">
-          Выбрать
-        </app-button>
-      </div>
-    </div>
-  </div>
-
-  <div class="metra-pro-card">
-    <div class="recommendation-icon">
-      <img src="../../../../assets/icons/star-recommend.svg" alt="recommend">Рекомендуем
-    </div>
-    <div class="text-card">
-      <h2>Metra Pro</h2>
-      <p>Вы получаете:</p>
-      <div class="span-card-pro">
-        <span><img src="assets/icons/check-confirm.svg" alt="">350 токенов в месяц</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Доступ к сценам METRA</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Доступ к Nano Banana Pro</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Видео-режимы</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Примерка одежды (Wardrobe)</span>
-      </div>
-      <p>Пример использования::</p>
-      <div class="span-card-pro">
-        <span><img src="assets/icons/awesome.svg" alt="" class="icon-check-confirm">~70 генераций в Nano Banana</span>
-        <span><img src="assets/icons/awesome.svg" alt="">или ~35 генераций в Nano Banana PRO</span>
-        <span><img src="assets/icons/awesome.svg" alt="">или фото + видео + wardrobe в любом сочетании</span>
-      </div>
-      <div class="btn-card-pro">
-        <app-button type="secondary">
-          2490 руб
-        </app-button>
-        <app-button type="danger" icon="assets/icons/arrow-forward.svg">
-          Выбрать
-        </app-button>
+  @for (plan of plans; track plan.id) {
+    <div [class]="plan.cardClass">
+      @if (plan.isRecommended) {
+        <div class="recommendation-icon">
+          <img src="assets/icons/star-recommend.svg" alt="recommend">Рекомендуем
+        </div>
+      }
+      <div class="text-card">
+        <h2>{{ plan.title }}</h2>
+        <p>Вы получаете:</p>
+        <div [class]="plan.spanClass">
+          @for (feature of plan.features; track feature) {
+            <span>
+              <img src="assets/icons/check-confirm.svg" alt="">
+              {{ feature }}
+            </span>
+          }
+        </div>
+        <p>Пример использования:</p>
+        <div [class]="plan.spanClass">
+          @for (example of plan.examples; track example) {
+            <span>
+              <img src="assets/icons/awesome.svg" alt="">
+              {{ example }}
+            </span>
+          }
+        </div>
+        <div [class]="'btn-card-' + plan.id">
+          <app-button type="secondary">
+            {{ plan.price }} руб
+          </app-button>
+          <app-button
+            [type]="plan.buttonType"
+            icon="assets/icons/arrow-forward.svg"
+            (click)="selectPlan(plan)">
+            Выбрать
+          </app-button>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="metra-max-card">
-    <div class="text-card">
-      <h2>Metra Max</h2>
-      <p>Вы получаете:</p>
-      <div class="span-card-max">
-        <span><img src="assets/icons/check-confirm.svg" alt="">800 токенов в месяц</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Доступ к сценам METRA</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Доступ к Nano Banana Pro</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Видео-режимы</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Примерка одежды (Wardrobe)</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Upscale</span>
-        <span><img src="assets/icons/check-confirm.svg" alt="">Приоритет в очереди</span>
-      </div>
-      <p>Пример использования::</p>
-      <div class="span-card-max">
-        <span><img src="assets/icons/awesome.svg" alt="" class="icon-check-confirm">~160 генераций в Nano Banana</span>
-        <span><img src="assets/icons/awesome.svg" alt="">или ~80 генераций в Nano Banana PRO</span>
-        <span><img src="assets/icons/awesome.svg" alt="">или активное использование всех функций</span>
-      </div>
-      <div class="btn-card-max">
-        <app-button type="secondary">
-          4990 руб
-        </app-button>
-        <app-button type="green" icon="assets/icons/arrow-forward.svg">
-          Выбрать
-        </app-button>
-      </div>
-    </div>
-  </div>
+  }
 </div>
