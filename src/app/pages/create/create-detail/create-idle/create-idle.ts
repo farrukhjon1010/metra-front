@@ -1,6 +1,5 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {GenerationHistory} from '../generation-history/generation-history';
 import {ButtonComponent} from '../../../../shared/components/button/button.component';
 import {CreateCard} from '../../create.data';
 
@@ -9,18 +8,16 @@ import {CreateCard} from '../../create.data';
   imports: [
     FormsModule,
     ButtonComponent,
-    GenerationHistory
   ],
   standalone: true,
   templateUrl: './create-idle.html',
   styleUrls: ['./create-idle.scss'],
 })
-export class CreateIdle implements OnInit {
+export class CreateIdle implements OnChanges {
 
   @Input() card!: CreateCard;
   @Input() initialPrompt: string = '';
   @Input() initialImageUrl: string | null = null;
-  @Input() generationHistory: any[] = [];
 
   @Output() create = new EventEmitter<{
     prompt: string;
@@ -39,12 +36,13 @@ export class CreateIdle implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    if (this.initialPrompt) {
-      this.prompt = this.initialPrompt;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['initialPrompt']) {
+      this.prompt = this.initialPrompt || '';
     }
-    if (this.initialImageUrl) {
-      this.photos.generate = this.initialImageUrl;
+    if (changes['initialImageUrl']) {
+      this.photos.generate = this.initialImageUrl || null;
+      this.selectedFile = null;
     }
   }
 
@@ -71,28 +69,16 @@ export class CreateIdle implements OnInit {
   }
 
   onPhotoSelected(event: Event, type: 'generate') {
-    const el = (event.target as HTMLInputElement)?.files?.[0];
-    if (!el) return;
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (!file) return;
 
-    this.selectedFile = el;
+    this.selectedFile = file;
 
     const reader = new FileReader();
     reader.onload = () => {
       this.photos[type] = reader.result as string;
       this.cdr.detectChanges();
     };
-    reader.readAsDataURL(el);
-  }
-
-  onRepeat(generation: any) {
-    this.prompt = generation.prompt;
-    this.cdr.detectChanges();
-
-    setTimeout(() => {
-      if (this.textarea) {
-        this.textarea.nativeElement.focus();
-        this.textarea.nativeElement.selectionStart = this.textarea.nativeElement.selectionEnd = this.textarea.nativeElement.value.length;
-      }
-    });
+    reader.readAsDataURL(file);
   }
 }

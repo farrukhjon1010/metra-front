@@ -1,4 +1,4 @@
-.create-header-detail {
+.create-header-card {
   display: flex;
   gap: 16px;
   padding: 24px 16px;
@@ -11,17 +11,19 @@
   align-items: baseline;
 }
 
-.header-card-detail {
-
-  img {
-    cursor: pointer;
-  }
+.head-text-create-detail {
+  display: flex;
+  flex-direction: column;
 
   p {
     font-size: 20px;
-    line-height: 20px;
+    font-family: system-ui;
     font-weight: 700;
     margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   span {
@@ -29,5 +31,4 @@
     font-family: system-ui;
     color: #C5CCE0;
   }
-
 }

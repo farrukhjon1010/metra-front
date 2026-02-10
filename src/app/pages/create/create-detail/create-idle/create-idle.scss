@@ -1,22 +1,18 @@
-.create-idle {
+.create-detail {
   display: flex;
   flex-direction: column;
   gap: 24px;
   padding: 0 16px;
 }
 
-.idle-ai-generation-idle img {
-  filter: brightness(0) invert(1);
-}
-
-.text-ai-generation-idle {
+.text-ai-generation {
 
   img {
     position: relative;
     z-index: 1;
     top: 45px;
     left: 230px;
-
+    filter: brightness(0) invert(1);
   }
 
   textarea {
@@ -27,7 +23,7 @@
     padding: 15px 20px;
     border: 1px solid #FFFFFF33;
     background: #181826;
-    box-shadow: 0 4px 4px 0 #000000;
+    box-shadow: 0 4px 6px 0 #000000;
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
     color: #E8EEFF;
@@ -53,18 +49,18 @@
   }
 }
 
-.photo-upload-idle {
+.photo-upload-create-detail {
   display: flex;
   flex-direction: column;
 }
 
-.form-label-idle {
+.form-label-detail {
   font-size: 13px;
   font-family: system-ui;
   color: #A9B2C8;
 }
 
-.upload-row-quality-idle {
+.row-quality {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
@@ -74,33 +70,33 @@
   margin: 8px 0;
 }
 
-.upload-create-quality-idle {
+.upload-create-quality {
   display: flex;
   flex-direction: column;
 }
 
-.upload-text-small-idle {
+.text-small {
   font-size: 15px;
   font-weight: 600;
 }
 
-.upload-formats-idle {
+.upload-formats-small {
   font-size: 10px;
   font-family: system-ui;
   color: #7A859E;
 }
 
-.upload-area-small-idle {
+.upload-small {
   display: flex;
   justify-content: space-between;
 }
 
-.delete-photo-generation-idle {
+.delete-photo-generation {
   position: absolute;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #f84b4d;
+  background: #ff4d4f;
   border: none;
   cursor: pointer;
   padding: 2px 2px;
@@ -108,7 +104,7 @@
   margin-top: 3px;
 }
 
-.with-photo-idle {
+.with-photo {
   width: 65px;
   height: 65px;
   border-radius: 12px;

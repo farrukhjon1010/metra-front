@@ -18,10 +18,10 @@ export class ProfileMainComponent implements OnInit {
 
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   selectedAvatars: string[] = [];
-  isLoading = false;
   income$: Observable<number>;
   currency$: Observable<string>;
   balance$: Observable<number>;
+  isAvatarsLoading = true;
 
   constructor(
       public router: Router,
@@ -50,20 +50,24 @@ export class ProfileMainComponent implements OnInit {
   }
 
   loadUserAvatars(): void {
-    this.isLoading = true;
+    this.isAvatarsLoading = true;
+
     this.avatarService.findByUser(this.UUID).subscribe({
       next: (avatar) => {
         this.selectedAvatars = avatar?.imagesURL || [];
-        this.isLoading = false;
+        this.isAvatarsLoading = false;
       },
       error: () => {
         this.selectedAvatars = [];
-        this.isLoading = false;
+        this.isAvatarsLoading = false;
       }
     });
   }
 
   goToAddAvatar() {
+    if (this.isAvatarsLoading) return;
+    if (this.selectedAvatars.length >= 3) return;
+
     this.router.navigate(['/profile/add-avatar']);
   }
 

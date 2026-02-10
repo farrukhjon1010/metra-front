@@ -126,14 +126,11 @@ export class AddAvatarComponent {
     this.photos[type].preview = null;
   }
 
-  canCreate() {
-    const avatarName = this.myForm.controls['avatarName'].value?.trim();
-    return (
-      avatarName &&
-      this.photos.front &&
-      this.photos.left &&
-      this.photos.right
-    );
+  canCreate(): boolean {
+    return this.myForm.valid &&
+      !!this.photos.front.file &&
+      !!this.photos.left.file &&
+      !!this.photos.right.file;
   }
 
   createAvatar() {

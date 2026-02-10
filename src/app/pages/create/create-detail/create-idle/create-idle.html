@@ -1,5 +1,5 @@
-<div class="create-idle">
-  <div class="text-ai-generation-idle">
+<div class="create-detail">
+  <div class="text-ai-generation">
     <label>Введите запрос</label>
     <img src="assets/icons/awesome.svg" alt="">
     <textarea
@@ -7,22 +7,22 @@
       [(ngModel)]="prompt"
       placeholder="Опишите ваше изображение"
       rows="4">
-      </textarea>
+        </textarea>
   </div>
 
-  <div class="photo-upload-idle">
-    <label class="form-label-idle">Загрузите фото</label>
+  <div class="photo-upload-create-detail">
+    <label class="form-label-detail">Загрузите фото</label>
 
-    <div class="upload-row-quality-idle">
-      <div class="upload-area-small-idle" (click)="triggerFileInput('generate', $event)">
+    <div class="row-quality">
+      <div class="upload-small" (click)="triggerFileInput('generate', $event)">
         <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                (change)="onPhotoSelected($event, 'generate')" style="display: none;">
 
-        <div class="upload-create-quality-idle">
-          <span class="upload-text-small-idle">Загрузить</span>
-          <span class="upload-formats-idle">
+        <div class="upload-create-quality">
+          <span class="text-small">Загрузить</span>
+          <span class="upload-formats-small">
                 JPEG, JPG, PNG, HEIC, WEBP
-          </span>
+              </span>
         </div>
 
         <img src="assets/icons/upload.svg" alt="Icon">
@@ -31,9 +31,9 @@
 
     @if (photos.generate) {
       <div class="photo-quality">
-        <img class="with-photo-idle" [src]="photos.generate" alt="Photo">
+        <img class="with-photo" [src]="photos.generate" alt="Photo">
 
-        <button class="delete-photo-generation-idle" (click)="removePhoto('generate', $event)">
+        <button class="delete-photo-generation" (click)="removePhoto('generate', $event)">
           <img src="assets/icons/delete.svg" alt="">
         </button>
       </div>
@@ -41,17 +41,9 @@
   </div>
 
   <div class="btn-quality">
-    <app-button
-      type="primary"
-      icon="assets/icons/add.svg"
-      (click)="createImage()"
-      [disabled]="!photos.generate && !prompt">
+    <app-button type="primary" icon="assets/icons/add.svg" (click)="createImage()"
+                [disabled]="!photos.generate">
       Создать изображение
     </app-button>
   </div>
 </div>
-
-<app-generation-history
-  [history]="generationHistory"
-  (repeat)="onRepeat($event)">
-</app-generation-history>

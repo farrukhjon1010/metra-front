@@ -1,17 +1,17 @@
-<div class="create-result">
-  <div class="result-generation">
+<div class="result-detail">
+  <div class="result-generate">
     <h1>Результат</h1>
     <span>
       {{ prompt }}
     </span>
-    <div class="image-generation-result">
-      <img [src]="image" alt="">
+    <div class="image-generation">
+      <img [src]="resultImageUrl" alt="">
     </div>
-    <div class="btn-result">
+    <div class="btn-detail">
       <app-button
         type="secondary"
         icon="assets/icons/download.svg"
-        (click)="downloadResultFile(image!, 'image')">
+        (click)="downloadResultFile()">
         Скачать
       </app-button>
       <app-button
@@ -26,12 +26,7 @@
   <app-button
     type="primary"
     icon="assets/icons/add.svg"
-    (click)="onRepeat()">
+    (click)="onCreateAnother()">
     Создать ещё
   </app-button>
 </div>
-
-<app-generation-history
-  [history]="generationHistory"
-  (repeat)="onHistoryRepeat($event)">
-</app-generation-history>

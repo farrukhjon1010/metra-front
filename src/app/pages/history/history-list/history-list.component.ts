@@ -3,7 +3,6 @@ import {DatePipe, NgStyle, CommonModule} from '@angular/common';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {Router} from '@angular/router';
 import {GenerationService} from '../../../core/services/generation.service';
-import {GenerationType} from '../../../core/models/generation.model';
 import {CreateCard} from '../../create/create.data';
 
 @Component({
@@ -37,8 +36,6 @@ export class HistoryListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.generationHistory = data;
-          console.log('Фильтр:', this.selectedFilter);
-          console.log('Генерации:', data);
           this.cdr.detectChanges();
         },
         error: (err) => {

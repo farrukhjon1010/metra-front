@@ -19,12 +19,14 @@
       </div>
 
       @if (selectedAvatars.length < 3){
-      <app-button
-        type="primary"
-        icon="assets/icons/add.svg"
-        (click)="goToAddAvatar()">
-        Добавить аватар
-      </app-button>
+        <app-button
+          type="primary"
+          icon="assets/icons/add.svg"
+          [disabled]="isAvatarsLoading || selectedAvatars.length >= 3"
+          (click)="goToAddAvatar()"
+        >
+          Добавить аватар
+        </app-button>
       }
     </div>
 

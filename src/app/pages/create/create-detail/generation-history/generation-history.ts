@@ -25,20 +25,33 @@ export class GenerationHistory {
     this.repeat.emit(generation);
   }
 
-  downloadFile(url: string, type: 'image' | 'video') {
+  downloadFile(url: string, type: 'image' | 'video'): void {
+    if (!url) return;
+
     fetch(url)
-      .then(res => res.blob())
-      .then(el => {
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Ошибка загрузки файла');
+        }
+        return response.blob();
+      })
+      .then(blob => {
         const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(el);
+        const objectUrl = URL.createObjectURL(blob);
+
+        const extension =
+          type === 'video'
+            ? 'mp4'
+            : blob.type.split('/')[1] || 'jpg';
 
         a.href = objectUrl;
-        a.download = type === 'image'
-          ? 'generation-image.jpg'
-          : 'generation-video.mp4';
+        a.download = `generation-${type}.${extension}`;
 
         a.click();
         URL.revokeObjectURL(objectUrl);
+      })
+      .catch(err => {
+        console.error('Не удалось скачать файл:', err);
       });
   }
 
@@ -50,6 +63,6 @@ export class GenerationHistory {
   }
 
   navigateToHistory() {
-    this.router.navigate(['/history'])
+    this.router.navigate(['/history']);
   }
 }
