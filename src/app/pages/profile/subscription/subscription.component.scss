@@ -22,6 +22,8 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   border-radius: 16px;
+  box-shadow: 0 0 20px 0 #6A5CFF40 inset;
+  backdrop-filter: blur(40px)
 }
 
 .subscription-content {
@@ -81,6 +83,8 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   border-radius: 16px;
+  box-shadow: 0 0 20px 0 #FF4B5580;
+  backdrop-filter: blur(40px)
 }
 
 .span-card-pro {
@@ -117,6 +121,8 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   border-radius: 16px;
+  box-shadow: 0 0 20px 0 #2EC57A40 inset;
+  backdrop-filter: blur(40px)
 }
 
 .span-card-max {
@@ -161,7 +167,7 @@
   display: flex;
   position: absolute;
   background: white;
-  right: 16px;
+  right: 0;
   border-top-right-radius: 16px;
   border-bottom-left-radius: 12px;
   color: #0B0D11;
