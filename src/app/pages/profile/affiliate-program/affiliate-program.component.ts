@@ -1,8 +1,9 @@
-import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import {ReferralInfo} from '../../../core/models/referral.model';
 import {ReferralService} from '../../../core/services/referral.service';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-affiliate-program',
@@ -10,7 +11,7 @@ import {ReferralService} from '../../../core/services/referral.service';
   templateUrl: './affiliate-program.component.html',
   styleUrls: ['./affiliate-program.component.scss'],
 })
-export class AffiliateProgramComponent implements OnInit {
+export class AffiliateProgramComponent implements OnInit, OnDestroy {
 
   link = '';
   clicks = 0;
@@ -19,6 +20,7 @@ export class AffiliateProgramComponent implements OnInit {
   currency = '';
   copied = false;
   loading = true;
+  private destroy$ = new Subject<void>();
 
   @Output() incomeChange = new EventEmitter<number>();
 
@@ -32,27 +34,36 @@ export class AffiliateProgramComponent implements OnInit {
     this.loadReferralInfo();
   }
 
-  loadReferralInfo() {
-    this.referralService.getReferralInfo().subscribe({
-      next: (data: ReferralInfo) => {
-        this.link = data.referralLink;
-        this.clicks = data.stats.clicks;
-        this.purchases = data.stats.purchases;
-        this.income = data.stats.income;
-        this.currency = data.stats.currency;
-        this.loading = false;
-        this.referralService.setIncome({
-          income: this.income,
-          currency: this.currency
-        });
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-        this.cdr.markForCheck();
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки рефералки', err);
-        this.loading = false;
-      }
-    });
+  loadReferralInfo() {
+    this.referralService.getReferralInfo()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: ReferralInfo) => {
+          this.link = data.referralLink;
+          this.clicks = data.stats.clicks;
+          this.purchases = data.stats.purchases;
+          this.income = data.stats.income;
+          this.currency = data.stats.currency;
+
+          this.loading = false;
+
+          this.referralService.setIncome({
+            income: this.income,
+            currency: this.currency
+          });
+
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки рефералки', err);
+          this.loading = false;
+        }
+      });
   }
 
   goBack() {

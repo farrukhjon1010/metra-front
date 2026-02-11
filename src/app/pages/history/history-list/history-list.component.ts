@@ -1,9 +1,10 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DatePipe, NgStyle, CommonModule} from '@angular/common';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {Router} from '@angular/router';
 import {GenerationService} from '../../../core/services/generation.service';
 import {CreateCard} from '../../create/create.data';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-history-list',
@@ -12,19 +13,19 @@ import {CreateCard} from '../../create/create.data';
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
 })
-export class HistoryListComponent implements OnInit {
+export class HistoryListComponent implements OnInit, OnDestroy {
 
   @Input() card!: CreateCard;
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   selectedFilter: 'all' | 'photo' | 'video' = 'all';
   generationHistory: any[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
     private generationService: GenerationService,
     private cdr: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.loadGenerationsHistory();
@@ -33,6 +34,7 @@ export class HistoryListComponent implements OnInit {
   loadGenerationsHistory() {
     this.generationService
       .findByUser(this.UUID, this.selectedFilter)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
           this.generationHistory = data;
@@ -44,8 +46,12 @@ export class HistoryListComponent implements OnInit {
       });
   }
 
-  changeFilter(filter: 'all' | 'photo' | 'video') {
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
+  changeFilter(filter: 'all' | 'photo' | 'video') {
     this.selectedFilter = filter;
     this.loadGenerationsHistory();
   }
@@ -77,7 +83,6 @@ export class HistoryListComponent implements OnInit {
       { state: { imageUrl, id } }
     );
   }
-
 
   repeatGeneration(generation: any) {
     this.router.navigate(

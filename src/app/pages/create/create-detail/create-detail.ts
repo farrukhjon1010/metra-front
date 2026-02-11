@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GenerationService } from '../../../core/services/generation.service';
 import {CreateGenerationDto, GenerateImageDto, GenerationType} from '../../../core/models/generation.model';
 import {FileService} from '../../../core/services/file.service';
-import {switchMap} from 'rxjs';
+import {Subject, switchMap, takeUntil} from 'rxjs';
 import {CREATE_CARDS, CreateCard} from '../create.data';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location, CommonModule} from '@angular/common';
@@ -30,7 +30,7 @@ type CreateState = 'idle' | 'loading' | 'result';
   templateUrl: './create-detail.html',
   styleUrls: ['./create-detail.scss'],
 })
-export class CreateDetail implements OnInit {
+export class CreateDetail implements OnInit, OnDestroy {
 
   UUID = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
 
@@ -42,6 +42,7 @@ export class CreateDetail implements OnInit {
   initialPrompt!: string;
   initialImageUrl!: string | null;
   fromHistory = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private generationService: GenerationService,
@@ -63,7 +64,6 @@ export class CreateDetail implements OnInit {
         this.initialImageUrl = state.imageUrl ?? null;
         this.prompt = state.prompt ?? '';
     }
-
     this.loadGenerationsHistory();
   }
 
@@ -87,9 +87,11 @@ export class CreateDetail implements OnInit {
         prompt: this.prompt,
         image: imgUrl
       };
+
       return this.generationService.generateImage(genDto).pipe(
         switchMap((genRes: any) => {
           this.resultImageUrl = genRes.processedImage;
+
           const saveDto: CreateGenerationDto = {
             userId: this.UUID,
             type: this.card.type,
@@ -97,37 +99,48 @@ export class CreateDetail implements OnInit {
             imageURL: genRes.processedImage,
             externalTaskId: genRes.externalTaskId
           };
+
           return this.generationService.create(saveDto);
         })
       );
     };
 
     const source$ = file
-      ? this.fileService.uploadImageGeneration(file, this.UUID).pipe(switchMap((upload: any) => handleGeneration(upload.url)))
+      ? this.fileService.uploadImageGeneration(file, this.UUID)
+        .pipe(switchMap((upload: any) => handleGeneration(upload.url)))
       : handleGeneration(imageUrl!);
 
-    source$.subscribe({
-      next: () => {
-        this.createState = 'result';
-        this.loadGenerationsHistory();
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Ошибка генерации:', err);
-        this.createState = 'idle';
-        this.cdr.detectChanges();
-      }
-    });
+    source$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.createState = 'result';
+          this.loadGenerationsHistory();
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Ошибка генерации:', err);
+          this.createState = 'idle';
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadGenerationsHistory() {
-    this.generationService.findByUser(this.UUID).subscribe({
-      next: (data) => {
-        this.generationHistory = data.filter(gen => gen.type === this.card.type);
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error(err)
-    });
+    this.generationService.findByUser(this.UUID)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.generationHistory = data.filter(gen => gen.type === this.card.type);
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error(err)
+      });
   }
 
   goBack() {

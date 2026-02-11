@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { filter } from 'rxjs';
+import {filter, Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
   imports: [CommonModule, RouterModule],
   styleUrls: ['./bottom-nav.component.scss']
 })
-export class BottomNavComponent {
+export class BottomNavComponent implements OnDestroy{
 
   navItems = [
     { link: '/home', label: 'Главная', icon: 'assets/icons/home.svg' },
@@ -22,15 +22,24 @@ export class BottomNavComponent {
   ];
 
   activeIndex = 0;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {
     this.setActiveFromUrl(this.router.url);
 
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe((event: NavigationEnd) => {
         this.setActiveFromUrl(event.urlAfterRedirects);
       });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   setActive(index: number) {
