@@ -11,18 +11,13 @@
   <div class="affiliate-link-content">
     <div class="your-link">
       <p>Ваша реферальная ссылка</p>
-
       <div class="copy-link-container">
-
         <input type="text" [value]="link" readonly>
-        <span
-          class="copy-icon"
-          [class.active]="copied"
-          (click)="copyLink()"
-        >
-        <img src="assets/icons/copy.svg" alt="Copy">
+        <span class="copy-icon"
+            [class.active]="copied"
+            (click)="copyLink()">
+            <img src="assets/icons/copy.svg" alt="Copy">
         </span>
-
       </div>
       @if (copied){
       <div class="field-message success">
@@ -46,7 +41,10 @@
         </div>
       </div>
       <div class="button-affiliate">
-        <app-button type="primary" icon="assets/icons/withdraw.svg" (click)="goToWithdraw()">
+        <app-button
+          type="primary"
+          icon="assets/icons/withdraw.svg"
+          (click)="goToWithdraw()">
           Вывести
         </app-button>
       </div>
@@ -56,11 +54,9 @@
     <app-button
       type="primary"
       icon="assets/icons/share.svg"
-      (click)="shareReferralLink()"
-    >
+      (click)="shareReferralLink()">
       Пригласить друзей
     </app-button>
-
   </div>
 </div>
 

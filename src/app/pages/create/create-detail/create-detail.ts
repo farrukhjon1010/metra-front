@@ -11,6 +11,7 @@ import {CreateHeader} from './create-header/create-header';
 import {CreateIdle} from './create-idle/create-idle';
 import {CreateResult} from './create-result/create-result';
 import {GenerationHistory} from './generation-history/generation-history';
+import {Loading} from '../../../shared/components/loading/loading';
 
 type CreateState = 'idle' | 'loading' | 'result';
 
@@ -23,7 +24,8 @@ type CreateState = 'idle' | 'loading' | 'result';
     CreateHeader,
     CreateIdle,
     CreateResult,
-    GenerationHistory
+    GenerationHistory,
+    Loading
   ],
   templateUrl: './create-detail.html',
   styleUrls: ['./create-detail.scss'],

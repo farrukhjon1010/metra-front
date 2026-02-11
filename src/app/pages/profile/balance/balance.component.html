@@ -7,6 +7,15 @@
     <span>Используются для генерации фото, видео и сцен</span>
   </div>
 </div>
+
+@if (isLoading){
+  <div class="loading-balance">
+    <app-loading
+      [texts]="['Переходим к оплате…']">
+    </app-loading>
+  </div>
+}
+
 <div class="btn-balance">
   @for (pkg of tokenPackages; track pkg.tokens) {
     <div [class]="pkg.tag === 'Популярно' ? 'danger-buttons' : 'funds-buttons'">
@@ -23,7 +32,8 @@
       <app-button
         [type]="pkg.tag === 'Популярно' ? 'danger' : 'primary'"
         icon="assets/icons/arrow-forward.svg"
-        (click)="buyToken(pkg)">
+        (click)="buyToken(pkg)"
+        [disabled]="isLoading">
         Купить
       </app-button>
     </div>

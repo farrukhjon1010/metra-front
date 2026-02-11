@@ -1,11 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-loading',
-  standalone: true,
-  templateUrl: 'loading.html',
-  styleUrls: ['loading.scss'],
+  templateUrl: './loading.html',
+  styleUrls: ['./loading.scss']
 })
-export class Loading {
-}
+export class Loading implements OnInit {
 
+  @Input() texts: string[] = [];
+  currentText: string = '';
+
+  ngOnInit() {
+    this.currentText = this.texts[0];
+  }
+}

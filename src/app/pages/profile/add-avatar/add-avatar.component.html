@@ -172,8 +172,7 @@
               buttonType="submit"
               icon="assets/icons/add.svg"
               [disabled]="!canCreate()"
-              (click)="createAvatar()"
-            >
+              (click)="createAvatar()">
               Создать аватар
             </app-button>
           </div>
@@ -182,7 +181,9 @@
     </div>
   }
   @case ('loading') {
-    <app-loading></app-loading>
+    <app-loading
+      [texts]="['Создаём аватар…']">
+    </app-loading>
   }
   @case ('select') {
     <div class="select-screen">
@@ -202,11 +203,15 @@
               </div>
               <div class="avatar-wrapper">
                 @if (isSelected(avatar)) {
-                  <app-button type="primary" (click)="toggleAvatar(avatar)">
+                  <app-button
+                    type="primary"
+                    (click)="toggleAvatar(avatar)">
                     Выбран
                   </app-button>
                 } @else {
-                  <app-button type="secondary" (click)="toggleAvatar(avatar)">
+                  <app-button
+                    type="secondary"
+                    (click)="toggleAvatar(avatar)">
                     Выбрать
                   </app-button>
                 }
@@ -217,8 +222,12 @@
       } @else {
         <p class="empty-message">Аватары генерируются…</p>
       }
-      <app-button type="primary" icon="assets/icons/arrow-forward.svg"
-                  [disabled]="selectedAvatars.length === 0" (click)="confirmAvatars()">Продолжить
+      <app-button
+        type="primary"
+        icon="assets/icons/arrow-forward.svg"
+        [disabled]="selectedAvatars.length === 0"
+        (click)="confirmAvatars()">
+        Продолжить
       </app-button>
     </div>
   }
@@ -229,7 +238,10 @@
       </div>
       <h2 class="success-title">Аватар успешно добавлен</h2>
       <div class="gift-card">
-        <app-button type="primary" icon="assets/icons/arrow-forward.svg" (click)="goProfile()">
+        <app-button
+          type="primary"
+          icon="assets/icons/arrow-forward.svg"
+          (click)="goProfile()">
           Вернуться в профиль
         </app-button>
       </div>
