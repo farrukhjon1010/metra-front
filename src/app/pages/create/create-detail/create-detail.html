@@ -1,10 +1,8 @@
 <div class="create-page">
-
   <app-create-header
     [card]="card"
     (back)="goBack()">
   </app-create-header>
-
   <div class="create-detail-wrapper">
     @switch (createState) {
       @case ('idle') {
@@ -16,10 +14,9 @@
         </app-create-idle>
       }
       @case ('loading') {
-        <div class="loading-screen">
-          <div class="spinner"></div>
-          <p>Создаём…</p>
-        </div>
+        <app-loading
+          [texts]="['Генерируем…']">
+        </app-loading>
       }
       @case ('result') {
         <app-create-result
@@ -31,7 +28,6 @@
       }
     }
   </div>
-
   <app-generation-history
     [history]="generationHistory"
     (repeat)="repeatGeneration($event)">

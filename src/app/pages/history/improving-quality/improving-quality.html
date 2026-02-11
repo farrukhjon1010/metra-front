@@ -40,13 +40,20 @@
   </div>
 
   <div class="btn-quality">
+    @if (!isLoading){
     <app-button
       type="primary"
       icon="assets/icons/photo-size.svg"
       (click)="enhanceImage()"
-      [disabled]="!photos.photo || isProcessing">
+      [disabled]="!photos.photo || isProcessing ">
       Улучшить изображение
     </app-button>
+    }
+    @if (isLoading){
+    <app-loading
+      [texts]="['Улучшаем изображение…']">
+    </app-loading>
+    }
   </div>
 
   <div class="result-content">

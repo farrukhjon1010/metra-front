@@ -17,7 +17,9 @@
     </app-splash-form>
   }
   @case ('loading') {
-    <app-loading></app-loading>
+    <app-loading
+      [texts]="['Создаём аватар…']">
+    </app-loading>
   }
   @case ('select') {
     <app-splash-select

@@ -3,10 +3,11 @@ import {CommonModule, Location} from '@angular/common';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {UpscaleService} from '../../../core/services/upscale.service';
 import {firstValueFrom} from 'rxjs';
+import {Loading} from '../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-improving-quality',
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule, ButtonComponent, Loading],
   templateUrl: './improving-quality.html',
   styleUrls: ['./improving-quality.scss'],
 })
@@ -15,6 +16,7 @@ export class ImprovingQuality implements AfterViewInit {
   @ViewChild('photoInput', {static: false}) photoInput!: ElementRef<HTMLInputElement>;
 
   isProcessing = false;
+  isLoading = false;
   isStarted = false;
   photos: { photo: string | null } = {photo: null};
   originalImage: string | null = null;
@@ -72,6 +74,7 @@ export class ImprovingQuality implements AfterViewInit {
   async enhanceImage() {
     if (!this.photos.photo) return;
 
+    this.isLoading = true;
     this.isStarted = true;
     this.originalImage = this.photos.photo;
     this.improvedImage = null;
@@ -85,6 +88,7 @@ export class ImprovingQuality implements AfterViewInit {
       console.error('Ошибка улучшения изображения', err);
       this.improvedImage = null;
     } finally {
+      this.isLoading = false;
       this.isProcessing = false;
       this.cdr.detectChanges();
     }
