@@ -1,9 +1,19 @@
-import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef,
+  OnDestroy
+} from '@angular/core';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {SceneService} from '../../../core/services/scene.service';
 import {GenerationType} from '../../../core/models/generation.model';
 import {Router} from '@angular/router';
 import {CommonModule} from "@angular/common";
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-scenes-card',
@@ -12,13 +22,14 @@ import {CommonModule} from "@angular/common";
   standalone: true,
   imports: [ButtonComponent, CommonModule]
 })
-export class ScenesCard implements OnChanges {
+export class ScenesCard implements OnChanges, OnDestroy {
 
   @Input() scene: any | null = null;
   @Output() back = new EventEmitter<void>();
 
   templates: { name: string; prompt: string }[] = [];
   showFreeStyle: boolean = false;
+  private destroy$ = new Subject<void>();
 
   constructor(private sceneService: SceneService,
               private cdr: ChangeDetectorRef,
@@ -30,21 +41,28 @@ export class ScenesCard implements OnChanges {
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   backToGrid() {
     this.back.emit();
   }
 
   private loadTemplates(type: string) {
     this.templates = [];
-    this.sceneService.getScenes({type}).subscribe({
-      next: (data: any[]) => {
-        this.templates = data.map(s => ({name: s.name, prompt: s.prompt}));
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Failed to load scene templates', err);
-      }
-    });
+    this.sceneService.getScenes({ type })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: any[]) => {
+          this.templates = data.map(s => ({ name: s.name, prompt: s.prompt }));
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Failed to load scene templates', err);
+        }
+      });
   }
 
   openTemplate(t: { name: string; prompt: string }) {

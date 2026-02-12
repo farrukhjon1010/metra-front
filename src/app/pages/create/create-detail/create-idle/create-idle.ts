@@ -1,8 +1,20 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ButtonComponent} from '../../../../shared/components/button/button.component';
 import {CreateCard} from '../../create.data';
 import {GenerationService} from "../../../../core/services/generation.service";
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-create-idle',
@@ -14,7 +26,7 @@ import {GenerationService} from "../../../../core/services/generation.service";
   templateUrl: './create-idle.html',
   styleUrls: ['./create-idle.scss'],
 })
-export class CreateIdle implements OnChanges {
+export class CreateIdle implements OnChanges, OnDestroy {
 
   @Input() card!: CreateCard;
   @Input() initialPrompt: string = '';
@@ -33,6 +45,7 @@ export class CreateIdle implements OnChanges {
   photos: { generate: string | null } = {generate: null};
   prompt = '';
   isLoadingPrompt = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -92,24 +105,31 @@ export class CreateIdle implements OnChanges {
     this.cdr.detectChanges();
 
     this.generationService.getPrompt(this.card.type)
-        .subscribe({
-          next: res => {
-            this.prompt = res.prompt;
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: res => {
+          this.prompt = res.prompt;
 
-            setTimeout(() => {
-              if (this.textarea) {
-                this.textarea.nativeElement.focus();
-                const len = this.textarea.nativeElement.value.length;
-                this.textarea.nativeElement.selectionStart = len;
-                this.textarea.nativeElement.selectionEnd = len;
-              }
-            });
-          },
-          error: err => console.error('Ошибка получения prompt:', err),
-          complete: () => {
-            this.isLoadingPrompt = false;
-            this.cdr.detectChanges();
-          }
-        });
+          setTimeout(() => {
+            if (this.textarea) {
+              this.textarea.nativeElement.focus();
+              const len = this.textarea.nativeElement.value.length;
+              this.textarea.nativeElement.selectionStart = len;
+              this.textarea.nativeElement.selectionEnd = len;
+            }
+          });
+        },
+        error: err => console.error('Ошибка получения prompt:', err),
+        complete: () => {
+          this.isLoadingPrompt = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 }

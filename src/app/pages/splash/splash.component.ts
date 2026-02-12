@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AvatarService} from '../../core/services/avatar.service';
@@ -9,6 +9,7 @@ import {SplashFormComponent} from './components/splash-form/splash-form.componen
 import {SplashSelectComponent} from './components/splash-select/splash-select.component';
 import {SplashSuccessComponent} from './components/splash-success/splash-success.component';
 import {Loading} from '../../shared/components/loading/loading';
+import {EMPTY, Subject, switchMap, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-splash',
@@ -25,7 +26,7 @@ import {Loading} from '../../shared/components/loading/loading';
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
 })
-export class SplashComponent {
+export class SplashComponent implements OnDestroy{
 
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
@@ -37,6 +38,7 @@ export class SplashComponent {
     left: {file: null as File | null, preview: null as string | null},
     right: {file: null as File | null, preview: null as string | null},
   };
+  private destroy$ = new Subject<void>();
 
   get photosPreview() {
     return {
@@ -108,32 +110,46 @@ export class SplashComponent {
       const uploadPromises = this.selectedAvatars.map(async (url, index) => {
         const response = await fetch(url);
         const blob = await response.blob();
-        return new File([blob], `${this.UUID}${index}.png`, {type: blob.type});
+        return new File([blob], `${this.UUID}${index}.png`, { type: blob.type });
       });
 
       const filesToUpload = await Promise.all(uploadPromises);
 
-      this.fileService.uploadGeneratedAvatars(filesToUpload, this.UUID).subscribe({
-        next: (event: any) => {
-          if (event.body) {
-            const cloudinaryUrls = event.body.map((img: any) => img.url);
+      this.fileService.uploadGeneratedAvatars(filesToUpload, this.UUID).pipe(
+        switchMap((event: any) => {
+          if (!event.body) return EMPTY;
 
-            this.avatarService.create({
-              userId: this.UUID,
-              name: this.myForm.value.avatarName || "New Avatar",
-              gender: this.gender,
-              imagesURL: cloudinaryUrls
-            }).subscribe(() => {
-              this.currentStep = 'success';
-              this.cdr.detectChanges();
-            });
-          }
+          const cloudinaryUrls = event.body.map((img: any) => img.url);
+
+          return this.avatarService.create({
+            userId: this.UUID,
+            name: this.myForm.value.avatarName || "New Avatar",
+            gender: this.gender,
+            imagesURL: cloudinaryUrls
+          });
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => {
+          this.currentStep = 'success';
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Ошибка сохранения аватаров:', err);
+          this.currentStep = 'select';
+          this.cdr.detectChanges();
         }
       });
+
     } catch (error) {
       console.error('Ошибка при обработке ссылок:', error);
       this.currentStep = 'select';
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   goToMetra() {
@@ -153,41 +169,35 @@ export class SplashComponent {
 
     const userId = this.UUID;
 
-    this.fileService.uploadAvatars(filesToUpload, userId).subscribe({
-      next: (event: any) => {
-        if (event.body) {
-          const urls = event.body.map((img: any) => img.url);
+    this.fileService.uploadAvatars(filesToUpload, userId).pipe(
+      switchMap((event: any) => {
+        if (!event.body) return EMPTY;
 
-          const generateDto = {
-            name: this.myForm.value.avatarName || '',
-            gender: this.gender,
-            imageFront: urls[0],
-            imageLeft: urls[1],
-            imageRight: urls[2]
-          };
+        const urls = event.body.map((img: any) => img.url);
 
-          this.avatarService.generateAvatar(generateDto).subscribe({
-            next: (response: any) => {
-              if (response.images) {
-                this.generatedAvatars = response.images.imagesURL;
-                console.log(this.generatedAvatars)
+        const generateDto = {
+          name: this.myForm.value.avatarName || '',
+          gender: this.gender,
+          imageFront: urls[0],
+          imageLeft: urls[1],
+          imageRight: urls[2]
+        };
 
-                this.currentStep = 'select';
-                this.cdr.detectChanges();
-              }
-            },
-            error: (err) => {
-              console.error('Ошибка генерации:', err);
-              this.currentStep = 'form';
-              alert('Ошибка ИИ-сервиса');
-              this.cdr.detectChanges();
-            }
-          });
+        return this.avatarService.generateAvatar(generateDto);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response: any) => {
+        if (response.images) {
+          this.generatedAvatars = response.images.imagesURL;
+          this.currentStep = 'select';
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
-        console.error('Ошибка загрузки фото:', err);
+        console.error('Ошибка:', err);
         this.currentStep = 'form';
+        alert('Ошибка ИИ-сервиса');
         this.cdr.detectChanges();
       }
     });

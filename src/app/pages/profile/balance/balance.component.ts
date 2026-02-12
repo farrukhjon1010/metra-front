@@ -9,10 +9,7 @@ import {Loading} from '../../../shared/components/loading/loading';
   selector: 'app-balance',
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
-  imports: [
-    ButtonComponent,
-    Loading
-  ]
+  imports: [ButtonComponent, Loading]
 })
 export class BalanceComponent implements OnInit {
   tokenPackages: TokenPackage[] = [];

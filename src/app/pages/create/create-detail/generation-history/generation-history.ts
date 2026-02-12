@@ -5,10 +5,7 @@ import {ButtonComponent} from '../../../../shared/components/button/button.compo
 
 @Component({
   selector: 'app-generation-history',
-  imports: [
-    ButtonComponent,
-    DatePipe
-  ],
+  imports: [ButtonComponent, DatePipe],
   standalone: true,
   templateUrl: './generation-history.html',
   styleUrls: ['./generation-history.scss'],
@@ -18,8 +15,7 @@ export class GenerationHistory {
   @Input() history: any[] = [];
   @Output() repeat = new EventEmitter<any>();
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   repeatGeneration(generation: any) {
     this.repeat.emit(generation);

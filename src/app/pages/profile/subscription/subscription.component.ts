@@ -77,8 +77,7 @@ export class SubscriptionComponent {
     }
   ];
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   goBack() {
     this.router.navigate(['/profile']);

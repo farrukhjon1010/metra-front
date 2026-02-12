@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { CommonModule, NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,6 +7,8 @@ import { Gender } from '../../../core/models/avatar.model';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { FileService } from '../../../core/services/file.service';
 import { Loading } from '../../../shared/components/loading/loading';
+import {from, Subject, switchMap, takeUntil} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-avatar',
@@ -15,7 +17,7 @@ import { Loading } from '../../../shared/components/loading/loading';
   templateUrl: './add-avatar.component.html',
   styleUrls: ['./add-avatar.component.scss'],
 })
-export class AddAvatarComponent {
+export class AddAvatarComponent implements OnDestroy {
 
   UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
 
@@ -28,6 +30,7 @@ export class AddAvatarComponent {
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
   protected readonly Gender = Gender;
+  private destroy$ = new Subject<void>();
 
   photos = {
     front: { file: null as File | null, preview: null as string | null },
@@ -66,35 +69,46 @@ export class AddAvatarComponent {
     const userId = this.UUID;
     const selectedUrl = this.selectedAvatars[0];
 
-    this.avatarService.findByUser(userId).subscribe({
-      next: (existingAvatar) => {
-        const currentCount = existingAvatar?.imagesURL?.length || 0;
-        const nextIndex = currentCount + 1;
-        this.uploadAndSave(selectedUrl, userId, nextIndex);
-      },
-      error: () => {
-        this.uploadAndSave(selectedUrl, userId, 1);
-      }
-    });
-  }
-  private uploadAndSave(url: string, userId: string, index: number) {
-    fetch(url)
-      .then(res => res.blob())
-      .then(blob => {
-        const file = new File([blob], `avatar_v${index}.png`, { type: 'image/png' });
-
-        this.fileService.uploadGeneratedAvatar(file, userId, index).subscribe({
-          next: (response) => {
-            this.avatarService.addImgUrl(userId, response.url).subscribe({
-              next: () => {
-                this.currentStep = 'success';
-                this.cdr.detectChanges();
-              }
-            });
-          }
-        });
+    this.avatarService.findByUser(userId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (existingAvatar) => {
+          const currentCount = existingAvatar?.imagesURL?.length || 0;
+          const nextIndex = currentCount + 1;
+          this.uploadAndSave(selectedUrl, userId, nextIndex);
+        },
+        error: () => {
+          this.uploadAndSave(selectedUrl, userId, 1);
+        }
       });
   }
+
+  private uploadAndSave(url: string, userId: string, index: number) {
+
+    from(fetch(url)).pipe(
+      switchMap(res => from(res.blob())),
+      map(blob => new File([blob], `avatar_v${index}.png`, { type: 'image/png' })),
+      switchMap(file =>
+        this.fileService.uploadGeneratedAvatar(file, userId, index)
+      ),
+      switchMap((response) =>
+        this.avatarService.addImgUrl(userId, response.url)
+      ),
+      takeUntil(this.destroy$)
+    )
+      .subscribe({
+        next: () => {
+          this.currentStep = 'success';
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Ошибка при сохранении аватара:', err);
+          this.currentStep = 'form';
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
 
   triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
     event.stopPropagation();
@@ -146,43 +160,52 @@ export class AddAvatarComponent {
 
     const userId = this.UUID;
 
-    this.fileService.uploadAvatars(filesUpload, userId).subscribe({
-      next: (event: any) => {
-        if (event.body) {
-          const url = event.body.map((img: any) => img.url);
+    this.fileService.uploadAvatars(filesUpload, userId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (event: any) => {
+          if (event.body) {
+            const url = event.body.map((img: any) => img.url);
 
-          const generate = {
-            name: this.myForm.value.avatarName || '',
-            gender: this.gender,
-            imageFront: url[0],
-            imageLeft: url[1],
-            imageRight: url[2]
-          };
+            const generate = {
+              name: this.myForm.value.avatarName || '',
+              gender: this.gender,
+              imageFront: url[0],
+              imageLeft: url[1],
+              imageRight: url[2]
+            };
 
-          this.avatarService.generateAvatar(generate).subscribe({
-            next: (response: any) => {
-              if (response.images) {
-                this.generatedAvatars = response.images.imagesURL;
-                console.log(this.generatedAvatars)
+            this.avatarService.generateAvatar(generate)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: (response: any) => {
+                  if (response.images) {
+                    this.generatedAvatars = response.images.imagesURL;
+                    console.log(this.generatedAvatars)
 
-                this.currentStep = 'select';
-                this.cdr.detectChanges();
-              }
-            },
-            error: (err) => {
-              console.error('Ошибка генерации:', err);
-              this.currentStep = 'form';
-              this.cdr.detectChanges();
-            }
-          });
+                    this.currentStep = 'select';
+                    this.cdr.detectChanges();
+                  }
+                },
+                error: (err) => {
+                  console.error('Ошибка генерации:', err);
+                  this.currentStep = 'form';
+                  this.cdr.detectChanges();
+                }
+              });
+          }
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки фото:', err);
+          this.currentStep = 'form';
+          this.cdr.detectChanges();
         }
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки фото:', err);
-        this.currentStep = 'form';
-        this.cdr.detectChanges();
-      }
-    });
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   goProfile() {
