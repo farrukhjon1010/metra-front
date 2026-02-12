@@ -1,10 +1,10 @@
-<app-scenes-header></app-scenes-header>
+<app-scenes-header [categories]="categories$ | async"></app-scenes-header>
 <div class="scenes-grid">
-  @for (scene of scenes; track scene) {
+  @for (scene of scenes; track scene){
     <div class="scene-card" (click)="select(scene)">
       <img [src]="scene.image" alt="{{ scene.name }}">
-      <h3>{{ scene.name }}</h3>
-      <p>{{ scene.description }}</p>
+      <h3>{{ scene.category.name }}</h3>
+      <p>{{ scene.category.description }}</p>
     </div>
   }
 </div>

@@ -1,11 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
 import { Router } from '@angular/router';
-import { SCENES, Scene } from '../home.data';
-import {HomeHeader} from '../home-header/home-header';
-import {HomeRecommendation} from '../home-recommendation/home-recommendation';
+import { HomeHeader } from '../home-header/home-header';
+import { HomeRecommendation } from '../home-recommendation/home-recommendation';
+import { SceneService } from '../../../core/services/scene.service';
+import { Scene } from '../../../core/models/scene.model';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-main',
@@ -14,17 +16,32 @@ import {HomeRecommendation} from '../home-recommendation/home-recommendation';
   templateUrl: './home-main.component.html',
   styleUrls: ['./home-main.component.scss'],
 })
-export class HomeMainComponent {
+export class HomeMainComponent implements OnInit {
 
-  scenes = SCENES;
+  scenes: Scene[] = [];
+  showPaidDialog = signal(true);
+  loading: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private sceneService: SceneService) {}
 
-  onSceneSelect(scene: Scene) {
-    this.router.navigate(['/home', scene.id]);
+  ngOnInit() {
+    this.sceneService.getScenes()
+      .pipe(take(1))
+      .subscribe({
+        next: (data: Scene[]) => {
+          this.scenes = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Failed to load scenes', err);
+          this.loading = false;
+        }
+      });
   }
 
-  showPaidDialog = signal(true);
+  onSceneSelect(scene: Scene) {
+    this.router.navigate(['/scenes', scene.id]);
+  }
 
   closeDialog() {
     this.showPaidDialog.set(false);
@@ -33,5 +50,4 @@ export class HomeMainComponent {
       this.showPaidDialog.set(true);
     }, 60_000);
   }
-
 }

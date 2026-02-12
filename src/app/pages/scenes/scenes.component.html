@@ -1,13 +1,12 @@
-@if (!selectedScene()) {
+
+
+@if(loading()) {
+  <app-loading
+    [texts]="['Загрузка сцен...']">
+  </app-loading>
+} @else {
   <app-scenes-grid
     [scenes]="scenes"
     (selectScene)="onSceneSelect($event)">
   </app-scenes-grid>
-}
-
-@if (selectedScene()) {
-  <app-scenes-card
-    [scene]="selectedScene()"
-    (back)="backToGrid()">
-  </app-scenes-card>
 }

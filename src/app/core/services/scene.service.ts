@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Scene, SceneMode, SceneCategory } from '../models/scene.model';
 import { ApiService } from './api.service';
-import { Scene } from '../models/scene.model';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SceneService {
+
   constructor(private api: ApiService) {}
 
-  getScenes(filter?: { type?: string }): Observable<Scene[]> {
-    const params: any = {};
-    if (filter?.type) {
-      params.type = filter.type;
-    }
+  getScenes(filter?: { mode?: SceneMode; categoryId?: number }): Observable<Scene[]> {
+    return this.api.getScenes<Scene[]>(filter);
+  }
 
-    return this.api.getScenes(params).pipe(
-      map((res: any) => res as Scene[]),
-      catchError(err => {
-        return throwError(() => err);
-      })
-    );
+  createScene(data: { mode: SceneMode; name: string; image: string; prompt: string; categoryId: number }): Observable<Scene> {
+    return this.api.createScene<Scene>(data);
+  }
+
+  deleteScene(id: number): Observable<void> {
+    return this.api.deleteScene<void>(id);
+  }
+
+  getCategories(): Observable<SceneCategory[]> {
+    return this.api.getSceneCategories<SceneCategory[]>();
+  }
+
+  createCategory(formData: FormData): Observable<SceneCategory> {
+    return this.api.createSceneCategory<SceneCategory>(formData);
+  }
+
+  deleteCategory(id: number): Observable<void> {
+    return this.api.deleteSceneCategory<void>(id);
   }
 }

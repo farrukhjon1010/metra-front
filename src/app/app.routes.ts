@@ -113,14 +113,21 @@ export const routes: Routes = [
   {
     path: 'scenes',
     data: { title: 'Сцены', showHeader: false },
-    loadComponent: () =>
-      import('./pages/scenes/scenes.component').then(m => m.ScenesComponent)
-  },
-  {
-    path: 'scenes/detail/:id',
-    data: { title: 'Сцена', showHeader: false },
-    loadComponent: () =>
-      import('./pages/scenes/scenes.component').then(m => m.ScenesComponent)
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/scenes/scenes.component')
+            .then(m => m.ScenesList)
+      },
+      {
+        path: ':id',
+        data: { title: 'Сцена', showHeader: false },
+        loadComponent: () =>
+          import('./pages/scenes/scenes-detail/scenes-detail')
+            .then(m => m.SceneDetail)
+      }
+    ]
   },
 
   { path: '**', redirectTo: 'splash' }

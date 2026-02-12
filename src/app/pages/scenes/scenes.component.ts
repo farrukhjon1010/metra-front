@@ -1,35 +1,38 @@
-import {Component, computed, inject} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import {ScenesGrid} from './scenes-grid/scenes-grid';
-import {ScenesCard} from './scenes-card/scenes-card';
-import {ActivatedRoute, Router} from '@angular/router';
-import {SCENES, Scene} from '../home/home.data';
+import {Loading} from '../../shared/components/loading/loading';
+import {Scene} from '../../core/models/scene.model';
+import {SceneService} from '../../core/services/scene.service';
 
 @Component({
   selector: 'app-scenes',
   standalone: true,
-  imports: [ScenesGrid, ScenesCard],
+  imports: [CommonModule, ScenesGrid, Loading, ScenesGrid, Loading],
   templateUrl: './scenes.component.html',
-  styleUrls: ['./scenes.component.scss'],
+  styleUrls: ['./scenes.component.scss']
 })
-export class ScenesComponent {
+export class ScenesList implements OnInit {
+  scenes: Scene[] = [];
+  loading = signal(true);
 
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  scenes = SCENES;
-  private params = toSignal(this.route.paramMap);
+  constructor(private sceneService: SceneService, private router: Router) {}
 
-  selectedScene = computed(() => {
-    const p = this.params();
-    const id = p?.get('id');
-    return id ? this.scenes.find(s => s.id === id) || null : null;
-  });
-
-  onSceneSelect(scene: Scene) {
-    this.router.navigate(['/scenes/detail', scene.id]);
+  ngOnInit() {
+    this.sceneService.getScenes().subscribe({
+      next: (data) => {
+        this.scenes = data;
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Failed to load scenes', err);
+        this.loading.set(false);
+      }
+    });
   }
 
-  backToGrid() {
-    this.router.navigate(['/scenes']);
+  onSceneSelect(scene: Scene) {
+    this.router.navigate(['/scenes', scene.id]);
   }
 }

@@ -1,5 +1,10 @@
 <div class="home-detail">
   <app-home-header></app-home-header>
+  @if (loading){
+  <app-loading
+    [texts]="['Загрузка сцены...']">
+  </app-loading>
+  }
 @if (scene) {
   <app-scenes-card
     [scene]="scene"
