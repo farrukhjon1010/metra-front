@@ -2,7 +2,7 @@ import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HomeHeader } from '../home-header/home-header';
 import { HomeRecommendation } from '../home-recommendation/home-recommendation';
 import { SceneService } from '../../../core/services/scene.service';
@@ -22,7 +22,13 @@ export class HomeMainComponent implements OnInit {
   showPaidDialog = signal(true);
   loading: boolean = true;
 
-  constructor(private router: Router, private sceneService: SceneService) {}
+  constructor(private router: Router,
+              private sceneService: SceneService,
+              private route: ActivatedRoute) {}
+
+  get isPaidDialogVisible() {
+    return this.showPaidDialog();
+  }
 
   ngOnInit() {
     this.sceneService.getScenes()
@@ -40,7 +46,9 @@ export class HomeMainComponent implements OnInit {
   }
 
   onSceneSelect(scene: Scene) {
-    this.router.navigate(['/scenes', scene.id]);
+    this.router.navigate(['scenes', scene.id], {
+      relativeTo: this.route
+    });
   }
 
   closeDialog() {

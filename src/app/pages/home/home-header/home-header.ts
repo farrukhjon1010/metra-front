@@ -1,11 +1,10 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {AvatarService} from '../../../core/services/avatar.service';
-import {Subject, takeUntil} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AvatarService } from '../../../core/services/avatar.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home-header',
   standalone: true,
-  imports: [],
   styleUrls: ['./home-header.scss'],
   templateUrl: './home-header.html',
 })
@@ -17,10 +16,7 @@ export class HomeHeader implements OnInit, OnDestroy {
   currentAvatar: string = "";
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private avatarService: AvatarService,
-    private cdr: ChangeDetectorRef
-  ) { }
+  constructor(private avatarService: AvatarService) {}
 
   ngOnInit() {
     this.loadUserAvatars();
@@ -32,26 +28,24 @@ export class HomeHeader implements OnInit, OnDestroy {
   }
 
   loadUserAvatars() {
-    const userId = this.UUID;
     this.isLoading = true;
 
-    this.avatarService.findByUser(userId)
+    this.avatarService.findByUser(this.UUID)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (avatar) => {
-          if (avatar && avatar.imagesURL) {
-            this.userAvatars = [...avatar.imagesURL];
-            this.currentAvatar = this.userAvatars[0];
+          if (avatar?.imagesURL?.length) {
+            this.userAvatars = avatar.imagesURL;
+            this.currentAvatar = avatar.imagesURL[0];
           } else {
             this.userAvatars = [];
+            this.currentAvatar = '';
           }
 
           this.isLoading = false;
-          this.cdr.detectChanges();
         },
         error: () => {
           this.isLoading = false;
-          this.cdr.detectChanges();
         }
       });
   }

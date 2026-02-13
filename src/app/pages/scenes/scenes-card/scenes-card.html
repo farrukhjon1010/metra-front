@@ -1,9 +1,16 @@
+@if (isHomeScenes){
+<div class="home-header">
+  <app-home-header></app-home-header>
+</div>
+}
+@if (!isHomeScenes) {
 <div class="card-header">
   <header class="header-card">
     <img src="assets/icons/arrow-back.svg" alt="" (click)="backToGrid()">
     <span>Сцены METRA</span>
   </header>
 </div>
+}
 <div class="scenes">
   <div class="scenes-image">
     <img [src]="scene?.image" alt="{{ scene?.name }}">
@@ -13,6 +20,7 @@
     </div>
   </div>
   <div class="card-templates-content">
+    @if (templates.length > 0) {
     <div class="temlate-card">
       <h2>Templates</h2>
       <div class="scenes-card-content">
@@ -40,7 +48,8 @@
         </app-button>
       }
     </div>
-
+    }
+    @if (freestyle.length > 0) {
     <div class="free-style-card">
       <h2>FreeStyle</h2>
       <div class="scenes-card-content">
@@ -67,6 +76,7 @@
         </app-button>
       }
     </div>
+    }
   </div>
 
 </div>

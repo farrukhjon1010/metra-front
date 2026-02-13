@@ -93,7 +93,8 @@ export const routes: Routes = [
     path: 'home',
     data: { title: 'Главная', showHeader: false },
     loadComponent: () =>
-      import('./pages/home/home.component').then(m => m.HomeComponent),
+      import('./pages/home/home.component')
+        .then(m => m.HomeComponent),
     children: [
       {
         path: '',
@@ -102,11 +103,11 @@ export const routes: Routes = [
             .then(m => m.HomeMainComponent)
       },
       {
-        path: ':id',
-        data: { title: 'Главная', showHeader: false },
+        path: 'scenes/:id',
+        data: { title: 'Сцена', showHeader: false },
         loadComponent: () =>
-          import('./pages/home/home-detail/home-detail')
-            .then(m => m.HomeDetail)
+          import('./pages/scenes/scenes-detail/scenes-detail')
+            .then(m => m.SceneDetail)
       }
     ]
   },

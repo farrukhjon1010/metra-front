@@ -1,14 +1,6 @@
-<div class="home-detail">
-  <app-home-header></app-home-header>
-  @if (loading){
-  <app-loading
-    [texts]="['Загрузка сцены...']">
-  </app-loading>
-  }
-@if (scene) {
+<div class="home-scenes-card">
   <app-scenes-card
-    [scene]="scene"
-    (back)="onBack()">
+      [scene]="scene"
+      (back)="goBack()">
   </app-scenes-card>
-}
 </div>

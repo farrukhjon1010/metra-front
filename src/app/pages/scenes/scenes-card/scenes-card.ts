@@ -6,13 +6,14 @@ import { Router } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { Subject, takeUntil } from 'rxjs';
 import { Scene } from '../../../core/models/scene.model';
+import {HomeHeader} from '../../home/home-header/home-header';
 
 @Component({
   selector: 'app-scenes-card',
   templateUrl: './scenes-card.html',
   styleUrls: ['./scenes-card.scss'],
   standalone: true,
-  imports: [ButtonComponent, CommonModule]
+  imports: [ButtonComponent, CommonModule, HomeHeader]
 })
 export class ScenesCard implements OnChanges, OnDestroy {
 
@@ -43,6 +44,10 @@ export class ScenesCard implements OnChanges, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get isHomeScenes(): boolean {
+    return this.router.url.startsWith('/home/scenes');
   }
 
   backToGrid() {

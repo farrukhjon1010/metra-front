@@ -4,6 +4,7 @@ import { SceneService } from '../../../core/services/scene.service';
 import { Scene } from '../../../core/models/scene.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScenesCard } from '../scenes-card/scenes-card';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-scene-detail',
@@ -19,7 +20,8 @@ export class SceneDetail implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sceneService: SceneService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -35,7 +37,13 @@ export class SceneDetail implements OnInit {
     }
   }
 
-  backToList() {
-    this.router.navigate(['/scenes']);
+  goBack() {
+    if (window.history.length > 1) {
+      // Есть предыдущая страница — возвращаемся
+      this.location.back();
+    } else {
+      // Нет истории — fallback на /home
+      this.router.navigate(['/home']);
+    }
   }
 }

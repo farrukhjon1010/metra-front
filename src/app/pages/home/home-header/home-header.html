@@ -6,15 +6,12 @@
         Генерация образов и фото с помощью персонального аватара
       </p>
     </div>
-    @if (userAvatars.length){
-      <div class="home__avatar-icon">
+    <div class="home__avatar-icon">
+      @if (currentAvatar) {
         <img [src]="currentAvatar" alt="">
-      </div>
-    }
-    @else {
-      <div class="home__avatar-icon">
+      } @else {
         <img src="assets/icons/user-empty.svg" alt="">
-      </div>
-    }
+      }
+    </div>
   </div>
 </header>

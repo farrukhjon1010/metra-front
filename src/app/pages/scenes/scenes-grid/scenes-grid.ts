@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { ScenesHeader } from '../scenes-header/scenes-header';
 import {Scene, SceneCategory} from '../../../core/models/scene.model';
+import { SceneService } from '../../../core/services/scene.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import {ApiService} from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-scenes-grid',
@@ -16,7 +16,7 @@ export class ScenesGrid implements OnInit {
   @Input() scenes: Scene[] = [];
   @Output() selectScene = new EventEmitter<Scene>();
 
-  private api = inject(ApiService);
+  private sceneService = inject(SceneService);
   public categories$!: Observable<SceneCategory[]>;
 
   ngOnInit() {
@@ -24,7 +24,7 @@ export class ScenesGrid implements OnInit {
   }
 
   getCategories(): Observable<SceneCategory[]> {
-    return this.api.getSceneCategories<SceneCategory[]>();
+    return this.sceneService.getCategories();
   }
 
   select(scene: Scene) {
