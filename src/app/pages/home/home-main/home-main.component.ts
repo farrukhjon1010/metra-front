@@ -6,20 +6,24 @@ import { HomeRecommendation } from '../home-recommendation/home-recommendation';
 import { HomeHeader } from '../home-header/home-header';
 import { ScenesHeader } from '../../scenes/scenes-header/scenes-header';
 import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
+import {Loading} from '../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-home-main',
   templateUrl: './home-main.component.html',
   styleUrls: ['./home-main.component.scss'],
   standalone: true,
-  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader,]
+  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, Loading,]
 })
 export class HomeMainComponent implements OnInit {
 
-  categories: SceneCategory[] = [];
+  // categories: SceneCategory[] = [];
   scenes: Scene[] = [];
   viewMode: 'categories' | 'scenes' = 'categories';
   isPaidDialogVisible = false;
+  categories$!: Observable<SceneCategory[]>;
 
   constructor(
     private sceneService: SceneService,
@@ -33,14 +37,9 @@ export class HomeMainComponent implements OnInit {
   }
 
   loadCategories() {
-    this.sceneService.getCategories().subscribe({
-      next: (data) => {
-        this.categories = data;
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error(err)
-    });
+    this.categories$ = this.sceneService.getCategories();
   }
+
 
   loadScenes(categoryId: number) {
     this.sceneService.getScenes({ categoryId }).subscribe({
