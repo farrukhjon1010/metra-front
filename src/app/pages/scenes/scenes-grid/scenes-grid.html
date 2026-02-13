@@ -1,10 +1,18 @@
-<app-scenes-header [categories]="categories$ | async"></app-scenes-header>
 <div class="scenes-grid">
-  @for (scene of scenes; track scene){
-    <div class="scene-card" (click)="select(scene)">
-      <img [src]="scene.image" alt="{{ scene.name }}">
-      <h3>{{ scene.category.name }}</h3>
-      <p>{{ scene.category.description }}</p>
-    </div>
+  @if (viewMode === 'categories') {
+    @for (category of categories; track category.id) {
+      <div class="scene-card" (click)="onCategoryClick(category)">
+        <img [src]="category.image" [alt]="category.name">
+        <h3>{{ category.name }}</h3>
+        <p>{{ category.description }}</p>
+      </div>
+    }
+  } @else {
+    @for (scene of scenes; track scene.id) {
+      <div class="scene-card" (click)="onSceneClick(scene)">
+        <img [src]="scene.image" [alt]="scene.name">
+        <h3>{{ scene.name }}</h3>
+      </div>
+    }
   }
 </div>

@@ -1,5 +1,10 @@
 <header class="scenes">
   <div class="scenes__header">
+    @if (showBack) {
+      <a [routerLink]="backLink" class="back-button">
+        <img src="assets/icons/arrow-back.svg" alt="Back">
+      </a>
+    }
     <h2 class="scenes__title">Сцены METRA</h2>
     <span class="scenes__subtitle">
       Готовые визуальные сцены для естественных и стильных образов

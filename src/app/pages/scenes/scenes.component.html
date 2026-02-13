@@ -1,10 +1,16 @@
-@if(loading()) {
-  <app-loading
-    [texts]="['Загрузка сцен...']">
-  </app-loading>
-} @else {
+@if (categories$ | async; as categories) {
+
+  <app-scenes-header
+    [showBack]="false">
+  </app-scenes-header>
+
   <app-scenes-grid
-    [scenes]="scenes"
-    (selectScene)="onSceneSelect($event)">
+    [categories]="categories"
+    [scenes]="[]"
+    viewMode="categories"
+    (selectCategory)="onCategorySelect($event)">
   </app-scenes-grid>
+
+} @else {
+  <app-loading [texts]="['Загрузка...']"></app-loading>
 }

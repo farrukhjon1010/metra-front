@@ -1,33 +1,27 @@
-import { Component, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
-import { ScenesHeader } from '../scenes-header/scenes-header';
-import {Scene, SceneCategory} from '../../../core/models/scene.model';
-import { SceneService } from '../../../core/services/scene.service';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Scene, SceneCategory } from '../../../core/models/scene.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-scenes-grid',
   standalone: true,
-  imports: [ScenesHeader, AsyncPipe],
+  imports: [CommonModule],
   templateUrl: './scenes-grid.html',
   styleUrls: ['./scenes-grid.scss'],
 })
-export class ScenesGrid implements OnInit {
+export class ScenesGrid {
   @Input() scenes: Scene[] = [];
+  @Input() categories: SceneCategory[] = [];
+  @Input() viewMode: 'categories' | 'scenes' = 'categories';
+
   @Output() selectScene = new EventEmitter<Scene>();
+  @Output() selectCategory = new EventEmitter<SceneCategory>();
 
-  private sceneService = inject(SceneService);
-  public categories$!: Observable<SceneCategory[]>;
-
-  ngOnInit() {
-    this.categories$ = this.getCategories();
+  onCategoryClick(category: SceneCategory) {
+    this.selectCategory.emit(category);
   }
 
-  getCategories(): Observable<SceneCategory[]> {
-    return this.sceneService.getCategories();
-  }
-
-  select(scene: Scene) {
+  onSceneClick(scene: Scene) {
     this.selectScene.emit(scene);
   }
 }

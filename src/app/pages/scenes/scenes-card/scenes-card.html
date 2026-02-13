@@ -25,7 +25,7 @@
       <h2>Templates</h2>
       <div class="scenes-card-content">
         @if (displayedTemplates.length > 0) {
-          @for (t of displayedTemplates; track t) {
+          @for (t of displayedTemplates; track t.id) {
             <div class="scenes-card-templates"
                  (click)="openTemplate(t)">
               <div class="circle-ava">
@@ -54,7 +54,7 @@
       <h2>FreeStyle</h2>
       <div class="scenes-card-content">
         @if (displayedFreestyle.length > 0) {
-          @for (f of displayedFreestyle; track f) {
+          @for (f of displayedFreestyle; track f.id) {
             <div class="scenes-card-templates" (click)="openFreestyle(f)">
               <div class="circle-ava">
                 <img src="assets/icons/3d-avatar.svg" alt="">

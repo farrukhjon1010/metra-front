@@ -1,4 +1,13 @@
-import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { SceneService } from '../../../core/services/scene.service';
 import { GenerationType } from '../../../core/models/generation.model';
@@ -6,7 +15,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { Subject, takeUntil } from 'rxjs';
 import { Scene } from '../../../core/models/scene.model';
-import {HomeHeader} from '../../home/home-header/home-header';
+import { HomeHeader } from '../../home/home-header/home-header';
 
 @Component({
   selector: 'app-scenes-card',
@@ -20,22 +29,24 @@ export class ScenesCard implements OnChanges, OnDestroy {
   @Input() scene: Scene | null = null;
   @Output() back = new EventEmitter<void>();
 
-  templates: any[] = [];
-  freestyle: any[] = [];
-  displayedTemplates: any[] = [];
-  displayedFreestyle: any[] = [];
+  templates: Scene[] = [];
+  freestyle: Scene[] = [];
+  displayedTemplates: Scene[] = [];
+  displayedFreestyle: Scene[] = [];
+
   templatesStep = 6;
   freestyleStep = 6;
+
   private destroy$ = new Subject<void>();
 
   constructor(
     private sceneService: SceneService,
-    private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['scene'] && this.scene) {
+    if (changes['scene'] && this.scene?.category?.id) {
       this.loadTemplates();
       this.loadFreestyle();
     }
@@ -55,17 +66,19 @@ export class ScenesCard implements OnChanges, OnDestroy {
   }
 
   private loadTemplates() {
-    if (!this.scene) {
-      return;
-    }
-    this.templates = [];
-    this.displayedTemplates = [];
-    this.sceneService.getScenes({ mode: 'Template', categoryId: this.scene.category.id })
+    if (!this.scene?.category?.id) return;
+
+    this.sceneService.getScenes({
+      mode: 'Template',
+      categoryId: this.scene.category.id
+    })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Scene[]) => {
-          this.templates = data.map(s => ({ name: s.name, prompt: s.prompt }));
+          this.templates = data;
           this.displayedTemplates = this.templates.slice(0, this.templatesStep);
+
+          // 🔥 важно
           this.cdr.detectChanges();
         },
         error: (err) => console.error('Failed to load templates', err)
@@ -73,36 +86,38 @@ export class ScenesCard implements OnChanges, OnDestroy {
   }
 
   private loadFreestyle() {
-    if (!this.scene) {
-      return;
-    }
-    this.freestyle = [];
-    this.displayedFreestyle = [];
-    this.sceneService.getScenes({ mode: 'FreeStyle', categoryId: this.scene.category.id })
+    if (!this.scene?.category?.id) return;
+
+    this.sceneService.getScenes({
+      mode: 'FreeStyle',
+      categoryId: this.scene.category.id
+    })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Scene[]) => {
-          this.freestyle = data.map(s => ({ name: s.name, prompt: s.prompt }));
+          this.freestyle = data;
           this.displayedFreestyle = this.freestyle.slice(0, this.freestyleStep);
+
+          // 🔥 важно
           this.cdr.detectChanges();
         },
         error: (err) => console.error('Failed to load freestyle', err)
       });
   }
 
-  openTemplate(t: { name: string; prompt: string }) {
+  openTemplate(scene: Scene) {
     this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
       state: {
-        prompt: t.prompt,
+        prompt: scene.prompt,
         fromHistory: true
       }
     });
   }
 
-  openFreestyle(f: { name: string; prompt: string }) {
+  openFreestyle(scene: Scene) {
     this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
       state: {
-        prompt: f.prompt,
+        prompt: scene.prompt,
         fromHistory: true
       }
     });
@@ -111,10 +126,14 @@ export class ScenesCard implements OnChanges, OnDestroy {
   showMoreTemplates() {
     const next = this.displayedTemplates.length + this.templatesStep;
     this.displayedTemplates = this.templates.slice(0, next);
+
+    this.cdr.detectChanges();
   }
 
   showMoreFreestyle() {
     const next = this.displayedFreestyle.length + this.freestyleStep;
     this.displayedFreestyle = this.freestyle.slice(0, next);
+
+    this.cdr.detectChanges();
   }
 }

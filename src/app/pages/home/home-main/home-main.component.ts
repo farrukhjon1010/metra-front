@@ -1,61 +1,65 @@
-import { Component, signal, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
-import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
-import {ActivatedRoute, Router} from '@angular/router';
-import { HomeHeader } from '../home-header/home-header';
-import { HomeRecommendation } from '../home-recommendation/home-recommendation';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SceneService } from '../../../core/services/scene.service';
-import { Scene } from '../../../core/models/scene.model';
-import { take } from 'rxjs/operators';
+import { Scene, SceneCategory } from '../../../core/models/scene.model';
+import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
+import { HomeRecommendation } from '../home-recommendation/home-recommendation';
+import { HomeHeader } from '../home-header/home-header';
+import { ScenesHeader } from '../../scenes/scenes-header/scenes-header';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-main',
-  standalone: true,
-  imports: [CommonModule, PaidDialog, ScenesGrid, HomeHeader, HomeRecommendation],
   templateUrl: './home-main.component.html',
   styleUrls: ['./home-main.component.scss'],
+  standalone: true,
+  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader,]
 })
 export class HomeMainComponent implements OnInit {
 
+  categories: SceneCategory[] = [];
   scenes: Scene[] = [];
-  showPaidDialog = signal(true);
-  loading: boolean = true;
+  viewMode: 'categories' | 'scenes' = 'categories';
+  isPaidDialogVisible = false;
 
-  constructor(private router: Router,
-              private sceneService: SceneService,
-              private route: ActivatedRoute) {}
-
-  get isPaidDialogVisible() {
-    return this.showPaidDialog();
-  }
+  constructor(
+    private sceneService: SceneService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.sceneService.getScenes()
-      .pipe(take(1))
-      .subscribe({
-        next: (data: Scene[]) => {
-          this.scenes = data;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Failed to load scenes', err);
-          this.loading = false;
+    this.loadCategories();
+    this.isPaidDialogVisible = true;
+  }
+
+  loadCategories() {
+    this.sceneService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  loadScenes(categoryId: number) {
+    this.sceneService.getScenes({ categoryId }).subscribe({
+      next: (data) => {
+        this.scenes = data;
+        this.viewMode = 'scenes';
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  onCategorySelect(category: SceneCategory) {
+    this.sceneService.getScenes({ categoryId: category.id })
+      .subscribe(scenes => {
+        if (scenes.length > 0) {
+          this.router.navigate(['/scenes', scenes[0].id]);
         }
       });
   }
 
-  onSceneSelect(scene: Scene) {
-    this.router.navigate(['scenes', scene.id], {
-      relativeTo: this.route
-    });
-  }
-
-  closeDialog() {
-    this.showPaidDialog.set(false);
-
-    setTimeout(() => {
-      this.showPaidDialog.set(true);
-    }, 60_000);
-  }
 }

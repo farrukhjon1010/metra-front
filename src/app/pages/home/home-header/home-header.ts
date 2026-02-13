@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
   standalone: true,
   styleUrls: ['./home-header.scss'],
   templateUrl: './home-header.html',
+  imports: []
 })
 export class HomeHeader implements OnInit, OnDestroy {
 

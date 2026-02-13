@@ -1,17 +1,19 @@
-@if (isPaidDialogVisible) {
-  <app-paid-dialog
-    (close)="closeDialog()">
-  </app-paid-dialog>
-}
+
+<!--  <app-paid-dialog-->
+<!--    (close)="closeDialog()">-->
+<!--  </app-paid-dialog>-->
+
 
 <app-home-header></app-home-header>
 
+<app-scenes-header></app-scenes-header>
 <div class="grid">
   <app-scenes-grid
-    [scenes]="scenes"
-    (selectScene)="onSceneSelect($event)">
+    [categories]="categories"
+    [scenes]="[]"
+    viewMode="categories"
+    (selectCategory)="onCategorySelect($event)">
   </app-scenes-grid>
 </div>
 
 <app-home-recommendation></app-home-recommendation>
-

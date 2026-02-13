@@ -1,13 +1,15 @@
-import {Component, Input} from '@angular/core';
-import {SceneCategory} from '../../../core/models/scene.model';
+import { Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-scenes-header',
   standalone: true,
-  imports: [],
+  imports: [RouterModule, CommonModule],
   templateUrl: './scenes-header.html',
   styleUrls: ['./scenes-header.scss'],
 })
 export class ScenesHeader {
-  @Input() categories: SceneCategory[] | null = [];
+  @Input() showBack = false;
+  @Input() backLink: any[] = ['/scenes'];
 }
