@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { AvatarService } from '../../../core/services/avatar.service';
@@ -28,7 +28,8 @@ export class ProfileMainComponent implements OnInit {
       public router: Router,
       private avatarService: AvatarService,
       private referralService: ReferralService,
-      private balanceService: BalanceService
+      private balanceService: BalanceService,
+      private cdr: ChangeDetectorRef
   ) {
     this.income$ = this.referralService.income$.pipe(map(data => data.income));
     this.currency$ = this.referralService.income$.pipe(map(data => data.currency));
@@ -57,10 +58,12 @@ export class ProfileMainComponent implements OnInit {
       next: (avatar) => {
         this.selectedAvatars = avatar?.imagesURL || [];
         this.isAvatarsLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.selectedAvatars = [];
         this.isAvatarsLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
