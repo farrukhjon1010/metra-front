@@ -1,5 +1,9 @@
 <div class="profile-screen">
 
+  @if (isAvatarsLoading) {
+    <app-loading [texts]="['Загрузка...']"></app-loading>
+  }
+
   <div class="profile-content">
     <div class="profile-card">
       <h3 class="card-title">Ваш аватар</h3>

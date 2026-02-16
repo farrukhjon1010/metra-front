@@ -7,10 +7,11 @@ import { BalanceService } from '../../../core/services/balance.service';
 import { Observable } from 'rxjs';
 import {map} from "rxjs/operators";
 import {AsyncPipe} from "@angular/common";
+import {Loading} from "../../../shared/components/loading/loading";
 
 @Component({
   selector: 'app-profile-main',
-  imports: [ButtonComponent, AsyncPipe],
+  imports: [ButtonComponent, AsyncPipe, Loading],
   templateUrl: './profile-main-component.html',
   styleUrls: ['./profile-main-component.scss'],
 })
