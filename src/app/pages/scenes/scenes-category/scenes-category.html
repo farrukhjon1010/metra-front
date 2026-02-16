@@ -1,0 +1,18 @@
+@if(!loaded){
+  <div>
+    <app-loading [texts]="['Загрузка...']"></app-loading>
+  </div>
+}
+@if (loaded){
+<div >
+  @if (selectedScene) {
+    <app-scenes-card [scene]="selectedScene" (back)="goBack()"></app-scenes-card>
+  } @else {
+    <div class="empty-page">
+      <h2>Пусто</h2>
+      <p>Категория не найдена</p>
+      <button (click)="goBack()">Назад</button>
+    </div>
+  }
+</div>
+}
