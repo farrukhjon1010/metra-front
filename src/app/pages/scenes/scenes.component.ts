@@ -37,6 +37,13 @@ export class ScenesComponent implements OnInit {
       .subscribe(scenes => {
         if (scenes.length > 0) {
           this.router.navigate(['/scenes', scenes[0].id]);
+        } else {
+          // Если сцен нет, все равно переходим, чтобы показать пустой экран с информацией о категории
+          // Но нам нужен ID сцены для роута /scenes/:id.
+          // Если сцен нет, мы не можем перейти на /scenes/:id, так как id нет.
+          // Возможно, стоит использовать другой роут или передавать categoryId.
+          // В текущей реализации роутинга есть path: 'scenes/category/:categoryId'.
+          this.router.navigate(['/scenes/scenes/category', category.id]);
         }
       });
   }

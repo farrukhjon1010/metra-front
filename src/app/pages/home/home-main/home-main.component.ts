@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, signal} from '@angular/core';
 import { SceneService } from '../../../core/services/scene.service';
 import { Scene, SceneCategory } from '../../../core/models/scene.model';
 import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
@@ -8,22 +8,22 @@ import { ScenesHeader } from '../../scenes/scenes-header/scenes-header';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
-import {Loading} from '../../../shared/components/loading/loading';
+import {PaidDialog} from '../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-home-main',
   templateUrl: './home-main.component.html',
   styleUrls: ['./home-main.component.scss'],
   standalone: true,
-  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, Loading,]
+  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, PaidDialog, ScenesGrid,]
 })
 export class HomeMainComponent implements OnInit {
 
-  // categories: SceneCategory[] = [];
   scenes: Scene[] = [];
   viewMode: 'categories' | 'scenes' = 'categories';
   isPaidDialogVisible = false;
   categories$!: Observable<SceneCategory[]>;
+  showPaidDialog = signal(true);
 
   constructor(
     private sceneService: SceneService,
@@ -39,7 +39,6 @@ export class HomeMainComponent implements OnInit {
   loadCategories() {
     this.categories$ = this.sceneService.getCategories();
   }
-
 
   loadScenes(categoryId: number) {
     this.sceneService.getScenes({ categoryId }).subscribe({
@@ -59,6 +58,15 @@ export class HomeMainComponent implements OnInit {
           this.router.navigate(['/scenes', scenes[0].id]);
         }
       });
+  }
+
+
+  closeDialog() {
+    this.showPaidDialog.set(false);
+
+    setTimeout(() => {
+      this.showPaidDialog.set(true);
+    }, 60_000);
   }
 
 }

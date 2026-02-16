@@ -1,7 +1,8 @@
-
-<!--  <app-paid-dialog-->
-<!--    (close)="closeDialog()">-->
-<!--  </app-paid-dialog>-->
+@if (showPaidDialog()) {
+  <app-paid-dialog
+    (close)="closeDialog()">
+  </app-paid-dialog>
+}
 
 @if (categories$ | async; as categories) {
 <app-home-header></app-home-header>
@@ -17,6 +18,4 @@
 </div>
 
 <app-home-recommendation></app-home-recommendation>
-} @else {
-  <app-loading [texts]="['Загрузка...']"></app-loading>
 }

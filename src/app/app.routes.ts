@@ -121,6 +121,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/scenes/scenes-detail/scenes-detail')
             .then(m => m.SceneDetail)
+      },
+      {
+        path: 'scenes/category/:categoryId',
+        loadComponent: () =>
+          import('./pages/scenes/scenes-category/scenes-category')
+            .then(m => m.SceneCategory)
       }
     ]
   },

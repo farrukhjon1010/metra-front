@@ -8,10 +8,16 @@
       </div>
     }
   } @else {
-    @for (scene of scenes; track scene.id) {
-      <div class="scene-card" (click)="onSceneClick(scene)">
-        <img [src]="scene.image" [alt]="scene.name">
-        <h3>{{ scene.name }}</h3>
+    @if (scenes.length > 0) {
+      @for (scene of scenes; track scene.id) {
+        <div class="scene-card" (click)="onSceneClick(scene)">
+          <img [src]="scene.image" [alt]="scene.name">
+          <h3>{{ scene.name }}</h3>
+        </div>
+      }
+    } @else {
+      <div class="empty-block">
+        <p>Пусто</p>
       </div>
     }
   }
