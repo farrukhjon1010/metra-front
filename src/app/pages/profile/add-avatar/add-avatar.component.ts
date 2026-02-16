@@ -165,7 +165,6 @@ export class AddAvatarComponent implements OnDestroy {
         next: (event: any) => {
           if (event.body) {
             const url = event.body.map((img: any) => img.url);
-
             const generate = {
               name: this.myForm.value.avatarName || '',
               gender: this.gender,

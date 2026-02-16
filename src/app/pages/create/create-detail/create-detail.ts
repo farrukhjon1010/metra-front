@@ -91,7 +91,6 @@ export class CreateDetail implements OnInit, OnDestroy {
             imageURL: genRes.processedImage,
             externalTaskId: genRes.externalTaskId
           };
-
           return this.generationService.create(saveDto);
         })
       );

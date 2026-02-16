@@ -5,7 +5,7 @@ import { AvatarService } from '../../../core/services/avatar.service';
 import { ReferralService } from '../../../core/services/referral.service';
 import { BalanceService } from '../../../core/services/balance.service';
 import { Observable } from 'rxjs';
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import {AsyncPipe} from "@angular/common";
 import {Loading} from "../../../shared/components/loading/loading";
 
@@ -39,13 +39,15 @@ export class ProfileMainComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserAvatars();
 
-    this.referralService.getReferralInfo().subscribe({
-      next: (data) => {
-        this.referralService.setIncome({
-          income: data.stats.income,
-          currency: data.stats.currency
-        });
-      },
+    this.referralService.getReferralInfo()
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {
+          this.referralService.setIncome({
+            income: data.stats.income,
+            currency: data.stats.currency
+          });
+        },
       error: () => this.referralService.setIncome({ income: 0, currency: '' })
     });
     this.balanceService.loadUserBalance();
@@ -54,7 +56,9 @@ export class ProfileMainComponent implements OnInit {
   loadUserAvatars(): void {
     this.isAvatarsLoading = true;
 
-    this.avatarService.findByUser(this.UUID).subscribe({
+    this.avatarService.findByUser(this.UUID)
+      .pipe(take(1))
+      .subscribe({
       next: (avatar) => {
         this.selectedAvatars = avatar?.imagesURL || [];
         this.isAvatarsLoading = false;

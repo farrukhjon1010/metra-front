@@ -4,6 +4,7 @@ import {TokenPackage} from '../../../core/models/token-transactions.model';
 import {TokenTransactionsService} from '../../../core/services/token-transactions.service';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {Loading} from '../../../shared/components/loading/loading';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-balance',
@@ -22,9 +23,11 @@ export class BalanceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.tokenService.getTokenPackages().subscribe(packages => {
-      this.tokenPackages = packages;
-    });
+    this.tokenService.getTokenPackages()
+      .pipe(take(1))
+      .subscribe(packages => {
+        this.tokenPackages = packages;
+      });
   }
 
   goBack() {
@@ -33,15 +36,17 @@ export class BalanceComponent implements OnInit {
 
   buyToken(pkg: TokenPackage) {
     this.isLoading = true;
-    this.tokenService.createOrder(this.userId, pkg.tokens).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        window.location.href = res.url;
-      },
-      error: () => {
-        this.isLoading = false;
-        alert('Не удалось создать заказ. Попробуйте позже.');
-      }
-    });
+    this.tokenService.createOrder(this.userId, pkg.tokens)
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          window.location.href = res.url;
+        },
+        error: () => {
+          this.isLoading = false;
+          alert('Не удалось создать заказ. Попробуйте позже.');
+        }
+      });
   }
 }

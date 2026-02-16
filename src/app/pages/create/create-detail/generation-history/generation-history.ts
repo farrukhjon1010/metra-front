@@ -34,7 +34,6 @@ export class GenerationHistory {
       .then(blob => {
         const a = document.createElement('a');
         const objectUrl = URL.createObjectURL(blob);
-
         const extension =
           type === 'video'
             ? 'mp4'
@@ -42,7 +41,6 @@ export class GenerationHistory {
 
         a.href = objectUrl;
         a.download = `generation-${type}.${extension}`;
-
         a.click();
         URL.revokeObjectURL(objectUrl);
       })

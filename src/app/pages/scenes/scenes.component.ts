@@ -19,7 +19,6 @@ export class ScenesComponent implements OnInit {
 
   private sceneService = inject(SceneService);
   private router = inject(Router);
-
   categories$!: Observable<SceneCategory[]>;
 
   ngOnInit() {

@@ -174,7 +174,6 @@ export class SplashComponent implements OnDestroy{
         if (!event.body) return EMPTY;
 
         const urls = event.body.map((img: any) => img.url);
-
         const generateDto = {
           name: this.myForm.value.avatarName || '',
           gender: this.gender,
@@ -182,7 +181,6 @@ export class SplashComponent implements OnDestroy{
           imageLeft: urls[1],
           imageRight: urls[2]
         };
-
         return this.avatarService.generateAvatar(generateDto);
       }),
       takeUntil(this.destroy$)

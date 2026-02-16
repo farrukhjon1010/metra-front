@@ -30,7 +30,6 @@ export class HomeHeader implements OnInit, OnDestroy {
 
   loadUserAvatars() {
     this.isLoading = true;
-
     this.avatarService.findByUser(this.UUID)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -42,7 +41,6 @@ export class HomeHeader implements OnInit, OnDestroy {
             this.userAvatars = [];
             this.currentAvatar = '';
           }
-
           this.isLoading = false;
         },
         error: () => {

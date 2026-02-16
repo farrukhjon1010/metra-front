@@ -96,13 +96,10 @@ export class SubscriptionComponent {
     this.tokenTransactionsService.createSubscriptionOrder(this.userId, plan.price)
       .subscribe({
         next: res => {
-          console.log('Платеж создан:', res);
           window.location.href = res.url;
-          // isLoading remains true as we navigate away
         },
         error: err => {
           console.error('Ошибка при создании подписки', err);
-          alert('Не удалось создать платеж. Попробуйте позже.');
           this.isLoading = false;
         }
       });
