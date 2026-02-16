@@ -1,19 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy,
-  ChangeDetectorRef
-} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { SceneService } from '../../../core/services/scene.service';
 import { GenerationType } from '../../../core/models/generation.model';
 import { Router } from '@angular/router';
 import { CommonModule } from "@angular/common";
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, finalize } from 'rxjs';
 import { Scene } from '../../../core/models/scene.model';
 import { HomeHeader } from '../../home/home-header/home-header';
 
@@ -33,10 +24,9 @@ export class ScenesCard implements OnChanges, OnDestroy {
   freestyle: Scene[] = [];
   displayedTemplates: Scene[] = [];
   displayedFreestyle: Scene[] = [];
-
   templatesStep = 6;
   freestyleStep = 6;
-
+  loadingCount = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -47,6 +37,7 @@ export class ScenesCard implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['scene'] && this.scene?.category?.id) {
+      this.loadingCount = 2;
       this.loadTemplates();
       this.loadFreestyle();
     }
@@ -61,45 +52,61 @@ export class ScenesCard implements OnChanges, OnDestroy {
     return this.router.url.startsWith('/home/scenes');
   }
 
+  get isLoading(): boolean {
+    return this.loadingCount > 0;
+  }
+
   backToGrid() {
     this.back.emit();
   }
 
   private loadTemplates() {
-    if (!this.scene?.category?.id) return;
+    if (!this.scene?.category?.id) {
+      this.loadingCount--;
+      return;
+    }
 
     this.sceneService.getScenes({
       mode: 'Template',
       categoryId: this.scene.category.id
     })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          this.loadingCount--;
+          this.cdr.detectChanges();
+        })
+      )
       .subscribe({
         next: (data: Scene[]) => {
           this.templates = data;
           this.displayedTemplates = this.templates.slice(0, this.templatesStep);
-
-          // 🔥 важно
-          this.cdr.detectChanges();
         },
         error: (err) => console.error('Failed to load templates', err)
       });
   }
 
   private loadFreestyle() {
-    if (!this.scene?.category?.id) return;
+    if (!this.scene?.category?.id) {
+      this.loadingCount--;
+      return;
+    }
 
     this.sceneService.getScenes({
       mode: 'FreeStyle',
       categoryId: this.scene.category.id
     })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          this.loadingCount--;
+          this.cdr.detectChanges();
+        })
+      )
       .subscribe({
         next: (data: Scene[]) => {
           this.freestyle = data;
           this.displayedFreestyle = this.freestyle.slice(0, this.freestyleStep);
-
-          // 🔥 важно
-          this.cdr.detectChanges();
         },
         error: (err) => console.error('Failed to load freestyle', err)
       });
