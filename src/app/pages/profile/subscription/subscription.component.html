@@ -1,52 +1,58 @@
-<div class="subscription-header">
+@if (isLoading) {
+  <app-loading
+    [texts]="['Подготовка к оплате…']">
+  </app-loading>
+} @else {
+  <div class="subscription-header">
     <div (click)="goBack()">
       <img src="assets/icons/arrow-back.svg" alt="">
     </div>
-  <div class="subscription-balance">
-    <span>Подписка METRA</span>
+    <div class="subscription-balance">
+      <span>Подписка METRA</span>
+    </div>
   </div>
-</div>
-<div class="subscription-content">
-  @for (plan of plans; track plan.id) {
-    <div [class]="plan.cardClass">
-      @if (plan.isRecommended) {
-        <div class="recommendation-icon">
-          <img src="assets/icons/star-recommend.svg" alt="recommend">Рекомендуем
-        </div>
-      }
-      <div class="text-card">
-        <h2>{{ plan.title }}</h2>
-        <p>Вы получаете:</p>
-        <div [class]="plan.spanClass">
-          @for (feature of plan.features; track feature) {
-            <span>
+  <div class="subscription-content">
+    @for (plan of plans; track plan.id) {
+      <div [class]="plan.cardClass">
+        @if (plan.isRecommended) {
+          <div class="recommendation-icon">
+            <img src="assets/icons/star-recommend.svg" alt="recommend">Рекомендуем
+          </div>
+        }
+        <div class="text-card">
+          <h2>{{ plan.title }}</h2>
+          <p>Вы получаете:</p>
+          <div [class]="plan.spanClass">
+            @for (feature of plan.features; track feature) {
+              <span>
               <img src="assets/icons/check-confirm.svg" alt="">
               {{ feature }}
             </span>
-          }
-        </div>
-        <p>Пример использования:</p>
-        <div [class]="plan.spanClass">
-          @for (example of plan.examples; track example) {
-            <span>
+            }
+          </div>
+          <p>Пример использования:</p>
+          <div [class]="plan.spanClass">
+            @for (example of plan.examples; track example) {
+              <span>
               <img src="assets/icons/awesome.svg" alt="">
               {{ example }}
             </span>
-          }
-        </div>
-        <div [class]="'btn-card-' + plan.id">
-          <app-button
-            type="secondary">
-            {{ plan.price }} руб
-          </app-button>
-          <app-button
-            [type]="plan.buttonType"
-            icon="assets/icons/arrow-forward.svg"
-            (click)="selectPlan(plan)">
-            Выбрать
-          </app-button>
+            }
+          </div>
+          <div [class]="'btn-card-' + plan.id">
+            <app-button
+              type="secondary">
+              {{ plan.price }} руб
+            </app-button>
+            <app-button
+              [type]="plan.buttonType"
+              icon="assets/icons/arrow-forward.svg"
+              (click)="selectPlan(plan)">
+              Выбрать
+            </app-button>
+          </div>
         </div>
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+}

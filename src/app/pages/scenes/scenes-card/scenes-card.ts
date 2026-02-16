@@ -133,14 +133,12 @@ export class ScenesCard implements OnChanges, OnDestroy {
   showMoreTemplates() {
     const next = this.displayedTemplates.length + this.templatesStep;
     this.displayedTemplates = this.templates.slice(0, next);
-
     this.cdr.detectChanges();
   }
 
   showMoreFreestyle() {
     const next = this.displayedFreestyle.length + this.freestyleStep;
     this.displayedFreestyle = this.freestyle.slice(0, next);
-
     this.cdr.detectChanges();
   }
 }

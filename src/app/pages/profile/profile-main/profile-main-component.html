@@ -2,86 +2,86 @@
 
   @if (isAvatarsLoading) {
     <app-loading [texts]="['Загрузка...']"></app-loading>
-  }
-
-  <div class="profile-content">
-    <div class="profile-card">
-      <h3 class="card-title">Ваш аватар</h3>
-      <div class="avatar-circle">
-        <div class="avatars-display" >
-          @for (avatar of selectedAvatars; track avatar){
-          <div class="avatar-item">
-            <img [src]="avatar" alt="Avatar" />
+  } @else {
+    <div class="profile-content">
+      <div class="profile-card">
+        <h3 class="card-title">Ваш аватар</h3>
+        <div class="avatar-circle">
+          <div class="avatars-display" >
+            @for (avatar of selectedAvatars; track avatar){
+            <div class="avatar-item">
+              <img [src]="avatar" alt="Avatar" />
+            </div>
+            }
+            @for (empty of [].constructor(3 - selectedAvatars.length > 0 ? 3 - selectedAvatars.length : 0); track $index) {
+                <div class="add-avatar" (click)="goToAddAvatar()">
+                  <img src="assets/icons/user-empty.svg" alt="Empty"/>
+                </div>
+            }
           </div>
-          }
-          @for (empty of [].constructor(3 - selectedAvatars.length > 0 ? 3 - selectedAvatars.length : 0); track $index) {
-              <div class="add-avatar" (click)="goToAddAvatar()">
-                <img src="assets/icons/user-empty.svg" alt="Empty"/>
-              </div>
-          }
         </div>
+
+        @if (selectedAvatars.length < 3){
+          <app-button
+            type="primary"
+            icon="assets/icons/add.svg"
+            [disabled]="isAvatarsLoading || selectedAvatars.length >= 3"
+            (click)="goToAddAvatar()">
+            Добавить аватар
+          </app-button>
+        }
       </div>
 
-      @if (selectedAvatars.length < 3){
+      <div class="profile-card">
+        <h3 class="card-title">Баланс</h3>
+        <p class="balance-text">{{ balance$ | async}} токенов</p>
         <app-button
           type="primary"
           icon="assets/icons/add.svg"
-          [disabled]="isAvatarsLoading || selectedAvatars.length >= 3"
-          (click)="goToAddAvatar()">
-          Добавить аватар
+          (click)="goToReplenish()">
+          Пополнить
         </app-button>
-      }
-    </div>
-
-    <div class="profile-card">
-      <h3 class="card-title">Баланс</h3>
-      <p class="balance-text">{{ balance$ | async}} токенов</p>
-      <app-button
-        type="primary"
-        icon="assets/icons/add.svg"
-        (click)="goToReplenish()">
-        Пополнить
-      </app-button>
-    </div>
-
-    <div class="profile-card">
-      <h3 class="card-title">Подписка</h3>
-      <div class="sub-text">
-        <p class="subscription-text">Basic (7 дней осталось)</p>
-        <span class="subscription-details">
-          <p>120 токенов в месяц</p>
-          <p>Доступ к сценам METRA</p>
-          <p>Доступ к Nano Banana</p>
-        </span>
       </div>
-      <app-button
-        type="primary"
-        icon="assets/icons/update.svg"
-        (click)="goToSubscription()">
-        Обновить
-      </app-button>
-    </div>
 
-    <div class="profile-card">
-      <h3 class="card-title">Партнерская программа</h3>
-      <p class="partnership-text"> {{ income$ | async }} {{ currency$ | async }}</p>
+      <div class="profile-card">
+        <h3 class="card-title">Подписка</h3>
+        <div class="sub-text">
+          <p class="subscription-text">Basic (7 дней осталось)</p>
+          <span class="subscription-details">
+            <p>120 токенов в месяц</p>
+            <p>Доступ к сценам METRA</p>
+            <p>Доступ к Nano Banana</p>
+          </span>
+        </div>
+        <app-button
+          type="primary"
+          icon="assets/icons/update.svg"
+          (click)="goToSubscription()">
+          Обновить
+        </app-button>
+      </div>
 
-      <app-button
-        type="primary"
-        icon="assets/icons/arrow-forward.svg"
-        (click)="goToAffiliateProgram()">
-        Подробнее
-      </app-button>
-    </div>
+      <div class="profile-card">
+        <h3 class="card-title">Партнерская программа</h3>
+        <p class="partnership-text"> {{ income$ | async }} {{ currency$ | async }}</p>
 
-    <div class="profile-card">
-      <h3 class="card-title">Помощь</h3>
-      <p class="any-questions">Есть вопросы?</p>
-      <app-button
-        type="primary"
-        icon="assets/icons/contact-support.svg">
-        Написать в техподдержку
-      </app-button>
+        <app-button
+          type="primary"
+          icon="assets/icons/arrow-forward.svg"
+          (click)="goToAffiliateProgram()">
+          Подробнее
+        </app-button>
+      </div>
+
+      <div class="profile-card">
+        <h3 class="card-title">Помощь</h3>
+        <p class="any-questions">Есть вопросы?</p>
+        <app-button
+          type="primary"
+          icon="assets/icons/contact-support.svg">
+          Написать в техподдержку
+        </app-button>
+      </div>
     </div>
-  </div>
+  }
 </div>

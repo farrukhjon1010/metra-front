@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { environment } from '../../../environment/environment';
-import {CreateTokenOrderResponse, TokenPackage, TokenTransaction} from '../models/token-transactions.model';
-
+import { CreateTokenOrderResponse, TokenPackage, TokenTransaction } from '../models/token-transactions.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +18,18 @@ export class TokenTransactionsService {
       .set('tokensAmount', tokensAmount.toString());
 
     return this.http.post<CreateTokenOrderResponse>(`${this.apiUrl}/create-order`, null, { params });
+  }
+
+  createSubscriptionOrder(userId: string, amount: number): Observable<CreateTokenOrderResponse> {
+    const params = new HttpParams()
+      .set('userId', userId)
+      .set('amount', amount.toString());
+
+    return this.http.post<CreateTokenOrderResponse>(
+      `${this.apiUrl}/create-subscription-order`,
+      null, // тело пустое
+      { params }
+    );
   }
 
   webhookYooKassa(): Observable<void> {

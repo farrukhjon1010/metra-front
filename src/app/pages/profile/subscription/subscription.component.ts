@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
-import {CommonModule} from '@angular/common';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { CommonModule } from '@angular/common';
+import { TokenTransactionsService } from '../../../core/services/token-transactions.service';
+import { Loading } from '../../../shared/components/loading/loading';
 
 interface SubscriptionPlan {
   id: string;
@@ -17,7 +19,7 @@ interface SubscriptionPlan {
 
 @Component({
   selector: 'app-subscription',
-  imports: [ButtonComponent, CommonModule],
+  imports: [ButtonComponent, CommonModule, Loading],
   templateUrl: './subscription.component.html',
   styleUrls: ['./subscription.component.scss'],
 })
@@ -77,13 +79,29 @@ export class SubscriptionComponent {
     }
   ];
 
-  constructor(private router: Router) {}
+  private userId = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
+  isLoading = false;
+
+  constructor(
+    private router: Router,
+    private tokenTransactionsService: TokenTransactionsService
+  ) {}
 
   goBack() {
     this.router.navigate(['/profile']);
   }
 
   selectPlan(plan: SubscriptionPlan) {
-    console.log('Selected plan:', plan);
+    this.isLoading = true;
+    this.tokenTransactionsService.createSubscriptionOrder(this.userId, plan.price)
+      .subscribe({
+        next: res => {
+          window.location.href = res.url;
+        },
+        error: err => {
+          console.error('Ошибка при создании подписки', err);
+          this.isLoading = false;
+        }
+      });
   }
 }

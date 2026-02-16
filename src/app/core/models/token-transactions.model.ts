@@ -1,3 +1,8 @@
+export interface CreateSubscriptionOrderResponse {
+  url: string;
+  paymentId: string;
+}
+
 export interface CreateTokenOrderResponse {
   url: string;
   paymentId: string;

@@ -54,7 +54,6 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
             income: this.income,
             currency: this.currency
           });
-
           this.cdr.markForCheck();
         },
         error: (err) => {
