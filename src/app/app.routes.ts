@@ -103,6 +103,20 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/home/home-main/home-main.component')
             .then(m => m.HomeMainComponent)
+      },
+      {
+        path: ':id',
+        data: { title: 'Главная', showHeader: false },
+        loadComponent: () =>
+          import('./pages/scenes/scenes-detail/scenes-detail')
+            .then(m => m.SceneDetail)
+      },
+      {
+        path: 'home/category/:categoryId',
+        data: { title: 'Главная', showHeader: false },
+        loadComponent: () =>
+          import('./pages/home/home-category/home-category')
+            .then(m => m.HomeCategory)
       }
     ]
   },

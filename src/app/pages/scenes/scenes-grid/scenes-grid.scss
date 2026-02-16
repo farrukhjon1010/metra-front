@@ -75,14 +75,15 @@
   justify-content: center;
   padding: 40px 20px;
   text-align: center;
-  color: #888888;
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px dashed #ccc;
+  border: 1px dashed #FFFFFF0F;
   border-radius: 12px;
   margin: 20px 0;
 
   p {
     margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: system-ui;
+    color: #E8EEFF;
   }
 }

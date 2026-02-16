@@ -5,11 +5,12 @@ import {Router} from '@angular/router';
 import {GenerationService} from '../../../core/services/generation.service';
 import {CreateCard} from '../../create/create.data';
 import {Subject, takeUntil} from 'rxjs';
+import {Loading} from "../../../shared/components/loading/loading";
 
 @Component({
   selector: 'app-history-list',
   standalone: true,
-  imports: [NgStyle, CommonModule, ButtonComponent, DatePipe],
+  imports: [NgStyle, CommonModule, ButtonComponent, DatePipe, Loading],
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
 })
@@ -20,6 +21,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   selectedFilter: 'all' | 'photo' | 'video' = 'all';
   generationHistory: any[] = [];
   private destroy$ = new Subject<void>();
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -32,16 +34,19 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   }
 
   loadGenerationsHistory() {
+    this.isLoading = true;
     this.generationService
       .findByUser(this.UUID, this.selectedFilter)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
           this.generationHistory = data;
+          this.isLoading = false;
           this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Ошибка при загрузке:', err);
+          this.isLoading = false;
         }
       });
   }

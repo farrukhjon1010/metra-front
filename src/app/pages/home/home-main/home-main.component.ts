@@ -9,13 +9,14 @@ import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {PaidDialog} from '../../../shared/paid-dialog/paid-dialog';
+import {Loading} from '../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-home-main',
   templateUrl: './home-main.component.html',
   styleUrls: ['./home-main.component.scss'],
   standalone: true,
-  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, PaidDialog, ScenesGrid,]
+  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, PaidDialog, ScenesGrid, Loading,]
 })
 export class HomeMainComponent implements OnInit {
 
@@ -55,7 +56,9 @@ export class HomeMainComponent implements OnInit {
     this.sceneService.getScenes({ categoryId: category.id })
       .subscribe(scenes => {
         if (scenes.length > 0) {
-          this.router.navigate(['/scenes', scenes[0].id]);
+          this.router.navigate(['/home', scenes[0].id]);
+        } else {
+          this.router.navigate(['/home/home/category', category.id]);
         }
       });
   }

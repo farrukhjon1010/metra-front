@@ -37,80 +37,84 @@
     </div>
   </div>
 
-  @if (generationHistory.length < 1) {
-    <div class="history-not">
-      <div class="create-of-history">
-        <div class="no-create-image-wrapper">
-          <div>
-            <img src="assets/icons/error.svg" alt="">
-          </div>
-          <span>Вы ещё ничего не создали</span>
-        </div>
-      </div>
-      <app-button
-        type="primary"
-        icon="assets/icons/add.svg"
-        (click)="navigateToCreate()">
-        Создать изображение
-      </app-button>
-    </div>
+  @if (isLoading) {
+    <app-loading></app-loading>
   } @else {
-    <div class="history-content-detail">
-      @for (generation of generationHistory; track generation.id) {
-        <div class="history-generate-detail">
+    @if (generationHistory.length < 1) {
+      <div class="history-not">
+        <div class="create-of-history">
+          <div class="no-create-image-wrapper">
+            <div>
+              <img src="assets/icons/error.svg" alt="">
+            </div>
+            <span>Вы ещё ничего не создали</span>
+          </div>
+        </div>
+        <app-button
+          type="primary"
+          icon="assets/icons/add.svg"
+          (click)="navigateToCreate()">
+          Создать изображение
+        </app-button>
+      </div>
+    } @else {
+      <div class="history-content-detail">
+        @for (generation of generationHistory; track generation.id) {
+          <div class="history-generate-detail">
 
-          <div class="left-text-detail">
-            <div class="date-detail">
-              <label>Дата</label>
-              <span>
+            <div class="left-text-detail">
+              <div class="date-detail">
+                <label>Дата</label>
+                <span>
                   {{ generation.createdAt | date:'dd.MM.yyyy / HH:mm' }}
                 </span>
-            </div>
+              </div>
 
-            <div class="scenes-pro-detail">
-              <label>Сцены</label>
-              <span>{{ generation.category }}</span>
-            </div>
+              <div class="scenes-pro-detail">
+                <label>Сцены</label>
+                <span>{{ generation.category }}</span>
+              </div>
 
-            <div class="date-detail-prom">
-              <span class="lab-prom">Prompt</span>
-              <div class="prom-text">
-                {{ generation.prompt }}
+              <div class="date-detail-prom">
+                <span class="lab-prom">Prompt</span>
+                <div class="prom-text">
+                  {{ generation.prompt }}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="right-photo-detail">
-            <div class="photo-detail">
-              <img
-                class="photo-history"
-                [src]="generation.imageURL"
-                alt="">
+            <div class="right-photo-detail">
+              <div class="photo-detail">
+                <img
+                  class="photo-history"
+                  [src]="generation.imageURL"
+                  alt="">
+              </div>
+
+              <app-button
+                type="primary"
+                icon="assets/icons/update.svg"
+                (click)="repeatGeneration(generation)">
+                Повторить
+              </app-button>
+
+              <app-button
+                type="secondary"
+                icon="assets/icons/download.svg"
+                (click)="downloadFile(generation.imageURL, 'image')">
+                Скачать
+              </app-button>
+
+              <app-button
+                type="secondary"
+                icon="assets/icons/photo-size.svg"
+                (click)="goToUpscale(generation.imageURL, generation.id)">
+                Upscale
+              </app-button>
             </div>
-
-            <app-button
-              type="primary"
-              icon="assets/icons/update.svg"
-              (click)="repeatGeneration(generation)">
-              Повторить
-            </app-button>
-
-            <app-button
-              type="secondary"
-              icon="assets/icons/download.svg"
-              (click)="downloadFile(generation.imageURL, 'image')">
-              Скачать
-            </app-button>
-
-            <app-button
-              type="secondary"
-              icon="assets/icons/photo-size.svg"
-              (click)="goToUpscale(generation.imageURL, generation.id)">
-              Upscale
-            </app-button>
           </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   }
 </div>
