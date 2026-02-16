@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import { Router } from '@angular/router';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import {Router} from '@angular/router';
+import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {ReferralInfo} from '../../../core/models/referral.model';
 import {ReferralService} from '../../../core/services/referral.service';
 import {Subject, takeUntil} from 'rxjs';
@@ -49,9 +49,7 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
           this.purchases = data.stats.purchases;
           this.income = data.stats.income;
           this.currency = data.stats.currency;
-
           this.loading = false;
-
           this.referralService.setIncome({
             income: this.income,
             currency: this.currency
@@ -89,7 +87,6 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
 
   shareReferralLink() {
     if (!this.link) return;
-
     if (navigator.share) {
       navigator.share({
         url: this.link

@@ -3,9 +3,7 @@ import {ButtonComponent} from '../../../../shared/components/button/button.compo
 
 @Component({
   selector: 'app-create-result',
-  imports: [
-    ButtonComponent
-  ],
+  imports: [ButtonComponent],
   standalone: true,
   templateUrl: './create-result.html',
   styleUrls: ['./create-result.scss'],
@@ -24,13 +22,11 @@ export class CreateResult {
       .then(blob => {
         const a = document.createElement('a');
         const objectUrl = URL.createObjectURL(blob);
-
         const isVideo = blob.type.startsWith('video/');
         const extension = isVideo ? 'mp4' : 'jpg';
 
         a.href = objectUrl;
         a.download = `generation-${isVideo ? 'video' : 'image'}.${extension}`;
-
         a.click();
         URL.revokeObjectURL(objectUrl);
       });

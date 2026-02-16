@@ -1,25 +1,51 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ApiService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
+
+  getScenes<T>(params?: Record<string, any>): Observable<T> {
+    let httpParams = new HttpParams();
+
+    if (params) {
+      Object.keys(params).forEach(key => {
+        if (params[key] !== undefined && params[key] !== null) {
+          httpParams = httpParams.set(key, params[key]);
+        }
+      });
+    }
+
+    return this.http.get<T>('/scenes', { params: httpParams });
   }
 
-  getScenes(params?: any) {
-    return this.http.get('/scenes', { params });
+  createScene<T>(data: unknown): Observable<T> {
+    return this.http.post<T>('/scenes', data);
   }
 
-  createScene(data: any) {
-    return this.http.post('/api/scenes', data);
+  deleteScene<T>(id: number): Observable<T> {
+    return this.http.delete<T>(`/scenes/${id}`);
   }
 
-  getUserBalance() {
-    return this.http.get('/api/user/balance');
+  getSceneCategories<T>(): Observable<T> {
+    return this.http.get<T>('/scene-categories');
   }
 
-  addFunds(amount: number) {
-    return this.http.post('/api/user/balance', {amount});
+  createSceneCategory<T>(data: FormData): Observable<T> {
+    return this.http.post<T>('/scene-categories', data);
+  }
+
+  deleteSceneCategory<T>(id: number): Observable<T> {
+    return this.http.delete<T>(`/scene-categories/${id}`);
+  }
+
+  getUserBalance<T>(): Observable<T> {
+    return this.http.get<T>('/api/user/balance');
+  }
+
+  addFunds<T>(amount: number): Observable<T> {
+    return this.http.post<T>('/api/user/balance', { amount });
   }
 }

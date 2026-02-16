@@ -1,19 +1,27 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ScenesHeader } from '../scenes-header/scenes-header';
-import { Scene } from '../../home/home.data';
+import { Scene, SceneCategory } from '../../../core/models/scene.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-scenes-grid',
   standalone: true,
-  imports: [ScenesHeader],
+  imports: [CommonModule],
   templateUrl: './scenes-grid.html',
   styleUrls: ['./scenes-grid.scss'],
 })
 export class ScenesGrid {
   @Input() scenes: Scene[] = [];
-  @Output() selectScene = new EventEmitter<Scene>();
+  @Input() categories: SceneCategory[] = [];
+  @Input() viewMode: 'categories' | 'scenes' = 'categories';
 
-  select(scene: Scene) {
+  @Output() selectScene = new EventEmitter<Scene>();
+  @Output() selectCategory = new EventEmitter<SceneCategory>();
+
+  onCategoryClick(category: SceneCategory) {
+    this.selectCategory.emit(category);
+  }
+
+  onSceneClick(scene: Scene) {
     this.selectScene.emit(scene);
   }
 }

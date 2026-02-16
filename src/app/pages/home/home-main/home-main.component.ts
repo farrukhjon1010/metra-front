@@ -1,30 +1,53 @@
-import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import {Component, OnInit, signal} from '@angular/core';
+import { SceneService } from '../../../core/services/scene.service';
+import { Scene, SceneCategory } from '../../../core/models/scene.model';
 import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
-import { Router } from '@angular/router';
-import { SCENES, Scene } from '../home.data';
-import {HomeHeader} from '../home-header/home-header';
-import {HomeRecommendation} from '../home-recommendation/home-recommendation';
+import { HomeRecommendation } from '../home-recommendation/home-recommendation';
+import { HomeHeader } from '../home-header/home-header';
+import { ScenesHeader } from '../../scenes/scenes-header/scenes-header';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
+import {PaidDialog} from '../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-home-main',
-  standalone: true,
-  imports: [CommonModule, PaidDialog, ScenesGrid, HomeHeader, HomeRecommendation],
   templateUrl: './home-main.component.html',
   styleUrls: ['./home-main.component.scss'],
+  standalone: true,
+  imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, PaidDialog, ScenesGrid,]
 })
-export class HomeMainComponent {
+export class HomeMainComponent implements OnInit {
 
-  scenes = SCENES;
+  scenes: Scene[] = [];
+  isPaidDialogVisible = false;
+  categories$!: Observable<SceneCategory[]>;
+  showPaidDialog = signal(true);
 
-  constructor(private router: Router) {}
+  constructor(
+    private sceneService: SceneService,
+    private router: Router
+  ) {}
 
-  onSceneSelect(scene: Scene) {
-    this.router.navigate(['/home', scene.id]);
+  ngOnInit() {
+    this.loadCategories();
+    this.isPaidDialogVisible = true;
   }
 
-  showPaidDialog = signal(true);
+  loadCategories() {
+    this.categories$ = this.sceneService.getCategories();
+  }
+
+  onCategorySelect(category: SceneCategory) {
+    this.sceneService.getScenes({ categoryId: category.id })
+      .subscribe(scenes => {
+        if (scenes.length > 0) {
+          this.router.navigate(['/home', scenes[0].id]);
+        } else {
+          this.router.navigate(['/home/home/category', category.id]);
+        }
+      });
+  }
 
   closeDialog() {
     this.showPaidDialog.set(false);

@@ -64,3 +64,26 @@
     font-family: system-ui;
   }
 }
+
+.empty-block {
+  width: 358px;
+  height: 508px;
+  background: #181826;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  border: 1px dashed #FFFFFF0F;
+  border-radius: 12px;
+  margin: 20px 0;
+
+  p {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: system-ui;
+    color: #E8EEFF;
+  }
+}

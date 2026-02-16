@@ -47,7 +47,6 @@ export class ImprovingQuality implements AfterViewInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.photos[type] = reader.result as string;
-
       this.originalImage = null;
       this.improvedImage = null;
       this.isStarted = false;

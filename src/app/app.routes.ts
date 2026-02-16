@@ -1,10 +1,16 @@
-import {Routes} from '@angular/router';
-import {SplashComponent} from './pages/splash/splash.component';
-import {CreateComponent} from './pages/create/create.component';
+import { Routes } from '@angular/router';
+import { SplashComponent } from './pages/splash/splash.component';
+import { CreateComponent } from './pages/create/create.component';
 
 export const routes: Routes = [
-  {path: '', redirectTo: 'splash', pathMatch: 'full'},
-  {path: 'splash', component: SplashComponent, data: { title: 'Splash', showHeader: false }},
+  { path: '', redirectTo: 'splash', pathMatch: 'full' },
+
+  {
+    path: 'splash',
+    component: SplashComponent,
+    data: { title: 'Splash', showHeader: false }
+  },
+
   {
     path: 'create',
     component: CreateComponent,
@@ -29,7 +35,8 @@ export const routes: Routes = [
     path: 'profile',
     data: { title: 'Профиль', showHeader: true },
     loadComponent: () =>
-      import('./pages/profile/profile.component').then(m => m.ProfileComponent),
+      import('./pages/profile/profile.component')
+        .then(m => m.ProfileComponent),
     children: [
       {
         path: '',
@@ -72,7 +79,8 @@ export const routes: Routes = [
     path: 'history',
     data: { title: 'История', showHeader: true },
     loadComponent: () =>
-      import('./pages/history/history.component').then(m => m.HistoryComponent),
+      import('./pages/history/history.component')
+        .then(m => m.HistoryComponent),
     children: [
       {
         path: '',
@@ -93,7 +101,8 @@ export const routes: Routes = [
     path: 'home',
     data: { title: 'Главная', showHeader: false },
     loadComponent: () =>
-      import('./pages/home/home.component').then(m => m.HomeComponent),
+      import('./pages/home/home.component')
+        .then(m => m.HomeComponent),
     children: [
       {
         path: '',
@@ -105,22 +114,41 @@ export const routes: Routes = [
         path: ':id',
         data: { title: 'Главная', showHeader: false },
         loadComponent: () =>
-          import('./pages/home/home-detail/home-detail')
-            .then(m => m.HomeDetail)
+          import('./pages/scenes/scenes-detail/scenes-detail')
+            .then(m => m.SceneDetail)
+      },
+      {
+        path: 'home/category/:categoryId',
+        data: { title: 'Главная', showHeader: false },
+        loadComponent: () =>
+          import('./pages/home/home-category/home-category')
+            .then(m => m.HomeCategory)
       }
     ]
   },
   {
     path: 'scenes',
     data: { title: 'Сцены', showHeader: false },
-    loadComponent: () =>
-      import('./pages/scenes/scenes.component').then(m => m.ScenesComponent)
-  },
-  {
-    path: 'scenes/detail/:id',
-    data: { title: 'Сцена', showHeader: false },
-    loadComponent: () =>
-      import('./pages/scenes/scenes.component').then(m => m.ScenesComponent)
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/scenes/scenes.component')
+            .then(m => m.ScenesComponent)
+      },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./pages/scenes/scenes-detail/scenes-detail')
+            .then(m => m.SceneDetail)
+      },
+      {
+        path: 'scenes/category/:categoryId',
+        loadComponent: () =>
+          import('./pages/scenes/scenes-category/scenes-category')
+            .then(m => m.SceneCategory)
+      }
+    ]
   },
 
   { path: '**', redirectTo: 'splash' }

@@ -1,0 +1,6 @@
+@if (scene$ | async; as scene) {
+  <app-scenes-card
+    [scene]="scene"
+    (back)="goBack()">
+  </app-scenes-card>
+}

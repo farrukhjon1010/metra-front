@@ -1,0 +1,13 @@
+.empty-page {
+  display: flex;
+  align-items: center;
+  border-radius: 24px;
+  width: 100%;
+  height: 200px;
+  background: #181826;
+  border: 1px dashed #FFFFFF0F;
+  text-align: center;
+  margin-top: 80px;
+  opacity: 0.7;
+}
+.scene-card { cursor: pointer; }

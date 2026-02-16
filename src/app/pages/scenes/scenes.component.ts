@@ -1,35 +1,43 @@
-import {Component, computed, inject} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {ScenesGrid} from './scenes-grid/scenes-grid';
-import {ScenesCard} from './scenes-card/scenes-card';
-import {ActivatedRoute, Router} from '@angular/router';
-import {SCENES, Scene} from '../home/home.data';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { ScenesGrid } from './scenes-grid/scenes-grid';
+import { Loading } from '../../shared/components/loading/loading';
+import { Scene, SceneCategory } from '../../core/models/scene.model';
+import { SceneService } from '../../core/services/scene.service';
+import { Observable } from 'rxjs';
+import { ScenesHeader } from './scenes-header/scenes-header';
 
 @Component({
   selector: 'app-scenes',
   standalone: true,
-  imports: [ScenesGrid, ScenesCard],
+  imports: [CommonModule, ScenesGrid, Loading, RouterModule, ScenesHeader],
   templateUrl: './scenes.component.html',
-  styleUrls: ['./scenes.component.scss'],
+  styleUrls: ['./scenes.component.scss']
 })
-export class ScenesComponent {
+export class ScenesComponent implements OnInit {
 
+  private sceneService = inject(SceneService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  scenes = SCENES;
-  private params = toSignal(this.route.paramMap);
 
-  selectedScene = computed(() => {
-    const p = this.params();
-    const id = p?.get('id');
-    return id ? this.scenes.find(s => s.id === id) || null : null;
-  });
+  categories$!: Observable<SceneCategory[]>;
 
-  onSceneSelect(scene: Scene) {
-    this.router.navigate(['/scenes/detail', scene.id]);
+  ngOnInit() {
+    this.categories$ = this.sceneService.getCategories();
   }
 
-  backToGrid() {
-    this.router.navigate(['/scenes']);
+  onCategorySelect(category: SceneCategory) {
+    this.sceneService.getScenes({ categoryId: category.id })
+      .subscribe(scenes => {
+        if (scenes.length > 0) {
+          this.router.navigate(['/scenes', scenes[0].id]);
+        } else {
+          this.router.navigate(['/scenes/scenes/category', category.id]);
+        }
+      });
+  }
+
+  onSceneSelect(scene: Scene) {
+    this.router.navigate(['/scenes', scene.id])
   }
 }

@@ -1,66 +1,89 @@
-<div class="card-header">
-  <header class="header-card">
-    <img src="assets/icons/arrow-back.svg" alt="" (click)="backToGrid()">
-    <span>Сцены METRA</span>
-  </header>
-</div>
+@if (isHomeScenes){
+  <div class="home-header">
+    <app-home-header></app-home-header>
+  </div>
+}
+@if (!isHomeScenes) {
+  <div class="card-header">
+    <header class="header-card">
+      <img src="assets/icons/arrow-back.svg" alt="" (click)="backToGrid()">
+      <span>Сцены METRA</span>
+    </header>
+  </div>
+}
 <div class="scenes">
   <div class="scenes-image">
-    <img [src]="scene?.image" alt="{{ scene?.title }}">
+    <img [src]="scene?.image" alt="{{ scene?.name }}">
     <div class="scenes-info">
-      <h3>{{ scene?.name }}</h3>
-      <p>{{ scene?.description }}</p>
+      <h3>{{ scene?.category?.name }}</h3>
+      <p>{{ scene?.category?.description }}</p>
     </div>
   </div>
   <div class="card-templates-content">
-    <h2>Templates</h2>
-    <div class="scenes-card-content">
-
+    @if (isLoading) {
+    } @else {
       @if (templates.length > 0) {
-        @for (t of templates; track t) {
-          <div class="scenes-card-templates"
-               (click)="openTemplate(t)">
-            <div class="circle-ava">
-              <img src="assets/icons/3d-avatar.svg" alt="">
-            </div>
-            <div class="circle-ava-text">
-              <p>{{t.name}}</p>
-              <span>{{t.prompt}}</span>
-            </div>
+        <div class="temlate-card">
+          <h2>Templates</h2>
+          <div class="scenes-card-content">
+            @if (displayedTemplates.length > 0) {
+              @for (t of displayedTemplates; track t.id) {
+                <div class="scenes-card-templates" (click)="openTemplate(t)">
+                  <div class="circle-ava">
+                    <img src="assets/icons/3d-avatar.svg" alt="">
+                  </div>
+                  <div class="circle-ava-text">
+                    <p>{{ t.name }}</p>
+                    <span>{{ t.prompt }}</span>
+                  </div>
+                </div>
+              }
+            }
           </div>
-        }
-      } @else {
-        <div class="empty-scenes">
-          <img src="assets/icons/error.svg" alt="">
-          <p class="empty-title">Шаблонов пока нет</p>
-        </div>
-      }
-    </div>
-
-      <app-button
-        type="secondary"
-        icon="assets/icons/add.svg"
-        (click)="showFreeStyle = true">
-        Показать еще
-      </app-button>
-
-    @if (showFreeStyle) {
-      <div class="card-templates-content">
-        <h2>FreeStyle</h2>
-        <div class="scenes-card-content">
-          @for (card of [1, 2, 3, 4, 5, 6]; track card) {
-            <div class="scenes-card-templates">
-              <div class="circle-ava">
-                <img src="assets/icons/3d-avatar.svg" alt="">
-              </div>
-              <div class="circle-ava-text">
-                <p>Название</p>
-                <span>Краткое описание</span>
-              </div>
-            </div>
+          @if (displayedTemplates.length < templates.length){
+            <app-button
+              type="secondary"
+              icon="assets/icons/add.svg"
+              (click)="showMoreTemplates()">
+              Показать еще
+            </app-button>
           }
         </div>
-      </div>
+      }
+      @if (freestyle.length > 0) {
+        <div class="free-style-card">
+          <h2>FreeStyle</h2>
+          <div class="scenes-card-content">
+            @if (displayedFreestyle.length > 0) {
+              @for (f of displayedFreestyle; track f.id) {
+                <div class="scenes-card-templates" (click)="openFreestyle(f)">
+                  <div class="circle-ava">
+                    <img src="assets/icons/3d-avatar.svg" alt="">
+                  </div>
+                  <div class="circle-ava-text">
+                    <p>{{ f.name }}</p>
+                    <span>{{ f.prompt }}</span>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+          @if (displayedFreestyle.length < freestyle.length){
+            <app-button
+              type="secondary"
+              icon="assets/icons/add.svg"
+              (click)="showMoreFreestyle()">
+              Показать еще
+            </app-button>
+          }
+        </div>
+      }
+      @if (templates.length === 0 && freestyle.length === 0) {
+        <div class="empty-blockd">
+          <img src="assets/icons/error.svg" alt="">
+          <p>У вас еще нет сцен</p>
+        </div>
+      }
     }
   </div>
 </div>

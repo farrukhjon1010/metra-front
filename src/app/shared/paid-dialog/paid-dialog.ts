@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {ButtonComponent} from '../components/button/button.component';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { ButtonComponent } from '../components/button/button.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-paid-dialog',
-  imports: [
-    ButtonComponent
-  ],
+  standalone: true,
+  imports: [ButtonComponent],
   templateUrl: './paid-dialog.html',
   styleUrls: ['./paid-dialog.scss'],
 })

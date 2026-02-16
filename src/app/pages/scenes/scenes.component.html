@@ -1,13 +1,16 @@
-@if (!selectedScene()) {
-  <app-scenes-grid
-    [scenes]="scenes"
-    (selectScene)="onSceneSelect($event)">
-  </app-scenes-grid>
-}
+@if (categories$ | async; as categories) {
 
-@if (selectedScene()) {
-  <app-scenes-card
-    [scene]="selectedScene()"
-    (back)="backToGrid()">
-  </app-scenes-card>
+  <app-scenes-header
+    [showBack]="false">
+  </app-scenes-header>
+
+  <app-scenes-grid
+    [categories]="categories"
+    [scenes]="[]"
+    viewMode="categories"
+    (selectCategory)="onCategorySelect($event)">
+  </app-scenes-grid>
+
+} @else {
+  <app-loading [texts]="['Загрузка...']"></app-loading>
 }

@@ -109,7 +109,6 @@ export class AddAvatarComponent implements OnDestroy {
       });
   }
 
-
   triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
     event.stopPropagation();
     const map = {
