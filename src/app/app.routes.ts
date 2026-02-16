@@ -40,30 +40,35 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        data: { title: 'Профиль', showHeader: true },
         loadComponent: () =>
           import('./pages/profile/profile-main/profile-main-component')
             .then(m => m.ProfileMainComponent)
       },
       {
         path: 'add-avatar',
+        data: { title: 'Профиль', showHeader: false },
         loadComponent: () =>
           import('./pages/profile/add-avatar/add-avatar.component')
             .then(m => m.AddAvatarComponent)
       },
       {
         path: 'balance',
+        data: { title: 'Профиль', showHeader: false },
         loadComponent: () =>
           import('./pages/profile/balance/balance.component')
             .then(m => m.BalanceComponent)
       },
       {
         path: 'affiliate-program',
+        data: { title: 'Профиль', showHeader: false },
         loadComponent: () =>
           import('./pages/profile/affiliate-program/affiliate-program.component')
             .then(m => m.AffiliateProgramComponent)
       },
       {
         path: 'subscription',
+        data: { title: 'Профиль', showHeader: false },
         loadComponent: () =>
           import('./pages/profile/subscription/subscription.component')
             .then(m => m.SubscriptionComponent)
@@ -85,6 +90,7 @@ export const routes: Routes = [
       },
       {
         path: 'improving-quality',
+        data: { title: 'История', showHeader: false },
         loadComponent: () =>
           import('./pages/history/improving-quality/improving-quality')
             .then(m => m.ImprovingQuality)

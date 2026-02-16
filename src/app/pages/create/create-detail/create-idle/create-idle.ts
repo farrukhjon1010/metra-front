@@ -1,15 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ButtonComponent} from '../../../../shared/components/button/button.component';
 import {CreateCard} from '../../create.data';
@@ -18,10 +7,7 @@ import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-create-idle',
-  imports: [
-    FormsModule,
-    ButtonComponent,
-  ],
+  imports: [FormsModule, ButtonComponent],
   standalone: true,
   templateUrl: './create-idle.html',
   styleUrls: ['./create-idle.scss'],
@@ -31,13 +17,7 @@ export class CreateIdle implements OnChanges, OnDestroy {
   @Input() card!: CreateCard;
   @Input() initialPrompt: string = '';
   @Input() initialImageUrl: string | null = null;
-
-  @Output() create = new EventEmitter<{
-    prompt: string;
-    imageUrl: string | null;
-    file: File | null;
-  }>();
-
+  @Output() create = new EventEmitter<{ prompt: string; imageUrl: string | null; file: File | null; }>();
   @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
   @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
 

@@ -73,10 +73,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
         const objectUrl = URL.createObjectURL(blob);
 
         a.href = objectUrl;
-        a.download = type === 'image'
-          ? 'generation-image.jpg'
-          : 'generation-video.mp4';
-
+        a.download = type === 'image' ? 'generation-image.jpg' : 'generation-video.mp4';
         a.click();
         URL.revokeObjectURL(objectUrl);
       });

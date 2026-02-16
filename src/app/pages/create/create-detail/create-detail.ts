@@ -18,15 +18,7 @@ type CreateState = 'idle' | 'loading' | 'result';
 @Component({
   selector: 'app-create-detail',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    CreateHeader,
-    CreateIdle,
-    CreateResult,
-    GenerationHistory,
-    Loading
-  ],
+  imports: [FormsModule, CommonModule, CreateHeader, CreateIdle, CreateResult, GenerationHistory, Loading],
   templateUrl: './create-detail.html',
   styleUrls: ['./create-detail.scss'],
 })
