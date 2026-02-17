@@ -17,7 +17,6 @@ import {Loading} from "../../../shared/components/loading/loading";
 export class HistoryListComponent implements OnInit, OnDestroy {
 
   @Input() card!: CreateCard;
-  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   selectedFilter: 'all' | 'photo' | 'video' = 'all';
   generationHistory: any[] = [];
   private destroy$ = new Subject<void>();
@@ -36,7 +35,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   loadGenerationsHistory() {
     this.isLoading = true;
     this.generationService
-      .findByUser(this.UUID, this.selectedFilter)
+      .findByUser(this.selectedFilter)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {

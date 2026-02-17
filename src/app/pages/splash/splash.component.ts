@@ -1,15 +1,16 @@
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AvatarService} from '../../core/services/avatar.service';
-import {Gender} from '../../core/models/avatar.model';
-import {FileService} from '../../core/services/file.service';
-import {SplashCaseComponent} from './components/splash-case/splash-case.component';
-import {SplashFormComponent} from './components/splash-form/splash-form.component';
-import {SplashSelectComponent} from './components/splash-select/splash-select.component';
-import {SplashSuccessComponent} from './components/splash-success/splash-success.component';
-import {Loading} from '../../shared/components/loading/loading';
-import {EMPTY, Subject, switchMap, takeUntil} from 'rxjs';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AvatarService } from '../../core/services/avatar.service';
+import { Gender } from '../../core/models/avatar.model';
+import { FileService } from '../../core/services/file.service';
+import { SplashCaseComponent } from './components/splash-case/splash-case.component';
+import { SplashFormComponent } from './components/splash-form/splash-form.component';
+import { SplashSelectComponent } from './components/splash-select/splash-select.component';
+import { SplashSuccessComponent } from './components/splash-success/splash-success.component';
+import { Loading } from '../../shared/components/loading/loading';
+import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
+import { TelegramService } from '../../core/services/telegram.service';
 
 @Component({
   selector: 'app-splash',
@@ -26,17 +27,18 @@ import {EMPTY, Subject, switchMap, takeUntil} from 'rxjs';
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
 })
-export class SplashComponent implements OnDestroy{
+export class SplashComponent implements OnDestroy, OnInit {
+  private telegram = inject(TelegramService);
 
-  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
+  UUID: string = '';
   currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
   gender: Gender = Gender.MALE
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
   photos = {
-    front: {file: null as File | null, preview: null as string | null},
-    left: {file: null as File | null, preview: null as string | null},
-    right: {file: null as File | null, preview: null as string | null},
+    front: { file: null as File | null, preview: null as string | null },
+    left: { file: null as File | null, preview: null as string | null },
+    right: { file: null as File | null, preview: null as string | null },
   };
   private destroy$ = new Subject<void>();
 
@@ -53,9 +55,17 @@ export class SplashComponent implements OnDestroy{
   });
 
   constructor(private router: Router,
-              private cdr: ChangeDetectorRef,
-              private avatarService: AvatarService,
-              private fileService: FileService) {}
+    private cdr: ChangeDetectorRef,
+    private avatarService: AvatarService,
+    private fileService: FileService) { }
+
+  ngOnInit() {
+    const tgId = this.telegram.userId;
+    alert("tgID = " + tgId);
+    if (tgId) {
+      this.UUID = tgId;
+    }
+  }
 
   navigateToCreate(): void {
     this.currentStep = 'form';
@@ -115,14 +125,13 @@ export class SplashComponent implements OnDestroy{
 
       const filesToUpload = await Promise.all(uploadPromises);
 
-      this.fileService.uploadGeneratedAvatars(filesToUpload, this.UUID).pipe(
+      this.fileService.uploadGeneratedAvatars(filesToUpload).pipe(
         switchMap((event: any) => {
           if (!event.body) return EMPTY;
 
           const cloudinaryUrls = event.body.map((img: any) => img.url);
 
           return this.avatarService.create({
-            userId: this.UUID,
             name: this.myForm.value.avatarName || "New Avatar",
             gender: this.gender,
             imagesURL: cloudinaryUrls
@@ -169,7 +178,7 @@ export class SplashComponent implements OnDestroy{
 
     const userId = this.UUID;
 
-    this.fileService.uploadAvatars(filesToUpload, userId).pipe(
+    this.fileService.uploadAvatars(filesToUpload).pipe(
       switchMap((event: any) => {
         if (!event.body) return EMPTY;
 

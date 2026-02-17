@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import {
   GenerateAvatarDto,
   AvatarResponse,
@@ -8,13 +8,12 @@ import {
   CreateAvatarDto,
   UpdateAvatarDto
 } from '../models/avatar.model';
-import {environment} from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvatarService {
-  private readonly apiUrl = `${environment.apiUrl}/avatars`;
+  private readonly apiUrl = `avatars`;
 
   constructor(private http: HttpClient) {
   }
@@ -31,16 +30,16 @@ export class AvatarService {
     return this.http.get<Avatar[]>(this.apiUrl);
   }
 
-  findByUser(userId: string): Observable<Avatar> {
-    return this.http.get<Avatar>(`${this.apiUrl}/user/${userId}`);
+  findByUser(): Observable<Avatar> {
+    return this.http.get<Avatar>(`${this.apiUrl}/my`);
   }
 
   update(id: string, dto: UpdateAvatarDto): Observable<Avatar> {
     return this.http.patch<Avatar>(`${this.apiUrl}/${id}`, dto);
   }
 
-  addImgUrl(userId: string, newUrl: string): Observable<Avatar> {
-    return this.http.patch<Avatar>(`${this.apiUrl}/add/${userId}`, {url: newUrl});
+  addImgUrl(newUrl: string): Observable<Avatar> {
+    return this.http.patch<Avatar>(`${this.apiUrl}/add`, { url: newUrl });
   }
 
   remove(id: string): Observable<void> {

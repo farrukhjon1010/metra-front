@@ -24,8 +24,6 @@ type CreateState = 'idle' | 'loading' | 'result';
 })
 export class CreateDetail implements OnInit, OnDestroy {
 
-  UUID = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
-
   card!: CreateCard;
   createState: CreateState = 'idle';
   prompt = '';
@@ -85,7 +83,6 @@ export class CreateDetail implements OnInit, OnDestroy {
           this.resultImageUrl = genRes.processedImage;
 
           const saveDto: CreateGenerationDto = {
-            userId: this.UUID,
             type: this.card.type,
             prompt: this.prompt,
             imageURL: genRes.processedImage,
@@ -97,7 +94,7 @@ export class CreateDetail implements OnInit, OnDestroy {
     };
 
     const source$ = file
-      ? this.fileService.uploadImageGeneration(file, this.UUID)
+      ? this.fileService.uploadImageGeneration(file)
         .pipe(switchMap((upload: any) => handleGeneration(upload.url)))
       : handleGeneration(imageUrl!);
 
@@ -123,7 +120,7 @@ export class CreateDetail implements OnInit, OnDestroy {
   }
 
   loadGenerationsHistory() {
-    this.generationService.findByUser(this.UUID)
+    this.generationService.findByUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {

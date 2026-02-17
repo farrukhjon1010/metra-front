@@ -79,7 +79,6 @@ export class SubscriptionComponent {
     }
   ];
 
-  private userId = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   isLoading = false;
 
   constructor(
@@ -93,7 +92,7 @@ export class SubscriptionComponent {
 
   selectPlan(plan: SubscriptionPlan) {
     this.isLoading = true;
-    this.tokenTransactionsService.createSubscriptionOrder(this.userId, plan.price)
+    this.tokenTransactionsService.createSubscriptionOrder(plan.price)
       .subscribe({
         next: res => {
           window.location.href = res.url;

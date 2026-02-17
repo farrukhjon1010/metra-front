@@ -14,7 +14,6 @@ import {take} from 'rxjs/operators';
 })
 export class BalanceComponent implements OnInit {
   tokenPackages: TokenPackage[] = [];
-  userId = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   isLoading = false;
 
   constructor(
@@ -36,7 +35,7 @@ export class BalanceComponent implements OnInit {
 
   buyToken(pkg: TokenPackage) {
     this.isLoading = true;
-    this.tokenService.createOrder(this.userId, pkg.tokens)
+    this.tokenService.createOrder(pkg.tokens)
       .pipe(take(1))
       .subscribe({
         next: (res) => {

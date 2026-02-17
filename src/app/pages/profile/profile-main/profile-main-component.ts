@@ -17,7 +17,6 @@ import {Loading} from "../../../shared/components/loading/loading";
 })
 export class ProfileMainComponent implements OnInit {
 
-  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   selectedAvatars: string[] = [];
   income$: Observable<number>;
   currency$: Observable<string>;
@@ -56,7 +55,7 @@ export class ProfileMainComponent implements OnInit {
   loadUserAvatars(): void {
     this.isAvatarsLoading = true;
 
-    this.avatarService.findByUser(this.UUID)
+    this.avatarService.findByUser()
       .pipe(take(1))
       .subscribe({
       next: (avatar) => {

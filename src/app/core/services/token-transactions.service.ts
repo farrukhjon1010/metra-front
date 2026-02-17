@@ -10,35 +10,28 @@ import { CreateTokenOrderResponse, TokenPackage, TokenTransaction } from '../mod
 export class TokenTransactionsService {
   private readonly apiUrl = `${environment.apiUrl}/token-transactions`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  createOrder(userId: string, tokensAmount: number): Observable<CreateTokenOrderResponse> {
+  createOrder(tokensAmount: number): Observable<CreateTokenOrderResponse> {
     const params = new HttpParams()
-      .set('userId', userId)
       .set('tokensAmount', tokensAmount.toString());
 
     return this.http.post<CreateTokenOrderResponse>(`${this.apiUrl}/create-order`, null, { params });
   }
 
-  createSubscriptionOrder(userId: string, amount: number): Observable<CreateTokenOrderResponse> {
+  createSubscriptionOrder(amount: number): Observable<CreateTokenOrderResponse> {
     const params = new HttpParams()
-      .set('userId', userId)
       .set('amount', amount.toString());
 
     return this.http.post<CreateTokenOrderResponse>(
       `${this.apiUrl}/create-subscription-order`,
-      null, // тело пустое
+      null,
       { params }
     );
   }
 
-  webhookYooKassa(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/webhook/yookassa`, null);
-  }
-
-  getUserTransactions(userId: string): Observable<TokenTransaction[]> {
-    const params = new HttpParams().set('userId', userId);
-    return this.http.get<TokenTransaction[]>(`${this.apiUrl}/user-transactions`, { params })
+  getUserTransactions(): Observable<TokenTransaction[]> {
+    return this.http.get<TokenTransaction[]>(`${this.apiUrl}/user-transactions`)
       .pipe(
         map(transactions => transactions.map(tx => ({
           ...tx,

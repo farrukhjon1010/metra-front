@@ -11,7 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class HomeHeader implements OnInit, OnDestroy {
 
-  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
   isLoading: boolean = false;
   userAvatars: string[] = [];
   currentAvatar: string = "";
@@ -30,7 +29,7 @@ export class HomeHeader implements OnInit, OnDestroy {
 
   loadUserAvatars() {
     this.isLoading = true;
-    this.avatarService.findByUser(this.UUID)
+    this.avatarService.findByUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (avatar) => {

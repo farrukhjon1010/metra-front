@@ -19,8 +19,6 @@ import {map} from 'rxjs/operators';
 })
 export class AddAvatarComponent implements OnDestroy {
 
-  UUID: string = '23edfdb2-8ab1-4f09-9f3b-661e646e3965';
-
   @ViewChild('frontInput', { static: false }) frontInput!: ElementRef<HTMLInputElement>;
   @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
   @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
@@ -66,33 +64,32 @@ export class AddAvatarComponent implements OnDestroy {
     this.currentStep = 'loading';
     this.cdr.detectChanges();
 
-    const userId = this.UUID;
     const selectedUrl = this.selectedAvatars[0];
 
-    this.avatarService.findByUser(userId)
+    this.avatarService.findByUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (existingAvatar) => {
           const currentCount = existingAvatar?.imagesURL?.length || 0;
           const nextIndex = currentCount + 1;
-          this.uploadAndSave(selectedUrl, userId, nextIndex);
+          this.uploadAndSave(selectedUrl, nextIndex);
         },
         error: () => {
-          this.uploadAndSave(selectedUrl, userId, 1);
+          this.uploadAndSave(selectedUrl, 1);
         }
       });
   }
 
-  private uploadAndSave(url: string, userId: string, index: number) {
+  private uploadAndSave(url: string, index: number) {
 
     from(fetch(url)).pipe(
       switchMap(res => from(res.blob())),
       map(blob => new File([blob], `avatar_v${index}.png`, { type: 'image/png' })),
       switchMap(file =>
-        this.fileService.uploadGeneratedAvatar(file, userId, index)
+        this.fileService.uploadGeneratedAvatar(file, index)
       ),
       switchMap((response) =>
-        this.avatarService.addImgUrl(userId, response.url)
+        this.avatarService.addImgUrl(response.url)
       ),
       takeUntil(this.destroy$)
     )
@@ -157,9 +154,7 @@ export class AddAvatarComponent implements OnDestroy {
     if (this.photos.left.file) filesUpload.push(this.photos.left.file);
     if (this.photos.right.file) filesUpload.push(this.photos.right.file);
 
-    const userId = this.UUID;
-
-    this.fileService.uploadAvatars(filesUpload, userId)
+    this.fileService.uploadAvatars(filesUpload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (event: any) => {

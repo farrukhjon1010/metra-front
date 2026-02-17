@@ -22,7 +22,6 @@ export interface GenerationResponse {
 }
 
 export interface CreateGenerationDto {
-  userId: string;
   type: GenerationType;
   prompt: string;
   imageURL: string;

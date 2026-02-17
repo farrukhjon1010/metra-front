@@ -21,12 +21,10 @@ export interface Avatar {
   name: string;
   gender: string;
   imagesURL: string[];
-  userId: string;
   user?: any;
 }
 
 export interface CreateAvatarDto {
-  userId: string;
   name: string;
   gender: string;
   imagesURL: string[];

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environment/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -8,51 +7,50 @@ import { Observable } from 'rxjs';
 })
 export class FileService {
 
-    private readonly apiUrl = environment.apiUrl
+    private readonly apiUrl = 'files'; 
 
     constructor(private http: HttpClient) { }
 
-    uploadAvatars(files: File[], userId: string): Observable<any> {
+    uploadAvatars(files: File[]): Observable<any> {
         const formData = new FormData();
-
         files.forEach(file => {
             formData.append('files', file);
         });
-        return this.http.post(`${this.apiUrl}/files/avatar/${userId}`, formData, {
+        
+        return this.http.post(`${this.apiUrl}/avatar`, formData, {
             reportProgress: true,
             observe: 'events'
-        })
+        });
     }
 
-    uploadGeneratedAvatars(files: File[], userId: string): Observable<any> {
+    uploadGeneratedAvatars(files: File[]): Observable<any> {
         const formData = new FormData();
-
         files.forEach(file => {
             formData.append('files', file);
         });
 
-        return this.http.post(`${this.apiUrl}/files/generated-avatar/${userId}`, formData, {
+        return this.http.post(`${this.apiUrl}/generated-avatar`, formData, {
             reportProgress: true,
             observe: 'events'
-        })
+        });
     }
 
-    uploadGeneratedAvatar(file: File, userId: string, index: number): Observable<any> {
+    uploadGeneratedAvatar(file: File, index: number): Observable<any> {
         const formData = new FormData();
         formData.append('file', file);
-        return this.http.post(`${this.apiUrl}/files/generated-avatar/${userId}/${index}`, formData);
+        // userId убрали, индекс оставили
+        return this.http.post(`${this.apiUrl}/generated-avatar/${index}`, formData);
     }
 
-    uploadImageGeneration(file: File, userId: string): Observable<any> {
+    uploadImageGeneration(file: File): Observable<any> {
         const formData = new FormData();
         formData.append('file', file);
-        return this.http.post(`${this.apiUrl}/files/save-for-generation/${userId}`, formData);
+        return this.http.post(`${this.apiUrl}/save-for-generation`, formData);
     }
 
-    uploadGeneratedImage(file: File, userId: string): Observable<any> {
+    uploadGeneratedImage(file: File): Observable<any> {
         const formData = new FormData();
         formData.append('file', file);
-        return this.http.post(`${this.apiUrl}/files/save-generated/${userId}`, formData);
+        return this.http.post(`${this.apiUrl}/save-generated`, formData);
     }
-
 }
