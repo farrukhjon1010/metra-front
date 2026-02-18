@@ -61,7 +61,6 @@ export class SplashComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     const tgId = this.telegram.userId;
-    alert("tgID = " + tgId);
     if (tgId) {
       this.UUID = tgId;
     }
