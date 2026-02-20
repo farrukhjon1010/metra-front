@@ -1,77 +1,149 @@
-.home {
-  &__container {
-    min-height: 100vh;
-    padding-bottom: 80px;
-    max-width: 390px;
-    margin: 0 auto;
-    box-sizing: border-box;
+/* Контейнер домашней страницы */
+.home__container {
+  min-height: 100vh;
+  padding-bottom: 80px;
+  max-width: 390px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @media (min-width: 400px) and (max-width: 767px) {
+    max-width: 480px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    max-width: 720px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    max-width: 1200px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media (min-width: 1441px) {
+    max-width: 1400px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+/* Заголовок страницы */
+.home__page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+
+  @media (min-width: 400px) and (max-width: 767px) {
+    font-size: 22px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    font-size: 24px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    font-size: 26px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 28px;
+  }
+}
+
+/* Подзаголовок / описание */
+.home__page-subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.4;
+  padding-bottom: 16px;
+
+  @media (min-width: 400px) and (max-width: 767px) {
+    font-size: 16px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    font-size: 17px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    font-size: 18px;
+  }
+  @media (min-width: 1441px) {
+    font-size: 19px;
+  }
+}
+
+/* Хедер домашней страницы */
+.home__header {
+  padding: 24px 16px 0;
+  background: linear-gradient(180deg, rgba(10,10,20,0.95) 0%, rgba(10,10,20,0.5) 100%);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 1px solid #ffffff33;
+    padding: 10px 0; // общий padding для всех экранов
   }
 
-  &__header {
-    padding: 24px 16px 0 16px;
-    background: linear-gradient(
-        180deg,
-        rgba(10, 10, 20, 0.95) 0%,
-        rgba(10, 10, 20, 0.5) 100%
-    );
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  &-text {
+    flex: 1;
+  }
 
-    &-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      border-bottom: 1px solid #ffffff33;
-    }
+  &__page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px;
+  }
 
-    &-text {
-      flex: 1;
-    }
+  &__page-subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+    line-height: 1.4;
+    padding-bottom: 16px;
+  }
 
-    &__page-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      margin: 0 0 6px;
-    }
+  img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(181,123,255,0.2);
+    border: 2px solid rgba(181,123,255,0.9);
+    flex-shrink: 0;
+  }
 
-    &__page-subtitle {
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.7);
-      margin: 0;
-      line-height: 1.4;
-      padding-bottom: 16px;
-    }
+  /* Телефоны 400-767px */
+  @media (min-width: 400px) and (max-width: 767px) {
+    &__page-title { font-size: 22px; }
+    &__page-subtitle, p { font-size: 16px; }
+    img { width: 70px; height: 70px; }
+  }
 
-    &__avatar-icon {
-    }
+  /* Планшеты 768-1024px */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    &__page-title { font-size: 24px; }
+    &__page-subtitle, p { font-size: 17px; }
+    img { width: 80px; height: 80px; }
+  }
 
-    h2 {
-      margin: 0;
-      padding-bottom: 2px;
-    }
+  /* Десктопы 1025-1440px */
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    &__page-title { font-size: 26px; }
+    &__page-subtitle, p { font-size: 18px; }
+    img { width: 90px; height: 90px; }
+  }
 
-    p {
-      margin: 0;
-      font-family: system-ui;
-      font-size: 15px;
-      color: #C5CCE0;
-      padding-bottom: 16px;
-    }
-
-    img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: rgba(181, 123, 255, 0.2);
-      border: 2px solid rgba(181, 123, 255, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
+  /* Очень большие экраны >1440px */
+  @media (min-width: 1441px) {
+    &__page-title { font-size: 28px; }
+    &__page-subtitle, p { font-size: 19px; }
+    img { width: 100px; height: 100px; }
   }
 }

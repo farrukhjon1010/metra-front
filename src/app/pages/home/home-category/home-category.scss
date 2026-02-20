@@ -2,11 +2,48 @@
   .category app-scenes-card .header-card {
     display: none;
   }
+
   .category app-scenes-card .scenes {
     padding-top: 16px;
   }
 
   .category app-scenes-card .empty-blockd {
-    min-height: 400px;
+    min-height: 300px;
+  }
+
+  @media (min-width: 400px) and (max-width: 767px) {
+    .category app-scenes-card .scenes {
+      padding-top: 18px;
+    }
+    .category app-scenes-card .empty-blockd {
+      min-height: 350px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .category app-scenes-card .scenes {
+      padding-top: 20px;
+    }
+    .category app-scenes-card .empty-blockd {
+      min-height: 400px;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    .category app-scenes-card .scenes {
+      padding-top: 22px;
+    }
+    .category app-scenes-card .empty-blockd {
+      min-height: 450px;
+    }
+  }
+
+  @media (min-width: 1441px) {
+    .category app-scenes-card .scenes {
+      padding-top: 24px;
+    }
+    .category app-scenes-card .empty-blockd {
+      min-height: 500px;
+    }
   }
 }

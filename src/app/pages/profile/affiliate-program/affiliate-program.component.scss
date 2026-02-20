@@ -1,97 +1,136 @@
 .affiliate-program-content {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
+// ===== HEADER =====
 .affiliate-program-header {
   display: flex;
-  padding: 24px 16px;
-  gap: 16px;
+  padding: clamp(16px, 4vw, 28px) clamp(12px, 4vw, 20px);
+  gap: clamp(12px, 3vw, 20px);
+  align-items: center;
 }
 
 .affiliate-program-header p {
-  font-size: 20px;
+  font-size: clamp(16px, 4vw, 24px);
   font-weight: 700;
   margin: 0;
 }
 
 .affiliate-program-header span {
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 17px);
   font-weight: 400;
   color: #C5CCE0;
   font-family: system-ui;
 }
 
 .affiliate-program-header img {
-  width: 20px;
-  height: 20px;
+  width: clamp(18px, 4vw, 26px);
+  height: clamp(18px, 4vw, 26px);
 }
 
 .text-header-affiliate {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
+// ===== MAIN CONTENT =====
 .affiliate-link-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
-  min-height: 508px;
+  min-height: clamp(420px, 60vh, 600px);
+  padding: 0 clamp(12px, 4vw, 20px);
 }
-.button-invite{
-  padding: 0 16px;
+
+.button-invite {
+  padding: 0 clamp(12px, 4vw, 20px);
 }
+
+// ===== YOUR LINK CARD =====
 .your-link {
-  width: 100%;
-  max-width: 324px;
+  width: 90%;
   border-radius: 24px;
   border: 1px solid #FFFFFF33;
-  padding: 16px;
+  padding: clamp(14px, 3vw, 20px);
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: 0 4px 12px 0 #000000;
   backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
 }
 
 .your-link p {
   margin: 0;
-  font-size: 13px;
+  font-size: clamp(12px, 3vw, 16px);
   font-weight: 500;
   color: #A9B2C8;
   font-family: system-ui;
 }
 
-.copy-link-container {
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
-  margin: 8px 0 16px 0;
-  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  transition: 0.5s;
-}
-.copied-text {
-  font-size: 12px;
-  color: #E8EEFF;
-}
-
+// ===== COPY LINK BLOCK =====
 .copy-link-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(6px, 2vw, 12px);
+  padding: clamp(10px, 3vw, 16px) clamp(14px, 4vw, 24px);
+  border-radius: 14px;
+  border: 1px solid #FFFFFF33;
+  margin: clamp(6px, 2vw, 12px) 0 clamp(12px, 3vw, 20px) 0;
+  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  transition: 0.3s ease;
+}
+
+.copy-link-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: clamp(13px, 3vw, 18px);
+  border-radius: 12px;
+  font-weight: 600;
+  font-family: system-ui;
+  color: #E8EEFF;
 }
 
 input.success {
   border: 1px solid #E8EEFF;
 }
 
+// ===== COPY ICON =====
+.copy-icon {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.copy-icon img {
+  width: clamp(18px, 4vw, 28px);
+  height: clamp(18px, 4vw, 28px);
+  pointer-events: none;
+}
+
+.copy-icon:hover {
+  transform: scale(1.08);
+}
+
+.copy-icon:active {
+  transform: scale(0.92);
+}
+
+.copy-icon.active {
+  transform: scale(1.15);
+  opacity: 0.75;
+}
+
+// ===== MESSAGE =====
 .field-message {
-  float: right;
   position: absolute;
-  right: 20px;
-  top: 20px;
-  font-size: 12px;
+  right: clamp(12px, 3vw, 24px);
+  top: clamp(12px, 3vw, 24px);
+  font-size: clamp(11px, 2.5vw, 14px);
   opacity: 0;
   animation: slideFade 5.5s ease forwards;
 
@@ -101,73 +140,28 @@ input.success {
 }
 
 @keyframes slideFade {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  20% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-  }
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
-.copy-link-container input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 15px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-family: system-ui;
+// ===== COPIED TEXT =====
+.copied-text {
+  font-size: clamp(11px, 2.5vw, 14px);
   color: #E8EEFF;
 }
 
-.copy-icon {
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  transition:
-    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.18s ease;
-
-  img {
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-  }
-
-  &:hover {
-    transform: scale(1.08);
-  }
-
-  &:active {
-    transform: scale(0.92);
-  }
-
-  &.active {
-    transform: scale(1.15);
-    opacity: 0.75;
-  }
-}
-
-.copy-icon img {
-  transform: scale(1.02);
-}
-
+// ===== BALANCE BLOCK =====
 .balance-content {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  gap: clamp(8px, 2vw, 16px);
+  flex-wrap: wrap;
 }
 
 .balance-content p {
-  font-size: 13px;
+  font-size: clamp(12px, 3vw, 16px);
   font-weight: 500;
   color: #A9B2C8;
   margin-bottom: 4px;
@@ -175,11 +169,11 @@ input.success {
 }
 
 .balance-content span {
-  font-size: 17px;
+  font-size: clamp(16px, 4vw, 22px);
   font-weight: 600;
 }
 
 .button-affiliate {
-  margin-top: 16px;
+  margin-top: clamp(14px, 3vw, 22px);
+  width: 100%;
 }
-

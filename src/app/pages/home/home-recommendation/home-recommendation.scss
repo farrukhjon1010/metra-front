@@ -1,10 +1,12 @@
 .home {
-
+  &__content {
+    padding-bottom: 80px;
+  }
   &__scenes-section {
-  h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
     }
   }
 
@@ -16,7 +18,7 @@
   }
 
   &__recommendations-section {
-    padding: 0 16px 80px 16px;
+    padding: 0 16px;
     gap: 16px;
     display: flex;
     flex-direction: column;
@@ -57,7 +59,79 @@
     font-weight: 500;
   }
 
+  @media (min-width: 400px) and (max-width: 767px) {
+    &__scenes-section h2 {
+      font-size: 22px;
+    }
+    &__scene-description {
+      font-size: 14px;
+    }
+    &__recommendations-section {
+      padding: 0 20px 80px 20px;
+      gap: 18px;
+    }
+    &__recommendations-grid {
+      gap: 12px;
+    }
+    &__rec-label {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    &__scenes-section h2 {
+      font-size: 24px;
+    }
+    &__scene-description {
+      font-size: 15px;
+    }
+    &__recommendations-section {
+      padding: 0 24px 80px 24px;
+      gap: 20px;
+    }
+    &__recommendations-grid {
+      gap: 14px;
+    }
+    &__rec-label {
+      font-size: 15px;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    &__scenes-section h2 {
+      font-size: 26px;
+    }
+    &__scene-description {
+      font-size: 16px;
+    }
+    &__recommendations-section {
+      padding: 0 30px 80px 30px;
+      gap: 22px;
+    }
+    &__recommendations-grid {
+      gap: 16px;
+    }
+    &__rec-label {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 1441px) {
+    &__scenes-section h2 {
+      font-size: 28px;
+    }
+    &__scene-description {
+      font-size: 17px;
+    }
+    &__recommendations-section {
+      padding: 0 40px 80px 40px;
+      gap: 24px;
+    }
+    &__recommendations-grid {
+      gap: 18px;
+    }
+    &__rec-label {
+      font-size: 17px;
+    }
+  }
 }
-
-
-
