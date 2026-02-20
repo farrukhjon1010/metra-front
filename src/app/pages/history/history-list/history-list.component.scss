@@ -35,12 +35,12 @@
 }
 
 .slider {
-  width: 116px;
-  height: 40px;
+  width: clamp(80px, 33%, 280px);
+  height: clamp(40px, 4vw, 40px);
   position: absolute;
   background: linear-gradient(90deg, #6a5cff, #a890ff);
-  border-radius: 8px;
-  transition: transform .3s;
+  border-radius: clamp(6px, 2vw, 8px);
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
 .filter-btn {
@@ -54,6 +54,10 @@
   &.active {
     color: #fff;
   }
+}
+
+.history-not {
+  padding-bottom: 60px;
 }
 
 .create-of-history {

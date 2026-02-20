@@ -1,14 +1,14 @@
 .create-avatar-container {
-  padding: 0 16px;
+  padding: clamp(12px, 4vw, 16px);
 }
 
 .header {
-  padding: 24px 0;
+  padding: clamp(16px, 2vw, 24px) 0;
   margin: 0;
 }
 
 .title {
-  font-size: 20px;
+  font-size: clamp(18px, 5vw, 20px);
   font-weight: 700;
   margin: 0;
 }
@@ -16,35 +16,43 @@
 .form-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(16px, 4vw, 24px);
 }
 
 .form-label {
-  font-size: 13px;
+  font-size: clamp(12px, 3vw, 13px);
   color: #a9b2c8;
 }
 
 .form-input {
-  width: 326px;
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 15px;
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: clamp(10px, 2vw, 12px);
+  padding: clamp(10px, 3vw, 14px);
+  font-size: clamp(14px, 3.5vw, 15px);
   font-weight: 600;
   outline: none;
   background: transparent;
   color: #ffffff;
   font-family: system-ui;
+  transition: 0.2s ease;
+  max-width: 333px;
+}
+
+.photo-upload-section {
+  width: 100%;
 }
 
 .gender-buttons {
+  height: 42px;
   position: relative;
   display: flex;
   background: #181826;
-  border-radius: 12px;
-  padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.0588235294);
-  margin-top: 8px;
+  border-radius: clamp(10px, 2vw, 12px);
+  padding: clamp(2px, 0.5vw, 4px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: clamp(6px, 2vw, 8px);
 }
 
 .gender-btn {
@@ -52,8 +60,10 @@
   background: none;
   border: none;
   color: #777;
-  padding: 12px 0;
+  padding: clamp(8px, 2vw, 12px) 0;
   z-index: 1;
+  font-size: clamp(13px, 3vw, 15px);
+  cursor: pointer;
 }
 
 .gender-btn.active {
@@ -62,64 +72,65 @@
 
 .slider-splash {
   position: absolute;
-  inset: 4px;
-  width: calc(50% - 4px);
+  inset: clamp(2px, 0.5vw, 4px);
+  width: calc(50% - clamp(4px, 1vw, 4px));
   background: linear-gradient(90deg, #6a5cff, #a890ff);
-  border-radius: 8px;
+  border-radius: clamp(6px, 2vw, 8px);
   transition: transform 0.3s ease;
 }
 
 .photo-load {
   display: flex;
-  gap: 10px;
+  gap: clamp(6px, 2vw, 10px);
   align-items: center;
 }
 
 .upload-content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: clamp(1px, 1vw, 2px);
 }
 
 .upload-area-small {
-  padding: 6px 20px;
-  border-radius: 12px;
+  padding: clamp(6px, 2vw, 8px) clamp(12px, 5vw, 20px);
+  border-radius: clamp(10px, 2vw, 12px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid #FFFFFF0F;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
 }
 
 .upload-text-small {
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
 }
 
 .upload-formats {
-  font-size: 10px;
-  opacity: .6;
+  font-size: clamp(9px, 2.5vw, 10px);
+  opacity: 0.6;
   font-family: system-ui;
 }
 
 .upload-row {
-  width: 252px;
-  margin-top: 8px;
+  width: 100%;
+  max-width: clamp(200px, 100%, 620px);
+  margin-top: clamp(6px, 2vw, 8px);
 }
 
 .upload-hint-small {
-  margin: 8px 0 0 0;
-  font-size: 12px;
+  margin: clamp(6px, 2vw, 8px) 0 0 0;
+  font-size: clamp(10px, 2.5vw, 12px);
   color: #7A859E;
 }
 
 .front-photo {
-  width: 96px;
-  height: 96px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, .1);
+  width: clamp(80px, 38vw, 135px);
+  height: clamp(80px, 24vw, 100px);
+  border-radius: clamp(10px, 2vw, 12px);
+  background: rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -141,22 +152,24 @@
 }
 
 .delete-photo {
-  width: 24px;
-  height: 24px;
+  width: clamp(20px, 5vw, 24px);
+  height: clamp(20px, 5vw, 24px);
   border-radius: 50%;
   background: #ff4d4f;
   border: none;
   cursor: pointer;
-  padding: 2px 1px 1px 1px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 .input-wrapper {
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: clamp(10px, 2vw, 12px);
   backdrop-filter: blur(40px);
-  transition: border-color 0.2s;
-  margin-top: 8px;
+  transition: border-color 0.2s ease;
+  margin-top: clamp(6px, 2vw, 8px);
 }
 
 .input-wrapper.invalid {
@@ -168,8 +181,7 @@
 }
 
 .alert {
-  font-size: 12px;
+  font-size: clamp(10px, 2.5vw, 12px);
   color: #FF4B55;
   padding: 2px 5px 0 5px;
 }
-

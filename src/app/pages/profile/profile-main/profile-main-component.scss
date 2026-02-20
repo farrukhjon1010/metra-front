@@ -4,7 +4,6 @@
   padding: 0;
 }
 
-// ===== PROFILE SCREEN =====
 .profile-screen {
   width: 100%;
   display: flex;
@@ -13,7 +12,6 @@
   padding-bottom: clamp(60px, 5vw, 80px);
 }
 
-// ===== PROFILE HEADER =====
 .profile-header {
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   backdrop-filter: blur(10px);
@@ -30,19 +28,16 @@
   }
 }
 
-// ===== PROFILE CONTENT =====
 .profile-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: clamp(16px, 3vw, 32px);
-  //padding: 0 clamp(12px, 4vw, 16px);
   width: 100%;
   margin: 0 auto;
   padding: 0 16px 16px 16px;
 }
 
-// ===== PROFILE CARD =====
 .profile-card {
   display: flex;
   flex-direction: column;
@@ -62,7 +57,6 @@
   color: #ffffff;
 }
 
-// ===== AVATAR SECTION =====
 .avatar-circle,
 .avatars-display {
   display: flex;
@@ -85,7 +79,6 @@
   transition: 0.25s ease;
 }
 
-// Изменяем размеры при разных расширениях
 @media (min-width: 400px) {
   .add-avatar {
     width: clamp(110px, 10vw, 140px);
@@ -140,7 +133,6 @@
   transform: scale(1.05);
 }
 
-// ===== TEXT STYLES =====
 .balance-text,
 .partnership-text,
 .subscription-text,
@@ -150,7 +142,9 @@
   color: #ffffff;
 }
 
-.balance-text { color: #e8eeff; }
+.balance-text {
+  color: #e8eeff;
+}
 
 .subscription-details {
   font-size: clamp(12px, 3vw, 15px);
@@ -160,7 +154,6 @@
   padding-top: 4px;
 }
 
-// ===== MEDIA QUERIES =====
 @media (min-width: 480px) {
   .avatar-item,
   .add-avatar {
@@ -191,10 +184,6 @@
   .profile-content {
     gap: clamp(24px, 3vw, 36px);
   }
-
-  .profile-card {
-    //max-width: 900px;
-  }
 }
 
 @media (min-width: 1440px) {
@@ -203,7 +192,6 @@
   }
 }
 
-// ===== LOADING SCREEN =====
 ::ng-deep {
   .profile-screen app-loading .loading-screen {
     background-color: rgba(24, 24, 26, 0.8);

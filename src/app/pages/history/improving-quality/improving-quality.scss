@@ -1,11 +1,10 @@
-/* ================= CARD QUALITY SCREEN ================= */
 .card-quality {
   display: flex;
   flex-direction: row;
   gap: clamp(12px, 4vw, 16px);
   top: 0;
   padding: clamp(16px, 4vw, 24px);
-  background: linear-gradient(180deg, rgba(10,10,20,0.95) 0%, rgba(10,10,20,0.5) 100%);
+  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: sticky;
@@ -38,7 +37,6 @@
   padding: 0 clamp(12px, 4vw, 16px) clamp(60px, 10vw, 90px) clamp(12px, 4vw, 16px);
 }
 
-/* ================= PHOTO UPLOAD ================= */
 .photo-upload-section {
   display: flex;
   flex-direction: column;
@@ -53,7 +51,7 @@
 }
 
 .upload-row-quality {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid #FFFFFF33;
@@ -81,75 +79,16 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 
-/* ================= RESULT CONTENT ================= */
-.result-content {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 3vw, 16px);
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.5);
-  border-radius: clamp(20px, 3vw, 24px);
-  border: 1px solid #FFFFFF33;
-  padding: clamp(12px, 3vw, 16px);
-
-  h2 {
-    font-size: clamp(18px, 4vw, 20px);
-    font-weight: 700;
-    margin: 0;
-  }
-}
-
-/* ================= BEFORE / AFTER PHOTO ================= */
-.before-photo,
-.after-photo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  //width: clamp(324px, 50vw, 100%);
-  height: clamp(324px, 50vw, 324px);
-  border-radius: clamp(10px, 3vw, 12px);
-  border: 1px solid #FFFFFF33;
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  position: relative;
-}
-
-.bf-text,
-.aft-text {
-  padding: clamp(2px, 1vw, 3px) clamp(6px, 2vw, 8px);
-  border-radius: 4px;
-  font-size: clamp(12px, 3vw, 15px);
-  position: absolute;
-  top: clamp(6px, 2vw, 8px);
-  left: clamp(6px, 2vw, 8px);
-  font-family: system-ui;
-}
-
-.bf-text { background: #FF4B55; max-width: 20px; }
-.aft-text { background: #2EC57A; max-width: 42px; }
-
-.center-text-quality {
-  color: #C5CCE0;
-  font-size: clamp(13px, 3vw, 15px);
-  font-weight: 400;
-  text-align: center;
-  opacity: 0.6;
-}
-
-/* ================= PHOTO QUALITY THUMB ================= */
 .photo-quality {
   position: relative;
   width: clamp(50px, 15vw, 65px);
   height: clamp(50px, 15vw, 65px);
   margin-top: clamp(6px, 2vw, 8px);
 
-  img {
+  img.with-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -178,20 +117,79 @@
   }
 }
 
-/* ================= RESULT IMAGE ================= */
-.result-img {
-  width: 100%;
-  object-fit: contain;
-  border-radius: clamp(10px, 3vw, 12px);
-}
-
-.result-actions {
+.result-content {
   display: flex;
   flex-direction: column;
   gap: clamp(12px, 3vw, 16px);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.5);
+  border-radius: clamp(20px, 3vw, 24px);
+  border: 1px solid #FFFFFF33;
+  padding: clamp(12px, 3vw, 16px);
+
+  h2 {
+    font-size: clamp(18px, 4vw, 20px);
+    font-weight: 700;
+    margin: 0;
+  }
 }
 
-/* ================= LOADING SCREEN ================= */
+.before-photo,
+.after-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: clamp(324px, 50vw, 324px);
+  border-radius: clamp(10px, 3vw, 12px);
+  border: 1px solid #FFFFFF33;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  position: relative;
+  overflow: hidden;
+
+  img.result-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: clamp(10px, 3vw, 12px);
+    display: block;
+  }
+}
+
+.bf-text {
+  background: #FF4B55;
+  max-width: 20px;
+}
+
+.aft-text {
+  background: #2EC57A;
+  max-width: 42px;
+}
+
+.bf-text,
+.aft-text {
+  padding: clamp(2px, 1vw, 3px) clamp(6px, 2vw, 8px);
+  border-radius: 4px;
+  font-size: clamp(12px, 3vw, 15px);
+  position: absolute;
+  top: clamp(6px, 2vw, 8px);
+  left: clamp(6px, 2vw, 8px);
+  font-family: system-ui;
+}
+
+.center-text-quality {
+  color: #C5CCE0;
+  font-size: clamp(13px, 3vw, 15px);
+  font-weight: 400;
+  text-align: center;
+  opacity: 0.6;
+}
+
 ::ng-deep {
   .btn-quality app-loading .loading-screen {
     position: fixed;
@@ -203,45 +201,22 @@
     z-index: 9999;
     color: white;
     height: auto;
-    background-color: rgba(0,0,0,0.9);
+    background-color: rgba(0, 0, 0, 0.9);
   }
 }
 
-/* ================= MEDIA QUERIES ================= */
 @media (max-width: 414px) {
   .before-photo,
   .after-photo {
     width: 85vw;
     height: 85vw;
   }
-
-  .photo-quality {
-    width: 50px;
-    height: 50px;
-  }
-
-  .bf-text, .aft-text {
-    font-size: 12px;
-  }
-
-  .result-content h2 {
-    font-size: 16px;
-  }
 }
 
-@media (min-width: 415px) and (max-width: 768px) {
+@media (max-width: 375px) {
   .before-photo,
   .after-photo {
-    width: 45vw;
-    height: 45vw;
-  }
-
-  .photo-quality {
-    width: 55px;
-    height: 55px;
-  }
-
-  .result-content h2 {
-    font-size: 18px;
+    width: 90vw;
+    height: 90vw;
   }
 }

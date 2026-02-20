@@ -1,16 +1,13 @@
-/* ================= SCENES ================= */
 .scenes {
   padding: 0 clamp(12px, 4vw, 16px) clamp(60px, 10vw, 80px) clamp(12px, 4vw, 16px);
 }
 
-/* ================= CARD HEADER ================= */
 .card-header {
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
-/* ================= HOME HEADER ================= */
 .home-header {
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
@@ -21,7 +18,6 @@
   margin-bottom: clamp(12px, 3vw, 16px);
 }
 
-/* ================= HEADER CARD ================= */
 .header-card {
   display: flex;
   flex-direction: row;
@@ -37,7 +33,6 @@
   font-weight: 700;
 }
 
-/* ================= SCENES IMAGE ================= */
 .scenes-image {
   display: flex;
   flex-direction: row-reverse;
@@ -55,7 +50,6 @@
   object-fit: cover;
 }
 
-/* ================= SCENES INFO ================= */
 .scenes-info {
   padding-right: clamp(12px, 4vw, 16px);
 }
@@ -72,13 +66,11 @@
   font-family: system-ui;
 }
 
-/* ================= SCENES CARD TEMPLATES ================= */
 .scenes-card-templates {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: clamp(12px, 3vw, 16px);
-  //width: clamp(120px, 20%, 137px);
   padding: clamp(12px, 3vw, 16px);
   border-radius: clamp(12px, 3vw, 16px);
   cursor: pointer;
@@ -95,7 +87,6 @@
   transform: scale(1.02);
 }
 
-/* ================= CIRCLE AVA ================= */
 .circle-ava {
   display: flex;
   width: clamp(82px, 18vw, 92px);
@@ -103,6 +94,14 @@
   border: 1px solid #FFFFFF33;
   border-radius: 50%;
   justify-content: center;
+}
+
+.circle-2-ava:hover {
+  transform: scale(1.02);
+  border: 2px solid #6A5CFF;
+  border-radius: 50%;
+  z-index: 10;
+  position: relative;
 }
 
 .circle-2-ava {
@@ -135,7 +134,6 @@
   padding-bottom: clamp(2px, 1vw, 4px);
 }
 
-/* ================= SCENES CARD CONTENT ================= */
 .scenes-card-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -143,7 +141,6 @@
   padding-bottom: clamp(12px, 3vw, 16px);
 }
 
-/* ================= EMPTY SCENES ================= */
 .empty-scenes {
   display: flex;
   flex-direction: column;
@@ -167,7 +164,6 @@
   margin-bottom: clamp(4px, 1vw, 6px);
 }
 
-/* ================= EMPTY BLOCK ================= */
 .empty-blockd {
   width: 100%;
   min-height: clamp(400px, 70vw, 458px);
@@ -192,14 +188,11 @@
   font-family: system-ui;
 }
 
-/* ================= MEDIA QUERIES ================= */
 @media (min-width: 768px) {
   .scenes-card-content {
     grid-template-columns: repeat(3, 1fr);
   }
-  .scenes-card-templates {
-    //width: clamp(130px, 18%, 150px);
-  }
+
   .scenes-image img {
     width: clamp(140px, 35%, 160px);
     height: clamp(140px, 35%, 160px);

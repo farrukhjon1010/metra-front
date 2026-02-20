@@ -1,7 +1,14 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .content {
+  width: 90%;
   max-width: 390px;
   margin: 0 auto;
-  padding: 16px;
+  padding: clamp(12px, 4vw, 20px);
   position: relative;
   z-index: 1;
 }
@@ -11,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: clamp(12px, 4vw, 16px);
 }
 
 .logo-container {
@@ -25,36 +32,119 @@
 }
 
 .brand-name {
-  font-size: 32px;
+  font-size: clamp(24px, 8vw, 32px);
   font-weight: 700;
   letter-spacing: 2px;
   margin: 0;
+  text-align: center;
 }
 
 .features {
   text-align: center;
-  font-size: 14px;
-  opacity: .9;
+  font-size: clamp(12px, 3.5vw, 14px);
+  opacity: 0.9;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 32px 0;
-
+  gap: clamp(8px, 2.5vw, 12px);
+  padding: clamp(24px, 6vw, 32px) 0;
 }
 
 .feature-text {
   font-family: 'SF Pro Display', sans-serif;
-  font-size: 17px;
+  font-size: clamp(14px, 4vw, 17px);
   margin: 0;
 }
 
 .feature-text-metra {
-  font-size: 15px;
-  margin: 32px 0;
+  font-size: clamp(12px, 3.5vw, 15px);
+  margin: clamp(16px, 4vw, 32px) 0;
 }
 
 .actions {
-  gap: 16px;
   display: flex;
   flex-direction: column;
+  gap: clamp(12px, 3vw, 16px);
+  width: 100%;
+}
+
+.slider {
+  width: clamp(80px, 25%, 116px);
+  height: clamp(32px, 4vw, 40px);
+  position: absolute;
+  background: linear-gradient(90deg, #6a5cff, #a890ff);
+  border-radius: clamp(6px, 2vw, 8px);
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+@media (max-width: 374px) {
+  .content {
+    width: 95%;
+    padding: 12px;
+  }
+
+  .brand-name {
+    font-size: 24px;
+  }
+
+  .feature-text {
+    font-size: 14px;
+  }
+
+  .feature-text-metra {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 414px) {
+  .content {
+    max-width: 360px;
+  }
+
+  .brand-name {
+    font-size: 28px;
+  }
+
+  .feature-text {
+    font-size: 15px;
+  }
+
+  .feature-text-metra {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 768px) {
+  .content {
+    max-width: 450px;
+  }
+
+  .brand-name {
+    font-size: 30px;
+  }
+
+  .feature-text {
+    font-size: 16px;
+  }
+
+  .feature-text-metra {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) {
+  .content {
+    max-width: 500px;
+  }
+
+  .brand-name {
+    font-size: 32px;
+  }
+
+  .feature-text {
+    font-size: 17px;
+  }
+
+  .feature-text-metra {
+    font-size: 15px;
+  }
 }
