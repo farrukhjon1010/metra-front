@@ -26,7 +26,7 @@
     display: flex;
     @include fluid('padding', 16px, 24px);
     @include fluid-text(16px, 22px);
-    font-weight: 700;
+    font-weight: $font-weight-bold;
     color: #ffffff;
   }
 }
@@ -56,7 +56,7 @@
 
 .card-title {
   @include fluid-text(20px, 24px);
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   color: #ffffff;
 }
 
@@ -141,7 +141,7 @@
 .subscription-text,
 .any-questions {
   @include fluid-text(17px, 20px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
   color: #ffffff;
 }
 
@@ -151,7 +151,7 @@
 
 .subscription-details {
   @include fluid-text(12px, 15px);
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   color: $color-text-muted;
   font-family: system-ui;
   padding-top: 4px;

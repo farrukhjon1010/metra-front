@@ -7,7 +7,7 @@
 
   span {
     @include fluid-text(20px, 24px);
-    font-weight: 700;
+    font-weight: $font-weight-bold;
   }
 
   p {

@@ -40,7 +40,7 @@
 
 .gift-name {
   @include fluid-text(17px, 22px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
   margin: 0;
 }
 
@@ -51,7 +51,7 @@
 
 .gift-title {
   @include fluid-text(15px, 19px);
-  font-weight: 400;
+  font-weight: $font-weight-regular;
   font-family: system-ui;
   margin: 0;
   color: $color-text-secondary;

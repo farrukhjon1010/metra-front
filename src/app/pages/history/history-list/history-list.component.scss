@@ -16,7 +16,7 @@
   color: $color-text-muted;
 }
 
-@mixin value-style($size: 17px, $weight: 600) {
+@mixin value-style($size: 17px, $weight: $font-weight-semibold) {
   @include fluid-text($size, 22px);
   font-weight: $weight;
 }
@@ -85,7 +85,7 @@
 
   span {
     @include fluid-text(17px, 22px);
-    font-weight: 500;
+    font-weight: $font-weight-medium;
   }
 }
 
@@ -124,13 +124,13 @@
 
   span {
     color: #E8EEFF;
-    @include value-style(17px, 600);
+    @include value-style(17px, $font-weight-semibold);
   }
 }
 
 .prom-text {
   @include fluid-text(13px, 17px);
-  font-weight: 400;
+  font-weight: $font-weight-regular;
   color: #E8EEFF;
   flex: 1;
   overflow: hidden;

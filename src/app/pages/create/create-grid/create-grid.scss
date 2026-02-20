@@ -7,7 +7,7 @@
 
   span {
     @include fluid-text(15px, 19px);
-    font-weight: 400;
+    font-weight: $font-weight-regular;
     font-family: system-ui;
     color: $color-text-secondary;
   }
@@ -55,7 +55,7 @@
     & > .create__title {
       margin: 0;
       @include fluid-text(20px, 28px);
-      font-weight: 600;
+      font-weight: $font-weight-semibold;
       color: #fff;
     }
   }
@@ -65,11 +65,11 @@
     flex-direction: column;
     @include fluid('padding-left', 16px, 24px);
     @include fluid('padding-right', 16px, 24px);
-    @include fluid('padding-bottom', 24px, 32px);
+    @include fluid('padding-bottom', 8px, 32px);
 
     &-title {
       @include fluid-text(17px, 30px);
-      font-weight: 600;
+      font-weight: $font-weight-semibold;
       margin: 0;
       color: #fff;
       @include fluid('padding-bottom', 8px, 16px);
@@ -86,7 +86,7 @@
     border-radius: $radius-lg;
     cursor: pointer;
     transition: all 0.3s ease;
-    @include fluid('height', 66px, 82px);
+    height: 70px;
     @include fluid('padding', 16px, 24px);
     display: flex;
     flex-direction: column;
@@ -104,7 +104,7 @@
     }
 
     & > .create__text {
-      @include fluid-text(13px, 32px);
+      font-size: 15px;
       color: $color-text-secondary;
     }
   }
@@ -112,5 +112,5 @@
 
 .create__title {
   @include fluid-text(22px, 30px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
 }

@@ -51,7 +51,7 @@
 
 .text-ai-generation textarea::placeholder {
   @include fluid-text(15px, 19px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
   color: $color-text-hint;
 }
 
@@ -101,6 +101,7 @@
 }
 
 .row-quality {
+  height: 32px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
@@ -121,7 +122,7 @@
 
 .text-small {
   @include fluid-text(15px, 19px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
 }
 
 .upload-formats-small {

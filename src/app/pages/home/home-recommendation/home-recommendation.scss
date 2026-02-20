@@ -10,7 +10,7 @@
     h2 {
       margin: 0;
       @include fluid-text(20px, 28px);
-      font-weight: 700;
+      font-weight: $font-weight-bold;
     }
   }
 
@@ -59,9 +59,9 @@
   }
 
   &__rec-label {
-    @include fluid-text(13px, 17px);
+    font-size: 13px;
     font-family: system-ui;
     color: $color-text-muted;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
   }
 }

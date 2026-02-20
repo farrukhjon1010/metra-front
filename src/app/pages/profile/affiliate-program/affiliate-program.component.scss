@@ -9,43 +9,55 @@
 
 .affiliate-program-header {
   display: flex;
-  @include fluid('padding-top', 16px, 28px);
-  @include fluid('padding-bottom', 16px, 28px);
+  @include fluid('padding-top', 24px, 28px);
+  @include fluid('padding-bottom', 24px, 28px);
   @include fluid('padding-left', 12px, 20px);
   @include fluid('padding-right', 12px, 20px);
-  @include fluid-gap(12px, 20px);
-  align-items: center;
+  @include fluid-gap(16px, 20px);
 }
 
 .affiliate-program-header p {
   @include fluid-text(16px, 24px);
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   margin: 0;
 }
 
 .affiliate-program-header span {
   @include fluid-text(13px, 17px);
-  font-weight: 400;
+  font-weight: $font-weight-regular;
   color: $color-text-secondary;
   font-family: system-ui;
 }
 
 .affiliate-program-header img {
-  @include fluid('width', 18px, 26px);
-  @include fluid('height', 18px, 26px);
+  padding-top: 10px;
 }
 
 .text-header-affiliate {
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  span {
+    font-family: system-ui;
+    font-weight: $font-weight-regular;
+    font-size: 15px;
+    color: $color-text-secondary;
+  }
+
+  p {
+    font-family: system-ui;
+    font-weight: $font-weight-bold;
+    font-size: 20px;
+
+  }
 }
 
 .affiliate-link-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  @include fluid('min-height', 420px, 600px);
+  @include fluid('min-height', 600px, 620px);
   @include fluid('padding-left', 12px, 20px);
   @include fluid('padding-right', 12px, 20px);
 }
@@ -68,7 +80,7 @@
 .your-link p {
   margin: 0;
   @include fluid-text(12px, 16px);
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   color: $color-text-muted;
   font-family: system-ui;
 }
@@ -96,7 +108,7 @@
   background: transparent;
   @include fluid-text(13px, 18px);
   border-radius: $radius-md;
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
   font-family: system-ui;
   color: #E8EEFF;
 }
@@ -172,7 +184,7 @@ input.success {
 
 .balance-content p {
   @include fluid-text(12px, 16px);
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   color: $color-text-muted;
   margin-bottom: 4px;
   font-family: system-ui;
@@ -180,7 +192,7 @@ input.success {
 
 .balance-content span {
   @include fluid-text(16px, 22px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
 }
 
 .button-affiliate {

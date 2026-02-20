@@ -24,7 +24,7 @@
   -webkit-backdrop-filter: blur(10px);
 
   span {
-    @include text(20px, 700);
+    @include text(20px, $font-weight-bold);
   }
 }
 
@@ -47,7 +47,7 @@
   padding-right: 16px;
 
   h3 {
-    @include text(20px, 700);
+    @include text(20px, $font-weight-bold);
     margin: 0;
     padding-top: 24px;
   }
@@ -56,7 +56,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    @include text(15px, 400);
+    @include text(15px, $font-weight-regular);
     color: #ffffff;
     font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     display: -webkit-box;
@@ -69,7 +69,6 @@
 .scenes-card-templates {
   @include flex-col(16px);
   align-items: center;
-  width: 137px;
   padding: 16px;
   border-radius: $radius-lg;
   cursor: pointer;
@@ -92,6 +91,7 @@
   height: 92px;
   border: 2px solid #8b5cf6;
   border-radius: 50%;
+  justify-content: center;
 
   img {
     border-radius: 50%;
@@ -102,13 +102,13 @@
 .circle-ava-text {
 
   p {
-    @include text(17px, 600);
+    @include text(17px, $font-weight-semibold);
     margin: 0;
     padding-bottom: 4px;
   }
 
   span {
-    @include text(13px, 400, #A9B2C8);
+    @include text(13px, $font-weight-regular, #A9B2C8);
     @include text-clamp(2);
   }
 }
@@ -124,11 +124,9 @@
   @include flex-col;
   align-items: center;
   justify-content: center;
-
   padding: 24px;
   width: 308px;
   height: 285px;
-
   border-radius: $radius-xl;
   border: 1px solid rgba(255, 255, 255, 0.2);
 
@@ -139,7 +137,7 @@
 }
 
 .empty-title {
-  @include text(16px, 600);
+  @include text(16px, $font-weight-semibold);
   margin-bottom: 6px;
 }
 
@@ -147,25 +145,17 @@
   @include flex-col(12px);
   align-items: center;
   justify-content: center;
-
   width: 100%;
   min-height: 458px;
   margin-top: 16px;
-
   border-radius: $radius-xl;
   border: 1px solid rgba(255, 255, 255, 0.2);
-
-  background: linear-gradient(
-      104.04deg,
-      rgba(255, 255, 255, 0.06) 0%,
-      rgba(255, 255, 255, 0.2) 100%
-  );
-
+  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
   backdrop-filter: blur(40px);
   box-shadow: 0 4px 2px 0 #000;
 
   p {
-    @include text(17px, 600, #E8EEFF);
+    @include text(17px, $font-weight-semibold, #E8EEFF);
     margin: 0;
   }
 }

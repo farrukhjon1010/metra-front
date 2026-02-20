@@ -16,7 +16,7 @@
   &__title {
     @include fluid-text(20px, 36px);
     font-family: system-ui;
-    font-weight: 700;
+    font-weight: $font-weight-bold;
     margin: 0;
   }
 }

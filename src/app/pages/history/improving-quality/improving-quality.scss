@@ -22,12 +22,12 @@
   p {
     margin: 0;
     @include fluid-text(18px, 22px);
-    font-weight: 700;
+    font-weight: $font-weight-bold;
   }
 
   span {
     @include fluid-text(13px, 17px);
-    font-weight: 400;
+    font-weight: $font-weight-regular;
     font-family: system-ui;
     color: $color-text-secondary;
   }
@@ -71,7 +71,7 @@
 
 .upload-text-small {
   @include fluid-text(14px, 18px);
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
 }
 
 .upload-formats {
@@ -137,9 +137,8 @@
 
   h2 {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: $font-weight-bold;
     margin: 0;
-    align-self: flex-start;
   }
 }
 
@@ -196,7 +195,7 @@
 .center-text-quality {
   color: $color-text-secondary;
   @include fluid-text(13px, 17px);
-  font-weight: 400;
+  font-weight: $font-weight-regular;
   text-align: center;
   opacity: 0.6;
 }

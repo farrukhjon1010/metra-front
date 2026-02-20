@@ -1,63 +1,36 @@
 @use 'variables' as *;
 @use 'sass:map';
 @use 'sass:math';
-@use 'sass:meta';
 
-/* ===============================
-   HELPERS
-================================ */
-
+// Функция для удаления единиц измерения
 @function strip-unit($number) {
-  @if meta.type-of($number) != 'number' {
-    @return $number;
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
   }
-
-  @if math.is-unitless($number) {
-    @return $number;
-  }
-
-  @return math.div($number, ($number * 0 + 1));
+  @return $number;
 }
 
-/* ===============================
-   FLUID SYSTEM
-================================ */
-
-@mixin fluid(
-  $property,
-  $min-size,
-  $max-size,
-  $min-width: $min-width,
-  $max-width: $max-width
-) {
+// Миксин для адаптивного свойства (clamp)
+@mixin fluid($property, $min-size, $max-size, $min-width: $min-width, $max-width: $max-width) {
   $min-size-rem: math.div(strip-unit($min-size), 16);
   $max-size-rem: math.div(strip-unit($max-size), 16);
   $min-width-rem: math.div(strip-unit($min-width), 16);
   $max-width-rem: math.div(strip-unit($max-width), 16);
 
-  $slope: math.div(
-        ($max-size-rem - $min-size-rem),
-        ($max-width-rem - $min-width-rem)
-  );
-
+  $slope: math.div(($max-size-rem - $min-size-rem), ($max-width-rem - $min-width-rem));
   $y-intersection: -1 * $min-width-rem * $slope + $min-size-rem;
+
   $slope-vw: $slope * 100;
 
-  #{$property}: clamp(
-    #{$min-size-rem}rem,
-    #{$y-intersection}rem + #{$slope-vw}vw,
-    #{$max-size-rem}rem
-  );
+  #{$property}: clamp(#{$min-size-rem}rem, #{$y-intersection}rem + #{$slope-vw}vw, #{$max-size-rem}rem);
 }
 
-/* ===============================
-   FLUID SHORTCUTS
-================================ */
-
+// Адаптивный шрифт
 @mixin fluid-text($min-size, $max-size) {
   @include fluid('font-size', $min-size, $max-size);
 }
 
+// Адаптивные отступы
 @mixin fluid-padding($min-size, $max-size) {
   @include fluid('padding', $min-size, $max-size);
 }
@@ -78,17 +51,13 @@
   @include fluid('height', $min-size, $max-size);
 }
 
-/* ===============================
-   MEDIA QUERIES
-================================ */
-
 @mixin mq($breakpoint) {
   @if map.has-key($breakpoints, $breakpoint) {
     @media (min-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
-    @warn "Breakpoint #{$breakpoint} not found in \$breakpoints map.";
+    @warn "Breakpoint #{$breakpoint} not found in $breakpoints map.";
   }
 }
 
@@ -98,13 +67,9 @@
       @content;
     }
   } @else {
-    @warn "Breakpoint #{$breakpoint} not found in \$breakpoints map.";
+    @warn "Breakpoint #{$breakpoint} not found in $breakpoints map.";
   }
 }
-
-/* ===============================
-   FLEXBOX
-================================ */
 
 @mixin flex-center {
   display: flex;
@@ -122,7 +87,7 @@
   display: flex;
   flex-direction: column;
 
-  @if $gap != null {
+  @if $gap {
     gap: $gap;
   }
 }
@@ -131,14 +96,10 @@
   display: flex;
   flex-direction: row;
 
-  @if $gap != null {
+  @if $gap {
     gap: $gap;
   }
 }
-
-/* ===============================
-   GLASS
-================================ */
 
 @mixin glass($radius: $radius-lg) {
   background: linear-gradient(135deg, $glass-bg-strong, $glass-bg-soft);
@@ -148,10 +109,6 @@
   border-radius: $radius;
 }
 
-/* ===============================
-   GRADIENT CARDS
-================================ */
-
 @mixin gradient-card($gradient, $border-color) {
   background: $gradient;
   border: 1px solid $border-color;
@@ -159,10 +116,6 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
-
-/* ===============================
-   HEADER
-================================ */
 
 @mixin sticky-header {
   position: sticky;
@@ -173,15 +126,7 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* ===============================
-   TEXT
-================================ */
-
-@mixin text(
-  $size,
-  $weight: 400,
-  $color: $color-text-primary
-) {
+@mixin text($size, $weight: $font-weight-regular, $color: $color-text-primary) {
   font-size: $size;
   font-weight: $weight;
   color: $color;
@@ -201,15 +146,7 @@
   overflow: hidden;
 }
 
-/* ===============================
-   SCROLLBAR
-================================ */
-
-@mixin custom-scrollbar(
-  $width: 6px,
-  $thumb-color: rgba(255, 255, 255, 0.2),
-  $track-color: transparent
-) {
+@mixin custom-scrollbar($width: 6px, $thumb-color: rgba(255, 255, 255, 0.2), $track-color: transparent) {
   &::-webkit-scrollbar {
     width: $width;
     height: $width;
