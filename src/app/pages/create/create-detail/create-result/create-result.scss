@@ -1,28 +1,24 @@
 .result-detail {
   display: flex;
   flex-direction: column;
-  gap: 16px; // базовое
+  gap: 16px;
   padding: 0 16px;
 
-  /* Телефоны 400–767px */
   @media (min-width: 400px) and (max-width: 767px) {
     gap: 18px;
     padding: 0 20px;
   }
 
-  /* Планшеты 768–1024px */
   @media (min-width: 768px) and (max-width: 1024px) {
     gap: 20px;
     padding: 0 24px;
   }
 
-  /* Ноутбуки 1025–1440px */
   @media (min-width: 1025px) and (max-width: 1440px) {
     gap: 22px;
     padding: 0 30px;
   }
 
-  /* Большие экраны >1440px */
   @media (min-width: 1441px) {
     gap: 24px;
     padding: 0 40px;
@@ -44,32 +40,56 @@
   padding: 16px;
 
   h1 {
-    font-size: 20px; // базовое
+    font-size: 20px;
     font-weight: 700;
     margin: 0;
     padding-bottom: 2px;
 
-    @media (min-width: 400px) and (max-width: 767px) { font-size: 22px; }
-    @media (min-width: 768px) and (max-width: 1024px) { font-size: 24px; }
-    @media (min-width: 1025px) and (max-width: 1440px) { font-size: 26px; }
-    @media (min-width: 1441px) { font-size: 28px; }
+    @media (min-width: 400px) and (max-width: 767px) {
+      font-size: 22px;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      font-size: 24px;
+    }
+    @media (min-width: 1025px) and (max-width: 1440px) {
+      font-size: 26px;
+    }
+    @media (min-width: 1441px) {
+      font-size: 28px;
+    }
   }
 
   span {
-    font-size: 15px; // базовое
+    font-size: 15px;
     font-family: system-ui;
     color: #C5CCE0;
 
-    @media (min-width: 400px) and (max-width: 767px) { font-size: 16px; }
-    @media (min-width: 768px) and (max-width: 1024px) { font-size: 17px; }
-    @media (min-width: 1025px) and (max-width: 1440px) { font-size: 18px; }
-    @media (min-width: 1441px) { font-size: 19px; }
+    @media (min-width: 400px) and (max-width: 767px) {
+      font-size: 16px;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      font-size: 17px;
+    }
+    @media (min-width: 1025px) and (max-width: 1440px) {
+      font-size: 18px;
+    }
+    @media (min-width: 1441px) {
+      font-size: 19px;
+    }
   }
 
-  @media (min-width: 400px) and (max-width: 767px) { padding: 18px; }
-  @media (min-width: 768px) and (max-width: 1024px) { padding: 20px; }
-  @media (min-width: 1025px) and (max-width: 1440px) { padding: 22px; }
-  @media (min-width: 1441px) { padding: 24px; }
+  @media (min-width: 400px) and (max-width: 767px) {
+    padding: 18px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding: 20px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    padding: 22px;
+  }
+  @media (min-width: 1441px) {
+    padding: 24px;
+  }
 }
 
 .image-generation {
@@ -78,24 +98,44 @@
   align-items: center;
   margin: 16px 0;
 
-  @media (min-width: 400px) and (max-width: 767px) { margin: 18px 0; }
-  @media (min-width: 768px) and (max-width: 1024px) { margin: 20px 0; }
-  @media (min-width: 1025px) and (max-width: 1440px) { margin: 22px 0; }
-  @media (min-width: 1441px) { margin: 24px 0; }
+  @media (min-width: 400px) and (max-width: 767px) {
+    margin: 18px 0;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    margin: 20px 0;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    margin: 22px 0;
+  }
+  @media (min-width: 1441px) {
+    margin: 24px 0;
+  }
 }
 
 .image-generation img {
-  width: 324px; // базовое
+  width: 324px;
   height: 324px;
   overflow: hidden;
   border-radius: 12px;
   object-fit: cover;
   object-position: center;
 
-  @media (min-width: 400px) and (max-width: 767px) { width: 360px; height: 360px; }
-  @media (min-width: 768px) and (max-width: 1024px) { width: 400px; height: 400px; }
-  @media (min-width: 1025px) and (max-width: 1440px) { width: 440px; height: 440px; }
-  @media (min-width: 1441px) { width: 480px; height: 480px; }
+  @media (min-width: 400px) and (max-width: 767px) {
+    width: 360px;
+    height: 360px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 400px;
+    height: 400px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    width: 440px;
+    height: 440px;
+  }
+  @media (min-width: 1441px) {
+    width: 480px;
+    height: 480px;
+  }
 }
 
 .btn-detail {
@@ -103,10 +143,18 @@
   flex-direction: row;
   gap: 8px;
 
-  @media (min-width: 400px) and (max-width: 767px) { gap: 10px; }
-  @media (min-width: 768px) and (max-width: 1024px) { gap: 12px; }
-  @media (min-width: 1025px) and (max-width: 1440px) { gap: 14px; }
-  @media (min-width: 1441px) { gap: 16px; }
+  @media (min-width: 400px) and (max-width: 767px) {
+    gap: 10px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    gap: 12px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    gap: 14px;
+  }
+  @media (min-width: 1441px) {
+    gap: 16px;
+  }
 }
 
 .btn-detail app-button {

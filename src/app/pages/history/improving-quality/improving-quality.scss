@@ -1,14 +1,16 @@
+/* ================= CARD QUALITY SCREEN ================= */
 .card-quality {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  gap: clamp(12px, 4vw, 16px);
   top: 0;
-  padding: 24px 16px;
-  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+  padding: clamp(16px, 4vw, 24px);
+  background: linear-gradient(180deg, rgba(10,10,20,0.95) 0%, rgba(10,10,20,0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: sticky;
   z-index: 10;
+  flex-wrap: wrap;
 }
 
 .text-header-history {
@@ -17,12 +19,12 @@
 
   p {
     margin: 0;
-    font-size: 20px;
+    font-size: clamp(18px, 4vw, 20px);
     font-weight: 700;
   }
 
   span {
-    font-size: 15px;
+    font-size: clamp(13px, 3vw, 15px);
     font-weight: 400;
     font-family: system-ui;
     color: #C5CCE0;
@@ -32,29 +34,31 @@
 .quality-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 0 16px 90px 16px;
+  gap: clamp(16px, 3vw, 24px);
+  padding: 0 clamp(12px, 4vw, 16px) clamp(60px, 10vw, 90px) clamp(12px, 4vw, 16px);
 }
 
+/* ================= PHOTO UPLOAD ================= */
 .photo-upload-section {
   display: flex;
   flex-direction: column;
+  gap: clamp(12px, 3vw, 16px);
 }
 
 .form-label-quality {
-  font-size: 13px;
+  font-size: clamp(12px, 3vw, 14px);
   font-family: system-ui;
   color: #A9B2C8;
-  margin-bottom: 8px;
+  margin-bottom: clamp(6px, 2vw, 8px);
 }
 
 .upload-row-quality {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid #FFFFFF33;
-  border-radius: 12px;
-  padding: 8px 20px;
+  border-radius: clamp(10px, 3vw, 12px);
+  padding: clamp(6px, 2vw, 8px) clamp(12px, 4vw, 20px);
 }
 
 .upload-content-quality {
@@ -63,12 +67,12 @@
 }
 
 .upload-text-small {
-  font-size: 15px;
+  font-size: clamp(14px, 3vw, 15px);
   font-weight: 600;
 }
 
 .upload-formats {
-  font-size: 10px;
+  font-size: clamp(9px, 2.5vw, 10px);
   font-family: system-ui;
   color: #7A859E;
 }
@@ -79,102 +83,86 @@
   justify-content: space-between;
 }
 
+/* ================= RESULT CONTENT ================= */
 .result-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  background: rgba(255, 255, 255, 0.08);
+  gap: clamp(12px, 3vw, 16px);
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 24px;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.5);
+  border-radius: clamp(20px, 3vw, 24px);
   border: 1px solid #FFFFFF33;
-  padding: 16px;
+  padding: clamp(12px, 3vw, 16px);
 
   h2 {
-    font-size: 20px;
+    font-size: clamp(18px, 4vw, 20px);
     font-weight: 700;
     margin: 0;
   }
 }
 
-.before-photo {
-  width: 324px;
-  height: 324px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(40px);
-}
-
+/* ================= BEFORE / AFTER PHOTO ================= */
+.before-photo,
 .after-photo {
   display: flex;
   flex-direction: column;
-  text-align: center;
   justify-content: center;
-  width: 324px;
-  height: 324px;
-  border-radius: 12px;
+  text-align: center;
+  //width: clamp(324px, 50vw, 100%);
+  height: clamp(324px, 50vw, 324px);
+  border-radius: clamp(10px, 3vw, 12px);
   border: 1px solid #FFFFFF33;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.06);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
+  position: relative;
 }
 
-.bf-text {
-  max-width: 20px;
-  padding: 3px 8px;
-  background: #FF4B55;
-  border-radius: 4px;
-  font-size: 15px;
-  font-family: system-ui;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-}
-
+.bf-text,
 .aft-text {
-  max-width: 42px;
-  padding: 3px 8px;
-  background: #2EC57A;
-  font-family: system-ui;
+  padding: clamp(2px, 1vw, 3px) clamp(6px, 2vw, 8px);
   border-radius: 4px;
-  font-size: 15px;
+  font-size: clamp(12px, 3vw, 15px);
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: clamp(6px, 2vw, 8px);
+  left: clamp(6px, 2vw, 8px);
+  font-family: system-ui;
 }
+
+.bf-text { background: #FF4B55; max-width: 20px; }
+.aft-text { background: #2EC57A; max-width: 42px; }
 
 .center-text-quality {
   color: #C5CCE0;
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
   font-weight: 400;
+  text-align: center;
+  opacity: 0.6;
 }
 
+/* ================= PHOTO QUALITY THUMB ================= */
 .photo-quality {
   position: relative;
-  width: 65px;
-  height: 65px;
-  margin-top: 8px;
+  width: clamp(50px, 15vw, 65px);
+  height: clamp(50px, 15vw, 65px);
+  margin-top: clamp(6px, 2vw, 8px);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: clamp(8px, 2vw, 12px);
     display: block;
   }
 
   .delete-photo {
     position: absolute;
-    top: 2px;
-    right: 1px;
-    width: 24px;
-    height: 24px;
+    top: clamp(2px, 1vw, 2px);
+    right: clamp(1px, 1vw, 1px);
+    width: clamp(20px, 5vw, 24px);
+    height: clamp(20px, 5vw, 24px);
     border-radius: 50%;
     background: #ff4d4f;
     border: none;
@@ -184,29 +172,26 @@
     align-items: center;
 
     img {
-      width: 20px;
-      height: 20px;
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
     }
   }
 }
 
+/* ================= RESULT IMAGE ================= */
 .result-img {
   width: 100%;
   object-fit: contain;
-  border-radius: 12px;
-}
-
-.center-text-quality {
-  opacity: 0.6;
-  text-align: center;
+  border-radius: clamp(10px, 3vw, 12px);
 }
 
 .result-actions {
   display: flex;
   flex-direction: column;
-  gap: 16px
+  gap: clamp(12px, 3vw, 16px);
 }
 
+/* ================= LOADING SCREEN ================= */
 ::ng-deep {
   .btn-quality app-loading .loading-screen {
     position: fixed;
@@ -218,6 +203,45 @@
     z-index: 9999;
     color: white;
     height: auto;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0,0,0,0.9);
+  }
+}
+
+/* ================= MEDIA QUERIES ================= */
+@media (max-width: 414px) {
+  .before-photo,
+  .after-photo {
+    width: 85vw;
+    height: 85vw;
+  }
+
+  .photo-quality {
+    width: 50px;
+    height: 50px;
+  }
+
+  .bf-text, .aft-text {
+    font-size: 12px;
+  }
+
+  .result-content h2 {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 768px) {
+  .before-photo,
+  .after-photo {
+    width: 45vw;
+    height: 45vw;
+  }
+
+  .photo-quality {
+    width: 55px;
+    height: 55px;
+  }
+
+  .result-content h2 {
+    font-size: 18px;
   }
 }

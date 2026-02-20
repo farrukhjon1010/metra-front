@@ -29,8 +29,10 @@
             @if (displayedTemplates.length > 0) {
               @for (t of displayedTemplates; track t.id) {
                 <div class="scenes-card-templates" (click)="openTemplate(t)">
+                  <div class="circle-2-ava">
                   <div class="circle-ava">
                     <img src="assets/icons/3d-avatar.svg" alt="">
+                  </div>
                   </div>
                   <div class="circle-ava-text">
                     <p>{{ t.name }}</p>

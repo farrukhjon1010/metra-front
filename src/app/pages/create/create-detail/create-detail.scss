@@ -9,10 +9,18 @@
   z-index: 9999;
   color: white;
 
-  @media (min-width: 400px) and (max-width: 767px) { min-height: 520px; }
-  @media (min-width: 768px) and (max-width: 1024px) { min-height: 560px; }
-  @media (min-width: 1025px) and (max-width: 1440px) { min-height: 600px; }
-  @media (min-width: 1441px) { min-height: 650px; }
+  @media (min-width: 400px) and (max-width: 767px) {
+    min-height: 520px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    min-height: 560px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    min-height: 600px;
+  }
+  @media (min-width: 1441px) {
+    min-height: 650px;
+  }
 }
 
 .spinner {
@@ -23,10 +31,26 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 
-  @media (min-width: 400px) and (max-width: 767px) { width: 52px; height: 52px; border-width: 4.5px; }
-  @media (min-width: 768px) and (max-width: 1024px) { width: 56px; height: 56px; border-width: 5px; }
-  @media (min-width: 1025px) and (max-width: 1440px) { width: 60px; height: 60px; border-width: 5.5px; }
-  @media (min-width: 1441px) { width: 64px; height: 64px; border-width: 6px; }
+  @media (min-width: 400px) and (max-width: 767px) {
+    width: 52px;
+    height: 52px;
+    border-width: 4.5px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 56px;
+    height: 56px;
+    border-width: 5px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    width: 60px;
+    height: 60px;
+    border-width: 5.5px;
+  }
+  @media (min-width: 1441px) {
+    width: 64px;
+    height: 64px;
+    border-width: 6px;
+  }
 }
 
 ::ng-deep {
@@ -43,9 +67,17 @@
     height: auto;
     background-color: rgba(0, 0, 0, 0.2);
 
-    @media (min-width: 400px) and (max-width: 767px) { min-height: 600px; }
-    @media (min-width: 768px) and (max-width: 1024px) { min-height: 640px; }
-    @media (min-width: 1025px) and (max-width: 1440px) { min-height: 680px; }
-    @media (min-width: 1441px) { min-height: 720px; }
+    @media (min-width: 400px) and (max-width: 767px) {
+      min-height: 600px;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      min-height: 640px;
+    }
+    @media (min-width: 1025px) and (max-width: 1440px) {
+      min-height: 680px;
+    }
+    @media (min-width: 1441px) {
+      min-height: 720px;
+    }
   }
 }
