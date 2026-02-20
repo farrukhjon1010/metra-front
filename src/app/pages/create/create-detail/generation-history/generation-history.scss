@@ -1,190 +1,75 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .empty-create-detail {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 222px;
-  border-radius: 12px;
+  @include fluid('min-height', 222px, 350px);
+  border-radius: $radius-md;
   backdrop-filter: blur(40px);
   border: 1px solid rgba(254, 254, 254, 0.0588235294);
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.3) 100%);
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    min-height: 250px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    min-height: 280px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    min-height: 320px;
-  }
-  @media (min-width: 1441px) {
-    min-height: 350px;
-  }
 }
 
 .no-create-image-wrapper {
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 16px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 18px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 20px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 22px;
-  }
-  @media (min-width: 1441px) {
-    gap: 24px;
-  }
+  @include fluid-gap(16px, 24px);
 }
 
 .photo-history {
-  width: 143px;
-  height: 143px;
+  @include fluid('width', 143px, 220px);
+  @include fluid('height', 143px, 220px);
   overflow: hidden;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: $radius-md;
   display: block;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 160px;
-    height: 160px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 180px;
-    height: 180px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 200px;
-    height: 200px;
-  }
-  @media (min-width: 1441px) {
-    width: 220px;
-    height: 220px;
-  }
 }
 
 .last-generation-text {
-  font-size: 20px;
+  @include fluid-text(20px, 28px);
   font-weight: 700;
-  margin: 24px 0 16px 0;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 22px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 24px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 26px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 28px;
-  }
+  @include fluid('margin-top', 24px, 32px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .create-generate-detail {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  @include fluid-gap(16px, 24px);
   border: 1px solid rgba(255, 255, 255, 0.0588235294);
-  border-radius: 24px;
+  border-radius: $radius-xl;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: 0 4px 6px 0 #000000;
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
-  padding: 16px;
-  margin: 16px 0;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 18px;
-    padding: 18px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 20px;
-    padding: 20px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 22px;
-    padding: 22px;
-  }
-  @media (min-width: 1441px) {
-    gap: 24px;
-    padding: 24px;
-  }
+  @include fluid('padding', 16px, 24px);
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .left-text-detail {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 167px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 18px;
-    width: 180px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 20px;
-    width: 200px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 22px;
-    width: 220px;
-  }
-  @media (min-width: 1441px) {
-    gap: 24px;
-    width: 240px;
-  }
+  @include fluid-gap(16px, 24px);
+  @include fluid('width', 167px, 240px);
 }
 
 .photo-detail {
-  width: 141px;
-  height: 141px;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
+  @include fluid('width', 141px, 220px);
+  @include fluid('height', 141px, 220px);
+  border-radius: $radius-md;
+  border: 1px solid $glass-bg-strong;
   overflow: hidden;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 160px;
-    height: 160px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 180px;
-    height: 180px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 200px;
-    height: 200px;
-  }
-  @media (min-width: 1441px) {
-    width: 220px;
-    height: 220px;
-  }
 }
 
 .right-photo-detail {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 10px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 12px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 14px;
-  }
-  @media (min-width: 1441px) {
-    gap: 16px;
-  }
+  @include fluid-gap(8px, 16px);
 }
 
 .date-detail, .scenes-pro-detail {
@@ -192,46 +77,20 @@
   flex-direction: column;
 
   label {
-    font-size: 13px;
+    @include fluid-text(13px, 17px);
     font-family: system-ui;
-    color: #A9B2C8;
+    color: $color-text-muted;
     margin-bottom: 2px;
-
-    @media (min-width: 400px) and (max-width: 767px) {
-      font-size: 14px;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 15px;
-    }
-    @media (min-width: 1025px) and (max-width: 1440px) {
-      font-size: 16px;
-    }
-    @media (min-width: 1441px) {
-      font-size: 17px;
-    }
   }
 
   span {
-    font-size: 17px;
+    @include fluid-text(17px, 22px);
     font-weight: 600;
-
-    @media (min-width: 400px) and (max-width: 767px) {
-      font-size: 18px;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 19px;
-    }
-    @media (min-width: 1025px) and (max-width: 1440px) {
-      font-size: 20px;
-    }
-    @media (min-width: 1441px) {
-      font-size: 22px;
-    }
   }
 }
 
 .create-prom-text {
-  font-size: 13px;
+  @include fluid-text(13px, 17px);
   color: #E8EEFF;
   flex: 1;
   overflow: hidden;
@@ -241,56 +100,22 @@
   text-overflow: ellipsis;
   word-break: break-word;
   white-space: normal;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 14px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 15px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 16px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 17px;
-  }
 }
 
 .lab-prom {
-  font-size: 13px;
+  @include fluid-text(13px, 17px);
   font-family: system-ui;
-  color: #A9B2C8;
+  color: $color-text-muted;
   margin-bottom: 2px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 14px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 15px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 16px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 17px;
-  }
 }
 
 .date-detail-prom,
 .empty-content-detail,
 .create-detail-content,
 .generation-history-content {
-  padding: 0 16px 80px 16px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    padding: 0 16px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 0 24px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    padding: 0 30px;
-  }
+  @include fluid('padding-left', 16px, 30px);
+  @include fluid('padding-right', 16px, 30px);
+  @include fluid('padding-bottom', 80px, 100px);
 }
 
 .empty-content-detail {
@@ -298,5 +123,5 @@
 }
 
 .generation-history-content {
-  padding-bottom: 80px;
+  @include fluid('padding-bottom', 80px, 100px);
 }

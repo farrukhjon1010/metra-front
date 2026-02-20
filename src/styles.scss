@@ -8,7 +8,7 @@ html {
   margin: 0;
   padding: 0;
   background: url('/assets/images/bg.png') repeat fixed center;
-  font-size: 14px; // базовый размер для маленьких экранов
+  @include fluid-text(14px, 18px);
 }
 
 body {
@@ -39,7 +39,6 @@ app-root {
   position: relative;
   min-height: 100vh;
   box-sizing: border-box;
-  //padding: 0 8px;
 }
 
 input {
@@ -56,47 +55,4 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: #fff !important;
   caret-color: #fff;
   transition: background-color 9999s ease-in-out 0s;
-}
-
-/* Стили для телефонов от 400px до 767px */
-@media (min-width: 400px) and (max-width: 767px) {
-  html {
-    font-size: 15px;
-  }
-  app-root {
-    //padding: 0 12px;
-  }
-}
-
-/* Стили для планшетов от 768px до 1024px */
-@media (min-width: 768px) and (max-width: 1024px) {
-  html {
-    font-size: 16px;
-  }
-  app-root {
-    //max-width: 720px;
-    //padding: 0 20px;
-  }
-}
-
-/* Стили для ноутбуков и больших экранов от 1025px до 1440px */
-@media (min-width: 1025px) and (max-width: 1440px) {
-  html {
-    font-size: 17px;
-  }
-  app-root {
-    max-width: 1200px;
-    padding: 0 30px;
-  }
-}
-
-/* Стили для экранов больше 1440px */
-@media (min-width: 1441px) {
-  html {
-    font-size: 18px;
-  }
-  app-root {
-    max-width: 1400px;
-    padding: 0 40px;
-  }
 }

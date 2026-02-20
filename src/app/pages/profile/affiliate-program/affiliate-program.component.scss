@@ -1,3 +1,6 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .affiliate-program-content {
   display: flex;
   flex-direction: column;
@@ -6,27 +9,30 @@
 
 .affiliate-program-header {
   display: flex;
-  padding: clamp(16px, 4vw, 28px) clamp(12px, 4vw, 20px);
-  gap: clamp(12px, 3vw, 20px);
+  @include fluid('padding-top', 16px, 28px);
+  @include fluid('padding-bottom', 16px, 28px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
+  @include fluid-gap(12px, 20px);
   align-items: center;
 }
 
 .affiliate-program-header p {
-  font-size: clamp(16px, 4vw, 24px);
+  @include fluid-text(16px, 24px);
   font-weight: 700;
   margin: 0;
 }
 
 .affiliate-program-header span {
-  font-size: clamp(13px, 3vw, 17px);
+  @include fluid-text(13px, 17px);
   font-weight: 400;
-  color: #C5CCE0;
+  color: $color-text-secondary;
   font-family: system-ui;
 }
 
 .affiliate-program-header img {
-  width: clamp(18px, 4vw, 26px);
-  height: clamp(18px, 4vw, 26px);
+  @include fluid('width', 18px, 26px);
+  @include fluid('height', 18px, 26px);
 }
 
 .text-header-affiliate {
@@ -39,19 +45,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: clamp(420px, 60vh, 600px);
-  padding: 0 clamp(12px, 4vw, 20px);
+  @include fluid('min-height', 420px, 600px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
 }
 
 .button-invite {
-  padding: 0 clamp(12px, 4vw, 20px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
 }
 
 .your-link {
   width: 90%;
-  border-radius: 24px;
-  border: 1px solid #FFFFFF33;
-  padding: clamp(14px, 3vw, 20px);
+  border-radius: $radius-xl;
+  border: 1px solid $glass-bg-strong;
+  @include fluid('padding', 14px, 20px);
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: 0 4px 12px 0 #000000;
   backdrop-filter: blur(40px);
@@ -59,20 +67,24 @@
 
 .your-link p {
   margin: 0;
-  font-size: clamp(12px, 3vw, 16px);
+  @include fluid-text(12px, 16px);
   font-weight: 500;
-  color: #A9B2C8;
+  color: $color-text-muted;
   font-family: system-ui;
 }
 
 .copy-link-container {
   display: flex;
   align-items: center;
-  gap: clamp(6px, 2vw, 12px);
-  padding: clamp(10px, 3vw, 16px) clamp(14px, 4vw, 24px);
+  @include fluid-gap(6px, 12px);
+  @include fluid('padding-top', 10px, 16px);
+  @include fluid('padding-bottom', 10px, 16px);
+  @include fluid('padding-left', 14px, 24px);
+  @include fluid('padding-right', 14px, 24px);
   border-radius: 14px;
-  border: 1px solid #FFFFFF33;
-  margin: clamp(6px, 2vw, 12px) 0 clamp(12px, 3vw, 20px) 0;
+  border: 1px solid $glass-bg-strong;
+  @include fluid('margin-top', 6px, 12px);
+  @include fluid('margin-bottom', 12px, 20px);
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
   transition: 0.3s ease;
 }
@@ -82,8 +94,8 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: clamp(13px, 3vw, 18px);
-  border-radius: 12px;
+  @include fluid-text(13px, 18px);
+  border-radius: $radius-md;
   font-weight: 600;
   font-family: system-ui;
   color: #E8EEFF;
@@ -102,8 +114,8 @@ input.success {
 }
 
 .copy-icon img {
-  width: clamp(18px, 4vw, 28px);
-  height: clamp(18px, 4vw, 28px);
+  @include fluid('width', 18px, 28px);
+  @include fluid('height', 18px, 28px);
   pointer-events: none;
 }
 
@@ -122,9 +134,9 @@ input.success {
 
 .field-message {
   position: absolute;
-  right: clamp(12px, 3vw, 24px);
-  top: clamp(12px, 3vw, 24px);
-  font-size: clamp(11px, 2.5vw, 14px);
+  @include fluid('right', 12px, 24px);
+  @include fluid('top', 12px, 24px);
+  @include fluid-text(11px, 14px);
   opacity: 0;
   animation: slideFade 5.5s ease forwards;
 
@@ -146,7 +158,7 @@ input.success {
 }
 
 .copied-text {
-  font-size: clamp(11px, 2.5vw, 14px);
+  @include fluid-text(11px, 14px);
   color: #E8EEFF;
 }
 
@@ -154,24 +166,24 @@ input.success {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: clamp(8px, 2vw, 16px);
+  @include fluid-gap(8px, 16px);
   flex-wrap: wrap;
 }
 
 .balance-content p {
-  font-size: clamp(12px, 3vw, 16px);
+  @include fluid-text(12px, 16px);
   font-weight: 500;
-  color: #A9B2C8;
+  color: $color-text-muted;
   margin-bottom: 4px;
   font-family: system-ui;
 }
 
 .balance-content span {
-  font-size: clamp(16px, 4vw, 22px);
+  @include fluid-text(16px, 22px);
   font-weight: 600;
 }
 
 .button-affiliate {
-  margin-top: clamp(14px, 3vw, 22px);
+  @include fluid('margin-top', 14px, 22px);
   width: 100%;
 }

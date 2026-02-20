@@ -1,3 +1,6 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,9 +9,9 @@
 
 .content {
   width: 90%;
-  max-width: 390px;
+  @include fluid('max-width', 390px, 500px);
   margin: 0 auto;
-  padding: clamp(12px, 4vw, 20px);
+  @include fluid('padding', 12px, 20px);
   position: relative;
   z-index: 1;
 }
@@ -18,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(12px, 4vw, 16px);
+  @include fluid('padding', 12px, 20px);
 }
 
 .logo-container {
@@ -32,7 +35,7 @@
 }
 
 .brand-name {
-  font-size: clamp(24px, 8vw, 32px);
+  @include fluid-text(24px, 32px);
   font-weight: 700;
   letter-spacing: 2px;
   margin: 0;
@@ -41,38 +44,40 @@
 
 .features {
   text-align: center;
-  font-size: clamp(12px, 3.5vw, 14px);
+  @include fluid-text(12px, 14px);
   opacity: 0.9;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 2.5vw, 12px);
-  padding: clamp(24px, 6vw, 32px) 0;
+  @include fluid-gap(8px, 12px);
+  @include fluid('padding-top', 24px, 32px);
+  @include fluid('padding-bottom', 24px, 32px);
 }
 
 .feature-text {
   font-family: 'SF Pro Display', sans-serif;
-  font-size: clamp(14px, 4vw, 17px);
+  @include fluid-text(14px, 17px);
   margin: 0;
 }
 
 .feature-text-metra {
-  font-size: clamp(12px, 3.5vw, 15px);
-  margin: clamp(16px, 4vw, 32px) 0;
+  @include fluid-text(12px, 15px);
+  @include fluid('margin-top', 16px, 32px);
+  @include fluid('margin-bottom', 16px, 32px);
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 3vw, 16px);
+  @include fluid-gap(12px, 16px);
   width: 100%;
 }
 
 .slider {
-  width: clamp(80px, 25%, 116px);
-  height: clamp(32px, 4vw, 40px);
+  @include fluid('width', 80px, 116px);
+  @include fluid('height', 32px, 40px);
   position: absolute;
   background: linear-gradient(90deg, #6a5cff, #a890ff);
-  border-radius: clamp(6px, 2vw, 8px);
+  border-radius: $radius-sm;
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 

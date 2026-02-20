@@ -1,3 +1,6 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .page-header {
   position: sticky;
   top: 0;
@@ -5,22 +8,15 @@
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 24px 16px;
-
-  @media (min-width: 400px) and (max-width: 767px) { padding: 26px 18px; }
-  @media (min-width: 768px) and (max-width: 1024px) { padding: 28px 20px; }
-  @media (min-width: 1025px) and (max-width: 1440px) { padding: 30px 24px; }
-  @media (min-width: 1441px) { padding: 32px 28px; }
+  @include fluid('padding-top', 24px, 32px);
+  @include fluid('padding-bottom', 24px, 32px);
+  @include fluid('padding-left', 16px, 28px);
+  @include fluid('padding-right', 16px, 28px);
 
   &__title {
-    font-size: 20px;
+    @include fluid-text(20px, 36px);
     font-family: system-ui;
     font-weight: 700;
     margin: 0;
-
-    @media (min-width: 400px) and (max-width: 767px) { font-size: 22px; }
-    @media (min-width: 768px) and (max-width: 1024px) { font-size: 30px; }
-    @media (min-width: 1025px) and (max-width: 1440px) { font-size: 34px; }
-    @media (min-width: 1441px) { font-size: 36px; }
   }
 }

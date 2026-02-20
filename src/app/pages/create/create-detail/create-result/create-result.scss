@@ -1,28 +1,12 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .result-detail {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 0 16px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 18px;
-    padding: 0 20px;
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 20px;
-    padding: 0 24px;
-  }
-
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 22px;
-    padding: 0 30px;
-  }
-
-  @media (min-width: 1441px) {
-    gap: 24px;
-    padding: 0 40px;
-  }
+  @include fluid-gap(16px, 24px);
+  @include fluid('padding-left', 16px, 40px);
+  @include fluid('padding-right', 16px, 40px);
 }
 
 .result-generate {
@@ -30,65 +14,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 24px;
+  border-radius: $radius-xl;
   overflow: hidden;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: 0 4px 6px 0 #000000;
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.0588235294);
-  padding: 16px;
+  @include fluid('padding', 16px, 24px);
 
   h1 {
-    font-size: 20px;
+    @include fluid-text(20px, 28px);
     font-weight: 700;
     margin: 0;
     padding-bottom: 2px;
-
-    @media (min-width: 400px) and (max-width: 767px) {
-      font-size: 22px;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 24px;
-    }
-    @media (min-width: 1025px) and (max-width: 1440px) {
-      font-size: 26px;
-    }
-    @media (min-width: 1441px) {
-      font-size: 28px;
-    }
   }
 
   span {
-    font-size: 15px;
+    @include fluid-text(15px, 19px);
     font-family: system-ui;
-    color: #C5CCE0;
-
-    @media (min-width: 400px) and (max-width: 767px) {
-      font-size: 16px;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 17px;
-    }
-    @media (min-width: 1025px) and (max-width: 1440px) {
-      font-size: 18px;
-    }
-    @media (min-width: 1441px) {
-      font-size: 19px;
-    }
-  }
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    padding: 18px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 20px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    padding: 22px;
-  }
-  @media (min-width: 1441px) {
-    padding: 24px;
+    color: $color-text-secondary;
   }
 }
 
@@ -96,65 +41,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 16px 0;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    margin: 18px 0;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    margin: 20px 0;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    margin: 22px 0;
-  }
-  @media (min-width: 1441px) {
-    margin: 24px 0;
-  }
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .image-generation img {
-  width: 324px;
-  height: 324px;
+  @include fluid('width', 324px, 480px);
+  @include fluid('height', 324px, 480px);
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: $radius-md;
   object-fit: cover;
   object-position: center;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 360px;
-    height: 360px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 400px;
-    height: 400px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 440px;
-    height: 440px;
-  }
-  @media (min-width: 1441px) {
-    width: 480px;
-    height: 480px;
-  }
 }
 
 .btn-detail {
   display: flex;
   flex-direction: row;
-  gap: 8px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 10px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 12px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 14px;
-  }
-  @media (min-width: 1441px) {
-    gap: 16px;
-  }
+  @include fluid-gap(8px, 16px);
 }
 
 .btn-detail app-button {

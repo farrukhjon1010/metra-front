@@ -1,53 +1,24 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .create-detail {
   display: flex;
   flex-direction: column;
-  gap: 24px; // базовое
-  padding: 0 16px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    gap: 26px;
-    padding: 0 20px;
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-    gap: 28px;
-    padding: 0 24px;
-  }
-
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    gap: 30px;
-    padding: 0 30px;
-  }
-
-  @media (min-width: 1441px) {
-    gap: 32px;
-    padding: 0 40px;
-  }
+  @include fluid-gap(24px, 32px);
+  @include fluid('padding-left', 16px, 40px);
+  @include fluid('padding-right', 16px, 40px);
 }
 
 .text-ai-generation {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  @include fluid-gap(8px, 12px);
   width: 100%;
 
   label {
-    font-size: 13px;
+    @include fluid-text(13px, 17px);
     font-family: system-ui;
-    color: #A9B2C8;
-
-    @media (min-width: 400px) and (max-width: 767px) {
-      font-size: 14px;
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 15px;
-    }
-    @media (min-width: 1025px) and (max-width: 1440px) {
-      font-size: 16px;
-    }
-    @media (min-width: 1441px) {
-      font-size: 17px;
-    }
+    color: $color-text-muted;
   }
 }
 
@@ -58,65 +29,38 @@
 
 .text-ai-generation textarea {
   width: 100%;
-  height: 120px;
-  border-radius: 12px;
-  padding: 15px 40px 15px 20px;
-  border: 1px solid #FFFFFF33;
+  @include fluid('height', 120px, 180px);
+  border-radius: $radius-md;
+  @include fluid('padding-top', 15px, 20px);
+  @include fluid('padding-bottom', 15px, 20px);
+  @include fluid('padding-left', 20px, 24px);
+  @include fluid('padding-right', 40px, 48px);
+  border: 1px solid $glass-bg-strong;
   background: #181826;
   box-shadow: 0 4px 6px 0 #000000;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   color: #E8EEFF;
-  font-size: 15px;
+  @include fluid-text(15px, 19px);
   font-family: system-ui;
   letter-spacing: 0.5px;
   outline: none;
   resize: none;
   box-sizing: border-box;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 16px;
-    height: 130px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 17px;
-    height: 150px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 18px;
-    height: 160px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 19px;
-    height: 180px;
-  }
 }
 
 .text-ai-generation textarea::placeholder {
-  font-size: 15px;
+  @include fluid-text(15px, 19px);
   font-weight: 600;
-  color: #7A859E;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 16px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 17px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 18px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 19px;
-  }
+  color: $color-text-hint;
 }
 
 .icon-wrapper {
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 24px;
-  height: 24px;
+  @include fluid('width', 24px, 32px);
+  @include fluid('height', 24px, 32px);
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -124,70 +68,20 @@
   z-index: 2;
 
   img {
-    width: 20px;
-    height: 20px;
+    @include fluid('width', 20px, 28px);
+    @include fluid('height', 20px, 28px);
     display: block;
     filter: brightness(0) invert(1);
-  }
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 26px;
-    height: 26px;
-    img {
-      width: 22px;
-      height: 22px;
-    }
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 28px;
-    height: 28px;
-    img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 30px;
-    height: 30px;
-    img {
-      width: 26px;
-      height: 26px;
-    }
-  }
-  @media (min-width: 1441px) {
-    width: 32px;
-    height: 32px;
-    img {
-      width: 28px;
-      height: 28px;
-    }
   }
 }
 
 .spinner-promt {
-  width: 15px;
-  height: 15px;
+  @include fluid('width', 15px, 24px);
+  @include fluid('height', 15px, 24px);
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top: 2px solid white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 18px;
-    height: 18px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 20px;
-    height: 20px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 22px;
-    height: 22px;
-  }
-  @media (min-width: 1441px) {
-    width: 24px;
-    height: 24px;
-  }
 }
 
 .disabled {
@@ -201,45 +95,23 @@
 }
 
 .form-label-detail {
-  font-size: 13px;
+  @include fluid-text(13px, 17px);
   font-family: system-ui;
-  color: #A9B2C8;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 14px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 15px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 16px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 17px;
-  }
+  color: $color-text-muted;
 }
 
 .row-quality {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid #FFFFFF33;
-  border-radius: 12px;
-  padding: 8px 20px;
-  margin: 8px 0;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    padding: 10px 22px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 12px 24px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    padding: 14px 26px;
-  }
-  @media (min-width: 1441px) {
-    padding: 16px 30px;
-  }
+  border: 1px solid $glass-bg-strong;
+  border-radius: $radius-md;
+  @include fluid('padding-top', 8px, 16px);
+  @include fluid('padding-bottom', 8px, 16px);
+  @include fluid('padding-left', 20px, 30px);
+  @include fluid('padding-right', 20px, 30px);
+  @include fluid('margin-top', 8px, 12px);
+  @include fluid('margin-bottom', 8px, 12px);
 }
 
 .upload-create-quality {
@@ -248,40 +120,14 @@
 }
 
 .text-small {
-  font-size: 15px;
+  @include fluid-text(15px, 19px);
   font-weight: 600;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 16px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 17px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 18px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 19px;
-  }
 }
 
 .upload-formats-small {
-  font-size: 10px;
+  @include fluid-text(10px, 14px);
   font-family: system-ui;
-  color: #7A859E;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    font-size: 11px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: 12px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    font-size: 13px;
-  }
-  @media (min-width: 1441px) {
-    font-size: 14px;
-  }
+  color: $color-text-hint;
 }
 
 .upload-small {
@@ -291,57 +137,19 @@
 
 .delete-photo-generation {
   position: absolute;
-  width: 24px;
-  height: 24px;
+  @include fluid('width', 24px, 34px);
+  @include fluid('height', 24px, 34px);
   border-radius: 50%;
-  background: #ff4d4f;
+  background: $color-danger;
   border: none;
   cursor: pointer;
   padding: 2px;
-  left: 54px;
+  @include fluid('left', 54px, 64px);
   margin-top: 3px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 28px;
-    height: 28px;
-    left: 58px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 30px;
-    height: 30px;
-    left: 60px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 32px;
-    height: 32px;
-    left: 62px;
-  }
-  @media (min-width: 1441px) {
-    width: 34px;
-    height: 34px;
-    left: 64px;
-  }
 }
 
 .with-photo {
-  width: 65px;
-  height: 65px;
-  border-radius: 12px;
-
-  @media (min-width: 400px) and (max-width: 767px) {
-    width: 70px;
-    height: 70px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 75px;
-    height: 75px;
-  }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    width: 80px;
-    height: 80px;
-  }
-  @media (min-width: 1441px) {
-    width: 85px;
-    height: 85px;
-  }
+  @include fluid('width', 65px, 85px);
+  @include fluid('height', 65px, 85px);
+  border-radius: $radius-md;
 }

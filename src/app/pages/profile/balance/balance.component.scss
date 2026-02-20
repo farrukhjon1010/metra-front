@@ -1,3 +1,6 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 balance-content {
   width: 100%;
 }
@@ -5,7 +8,7 @@ balance-content {
 .funds-buttons {
   display: flex;
   padding: 15px 24px;
-  border-radius: 16px;
+  border-radius: $radius-lg;
   border: 1px solid #6A5CFF66;
   position: relative;
   overflow: hidden;
@@ -30,16 +33,16 @@ balance-content {
 }
 
 .card p {
-  font-size: 20px;
+  @include fluid-text(20px, 24px);
   font-weight: 700;
   margin: 0;
 }
 
 .card span {
-  font-size: 15px;
+  @include fluid-text(15px, 17px);
   font-weight: 400;
   font-family: system-ui;
-  color: #C5CCE0;
+  color: $color-text-secondary;
 }
 
 .card img {
@@ -54,22 +57,22 @@ balance-content {
 }
 
 .token-text p {
-  font-size: 17px;
+  @include fluid-text(17px, 20px);
   font-weight: 500;
   margin: 0;
   padding-bottom: 4px;
 }
 
 .token-text span {
-  color: #A9B2C8;
-  font-size: 13px;
+  color: $color-text-muted;
+  @include fluid-text(13px, 15px);
   font-weight: 500;
 }
 
 .danger-buttons {
   display: flex;
   padding: 15px 24px;
-  border-radius: 16px;
+  border-radius: $radius-lg;
   border: 1px solid #FF4B5566;
   position: relative;
   overflow: hidden;
@@ -86,9 +89,9 @@ balance-content {
   justify-content: center;
   width: 118px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: $radius-md;
   gap: 8px;
-  font-size: 15px;
+  @include fluid-text(15px, 17px);
   font-weight: 600;
   color: #ffffff;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
@@ -109,13 +112,14 @@ balance-content {
   color: #0f0f1e;
   padding: 3px 10px;
   font-size: 12px;
-  border-bottom-left-radius: 12px;
+  border-bottom-left-radius: $radius-md;
   z-index: 1;
 }
 
 .price-text img {
   padding-right: 4px;
 }
+
 ::ng-deep {
   .loading-balance app-loading .loading-screen {
     position: fixed;

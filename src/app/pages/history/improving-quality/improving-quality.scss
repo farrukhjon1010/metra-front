@@ -1,9 +1,12 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .card-quality {
   display: flex;
   flex-direction: row;
-  gap: clamp(12px, 4vw, 16px);
+  @include fluid-gap(12px, 16px);
   top: 0;
-  padding: clamp(16px, 4vw, 24px);
+  @include fluid('padding', 16px, 24px);
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -18,36 +21,38 @@
 
   p {
     margin: 0;
-    font-size: clamp(18px, 4vw, 20px);
+    @include fluid-text(18px, 22px);
     font-weight: 700;
   }
 
   span {
-    font-size: clamp(13px, 3vw, 15px);
+    @include fluid-text(13px, 17px);
     font-weight: 400;
     font-family: system-ui;
-    color: #C5CCE0;
+    color: $color-text-secondary;
   }
 }
 
 .quality-content {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 3vw, 24px);
-  padding: 0 clamp(12px, 4vw, 16px) clamp(60px, 10vw, 90px) clamp(12px, 4vw, 16px);
+  @include fluid-gap(16px, 24px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
+  @include fluid('padding-bottom', 85px, 90px);
 }
 
 .photo-upload-section {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 3vw, 16px);
+  @include fluid-gap(12px, 16px);
 }
 
 .form-label-quality {
-  font-size: clamp(12px, 3vw, 14px);
+  @include fluid-text(12px, 16px);
   font-family: system-ui;
-  color: #A9B2C8;
-  margin-bottom: clamp(6px, 2vw, 8px);
+  color: $color-text-muted;
+  @include fluid('margin-bottom', 6px, 8px);
 }
 
 .upload-row-quality {
@@ -65,14 +70,14 @@
 }
 
 .upload-text-small {
-  font-size: clamp(14px, 3vw, 15px);
+  @include fluid-text(14px, 18px);
   font-weight: 600;
 }
 
 .upload-formats {
-  font-size: clamp(9px, 2.5vw, 10px);
+  @include fluid-text(9px, 13px);
   font-family: system-ui;
-  color: #7A859E;
+  color: $color-text-hint;
 }
 
 .upload-area-small {
@@ -84,26 +89,26 @@
 
 .photo-quality {
   position: relative;
-  width: clamp(50px, 15vw, 65px);
-  height: clamp(50px, 15vw, 65px);
-  margin-top: clamp(6px, 2vw, 8px);
+  @include fluid('width', 50px, 65px);
+  @include fluid('height', 50px, 65px);
+  @include fluid('margin-top', 6px, 8px);
 
   img.with-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: clamp(8px, 2vw, 12px);
+    border-radius: $radius-md;
     display: block;
   }
 
   .delete-photo {
     position: absolute;
-    top: clamp(2px, 1vw, 2px);
-    right: clamp(1px, 1vw, 1px);
-    width: clamp(20px, 5vw, 24px);
-    height: clamp(20px, 5vw, 24px);
+    @include fluid('top', 2px, 4px);
+    @include fluid('right', 1px, 3px);
+    @include fluid('width', 20px, 24px);
+    @include fluid('height', 20px, 24px);
     border-radius: 50%;
-    background: #ff4d4f;
+    background: $color-danger;
     border: none;
     cursor: pointer;
     display: flex;
@@ -111,8 +116,8 @@
     align-items: center;
 
     img {
-      width: clamp(16px, 4vw, 20px);
-      height: clamp(16px, 4vw, 20px);
+      @include fluid('width', 16px, 20px);
+      @include fluid('height', 16px, 20px);
     }
   }
 }
@@ -120,19 +125,21 @@
 .result-content {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 3vw, 16px);
+  @include fluid-gap(12px, 16px);
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.5);
-  border-radius: clamp(20px, 3vw, 24px);
-  border: 1px solid #FFFFFF33;
-  padding: clamp(12px, 3vw, 16px);
+  border-radius: $radius-xl;
+  border: 1px solid $glass-bg-strong;
+  @include fluid('padding', 12px, 16px);
+  align-items: stretch;
 
   h2 {
-    font-size: clamp(18px, 4vw, 20px);
+    font-size: 18px;
     font-weight: 700;
     margin: 0;
+    align-self: flex-start;
   }
 }
 
@@ -143,48 +150,52 @@
   justify-content: center;
   text-align: center;
   width: 100%;
-  height: clamp(324px, 50vw, 324px);
-  border-radius: clamp(10px, 3vw, 12px);
-  border: 1px solid #FFFFFF33;
+  @include fluid('height', 324px, 480px);
+  border-radius: $radius-md;
+  border: 1px solid $glass-bg-strong;
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   position: relative;
   overflow: hidden;
+  align-self: center;
 
   img.result-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: clamp(10px, 3vw, 12px);
+    border-radius: $radius-md;
     display: block;
   }
 }
 
 .bf-text {
-  background: #FF4B55;
+  background: $color-danger;
   max-width: 20px;
 }
 
 .aft-text {
-  background: #2EC57A;
+  background: $color-success;
   max-width: 42px;
 }
 
 .bf-text,
 .aft-text {
-  padding: clamp(2px, 1vw, 3px) clamp(6px, 2vw, 8px);
+  @include fluid('padding-top', 2px, 3px);
+  @include fluid('padding-bottom', 2px, 3px);
+  @include fluid('padding-left', 6px, 8px);
+  @include fluid('padding-right', 6px, 8px);
   border-radius: 4px;
-  font-size: clamp(12px, 3vw, 15px);
+  @include fluid-text(12px, 16px);
   position: absolute;
-  top: clamp(6px, 2vw, 8px);
-  left: clamp(6px, 2vw, 8px);
+  @include fluid('top', 6px, 8px);
+  @include fluid('left', 6px, 8px);
   font-family: system-ui;
 }
 
 .center-text-quality {
-  color: #C5CCE0;
-  font-size: clamp(13px, 3vw, 15px);
+  color: $color-text-secondary;
+  @include fluid-text(13px, 17px);
   font-weight: 400;
   text-align: center;
   opacity: 0.6;
@@ -216,7 +227,5 @@
 @media (max-width: 375px) {
   .before-photo,
   .after-photo {
-    width: 90vw;
-    height: 90vw;
   }
 }
