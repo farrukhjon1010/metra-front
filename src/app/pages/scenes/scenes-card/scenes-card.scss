@@ -168,7 +168,7 @@
   margin-top: 16px;
   border-radius: $radius-xl;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  background: $background-gradient;
   backdrop-filter: blur(40px);
   box-shadow: 0 4px 2px 0 $color-black;
 

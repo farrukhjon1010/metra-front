@@ -11,6 +11,6 @@
   }
 
   .category app-scenes-card .empty-blockd {
-    @include fluid('min-height', 300px, 500px);
+    @include fluid('min-height', 460px, 500px);
   }
 }

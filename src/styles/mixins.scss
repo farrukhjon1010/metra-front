@@ -16,21 +16,18 @@
   $max-size-rem: math.div(strip-unit($max-size), 16);
   $min-width-rem: math.div(strip-unit($min-width), 16);
   $max-width-rem: math.div(strip-unit($max-width), 16);
-
   $slope: math.div(($max-size-rem - $min-size-rem), ($max-width-rem - $min-width-rem));
   $y-intersection: -1 * $min-width-rem * $slope + $min-size-rem;
-
   $slope-vw: $slope * 100;
-
   #{$property}: clamp(#{$min-size-rem}rem, #{$y-intersection}rem + #{$slope-vw}vw, #{$max-size-rem}rem);
 }
 
-// Адаптивный шрифт
+// Шрифт
 @mixin fluid-text($min-size, $max-size) {
   @include fluid('font-size', $min-size, $max-size);
 }
 
-// Адаптивные отступы
+// Отступы
 @mixin fluid-padding($min-size, $max-size) {
   @include fluid('padding', $min-size, $max-size);
 }
