@@ -12,7 +12,7 @@
 }
 
 .home__page-title {
-  @include fluid-text(20px, 28px);
+  @include fluid-text(24px, 28px);
   font-weight: $font-weight-bold;
   color: $color-white;
   @include fluid('margin-bottom', 6px, 0);

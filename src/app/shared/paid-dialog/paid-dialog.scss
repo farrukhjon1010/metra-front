@@ -1,4 +1,6 @@
-/* ================= OVERLAY ================= */
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -6,79 +8,46 @@
   justify-content: center;
   align-items: center;
   padding: clamp(12px, 4vw, 24px);
-  z-index: 9999;
+  z-index: $z-modal;
 }
 
-/* ================= DIALOG ================= */
 .dialog {
   width: 100%;
   max-width: clamp(280px, 90vw, 480px);
   padding: clamp(16px, 4vw, 24px);
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 3vw, 20px);
+  gap: clamp(14px, 3vw, 20px);
   text-align: center;
   border-radius: clamp(18px, 4vw, 24px);
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: linear-gradient(
-      104.04deg,
-      rgba(255, 255, 255, 0.06) 0%,
-      rgba(255, 255, 255, 0.2) 100%
-  );
-
-  box-shadow: 0 clamp(4px, 1vw, 12px) clamp(12px, 3vw, 24px)
-  rgba(0, 0, 0, 0.6);
-
+  border: 1px solid $glass-border;
+  background: $background-gradient;
+  box-shadow: $color-black;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-
   position: relative;
 }
 
-/* ================= TITLE ================= */
 .dialog__title {
   font-size: clamp(16px, 4vw, 22px);
   font-weight: 700;
   margin: 0;
 }
+.text-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
-/* ================= TEXT ================= */
 .dialog__text {
+  max-width: 240px;
   font-size: clamp(13px, 3.5vw, 16px);
   margin: 0;
   font-family: system-ui;
-  line-height: 1.4;
-  opacity: 0.9;
+  color: $color-text-secondary;
 }
 
-/* ================= BUTTON ================= */
-.btn-primary {
-  margin-top: auto;
-  width: 100%;
-  height: clamp(40px, 10vw, 48px);
-  border-radius: clamp(10px, 3vw, 14px);
-  border: none;
-  cursor: pointer;
-
-  background: #6c5cff;
-  color: #fff;
-  font-size: clamp(13px, 3.5vw, 16px);
-  font-weight: 600;
-
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.btn-primary:hover {
-  transform: scale(1.02);
-  opacity: 0.95;
-}
-
-.btn-primary:active {
-  transform: scale(0.98);
-}
-
-/* ================= CLOSE BUTTON ================= */
 .dialog-close {
   position: absolute;
   top: clamp(10px, 3vw, 16px);
@@ -86,7 +55,6 @@
   cursor: pointer;
 }
 
-/* ================= LARGE SCREENS ================= */
 @media (min-width: 1024px) {
   .dialog {
     max-width: 520px;
