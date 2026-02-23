@@ -12,7 +12,7 @@
   margin: 0 auto;
   @include fluid('padding', 16px, 20px);
   position: relative;
-  z-index: 1;
+  z-index: $z-normal;
 
   .header {
     @include fluid('margin-bottom', 12px, 16px);
@@ -36,18 +36,18 @@
   }
 
   .form-label {
-    @include fluid-text(12px, 14px);
+    @include fluid-text(13px, 14px);
     color: $color-text-muted;
   }
 
   .form-input-add-avatar {
     width: 100%;
     height: 48px;
-    background: #181826;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: $color-bg-main;
+    border: 1px solid $glass-bg-strong;
     border-radius: $radius-md;
-    @include fluid('padding', 10px, 14px);
-    color: #ffffff;
+    @include fluid('padding', 13px, 14px);
+    color: $color-white;
     @include fluid-text(14px, 16px);
     font-weight: $font-weight-semibold;
     outline: none;
@@ -71,10 +71,10 @@
 .gender-buttons {
   display: flex;
   position: relative;
-  background: #181826;
+  background: $color-bg-main;
   border-radius: $radius-md;
   padding: 4px;
-  border: 1px solid #FFFFFF0F;
+  border: 1px solid $glass-border;
   margin-top: 8px;
   height: 48px;
 
@@ -82,15 +82,15 @@
     flex: 1;
     background: none;
     border: none;
-    color: #777;
+    color: $color-text-muted;
     @include fluid('padding-top', 10px, 14px);
     @include fluid('padding-bottom', 10px, 14px);
     @include fluid-text(13px, 16px);
     cursor: pointer;
-    z-index: 1;
+    z-index: $z-normal;
 
     &.active {
-      color: #fff;
+      color: $color-white;
     }
   }
 
@@ -98,7 +98,7 @@
     position: absolute;
     inset: 4px;
     width: calc(50% - 4px);
-    background: linear-gradient(90deg, #6a5cff, #a890ff);
+    background: $glass-spiner;
     border-radius: $radius-sm;
     transition: transform 0.3s ease;
   }
@@ -129,7 +129,7 @@
   cursor: pointer;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.0588);
+  border: 1px solid $glass-bg-strong;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
 }
 
@@ -150,7 +150,7 @@
 
 .upload-hint-small {
   margin: 8px 0 0 0;
-  @include fluid-text(10px, 12px);
+  font-size: 12px;
   font-weight: $font-weight-regular;
   color: $color-text-hint;
 }
@@ -163,7 +163,7 @@
   @include fluid('width', 130px, 120px);
   @include fluid('height', 90px, 120px);
   border-radius: $radius-md;
-  background: rgba(255, 255, 255, 0.1);
+  background: $background-gradient;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -172,8 +172,8 @@
 }
 
 .delete-photo-ava {
-  @include fluid('width', 20px, 24px);
-  @include fluid('height', 20px, 24px);
+  @include fluid('width', 24px, 24px);
+  @include fluid('height', 24px, 24px);
   border-radius: 50%;
   background: $color-danger;
   border: none;
@@ -182,6 +182,11 @@
   position: absolute;
   top: 4px;
   right: 4px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .loading-screen {
@@ -191,8 +196,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  color: #fff;
+  z-index: $z-modal;
+  color: $color-white;
 
   .spinner {
     @include fluid('width', 32px, 48px);
@@ -237,7 +242,7 @@
 }
 
 .avatar-card.selected .avatar-image-wrapper {
-  border-color: #8b5cf6;
+  border-color: $color-primary;
 }
 
 .avatar-image-wrapper {
@@ -309,6 +314,8 @@
 }
 
 .empty-photo-ava {
+  width: 84px;
+  height: 70px;
   position: relative;
   top: 5px;
   display: flex;

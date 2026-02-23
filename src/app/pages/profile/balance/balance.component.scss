@@ -1,10 +1,6 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
 
-balance-content {
-  width: 100%;
-}
-
 .funds-buttons {
   display: flex;
   padding: 15px 24px;
@@ -30,24 +26,24 @@ balance-content {
   display: flex;
   gap: 16px;
   padding: 24px 16px;
-}
 
-.card p {
-  @include fluid-text(20px, 24px);
-  font-weight: $font-weight-bold;
-  margin: 0;
-}
+  p {
+    @include fluid-text(20px, 24px);
+    font-weight: $font-weight-bold;
+    margin: 0;
+  }
 
-.card span {
-  @include fluid-text(15px, 17px);
-  font-weight: $font-weight-regular;
-  font-family: system-ui;
-  color: $color-text-secondary;
-}
+  span {
+    @include fluid-text(15px, 17px);
+    font-weight: $font-weight-regular;
+    font-family: system-ui;
+    color: $color-text-secondary;
+  }
 
-.card img {
-  width: 20px;
-  height: 20px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .text-header-balance {
@@ -93,13 +89,9 @@ balance-content {
   gap: 8px;
   @include fluid-text(15px, 17px);
   font-weight: $font-weight-semibold;
-  color: #ffffff;
+  color: $color-white;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(
-      90deg,
-      rgba(255, 75, 85, 0.4) 0%,
-      rgba(255, 75, 85, 0.05) 100%
-  ) !important;
+  background: linear-gradient(90deg, rgba(255, 75, 85, 0.4) 0%, rgba(255, 75, 85, 0.05) 100%) !important;
 }
 
 .price-text {
@@ -108,8 +100,8 @@ balance-content {
   position: absolute;
   top: 0;
   right: 0;
-  background: #ffffff;
-  color: #0f0f1e;
+  background: $color-white;
+  color: $color-black;
   padding: 3px 10px;
   font-size: 12px;
   border-bottom-left-radius: $radius-md;
@@ -119,6 +111,7 @@ balance-content {
 .price-text img {
   padding-right: 4px;
 }
+
 ::ng-deep {
   .loading-balance app-loading .loading-screen {
     position: fixed;
@@ -128,7 +121,7 @@ balance-content {
     justify-content: center;
     align-items: center;
     z-index: $z-modal;
-    color: white;
+    color: $color-white;
     height: auto;
     background-color: rgba(0, 0, 0, 0.7);
   }

@@ -9,7 +9,7 @@
   @include fluid('min-height', 222px, 350px);
   border-radius: $radius-md;
   backdrop-filter: blur(40px);
-  border: 1px solid rgba(254, 254, 254, 0.0588235294);
+  border: 1px solid $glass-bg-strong;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.3) 100%);
 }
 
@@ -43,7 +43,7 @@
   border: 1px solid rgba(255, 255, 255, 0.0588235294);
   border-radius: $radius-xl;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  box-shadow: 0 4px 6px 0 #000000;
+  box-shadow: 0 4px 6px 0 $color-black;
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
   @include fluid('padding', 16px, 24px);
@@ -91,7 +91,7 @@
 
 .create-prom-text {
   @include fluid-text(13px, 17px);
-  color: #E8EEFF;
+  color: $color-text-area;
   flex: 1;
   overflow: hidden;
   display: -webkit-box;

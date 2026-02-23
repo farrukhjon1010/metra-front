@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  @include fluid('padding-bottom', 60px, 80px);
+  @include fluid('padding-bottom', 70px, 80px);
 }
 
 .profile-header {
@@ -20,14 +20,14 @@
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: $z-tooltip;
 
   h2 {
     display: flex;
     @include fluid('padding', 16px, 24px);
     @include fluid-text(16px, 22px);
     font-weight: $font-weight-bold;
-    color: #ffffff;
+    color: $color-white;
   }
 }
 
@@ -38,7 +38,7 @@
   @include fluid-gap(16px, 32px);
   width: 100%;
   margin: 0 auto;
-  padding: 0 16px 16px 16px;
+  padding: 0 16px 26px 16px;
 }
 
 .profile-card {
@@ -47,8 +47,8 @@
   @include fluid-gap(12px, 24px);
   width: 100%;
   border-radius: $radius-xl;
-  background: linear-gradient(135deg, #ffffff33, #ffffff0f);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: $background-gradient;
+  border: 1px solid $glass-border;
   backdrop-filter: blur(40px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
   padding: 16px;
@@ -57,7 +57,7 @@
 .card-title {
   @include fluid-text(20px, 24px);
   font-weight: $font-weight-bold;
-  color: #ffffff;
+  color: $color-white;
 }
 
 .avatar-circle,
@@ -71,10 +71,10 @@
 .avatar-item,
 .add-avatar {
   flex: 0 0 auto;
-  @include fluid('width', 90px, 130px);
-  @include fluid('height', 90px, 130px);
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  border: 2px solid rgb(117, 71, 220);
+  border: 2px solid $color-primary-light;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,15 +82,18 @@
   transition: 0.25s ease;
 }
 
-@media (min-width: 400px) {
-  .add-avatar {
-    @include fluid('width', 110px, 140px);
-    @include fluid('height', 110px, 140px);
-  }
+.add-avatar img,
+.avatar-item img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
 
-  .add-avatar img {
-    width: 100%;
-    height: 100%;
+@media (min-width: 400px) {
+  .avatar-item,
+  .add-avatar {
+    width: 90px;
+    height: 90px;
   }
 }
 
@@ -118,7 +121,6 @@
   }
 }
 
-
 .add-avatar img {
   width: 100%;
   height: 100%;
@@ -140,17 +142,17 @@
 .partnership-text,
 .subscription-text,
 .any-questions {
-  @include fluid-text(17px, 20px);
+  @include fluid-text(15px, 20px);
   font-weight: $font-weight-semibold;
-  color: #ffffff;
+  color: $color-white;
 }
 
 .balance-text {
-  color: #e8eeff;
+  color: $color-text-area;
 }
 
 .subscription-details {
-  @include fluid-text(12px, 15px);
+  @include fluid-text(13px, 15px);
   font-weight: $font-weight-medium;
   color: $color-text-muted;
   font-family: system-ui;

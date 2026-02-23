@@ -49,7 +49,6 @@
     font-family: system-ui;
     font-weight: $font-weight-bold;
     font-size: 20px;
-
   }
 }
 
@@ -73,7 +72,7 @@
   border: 1px solid $glass-bg-strong;
   @include fluid('padding', 14px, 20px);
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  box-shadow: 0 4px 12px 0 #000000;
+  box-shadow: 0 4px 12px 0 $color-black;
   backdrop-filter: blur(40px);
 }
 
@@ -110,11 +109,11 @@
   border-radius: $radius-md;
   font-weight: $font-weight-semibold;
   font-family: system-ui;
-  color: #E8EEFF;
+  color: $color-text-area;
 }
 
 input.success {
-  border: 1px solid #E8EEFF;
+  border: 1px solid $color-text-secondary;
 }
 
 .copy-icon {
@@ -153,7 +152,7 @@ input.success {
   animation: slideFade 5.5s ease forwards;
 
   &.success {
-    color: #E8EEFF;
+    color: $color-text-area;
   }
 }
 
@@ -171,7 +170,7 @@ input.success {
 
 .copied-text {
   @include fluid-text(11px, 14px);
-  color: #E8EEFF;
+  color: $color-text-area;
 }
 
 .balance-content {

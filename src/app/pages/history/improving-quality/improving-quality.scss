@@ -2,16 +2,16 @@
 @use '../../../../styles/mixins' as *;
 
 .card-quality {
+  @include fluid('padding', 16px, 24px);
+  @include fluid-gap(12px, 16px);
   display: flex;
   flex-direction: row;
-  @include fluid-gap(12px, 16px);
   top: 0;
-  @include fluid('padding', 16px, 24px);
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: sticky;
-  z-index: 10;
+  z-index: $z-tooltip;
   flex-wrap: wrap;
 }
 
@@ -36,10 +36,13 @@
 .quality-content {
   display: flex;
   flex-direction: column;
-  @include fluid-gap(16px, 24px);
-  @include fluid('padding-left', 12px, 20px);
-  @include fluid('padding-right', 12px, 20px);
-  @include fluid('padding-bottom', 85px, 90px);
+  gap: 16px;
+  @include fluid('padding-left', 16px, 20px);
+  @include fluid('padding-right', 16px, 20px);
+  @include fluid('padding-bottom', 16px, 20px);
+  height: calc(100vh - 16px - 115px); /* вычитаем верхний и нижний паддинг */
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .photo-upload-section {
@@ -49,17 +52,16 @@
 }
 
 .form-label-quality {
-  @include fluid-text(12px, 16px);
+  @include fluid-text(14px, 16px);
   font-family: system-ui;
   color: $color-text-muted;
-  @include fluid('margin-bottom', 6px, 8px);
 }
 
 .upload-row-quality {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid #FFFFFF33;
+  border: 1px solid $glass-bg-strong;
   border-radius: clamp(10px, 3vw, 12px);
   padding: clamp(6px, 2vw, 8px) clamp(12px, 4vw, 20px);
 }
@@ -67,15 +69,16 @@
 .upload-content-quality {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .upload-text-small {
-  @include fluid-text(14px, 18px);
+  @include fluid-text(16px, 18px);
   font-weight: $font-weight-semibold;
 }
 
 .upload-formats {
-  @include fluid-text(9px, 13px);
+  @include fluid-text(11px, 13px);
   font-family: system-ui;
   color: $color-text-hint;
 }
@@ -125,7 +128,8 @@
 .result-content {
   display: flex;
   flex-direction: column;
-  @include fluid-gap(12px, 16px);
+  gap: 16px;
+  //@include fluid-gap(16px, 16px);
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
@@ -184,12 +188,12 @@
   @include fluid('padding-bottom', 2px, 3px);
   @include fluid('padding-left', 6px, 8px);
   @include fluid('padding-right', 6px, 8px);
-  border-radius: 4px;
   @include fluid-text(12px, 16px);
-  position: absolute;
   @include fluid('top', 6px, 8px);
   @include fluid('left', 6px, 8px);
   font-family: system-ui;
+  border-radius: 4px;
+  position: absolute;
 }
 
 .center-text-quality {
@@ -208,7 +212,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: $z-modal;
     color: white;
     height: auto;
     background-color: rgba(0, 0, 0, 0.9);

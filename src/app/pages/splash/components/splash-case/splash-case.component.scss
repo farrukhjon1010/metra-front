@@ -63,6 +63,7 @@
   @include fluid-text(12px, 15px);
   @include fluid('margin-top', 16px, 32px);
   @include fluid('margin-bottom', 16px, 32px);
+  color: $color-text-secondary;
 }
 
 .actions {
@@ -70,15 +71,6 @@
   flex-direction: column;
   @include fluid-gap(12px, 16px);
   width: 100%;
-}
-
-.slider {
-  @include fluid('width', 80px, 116px);
-  @include fluid('height', 32px, 40px);
-  position: absolute;
-  background: linear-gradient(90deg, #6a5cff, #a890ff);
-  border-radius: $radius-sm;
-  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
 @media (max-width: 374px) {

@@ -89,7 +89,6 @@
   mask-composite: exclude;
   border-radius: $radius-lg;
   box-shadow: 0 0 20px 0 #FF4B5580;
-  backdrop-filter: blur(40px)
 }
 
 .span-card-pro {
@@ -105,7 +104,6 @@
     gap: 8px;
     color: $color-text-secondary;
   }
-
 }
 
 .btn-card-pro {
@@ -173,7 +171,7 @@
   right: 0;
   border-top-right-radius: $radius-lg;
   border-bottom-left-radius: $radius-md;
-  color: #0B0D11;
+  color: $color-black;
   @include fluid-text(13px, 15px);
   padding: 4px 10px;
   gap: 2px;

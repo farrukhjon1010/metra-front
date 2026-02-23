@@ -28,36 +28,21 @@
   color: $color-text-muted;
 }
 
-.form-input {
-  width: 96%;
-  height: 28px;
-  display: block;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: $radius-md;
-  @include fluid('padding', 10px, 14px);
-  @include fluid-text(14px, 15px);
-  font-weight: $font-weight-semibold;
-  outline: none;
-  color: #ffffff;
-  font-family: system-ui;
-  transition: 0.2s ease;
-  background: #181826;
-  padding: clamp(0.625rem, 0.5643203883rem + 0.2588996764vw, 0.875rem);
-}
-
 .photo-upload-section {
   width: 100%;
-
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .gender-buttons {
   height: 42px;
   position: relative;
   display: flex;
-  background: #181826;
+  background: $color-bg;
   border-radius: $radius-md;
   @include fluid('padding', 2px, 4px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid $glass-bg-strong;
   @include fluid('margin-top', 6px, 8px);
 }
 
@@ -65,23 +50,23 @@
   flex: 1;
   background: none;
   border: none;
-  color: #777;
+  color: $color-text-muted;
   @include fluid('padding-top', 8px, 12px);
   @include fluid('padding-bottom', 8px, 12px);
-  z-index: 1;
+  z-index: $z-normal;
   @include fluid-text(13px, 15px);
   cursor: pointer;
 }
 
 .gender-btn.active {
-  color: #fff;
+  color: $color-white;
 }
 
 .slider-splash {
   position: absolute;
   inset: clamp(2px, 1.5vw, 4px);
   width: calc(50% - clamp(4px, 1vw, 4px));
-  background: linear-gradient(90deg, #6a5cff, #a890ff);
+  background: $glass-spiner;
   border-radius: $radius-sm;
   transition: transform 0.3s ease;
 }
@@ -110,7 +95,7 @@
   cursor: pointer;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid $glass-bg-strong;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
   height: 35px;
 }
@@ -131,8 +116,9 @@
 
 .upload-hint-small {
   @include fluid('margin-top', 6px, 8px);
-  @include fluid-text(10px, 12px);
+  @include fluid-text(13px, 14px);
   color: $color-text-hint;
+  margin: 4px 0 0 0;
 }
 
 .front-photo {
@@ -145,9 +131,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  img {
-  }
 }
 
 .empty-photo {
@@ -155,10 +138,6 @@
   display: flex;
   position: relative;
   object-fit: cover;
-
-  img {
-
-  }
 }
 
 .with-photo {
@@ -168,8 +147,8 @@
 }
 
 .delete-photo {
-  @include fluid('width', 20px, 24px);
-  @include fluid('height', 20px, 24px);
+  @include fluid('width', 24px, 24px);
+  @include fluid('height', 24px, 24px);
   border-radius: 50%;
   background: $color-danger;
   border: none;
@@ -178,22 +157,48 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .input-wrapper {
-  border: 1px solid transparent;
+  border: 1px solid $glass-bg-strong;
   border-radius: $radius-md;
   backdrop-filter: blur(40px);
   transition: border-color 0.2s ease;
   @include fluid('margin-top', 6px, 8px);
-}
+  box-sizing: border-box;
 
-.input-wrapper.invalid {
-  border-color: $color-danger;
-}
+  input.form-input {
+    width: 100%;
+    max-width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 15px 20px;
+    border: none;
+    background: $color-bg;
+    border-radius: $radius-md;
+    color: $color-white;
+    font-family: system-ui;
+    font-weight: $font-weight-semibold;
+    outline: none;
+    @include fluid-text(15px, 15px);
+  }
 
-.input-wrapper.valid {
-  border-color: $color-success;
+  &.invalid {
+    border-color: $color-danger;
+  }
+
+  &.valid {
+    border-color: $color-success;
+  }
+
+  @media (max-width: 360px) {
+    border-width: 1px;
+  }
 }
 
 .alert {
@@ -201,3 +206,4 @@
   color: $color-danger;
   padding: 2px 5px 0 5px;
 }
+

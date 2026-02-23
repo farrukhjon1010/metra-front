@@ -6,12 +6,14 @@
 $color-bg-main: #0f0f1e;
 $color-white: #ffffff;
 $color-black: #000000;
+$color-bg: #181826;
 
 /* Text */
 $color-text-primary: #ffffff;
 $color-text-secondary: #c5cce0;
 $color-text-muted: #a9b2c8;
 $color-text-hint: #7a859e;
+$color-text-area: #E8EEFF;
 
 /* Brand */
 $color-primary: #6a5cff;
@@ -23,40 +25,19 @@ $color-success: #2ec57a;
 $glass-bg-strong: #ffffff33;
 $glass-bg-soft: #ffffff0f;
 $glass-border: rgba(255, 255, 255, 0.2);
+$glass-spiner: linear-gradient(90deg, #6A5CFF 0%, #A890FF 100%);
 
 /* ===============================
    GRADIENTS
 ================================ */
 
-$gradient-primary: linear-gradient(
-    90deg,
-    rgba(106, 92, 255, 0.6),
-    rgba(168, 144, 255, 0.1)
-);
+$gradient-primary: linear-gradient(90deg, rgba(106, 92, 255, 0.6), rgba(168, 144, 255, 0.1));
+$gradient-primary-soft: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
+$gradient-danger: linear-gradient(90deg, rgba(255, 75, 85, 0.6), rgba(255, 75, 85, 0.1));
+$gradient-success: linear-gradient(90deg, rgba(46, 197, 122, 0.4), rgba(46, 197, 122, 0.05));
+$gradient-header: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+$background-gradient: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
 
-$gradient-primary-soft: linear-gradient(
-    90deg,
-    rgba(106, 92, 255, 0.4),
-    rgba(106, 92, 255, 0.05)
-);
-
-$gradient-danger: linear-gradient(
-    90deg,
-    rgba(255, 75, 85, 0.6),
-    rgba(255, 75, 85, 0.1)
-);
-
-$gradient-success: linear-gradient(
-    90deg,
-    rgba(46, 197, 122, 0.4),
-    rgba(46, 197, 122, 0.05)
-);
-
-$gradient-header: linear-gradient(
-    180deg,
-    rgba(10, 10, 20, 0.95) 0%,
-    rgba(10, 10, 20, 0.5) 100%
-);
 
 /* ===============================
    RADIUS
@@ -79,9 +60,7 @@ $shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
    FONT
 ================================ */
 
-$font-system: 'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont,
-'Segoe UI', Roboto, Arial, sans-serif;
-
+$font-system: 'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-semibold: 600;
@@ -95,15 +74,7 @@ $min-width: 375;
 $max-width: 1920;
 $container-width: 1440;
 $container-padding: 16;
-
-$breakpoints: (
-  'xs': 375px,
-  'sm': 576px,
-  'md': 768px,
-  'lg': 1024px,
-  'xl': 1280px,
-  'xxl': 1440px
-);
+$breakpoints: ('xs': 375px, 'sm': 576px, 'md': 768px, 'lg': 1024px, 'xl': 1280px, 'xxl': 1440px);
 
 /* ===============================
    Z-INDEX

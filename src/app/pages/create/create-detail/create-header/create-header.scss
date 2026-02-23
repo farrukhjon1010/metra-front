@@ -21,18 +21,22 @@
   @include fluid-gap(4px, 6px);
 
   p {
-    @include fluid-text(20px, 28px);
-    font-weight: $font-weight-bold;
+    @include text(16px, $font-weight-bold);
     margin: 0;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+
+    @media (min-width: 361px) {
+      @include fluid-text(20px, 28px);
+    }
   }
 
   span {
-    @include fluid-text(14px, 18px);
-    font-weight: $font-weight-regular;
-    color: $color-text-secondary;
+    @include text(12px, $font-weight-regular, $color-text-secondary);
+    @media (min-width: 361px) {
+      @include fluid-text(14px, 18px);
+    }
   }
 }

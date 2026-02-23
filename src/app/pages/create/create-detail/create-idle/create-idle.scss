@@ -30,18 +30,18 @@
 .text-ai-generation textarea {
   width: 100%;
   @include fluid('height', 120px, 180px);
-  border-radius: $radius-md;
   @include fluid('padding-top', 15px, 20px);
   @include fluid('padding-bottom', 15px, 20px);
   @include fluid('padding-left', 20px, 24px);
   @include fluid('padding-right', 40px, 48px);
+  @include fluid-text(15px, 19px);
   border: 1px solid $glass-bg-strong;
-  background: #181826;
-  box-shadow: 0 4px 6px 0 #000000;
+  border-radius: $radius-md;
+  background: $color-bg;
+  box-shadow: 0 4px 6px 0 $color-black;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  color: #E8EEFF;
-  @include fluid-text(15px, 19px);
+  color: $color-text-area;
   font-family: system-ui;
   letter-spacing: 0.5px;
   outline: none;
