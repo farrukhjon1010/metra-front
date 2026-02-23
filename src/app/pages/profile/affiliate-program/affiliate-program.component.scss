@@ -92,7 +92,7 @@
   @include fluid('padding-bottom', 10px, 16px);
   @include fluid('padding-left', 14px, 24px);
   @include fluid('padding-right', 14px, 24px);
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid $glass-bg-strong;
   @include fluid('margin-top', 6px, 12px);
   @include fluid('margin-bottom', 12px, 20px);
