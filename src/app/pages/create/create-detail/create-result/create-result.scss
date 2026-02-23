@@ -1,33 +1,39 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .result-detail {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 0 16px;
+  @include fluid-gap(16px, 24px);
+  @include fluid('padding-left', 16px, 40px);
+  @include fluid('padding-right', 16px, 40px);
 }
 
 .result-generate {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 24px;
+  border-radius: $radius-xl;
   overflow: hidden;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  box-shadow: 0 4px 6px 0 #000000;
+  box-shadow: 0 4px 6px 0 $color-black;
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.0588235294);
-  padding: 16px;
+  @include fluid('padding', 16px, 24px);
 
   h1 {
-    font-size: 20px;
-    font-weight: 700;
+    @include fluid-text(20px, 28px);
+    font-weight: $font-weight-bold;
     margin: 0;
     padding-bottom: 2px;
   }
 
   span {
-    font-size: 15px;
+    @include fluid-text(15px, 19px);
     font-family: system-ui;
-    color: #C5CCE0;
+    color: $color-text-secondary;
   }
 }
 
@@ -35,14 +41,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 16px 0;
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .image-generation img {
-  width: 324px;
-  height: 324px;
+  @include fluid('width', 324px, 480px);
+  @include fluid('height', 324px, 480px);
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: $radius-md;
   object-fit: cover;
   object-position: center;
 }
@@ -50,7 +57,7 @@
 .btn-detail {
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  @include fluid-gap(8px, 16px);
 }
 
 .btn-detail app-button {

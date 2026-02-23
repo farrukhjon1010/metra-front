@@ -1,37 +1,42 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .scenes-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  padding: 0 16px 80px 16px;
+  @include fluid-gap(12px, 20px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
+  @include fluid('padding-bottom', 60px, 100px);
 }
 
 .scene-card {
-  padding: 8px;
-  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include fluid('padding', 6px, 10px);
+  border-radius: $radius-md;
   cursor: pointer;
-  background: linear-gradient(
-      90deg,
-      rgba(106, 92, 255, 0.4),
-      rgba(106, 92, 255, 0.05)
-  );
   backdrop-filter: blur(40px);
-  border: 1px solid rgba(106, 92, 255, 0.4);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 1),
-  inset 0 0 20px rgba(106, 92, 255, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
+  background: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(106, 92, 255, 0.4);
+  box-shadow: 0 4px 10px rgb(0, 0, 0), inset 0 0 20px rgba(106, 92, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 251px;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transform: translateY(clamp(1px, 0.3vw, 2px));
+    box-shadow: 0 clamp(8px, 2vw, 24px) rgba(0, 0, 0, 0.4);
   }
 
   img {
-    width: 155px;
+    width: 100%;
     height: 155px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    border-radius: $radius-sm;
+    margin-bottom: 16px;
     position: relative;
 
     &::before {
@@ -44,46 +49,104 @@
           transparent 60%,
           rgba(24, 24, 38, 0.8) 100%
       );
-      z-index: 1;
-      border-radius: 8px;
+      z-index: $z-normal;
+      border-radius: inherit;
     }
   }
 
   h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
     margin: 0;
-    font-family: system-ui;
+    font-family: $font-system;
+    font-size: 14px;
+
+    @media (min-width: 361px) {
+      font-size: 17px;
+    }
   }
 
   p {
-    font-size: 13px;
     color: rgba(255, 255, 255, 0.6);
-    margin: 4px 0 0;
-    font-family: system-ui;
+    @include fluid('margin-top', 2px, 4px);
+    font-family: $font-system;
+    font-weight: $font-weight-medium;
+    font-size: 11px;
+    @media (min-width: 361px) {
+      font-size: 12px;
+      font-family: system-ui;
+    }
   }
 }
 
 .empty-block {
-  width: 358px;
-  height: 508px;
-  background: #181826;
+  @include fluid('width', 280px, 358px);
+  @include fluid('height', 400px, 508px);
+  background: $color-bg;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  @include fluid('padding-top', 24px, 40px);
+  @include fluid('padding-bottom', 24px, 40px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
   text-align: center;
-  border: 1px dashed #FFFFFF0F;
-  border-radius: 12px;
-  margin: 20px 0;
+  border: 1px dashed $glass-bg-soft;
+  border-radius: $radius-md;
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
 
   p {
     margin: 0;
-    font-size: 17px;
-    font-weight: 600;
+    @include fluid-text(14px, 18px);
+    font-weight: $font-weight-semibold;
     font-family: system-ui;
-    color: #E8EEFF;
+    color: $color-text-area;
+  }
+}
+
+@media (min-width: 768px) {
+  .scenes-grid {
+    grid-template-columns: repeat(5, 1fr);
+    @include fluid-gap(16px, 24px);
+  }
+
+  .scene-card img {
+    @include fluid('width', 140px, 165px);
+    @include fluid('height', 140px, 165px);
+  }
+
+  .scene-card h3 {
+    @include fluid-text(15px, 17px);
+  }
+
+  .scene-card p {
+    @include fluid-text(13px, 16px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .scenes-grid {
+    grid-template-columns: repeat(4, 1fr);
+    @include fluid-gap(18px, 28px);
+    @include fluid('padding-bottom', 80px, 120px);
+  }
+
+  .scene-card img {
+    @include fluid('width', 150px, 170px);
+    @include fluid('height', 150px, 170px);
+  }
+}
+
+@media (min-width: 1440px) {
+  .scenes-grid {
+    grid-template-columns: repeat(5, 1fr);
+    @include fluid-gap(20px, 32px);
+  }
+
+  .scene-card img {
+    @include fluid('width', 155px, 180px);
+    @include fluid('height', 155px, 180px);
   }
 }

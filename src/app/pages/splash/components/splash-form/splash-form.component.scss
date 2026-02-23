@@ -1,125 +1,131 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .create-avatar-container {
-  padding: 0 16px;
+  @include fluid('padding', 16px, 16px);
 }
 
 .header {
-  padding: 24px 0;
+  @include fluid('padding-top', 16px, 24px);
+  @include fluid('padding-bottom', 16px, 24px);
   margin: 0;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 700;
+  @include fluid-text(18px, 20px);
+  font-weight: $font-weight-bold;
   margin: 0;
 }
 
 .form-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  @include fluid-gap(16px, 24px);
 }
 
 .form-label {
-  font-size: 13px;
-  color: #a9b2c8;
+  @include fluid-text(12px, 13px);
+  color: $color-text-muted;
 }
 
-.form-input {
-  width: 326px;
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  outline: none;
-  background: transparent;
-  color: #ffffff;
-  font-family: system-ui;
+.photo-upload-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .gender-buttons {
+  height: 42px;
   position: relative;
   display: flex;
-  background: #181826;
-  border-radius: 12px;
-  padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.0588235294);
-  margin-top: 8px;
+  background: $color-bg;
+  border-radius: $radius-md;
+  @include fluid('padding', 2px, 4px);
+  border: 1px solid $glass-bg-strong;
+  @include fluid('margin-top', 6px, 8px);
 }
 
 .gender-btn {
   flex: 1;
   background: none;
   border: none;
-  color: #777;
-  padding: 12px 0;
-  z-index: 1;
+  color: $color-text-muted;
+  @include fluid('padding-top', 8px, 12px);
+  @include fluid('padding-bottom', 8px, 12px);
+  z-index: $z-normal;
+  @include fluid-text(13px, 15px);
+  cursor: pointer;
 }
 
 .gender-btn.active {
-  color: #fff;
+  color: $color-white;
 }
 
 .slider-splash {
   position: absolute;
-  inset: 4px;
-  width: calc(50% - 4px);
-  background: linear-gradient(90deg, #6a5cff, #a890ff);
-  border-radius: 8px;
+  inset: clamp(2px, 1.5vw, 4px);
+  width: calc(50% - clamp(4px, 1vw, 4px));
+  background: $glass-spiner;
+  border-radius: $radius-sm;
   transition: transform 0.3s ease;
 }
 
 .photo-load {
   display: flex;
-  gap: 10px;
+  @include fluid-gap(10px, 10px);
   align-items: center;
 }
 
 .upload-content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  @include fluid-gap(1px, 2px);
 }
 
 .upload-area-small {
-  padding: 6px 20px;
-  border-radius: 12px;
+  @include fluid('padding-top', 6px, 8px);
+  @include fluid('padding-bottom', 6px, 8px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
+  border-radius: $radius-md;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid #FFFFFF0F;
+  border: 1px solid $glass-bg-strong;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
+  height: 35px;
 }
 
 .upload-text-small {
-  font-size: 15px;
+  @include fluid-text(13px, 15px);
 }
 
 .upload-formats {
-  font-size: 10px;
-  opacity: .6;
+  @include fluid-text(9px, 10px);
+  opacity: 0.6;
   font-family: system-ui;
 }
 
 .upload-row {
-  width: 252px;
-  margin-top: 8px;
+  width: 100%;
 }
 
 .upload-hint-small {
-  margin: 8px 0 0 0;
-  font-size: 12px;
-  color: #7A859E;
+  @include fluid('margin-top', 6px, 8px);
+  @include fluid-text(13px, 14px);
+  color: $color-text-hint;
+  margin: 4px 0 0 0;
 }
 
 .front-photo {
-  width: 96px;
-  height: 96px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, .1);
+  @include fluid('width', 135px, 125px);
+  @include fluid('height', 100px, 100px);
+  border-radius: $radius-md;
+  background: rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -141,35 +147,63 @@
 }
 
 .delete-photo {
-  width: 24px;
-  height: 24px;
+  @include fluid('width', 24px, 24px);
+  @include fluid('height', 24px, 24px);
   border-radius: 50%;
-  background: #ff4d4f;
+  background: $color-danger;
   border: none;
   cursor: pointer;
-  padding: 2px 1px 1px 1px;
-}
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 
 .input-wrapper {
-  border: 1px solid transparent;
-  border-radius: 12px;
+  border: 1px solid $glass-bg-strong;
+  border-radius: $radius-md;
   backdrop-filter: blur(40px);
-  transition: border-color 0.2s;
-  margin-top: 8px;
-}
+  transition: border-color 0.2s ease;
+  @include fluid('margin-top', 6px, 8px);
+  box-sizing: border-box;
 
-.input-wrapper.invalid {
-  border-color: #FF4B55;
-}
+  input.form-input {
+    width: 100%;
+    max-width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 15px 20px;
+    border: none;
+    background: $color-bg;
+    border-radius: $radius-md;
+    color: $color-white;
+    font-family: system-ui;
+    font-weight: $font-weight-semibold;
+    outline: none;
+    @include fluid-text(15px, 15px);
+  }
 
-.input-wrapper.valid {
-  border-color: #2EC57A;
+  &.invalid {
+    border-color: $color-danger;
+  }
+
+  &.valid {
+    border-color: $color-success;
+  }
+
+  @media (max-width: 360px) {
+    border-width: 1px;
+  }
 }
 
 .alert {
-  font-size: 12px;
-  color: #FF4B55;
+  @include fluid-text(10px, 12px);
+  color: $color-danger;
   padding: 2px 5px 0 5px;
 }
 

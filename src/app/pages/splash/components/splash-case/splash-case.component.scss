@@ -1,9 +1,19 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .content {
-  max-width: 390px;
+  width: 100%;
+  @include fluid('max-width', 390px, 500px);
   margin: 0 auto;
-  padding: 16px;
+  @include fluid('padding', 12px, 20px);
   position: relative;
-  z-index: 1;
+  z-index: $z-normal;
 }
 
 .splash-container {
@@ -11,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  @include fluid('padding', 12px, 20px);
 }
 
 .logo-container {
@@ -25,36 +35,113 @@
 }
 
 .brand-name {
-  font-size: 32px;
-  font-weight: 700;
+  @include fluid-text(24px, 32px);
+  font-weight: $font-weight-bold;
   letter-spacing: 2px;
   margin: 0;
+  text-align: center;
 }
 
 .features {
   text-align: center;
-  font-size: 14px;
-  opacity: .9;
+  @include fluid-text(12px, 14px);
+  opacity: 0.9;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 32px 0;
-
+  @include fluid-gap(8px, 12px);
+  @include fluid('padding-top', 24px, 32px);
+  @include fluid('padding-bottom', 24px, 32px);
 }
 
 .feature-text {
   font-family: 'SF Pro Display', sans-serif;
-  font-size: 17px;
+  @include fluid-text(14px, 17px);
   margin: 0;
 }
 
 .feature-text-metra {
-  font-size: 15px;
-  margin: 32px 0;
+  @include fluid-text(12px, 15px);
+  @include fluid('margin-top', 16px, 32px);
+  @include fluid('margin-bottom', 16px, 32px);
+  color: $color-text-secondary;
 }
 
 .actions {
-  gap: 16px;
   display: flex;
   flex-direction: column;
+  @include fluid-gap(12px, 16px);
+  width: 100%;
+}
+
+@media (max-width: 374px) {
+  .content {
+    width: 95%;
+    padding: 12px;
+  }
+
+  .brand-name {
+    font-size: 24px;
+  }
+
+  .feature-text {
+    font-size: 14px;
+  }
+
+  .feature-text-metra {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 414px) {
+  .content {
+    max-width: 360px;
+  }
+
+  .brand-name {
+    font-size: 28px;
+  }
+
+  .feature-text {
+    font-size: 15px;
+  }
+
+  .feature-text-metra {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 768px) {
+  .content {
+    max-width: 450px;
+  }
+
+  .brand-name {
+    font-size: 30px;
+  }
+
+  .feature-text {
+    font-size: 16px;
+  }
+
+  .feature-text-metra {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) {
+  .content {
+    max-width: 500px;
+  }
+
+  .brand-name {
+    font-size: 32px;
+  }
+
+  .feature-text {
+    font-size: 17px;
+  }
+
+  .feature-text-metra {
+    font-size: 15px;
+  }
 }

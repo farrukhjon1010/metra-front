@@ -1,11 +1,14 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .header {
-  height: 100px;
+  @include fluid('height', 100px, 120px);
 }
 
 .scenes {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: $z-tooltip;
 
   &__header {
     display: flex;
@@ -13,19 +16,18 @@
     gap: 2px;
     background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
     backdrop-filter: blur(10px);
-    padding: 24px 16px;
+    @include fluid('padding', 24px, 16px);
   }
 
   &__title {
-    font-size: 20px;
-    font-weight: 700;
+    @include fluid-text(20px, 28px);
+    font-weight: $font-weight-bold;
     margin: 0;
   }
 
   &__subtitle {
-    font-size: 15px;
-    color: #c5cce0;
+    @include fluid-text(15px, 19px);
+    color: $color-text-secondary;
   }
 
 }
-

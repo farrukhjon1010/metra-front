@@ -1,24 +1,27 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .create__category-title {
-  font-size: 18px;
-  margin-bottom: 12px;
+  @include fluid-text(18px, 22px);
+  @include fluid('margin-bottom', 12px, 16px);
 
   span {
-    font-weight: 400;
-    font-size: 15px;
+    @include fluid-text(15px, 19px);
+    font-weight: $font-weight-regular;
     font-family: system-ui;
-    color: #C5CCE0;
+    color: $color-text-secondary;
   }
 }
 
 .create__cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  @include fluid-gap(12px, 20px);
 }
 
 .create__card {
-  padding: 16px;
-  border-radius: 16px;
+  @include fluid('padding', 16px, 24px);
+  border-radius: $radius-lg;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.06);
   transition: transform 0.15s ease;
@@ -29,11 +32,11 @@
 }
 
 .create__icon {
-  margin-bottom: 8px;
+  @include fluid('margin-bottom', 8px, 16px);
 }
 
 .create__text {
-  font-size: 14px;
+  @include fluid-text(14px, 18px);
 }
 
 .create {
@@ -43,44 +46,44 @@
     -webkit-backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
-    z-index: 10;
-    padding: 24px 16px;
+    z-index: $z-tooltip;
+    @include fluid('padding-top', 24px, 32px);
+    @include fluid('padding-bottom', 24px, 32px);
+    @include fluid('padding-left', 16px, 28px);
+    @include fluid('padding-right', 16px, 28px);
 
     & > .create__title {
       margin: 0;
-      font-size: 20px;
-      font-weight: 600;
-      color: #fff;
+      @include fluid-text(20px, 28px);
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
     }
   }
 
   &__category {
     display: flex;
     flex-direction: column;
-    padding: 0 16px 24px 16px;
+    @include fluid('padding-left', 16px, 24px);
+    @include fluid('padding-right', 16px, 24px);
+    @include fluid('padding-bottom', 8px, 32px);
 
     &-title {
-      font-size: 17px;
-      font-weight: 600;
+      @include fluid-text(17px, 30px);
+      @include fluid('padding-bottom', 8px, 16px);
+      font-weight: $font-weight-semibold;
       margin: 0;
-      color: #fff;
-      padding-bottom: 8px;
+      color: $color-text-primary;
     }
   }
 
-
   &__card {
-    background: linear-gradient(
-        90deg,
-        rgba(106, 92, 255, 0.4) 0%,
-        rgba(106, 92, 255, 0.05) 100%
-    );
+    @include fluid('padding', 16px, 24px);
+    background: linear-gradient(90deg, rgba(106, 92, 255, 0.4) 0%, rgba(106, 92, 255, 0.05) 100%);
     backdrop-filter: blur(40px);
-    border-radius: 16px;
+    border-radius: $radius-lg;
     cursor: pointer;
     transition: all 0.3s ease;
-    height: 66px;
-    padding: 16px;
+    height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -97,13 +100,18 @@
     }
 
     & > .create__text {
-      font-size: 15px;
-      color: #C5CCE0;
+      font-size: 12px;
+      color: $color-text-secondary;
+      font-family: system-ui;
+
+      @media (min-width: 361px) {
+        font-size: 15px;
+      }
     }
   }
 }
 
 .create__title {
-  font-size: 22px;
-  font-weight: 600;
+  @include fluid-text(22px, 30px);
+  font-weight: $font-weight-semibold;
 }

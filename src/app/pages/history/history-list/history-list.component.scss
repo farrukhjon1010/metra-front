@@ -1,102 +1,114 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 @mixin glass-bg($radius: 12px, $blur: 40px) {
-  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  background: $background-gradient;;
   border-radius: $radius;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 4px 6px 0 #000000;
+  box-shadow: 0 4px 6px 0 $color-black;
   backdrop-filter: blur($blur);
   -webkit-backdrop-filter: blur($blur);
 }
 
 @mixin label-style {
-  font-size: 13px;
+  @include fluid-text(13px, 17px);
   font-family: system-ui;
-  color: #A9B2C8;
+  color: $color-text-muted;
 }
 
-@mixin value-style($size: 17px, $weight: 600) {
-  font-size: $size;
+@mixin value-style($size: 17px, $weight: $font-weight-semibold) {
+  @include fluid-text($size, 22px);
   font-weight: $weight;
 }
 
 .history-container {
   display: flex;
   flex-direction: column;
-  padding: 0 16px 16px;
+  @include fluid('padding-left', 16px, 30px);
+  @include fluid('padding-right', 16px, 30px);
+  @include fluid('padding-bottom', 16px, 30px);
 }
 
 .filter-buttons {
   position: relative;
   display: flex;
   padding: 4px;
-  border: 1px solid #FFFFFF33;
+  border: 1px solid $glass-bg-strong;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  border-radius: $radius-md;
   height: 40px;
 }
 
 .slider {
-  width: 116px;
-  height: 40px;
+  width: clamp(80px, 33%, 280px);
+  height: clamp(40px, 4vw, 40px);
   position: absolute;
-  background: linear-gradient(90deg, #6a5cff, #a890ff);
-  border-radius: 8px;
-  transition: transform .3s;
+  background: $glass-spiner;
+  border-radius: clamp(6px, 2vw, 8px);
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
 .filter-btn {
   flex: 1;
   background: none;
   border: none;
-  color: #777;
+  color: $color-text-muted;
   padding: 12px 0;
-  z-index: 1;
+  z-index: $z-normal;
 
   &.active {
-    color: #fff;
+    color: $color-text-primary;
   }
+}
+
+.history-not {
+  @include fluid('padding-bottom', 60px, 80px);
 }
 
 .create-of-history {
   @include glass-bg(12px, 40px);
-  min-height: 506px;
-  margin: 16px auto;
+  @include fluid('min-height', 580px, 600px);
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  border: 1px solid $glass-bg-strong;
 }
 
 .no-create-image-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  @include fluid-gap(16px, 24px);
 
   span {
-    font-size: 17px;
-    font-weight: 500;
+    @include fluid-text(17px, 22px);
+    font-weight: $font-weight-medium;
   }
 }
 
 .history-content-detail {
-  padding-bottom: 50px;
+  @include fluid('padding-bottom', 50px, 80px);
 }
 
 .history-generate-detail,
 .create-generate-detail {
   @include glass-bg(24px, 40px);
   display: flex;
-  gap: 16px;
-  padding: 16px;
-  margin: 16px 0;
+  @include fluid-gap(16px, 24px);
+  @include fluid('padding', 16px, 24px);
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .left-text-detail {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 167px;
+  @include fluid-gap(16px, 24px);
+  @include fluid('width', 167px, 240px);
 }
 
 .date-detail,
@@ -112,15 +124,15 @@
   }
 
   span {
-    color: #E8EEFF;
-    @include value-style(17px, 600);
+    color: $color-text-area;
+    @include value-style(17px, $font-weight-semibold);
   }
 }
 
 .prom-text {
-  font-size: 13px;
-  font-weight: 400;
-  color: #E8EEFF;
+  @include fluid-text(13px, 17px);
+  font-weight: $font-weight-regular;
+  color: $color-text-area;
   flex: 1;
   overflow: hidden;
   display: -webkit-box;
@@ -131,18 +143,17 @@
   white-space: normal;
 }
 
-
 .right-photo-detail {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  @include fluid-gap(8px, 16px);
 }
 
 .photo-detail {
-  width: 143px;
-  height: 143px;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
+  @include fluid('width', 143px, 220px);
+  @include fluid('height', 143px, 220px);
+  border-radius: $radius-md;
+  border: 1px solid $glass-bg-strong;
   overflow: hidden;
 }
 
@@ -150,13 +161,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: $radius-md;
   display: block;
 }
 
 .btn-detail {
   display: flex;
-  gap: 8px;
+  @include fluid-gap(8px, 16px);
 
   app-button {
     flex: 1;

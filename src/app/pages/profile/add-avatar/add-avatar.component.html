@@ -69,7 +69,7 @@
                       accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                       (change)="onFileSelectedAvatar($event, 'front')"
                       style="display: none;">
-                    <div class="upload-content">
+                    <div class="upload-content-format">
                       <span class="upload-text-small">Загрузить</span>
                       <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
                     </div>
@@ -105,14 +105,14 @@
                       accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                       (change)="onFileSelectedAvatar($event, 'left')"
                       style="display: none;">
-                    <div class="upload-content">
+                    <div class="upload-content-format">
                       <span class="upload-text-small">Загрузить</span>
                       <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
                     </div>
                     <img src="assets/icons/upload.svg" alt="Icon">
                   </div>
                 </div>
-                <p class="upload-hint-small">Хороший свет, без очков и головных уборов</p>
+                <div class="upload-hint-small">Хороший свет, без очков и головных уборов</div>
               </div>
               <div class="front-photo-ava">
                 @if (photos.left.preview) {
@@ -141,7 +141,7 @@
                       accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                       (change)="onFileSelectedAvatar($event, 'right')"
                       style="display: none;">
-                    <div class="upload-content">
+                    <div class="upload-content-format">
                       <span class="upload-text-small">Загрузить</span>
                       <span class="upload-formats">JPEG, JPG, PNG, HEIC, WEBP</span>
                     </div>

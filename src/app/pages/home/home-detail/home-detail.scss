@@ -1,5 +1,8 @@
-::ng-deep{
-  .home-scenes-card app-scenes-card .scenes{
-    padding-top: 16px!important;
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+::ng-deep {
+  .home-scenes-card app-scenes-card .scenes {
+    @include fluid('padding-top', 16px, 24px);
   }
 }

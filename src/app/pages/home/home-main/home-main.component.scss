@@ -1,15 +1,18 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 ::ng-deep {
   .grid app-scenes-grid .scenes-grid {
-    padding-bottom: 16px;
+    @include fluid('padding-bottom', 16px, 24px);
   }
 }
 
 :host ::ng-deep app-paid-dialog {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: $z-modal;
 }

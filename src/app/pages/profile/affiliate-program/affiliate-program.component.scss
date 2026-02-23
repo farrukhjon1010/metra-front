@@ -1,117 +1,103 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .affiliate-program-content {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .affiliate-program-header {
   display: flex;
-  padding: 24px 16px;
-  gap: 16px;
+  @include fluid('padding-top', 24px, 28px);
+  @include fluid('padding-bottom', 24px, 28px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
+  @include fluid-gap(16px, 20px);
 }
 
 .affiliate-program-header p {
-  font-size: 20px;
-  font-weight: 700;
+  @include fluid-text(16px, 24px);
+  font-weight: $font-weight-bold;
   margin: 0;
 }
 
 .affiliate-program-header span {
-  font-size: 15px;
-  font-weight: 400;
-  color: #C5CCE0;
+  @include fluid-text(13px, 17px);
+  font-weight: $font-weight-regular;
+  color: $color-text-secondary;
   font-family: system-ui;
 }
 
 .affiliate-program-header img {
-  width: 20px;
-  height: 20px;
+  padding-top: 10px;
 }
 
 .text-header-affiliate {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+
+  span {
+    font-family: system-ui;
+    font-weight: $font-weight-regular;
+    font-size: 15px;
+    color: $color-text-secondary;
+  }
+
+  p {
+    font-family: system-ui;
+    font-weight: $font-weight-bold;
+    font-size: 20px;
+  }
 }
 
 .affiliate-link-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
-  min-height: 508px;
+  @include fluid('min-height', 600px, 620px);
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
 }
-.button-invite{
-  padding: 0 16px;
+
+.button-invite {
+  @include fluid('padding-left', 12px, 20px);
+  @include fluid('padding-right', 12px, 20px);
 }
+
 .your-link {
-  width: 100%;
-  max-width: 324px;
-  border-radius: 24px;
-  border: 1px solid #FFFFFF33;
-  padding: 16px;
+  width: 90%;
+  border-radius: $radius-xl;
+  border: 1px solid $glass-bg-strong;
+  @include fluid('padding', 14px, 20px);
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  box-shadow: 0 4px 12px 0 #000000;
+  box-shadow: 0 4px 12px 0 $color-black;
   backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
 }
 
 .your-link p {
   margin: 0;
-  font-size: 13px;
-  font-weight: 500;
-  color: #A9B2C8;
+  @include fluid-text(12px, 16px);
+  font-weight: $font-weight-medium;
+  color: $color-text-muted;
   font-family: system-ui;
-}
-
-.copy-link-container {
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
-  margin: 8px 0 16px 0;
-  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  transition: 0.5s;
-}
-.copied-text {
-  font-size: 12px;
-  color: #E8EEFF;
 }
 
 .copy-link-container {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-input.success {
-  border: 1px solid #E8EEFF;
-}
-
-.field-message {
-  float: right;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  font-size: 12px;
-  opacity: 0;
-  animation: slideFade 5.5s ease forwards;
-
-  &.success {
-    color: #E8EEFF;
-  }
-}
-
-@keyframes slideFade {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  20% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-  }
+  @include fluid-gap(6px, 12px);
+  @include fluid('padding-top', 10px, 16px);
+  @include fluid('padding-bottom', 10px, 16px);
+  @include fluid('padding-left', 14px, 24px);
+  @include fluid('padding-right', 14px, 24px);
+  border-radius: 12px;
+  border: 1px solid $glass-bg-strong;
+  @include fluid('margin-top', 6px, 12px);
+  @include fluid('margin-bottom', 12px, 20px);
+  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  transition: 0.3s ease;
 }
 
 .copy-link-container input {
@@ -119,11 +105,15 @@ input.success {
   border: none;
   outline: none;
   background: transparent;
-  font-size: 15px;
-  border-radius: 12px;
-  font-weight: 600;
+  @include fluid-text(13px, 18px);
+  border-radius: $radius-md;
+  font-weight: $font-weight-semibold;
   font-family: system-ui;
-  color: #E8EEFF;
+  color: $color-text-area;
+}
+
+input.success {
+  border: 1px solid $color-text-secondary;
 }
 
 .copy-icon {
@@ -131,55 +121,80 @@ input.success {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  transition:
-    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.18s ease;
-
-  img {
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-  }
-
-  &:hover {
-    transform: scale(1.08);
-  }
-
-  &:active {
-    transform: scale(0.92);
-  }
-
-  &.active {
-    transform: scale(1.15);
-    opacity: 0.75;
-  }
+  transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
 .copy-icon img {
-  transform: scale(1.02);
+  @include fluid('width', 18px, 28px);
+  @include fluid('height', 18px, 28px);
+  pointer-events: none;
+}
+
+.copy-icon:hover {
+  transform: scale(1.08);
+}
+
+.copy-icon:active {
+  transform: scale(0.92);
+}
+
+.copy-icon.active {
+  transform: scale(1.15);
+  opacity: 0.75;
+}
+
+.field-message {
+  position: absolute;
+  @include fluid('right', 12px, 24px);
+  @include fluid('top', 12px, 24px);
+  @include fluid-text(11px, 14px);
+  opacity: 0;
+  animation: slideFade 5.5s ease forwards;
+
+  &.success {
+    color: $color-text-area;
+  }
+}
+
+@keyframes slideFade {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.copied-text {
+  @include fluid-text(11px, 14px);
+  color: $color-text-area;
 }
 
 .balance-content {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  @include fluid-gap(8px, 16px);
+  flex-wrap: wrap;
 }
 
 .balance-content p {
-  font-size: 13px;
-  font-weight: 500;
-  color: #A9B2C8;
+  @include fluid-text(12px, 16px);
+  font-weight: $font-weight-medium;
+  color: $color-text-muted;
   margin-bottom: 4px;
   font-family: system-ui;
 }
 
 .balance-content span {
-  font-size: 17px;
-  font-weight: 600;
+  @include fluid-text(16px, 22px);
+  font-weight: $font-weight-semibold;
 }
 
 .button-affiliate {
-  margin-top: 16px;
+  @include fluid('margin-top', 14px, 22px);
+  width: 100%;
 }
-

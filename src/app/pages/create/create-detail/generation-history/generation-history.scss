@@ -1,109 +1,97 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .empty-create-detail {
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 222px;
-  display: flex;
-  border-radius: 12px;
+  @include fluid('min-height', 222px, 350px);
+  border-radius: $radius-md;
   backdrop-filter: blur(40px);
-  border: 1px solid rgba(254, 254, 254, 0.0588235294);
-  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.3) 100%);
+  border: 1px solid $glass-bg-strong;
+  background: $background-gradient;
 }
 
 .no-create-image-wrapper {
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 16px;
+  @include fluid-gap(16px, 24px);
 }
 
 .photo-history {
-  width: 143px;
-  height: 143px;
+  @include fluid('width', 143px, 220px);
+  @include fluid('height', 143px, 220px);
   overflow: hidden;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: $radius-md;
   display: block;
 }
 
 .last-generation-text {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 24px 0 16px 0;
+  @include fluid-text(20px, 28px);
+  font-weight: $font-weight-bold;
+  @include fluid('margin-top', 24px, 32px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .create-generate-detail {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  @include fluid-gap(16px, 24px);
   border: 1px solid rgba(255, 255, 255, 0.0588235294);
-  border-radius: 24px;
+  border-radius: $radius-xl;
   background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
-  box-shadow: 0 4px 6px 0 #000000;
+  box-shadow: 0 4px 6px 0 $color-black;
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
-  padding: 16px;
-  margin: 16px 0;
+  @include fluid('padding', 16px, 24px);
+  @include fluid('margin-top', 16px, 24px);
+  @include fluid('margin-bottom', 16px, 24px);
 }
 
 .left-text-detail {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 167px;
+  @include fluid-gap(16px, 24px);
+  @include fluid('width', 167px, 240px);
 }
 
 .photo-detail {
-  width: 141px;
-  height: 141px;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
+  @include fluid('width', 141px, 220px);
+  @include fluid('height', 141px, 220px);
+  border-radius: $radius-md;
+  border: 1px solid $glass-bg-strong;
   overflow: hidden;
 }
 
 .right-photo-detail {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  @include fluid-gap(8px, 16px);
 }
 
-.date-detail {
+.date-detail, .scenes-pro-detail {
   display: flex;
   flex-direction: column;
 
   label {
-    font-size: 13px;
+    @include fluid-text(13px, 17px);
     font-family: system-ui;
-    color: #A9B2C8;
+    color: $color-text-muted;
     margin-bottom: 2px;
   }
 
   span {
-    font-size: 17px;
-    font-weight: 600;
-  }
-}
-
-.scenes-pro-detail {
-  display: flex;
-  flex-direction: column;
-
-  label {
-    font-size: 13px;
-    font-family: system-ui;
-    color: #A9B2C8;
-    margin-bottom: 2px;
-  }
-
-  span {
-    font-size: 17px;
-    font-weight: 600;
+    @include fluid-text(17px, 22px);
+    font-weight: $font-weight-semibold;
   }
 }
 
 .create-prom-text {
-  font-size: 13px;
-  color: #E8EEFF;
+  @include fluid-text(13px, 17px);
+  color: $color-text-area;
   flex: 1;
   overflow: hidden;
   display: -webkit-box;
@@ -115,26 +103,25 @@
 }
 
 .lab-prom {
-  font-size: 13px;
+  @include fluid-text(13px, 17px);
   font-family: system-ui;
-  color: #A9B2C8;
+  color: $color-text-muted;
   margin-bottom: 2px;
 }
 
-.date-detail-prom {
-  display: flex;
-  flex-direction: column;
+.date-detail-prom,
+.empty-content-detail,
+.create-detail-content,
+.generation-history-content {
+  @include fluid('padding-left', 16px, 30px);
+  @include fluid('padding-right', 16px, 30px);
+  @include fluid('padding-bottom', 80px, 100px);
 }
 
 .empty-content-detail {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0;
 }
 
-.create-detail-content {
-  padding: 0 16px;
-}
 .generation-history-content {
-  padding-bottom: 80px;
+  @include fluid('padding-bottom', 80px, 100px);
 }

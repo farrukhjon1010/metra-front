@@ -1,0 +1,160 @@
+@use 'variables' as *;
+@use 'sass:map';
+@use 'sass:math';
+
+// Функция для удаления единиц измерения
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
+  }
+  @return $number;
+}
+
+// Миксин для адаптивного свойства (clamp)
+@mixin fluid($property, $min-size, $max-size, $min-width: $min-width, $max-width: $max-width) {
+  $min-size-rem: math.div(strip-unit($min-size), 16);
+  $max-size-rem: math.div(strip-unit($max-size), 16);
+  $min-width-rem: math.div(strip-unit($min-width), 16);
+  $max-width-rem: math.div(strip-unit($max-width), 16);
+  $slope: math.div(($max-size-rem - $min-size-rem), ($max-width-rem - $min-width-rem));
+  $y-intersection: -1 * $min-width-rem * $slope + $min-size-rem;
+  $slope-vw: $slope * 100;
+  #{$property}: clamp(#{$min-size-rem}rem, #{$y-intersection}rem + #{$slope-vw}vw, #{$max-size-rem}rem);
+}
+
+// Шрифт
+@mixin fluid-text($min-size, $max-size) {
+  @include fluid('font-size', $min-size, $max-size);
+}
+
+// Отступы
+@mixin fluid-padding($min-size, $max-size) {
+  @include fluid('padding', $min-size, $max-size);
+}
+
+@mixin fluid-margin($min-size, $max-size) {
+  @include fluid('margin', $min-size, $max-size);
+}
+
+@mixin fluid-gap($min-size, $max-size) {
+  @include fluid('gap', $min-size, $max-size);
+}
+
+@mixin fluid-width($min-size, $max-size) {
+  @include fluid('width', $min-size, $max-size);
+}
+
+@mixin fluid-height($min-size, $max-size) {
+  @include fluid('height', $min-size, $max-size);
+}
+
+@mixin mq($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint #{$breakpoint} not found in $breakpoints map.";
+  }
+}
+
+@mixin mq-max($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint) - 0.02) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint #{$breakpoint} not found in $breakpoints map.";
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-col($gap: null) {
+  display: flex;
+  flex-direction: column;
+
+  @if $gap {
+    gap: $gap;
+  }
+}
+
+@mixin flex-row($gap: null) {
+  display: flex;
+  flex-direction: row;
+
+  @if $gap {
+    gap: $gap;
+  }
+}
+
+@mixin glass($radius: $radius-lg) {
+  background: linear-gradient(135deg, $glass-bg-strong, $glass-bg-soft);
+  border: 1px solid $glass-border;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: $radius;
+}
+
+@mixin gradient-card($gradient, $border-color) {
+  background: $gradient;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@mixin sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: $z-fixed;
+  background: $gradient-header;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@mixin text($size, $weight: $font-weight-regular, $color: $color-text-primary) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  font-family: $font-system;
+}
+
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin custom-scrollbar($width: 6px, $thumb-color: rgba(255, 255, 255, 0.2), $track-color: transparent) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb-color;
+    border-radius: $radius-full;
+  }
+}

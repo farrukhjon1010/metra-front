@@ -1,14 +1,18 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .card-quality {
+  @include fluid('padding', 16px, 24px);
+  @include fluid-gap(12px, 16px);
   display: flex;
   flex-direction: row;
-  gap: 16px;
   top: 0;
-  padding: 24px 16px;
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: sticky;
-  z-index: 10;
+  z-index: $z-tooltip;
+  flex-wrap: wrap;
 }
 
 .text-header-history {
@@ -17,166 +21,97 @@
 
   p {
     margin: 0;
-    font-size: 20px;
-    font-weight: 700;
+    @include fluid-text(18px, 22px);
+    font-weight: $font-weight-bold;
   }
 
   span {
-    font-size: 15px;
-    font-weight: 400;
+    @include fluid-text(13px, 17px);
+    font-weight: $font-weight-regular;
     font-family: system-ui;
-    color: #C5CCE0;
+    color: $color-text-secondary;
   }
 }
 
 .quality-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 0 16px 90px 16px;
+  gap: 16px;
+  @include fluid('padding-left', 16px, 20px);
+  @include fluid('padding-right', 16px, 20px);
+  @include fluid('padding-bottom', 16px, 20px);
+  height: calc(100vh - 16px - 115px); /* вычитаем верхний и нижний паддинг */
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .photo-upload-section {
   display: flex;
   flex-direction: column;
+  @include fluid-gap(12px, 16px);
 }
 
 .form-label-quality {
-  font-size: 13px;
+  @include fluid-text(14px, 16px);
   font-family: system-ui;
-  color: #A9B2C8;
-  margin-bottom: 8px;
+  color: $color-text-muted;
 }
 
 .upload-row-quality {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid #FFFFFF33;
-  border-radius: 12px;
-  padding: 8px 20px;
+  border: 1px solid $glass-bg-strong;
+  border-radius: clamp(10px, 3vw, 12px);
+  padding: clamp(6px, 2vw, 8px) clamp(12px, 4vw, 20px);
 }
 
 .upload-content-quality {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .upload-text-small {
-  font-size: 15px;
-  font-weight: 600;
+  @include fluid-text(16px, 18px);
+  font-weight: $font-weight-semibold;
 }
 
 .upload-formats {
-  font-size: 10px;
+  @include fluid-text(11px, 13px);
   font-family: system-ui;
-  color: #7A859E;
+  color: $color-text-hint;
 }
 
 .upload-area-small {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.result-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 24px;
-  border: 1px solid #FFFFFF33;
-  padding: 16px;
-
-  h2 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0;
-  }
-}
-
-.before-photo {
-  width: 324px;
-  height: 324px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(40px);
-}
-
-.after-photo {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  width: 324px;
-  height: 324px;
-  border-radius: 12px;
-  border: 1px solid #FFFFFF33;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-}
-
-.bf-text {
-  max-width: 20px;
-  padding: 3px 8px;
-  background: #FF4B55;
-  border-radius: 4px;
-  font-size: 15px;
-  font-family: system-ui;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-}
-
-.aft-text {
-  max-width: 42px;
-  padding: 3px 8px;
-  background: #2EC57A;
-  font-family: system-ui;
-  border-radius: 4px;
-  font-size: 15px;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-}
-
-.center-text-quality {
-  color: #C5CCE0;
-  font-size: 15px;
-  font-weight: 400;
+  align-items: center;
 }
 
 .photo-quality {
   position: relative;
-  width: 65px;
-  height: 65px;
-  margin-top: 8px;
+  @include fluid('width', 50px, 65px);
+  @include fluid('height', 50px, 65px);
+  @include fluid('margin-top', 6px, 8px);
 
-  img {
+  img.with-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: $radius-md;
     display: block;
   }
 
   .delete-photo {
     position: absolute;
-    top: 2px;
-    right: 1px;
-    width: 24px;
-    height: 24px;
+    @include fluid('top', 2px, 4px);
+    @include fluid('right', 1px, 3px);
+    @include fluid('width', 20px, 24px);
+    @include fluid('height', 20px, 24px);
     border-radius: 50%;
-    background: #ff4d4f;
+    background: $color-danger;
     border: none;
     cursor: pointer;
     display: flex;
@@ -184,27 +119,89 @@
     align-items: center;
 
     img {
-      width: 20px;
-      height: 20px;
+      @include fluid('width', 16px, 20px);
+      @include fluid('height', 16px, 20px);
     }
   }
 }
 
-.result-img {
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  //@include fluid-gap(16px, 16px);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.5);
+  border-radius: $radius-xl;
+  border: 1px solid $glass-bg-strong;
+  @include fluid('padding', 12px, 16px);
+  align-items: stretch;
+
+  h2 {
+    font-size: 18px;
+    font-weight: $font-weight-bold;
+    margin: 0;
+  }
+}
+
+.before-photo,
+.after-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
   width: 100%;
-  object-fit: contain;
-  border-radius: 12px;
+  @include fluid('height', 324px, 480px);
+  border-radius: $radius-md;
+  border: 1px solid $glass-bg-strong;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  position: relative;
+  overflow: hidden;
+  align-self: center;
+
+  img.result-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: $radius-md;
+    display: block;
+  }
+}
+
+.bf-text {
+  background: $color-danger;
+  max-width: 20px;
+}
+
+.aft-text {
+  background: $color-success;
+  max-width: 42px;
+}
+
+.bf-text,
+.aft-text {
+  @include fluid('padding-top', 2px, 3px);
+  @include fluid('padding-bottom', 2px, 3px);
+  @include fluid('padding-left', 6px, 8px);
+  @include fluid('padding-right', 6px, 8px);
+  @include fluid-text(12px, 16px);
+  @include fluid('top', 6px, 8px);
+  @include fluid('left', 6px, 8px);
+  font-family: system-ui;
+  border-radius: 4px;
+  position: absolute;
 }
 
 .center-text-quality {
-  opacity: 0.6;
+  color: $color-text-secondary;
+  @include fluid-text(13px, 17px);
+  font-weight: $font-weight-regular;
   text-align: center;
-}
-
-.result-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 16px
+  opacity: 0.6;
 }
 
 ::ng-deep {
@@ -215,9 +212,23 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: $z-modal;
     color: white;
     height: auto;
     background-color: rgba(0, 0, 0, 0.9);
+  }
+}
+
+@media (max-width: 414px) {
+  .before-photo,
+  .after-photo {
+    width: 85vw;
+    height: 85vw;
+  }
+}
+
+@media (max-width: 375px) {
+  .before-photo,
+  .after-photo {
   }
 }

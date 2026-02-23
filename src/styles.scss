@@ -1,6 +1,5 @@
 @use 'styles/variables' as *;
 @use 'styles/mixins' as *;
-@use 'styles/utilities' as *;
 
 html {
   width: 100%;
@@ -8,6 +7,7 @@ html {
   margin: 0;
   padding: 0;
   background: url('/assets/images/bg.png') repeat fixed center;
+  @include fluid-text(14px, 18px);
 }
 
 body {
@@ -33,15 +33,17 @@ body::before {
 
 app-root {
   display: block;
-  max-width: 390px;
+  width: 100%;
   margin: 0 auto;
   position: relative;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 input {
   background-color: #181826;
   color: #fff;
+  font-size: 1rem;
 }
 
 input:-webkit-autofill,
@@ -53,11 +55,3 @@ input:-webkit-autofill:active {
   caret-color: #fff;
   transition: background-color 9999s ease-in-out 0s;
 }
-
-@media (max-width: 390px) {
-  app-root {
-    max-width: 100%;
-  }
-}
-
-

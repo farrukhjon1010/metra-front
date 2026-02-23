@@ -1,123 +1,133 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .scenes {
-  padding: 0 16px 80px 16px;
+  padding: 0 16px 80px;
 }
 
 .card-header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: $z-tooltip;
 }
 
-.home-header{
-  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+.home-header {
+  @include sticky-header;
   margin-bottom: 16px;
 }
 
 .header-card {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
+  @include flex-row(16px);
   padding: 24px 16px;
-  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
-  -webkit-backdrop-filter: blur(10px);
+  background: $gradient-header;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   span {
-    font-size: 20px;
-    font-weight: 700;
+    @include text(20px, $font-weight-bold);
   }
 }
 
 .scenes-image {
   display: flex;
   flex-direction: row-reverse;
-  border-radius: 24px;
-  background: linear-gradient(90deg, #6A5CFF 0%, #A890FF 100%);
+  border-radius: $radius-xl;
+  background: $glass-spiner;
   box-shadow: 0 4px 12px rgba(106, 92, 255, 0.5);
-  padding: 8px 8px 8px 24px
-}
+  padding: 8px 8px 8px 24px;
+  justify-content: space-between;
 
-.scenes-image img {
-  width: 155px;
-  height: 155px;
-  border-radius: 16px;
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: $radius-lg;
+
+    @media (min-width: 361px) {
+      width: 155px;
+      height: 155px;
+    }
+  }
 }
 
 .scenes-info {
-  padding-right: 16px;
 
   h3 {
-    font-size: 20px;
-    font-weight: 700;
+    @include text(18px, $font-weight-bold);
     margin: 0;
-    padding-top: 24px;
+    padding-top: 16px;
+
+    @media (min-width: 361px) {
+      @include text(20px, $font-weight-bold);
+      padding-top: 24px;
+    }
   }
 
   p {
-    font-size: 15px;
-    font-family: system-ui;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include text(12px, $font-weight-regular);
+    color: $color-white;
+    font-family: "SF Pro Display", $font-system;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    width: 100%;
+    max-width: 140px;
+
+    @media (min-width: 361px) {
+      @include text(15px, $font-weight-regular);
+    }
   }
 }
 
 .scenes-card-templates {
-  display: flex;
-  flex-direction: column;
+  @include flex-col(16px);
   align-items: center;
-  gap: 16px;
-  width: 137px;
   padding: 16px;
-  border-radius: 16px;
+  border-radius: $radius-lg;
   cursor: pointer;
-  background: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
-  -webkit-backdrop-filter: blur(40px);
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(106, 92, 255, 0.4);
-  box-shadow: 0 4px 10px rgb(0, 0, 0), inset 0 0 20px rgba(106, 92, 255, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
+  background: linear-gradient(90deg, rgba(106, 92, 255, 0.4), rgba(106, 92, 255, 0.05));
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(106, 92, 255, 0.4);
+  box-shadow: 0 4px 10px $color-black, inset 0 0 20px rgba(106, 92, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: scale(1.02);
   }
-
-}
-
-.circle-ava-text {
-
-  span {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    font-size: 13px;
-    color: #A9B2C8;
-    font-family: system-ui;
-  }
-
-  p {
-    font-size: 17px;
-    font-weight: 600;
-    margin: 0;
-    padding-bottom: 4px;
-  }
 }
 
 .circle-ava {
-  display: flex;
+  @include flex-center;
   width: 92px;
   height: 92px;
-  border: 2px solid #8b5cf6;
+  border: 2px solid $color-primary-light;
   border-radius: 50%;
   justify-content: center;
 
   img {
     border-radius: 50%;
     object-fit: cover;
+  }
+}
+
+.circle-ava-text {
+
+  p {
+    @include text(15px, $font-weight-semibold);
+    margin: 0;
+    padding-bottom: 4px;
+
+    @media (min-width: 361px) {
+      @include text(17px, $font-weight-semibold);
+    }
+  }
+
+  span {
+    @include text(13px, $font-weight-regular, $color-text-muted);
+    @include text-clamp(2);
   }
 }
 
@@ -129,15 +139,14 @@
 }
 
 .empty-scenes {
-  display: flex;
-  flex-direction: column;
+  @include flex-col;
+  align-items: center;
+  justify-content: center;
   padding: 24px;
   width: 308px;
   height: 285px;
-  border-radius: 24px;
-  border: 1px solid #FFFFFF33;
-  align-items: center;
-  justify-content: center;
+  border-radius: $radius-xl;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 
   img {
     width: 32px;
@@ -146,31 +155,25 @@
 }
 
 .empty-title {
-  font-size: 16px;
-  font-weight: 600;
+  @include text(16px, $font-weight-semibold);
   margin-bottom: 6px;
 }
 
 .empty-blockd {
-  width: 100%;
-  min-height: 458px;
-  box-shadow: 0 4px 2px 0 #000000;
-  backdrop-filter: blur(40px);
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
+  @include flex-col(12px);
   align-items: center;
   justify-content: center;
-  background: linear-gradient(104.04deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.2) 100%);
+  width: 100%;
+  min-height: 458px;
   margin-top: 16px;
-  border: 1px solid #FFFFFF33;
-  gap: 12px;
+  border-radius: $radius-xl;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: $background-gradient;
+  backdrop-filter: blur(40px);
+  box-shadow: 0 4px 2px 0 $color-black;
 
   p {
+    @include text(17px, $font-weight-semibold, $color-text-area);
     margin: 0;
-    font-size: 17px;
-    font-weight: 600;
-    color: #E8EEFF;
-    font-family: system-ui;
   }
 }

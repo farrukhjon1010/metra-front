@@ -1,12 +1,16 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 ::ng-deep {
   .category app-scenes-card .header-card {
     display: none;
   }
+
   .category app-scenes-card .scenes {
-    padding-top: 16px;
+    @include fluid('padding-top', 16px, 24px);
   }
 
   .category app-scenes-card .empty-blockd {
-    min-height: 400px;
+    @include fluid('min-height', 460px, 500px);
   }
 }

@@ -1,34 +1,42 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .create-header-card {
   display: flex;
-  gap: 16px;
-  padding: 24px 16px;
+  @include fluid-gap(16px, 24px);
+  @include fluid('padding-top', 24px, 32px);
+  @include fluid('padding-bottom', 24px, 32px);
+  @include fluid('padding-left', 16px, 40px);
+  @include fluid('padding-right', 16px, 40px);
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 10;
-  align-items: baseline;
+  z-index: $z-fixed;
 }
 
 .head-text-create-detail {
-  display: flex;
-  flex-direction: column;
+  @include flex-col;
+  @include fluid-gap(4px, 6px);
 
   p {
-    font-size: 20px;
-    font-family: system-ui;
-    font-weight: 700;
+    @include text(16px, $font-weight-bold);
     margin: 0;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+
+    @media (min-width: 361px) {
+      @include fluid-text(20px, 28px);
+    }
   }
 
   span {
-    font-size: 14px;
-    font-family: system-ui;
-    color: #C5CCE0;
+    @include text(12px, $font-weight-regular, $color-text-secondary);
+    @media (min-width: 361px) {
+      @include fluid-text(14px, 18px);
+    }
   }
 }

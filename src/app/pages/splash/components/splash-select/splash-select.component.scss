@@ -1,32 +1,35 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
 .check-icon {
   display: flex;
   flex-direction: column;
 
   span {
-    font-size: 20px;
-    font-weight: 700;
+    @include fluid-text(20px, 24px);
+    font-weight: $font-weight-bold;
   }
 
   p {
-    font-size: 15px;
+    @include fluid-text(15px, 17px);
     font-family: system-ui;
-    color: #C5CCE0;
+    color: $color-text-secondary;
   }
 }
 
 .select-screen {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 390px;
+  @include fluid-gap(16px, 24px);
+  @include fluid('max-width', 390px, 500px);
   margin: auto;
-  padding: 16px;
+  @include fluid('padding', 16px, 24px);
 }
 
 .avatar-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  @include fluid-gap(14px, 20px);
 }
 
 .avatar-card {
@@ -35,46 +38,46 @@
   align-items: center;
   background: rgba(255, 255, 255, .08);
   border-radius: 20px;
-  padding: 12px;
+  @include fluid('padding', 12px, 16px);
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid $glass-border;
 }
 
 .avatar-image-wrapper {
-  width: 92px;
-  height: 92px;
+  @include fluid('width', 92px, 120px);
+  @include fluid('height', 92px, 120px);
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid rgba(139, 92, 246, .3);
 }
 
 .avatar-image-wrapper img {
-  width: 92px;
-  height: 92px;
+  width: 100%;
+  height: 100%;
 }
 
 .avatar-card.selected .avatar-image-wrapper {
-  border-color: #8b5cf6;
+  border-color: $color-primary-light;
 }
 
 .btn-select {
-  width: 139px;
-  height: 48px;
-  font-size: 15px;
-  border-radius: 12px;
+  @include fluid('width', 139px, 160px);
+  @include fluid('height', 48px, 56px);
+  @include fluid-text(15px, 17px);
+  border-radius: $radius-md;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-top: 10px;
+  @include fluid('margin-top', 10px, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #ffffff;
+  color: $color-white;
 }
 
 .btn-select.selected {
-  background: linear-gradient(90deg, #6A5CFF, #A890FF);
-  color: #fff;
+  background: $glass-spiner;
+  color: $color-white;
   border: none;
 }
 
@@ -85,16 +88,11 @@
 .success-badge {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  @include fluid-gap(16px, 24px);
   padding-top: 8px;
 }
 
 .success-badge img {
-  width: 24px;
-  height: 24px;
+  @include fluid('width', 24px, 32px);
+  @include fluid('height', 24px, 32px);
 }
-
-
-
-
-
