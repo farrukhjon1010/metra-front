@@ -13,30 +13,38 @@
   </div>
   <div class="subscription-content">
     @for (plan of plans; track plan.id) {
-      <div [class]="plan.cardClass">
+      <div [class]="plan.cardClass"
+           [class.active-plan]="isCurrentPlan(plan)">
         @if (plan.isRecommended) {
           <div class="recommendation-icon">
-            <img src="assets/icons/star-recommend.svg" alt="recommend">Рекомендуем
+            <img src="assets/icons/star-recommend.svg" alt="recommend">
+            Рекомендуем
           </div>
         }
         <div class="text-card">
           <h2>{{ plan.title }}</h2>
+          @if (isCurrentPlan(plan) && activeSubscription) {
+            <div class="active-badge"
+                 [ngClass]="getSubscriptionStatusClass()">
+              Активна до {{ activeSubscription.endsAt | date:'dd MMMM yyyy' }}
+            </div>
+          }
           <p>Вы получаете:</p>
           <div [class]="plan.spanClass">
             @for (feature of plan.features; track feature) {
               <span>
-              <img src="assets/icons/check-confirm.svg" alt="">
-              {{ feature }}
-            </span>
+                <img src="assets/icons/check-confirm.svg" alt="">
+                {{ feature }}
+              </span>
             }
           </div>
           <p>Пример использования:</p>
           <div [class]="plan.spanClass">
             @for (example of plan.examples; track example) {
               <span>
-              <img src="assets/icons/awesome.svg" alt="">
-              {{ example }}
-            </span>
+                <img src="assets/icons/awesome.svg" alt="">
+                {{ example }}
+              </span>
             }
           </div>
           <div [class]="'btn-card-' + plan.id">
@@ -47,8 +55,14 @@
             <app-button
               [type]="plan.buttonType"
               icon="assets/icons/arrow-forward.svg"
+              [disabled]="isCurrentPlan(plan)"
               (click)="selectPlan(plan)">
-              Выбрать
+
+              @if (isCurrentPlan(plan)) {
+                Подписан
+              } @else {
+                Выбрать
+              }
             </app-button>
           </div>
         </div>

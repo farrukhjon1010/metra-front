@@ -142,9 +142,10 @@
 .partnership-text,
 .subscription-text,
 .any-questions {
-  @include fluid-text(15px, 20px);
+  @include fluid-text(17px, 20px);
   font-weight: $font-weight-semibold;
   color: $color-white;
+  font-family: system-ui;
 }
 
 .balance-text {

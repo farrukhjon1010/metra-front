@@ -176,3 +176,30 @@
   padding: 4px 10px;
   gap: 2px;
 }
+.active-badge {
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  width: fit-content;
+  transition: 0.3s ease;
+}
+
+.badge-green {
+  background: rgba(0, 200, 120, 0.15);
+  color: $color-success;
+  border: 1px solid $color-success;
+}
+
+.badge-yellow {
+  background: rgba(255, 170, 0, 0.15);
+  color: #ffaa00;
+  border: 1px solid #ffaa00;
+}
+
+.badge-red {
+  background: rgba(255, 60, 60, 0.15);
+  color: #ff3c3c;
+  border: 1px solid #ff3c3c;
+}

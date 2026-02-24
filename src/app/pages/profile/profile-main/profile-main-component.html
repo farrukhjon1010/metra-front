@@ -45,19 +45,31 @@
 
       <div class="profile-card">
         <h3 class="card-title">Подписка</h3>
-        <div class="sub-text">
-          <p class="subscription-text">Basic (7 дней осталось)</p>
-          <span class="subscription-details">
-            <p>120 токенов в месяц</p>
-            <p>Доступ к сценам METRA</p>
-            <p>Доступ к Nano Banana</p>
-          </span>
-        </div>
+        @if (activeSubscription) {
+          <div class="sub-text">
+            <p class="subscription-text">
+              {{ activeSubscription.plan }}
+              ({{ remainingDays }}
+              {{ remainingDays === 1 ? 'день' : 'дней' }} осталось)
+            </p>
+            <span class="subscription-details">
+              <p>{{ currentPlanDetails?.tokens }} токенов в месяц</p>
+             @for (feature of currentPlanDetails?.features || []; track feature) {
+               <p>{{ feature }}</p>
+             }
+            </span>
+          </div>
+        } @else {
+          <p class="subscription-text">
+            У вас нет активной подписки
+          </p>
+
+        }
         <app-button
           type="primary"
           icon="assets/icons/update.svg"
           (click)="goToSubscription()">
-          Обновить
+          {{ activeSubscription ? 'Обновить' : 'Оформить' }}
         </app-button>
       </div>
 
