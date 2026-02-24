@@ -1,3 +1,7 @@
+@if (showPaidDialog) {
+  <app-paid-dialog></app-paid-dialog>
+}
+
 @for (category of categories; track category) {
   <div class="create__category">
     <h3 class="create__category-title">{{ category }}</h3>

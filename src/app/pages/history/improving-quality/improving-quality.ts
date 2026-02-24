@@ -1,30 +1,39 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {CommonModule, Location} from '@angular/common';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
-import {UpscaleService} from '../../../core/services/upscale.service';
-import {firstValueFrom} from 'rxjs';
-import {Loading} from '../../../shared/components/loading/loading';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { UpscaleService } from '../../../core/services/upscale.service';
+import { firstValueFrom } from 'rxjs';
+import { Loading } from '../../../shared/components/loading/loading';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-improving-quality',
-  imports: [CommonModule, ButtonComponent, Loading],
+  standalone: true,
+  imports: [CommonModule, ButtonComponent, Loading, PaidDialog],
   templateUrl: './improving-quality.html',
   styleUrls: ['./improving-quality.scss'],
 })
 export class ImprovingQuality implements AfterViewInit {
 
-  @ViewChild('photoInput', {static: false}) photoInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('photoInput', { static: false }) photoInput!: ElementRef<HTMLInputElement>;
 
   isProcessing = false;
   isLoading = false;
   isStarted = false;
-  photos: { photo: string | null } = {photo: null};
+  photos: { photo: string | null } = { photo: null };
   originalImage: string | null = null;
   improvedImage: string | null = null;
 
-  constructor(private location: Location,
-              private cdr: ChangeDetectorRef,
-              private upscaleService: UpscaleService) {
+  constructor(
+    private location: Location,
+    private cdr: ChangeDetectorRef,
+    private upscaleService: UpscaleService,
+    public paidDialogService: PaidDialogService
+  ) {}
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
   }
 
   ngAfterViewInit() {
@@ -57,7 +66,7 @@ export class ImprovingQuality implements AfterViewInit {
 
   triggerFileInput(type: 'photo', event: Event) {
     event.stopPropagation();
-    const map = {photo: this.photoInput};
+    const map = { photo: this.photoInput };
     map[type]?.nativeElement.click();
   }
 
@@ -71,6 +80,7 @@ export class ImprovingQuality implements AfterViewInit {
   }
 
   async enhanceImage() {
+    if (this.paidDialogService.tryShowDialog()) return;
     if (!this.photos.photo) return;
 
     this.isLoading = true;

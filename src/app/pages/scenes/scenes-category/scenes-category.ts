@@ -5,24 +5,32 @@ import { Scene, SceneCategory as ModelSceneCategory } from '../../../core/models
 import { CommonModule } from '@angular/common';
 import { ScenesCard } from '../scenes-card/scenes-card';
 import { Loading } from '../../../shared/components/loading/loading';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 
 @Component({
   selector: 'app-scenes-category',
   standalone: true,
-  imports: [CommonModule, ScenesCard, Loading],
+  imports: [CommonModule, ScenesCard, Loading, PaidDialog],
   templateUrl: './scenes-category.html',
   styleUrls: ['./scenes-category.scss']
 })
 export class SceneCategory implements OnInit {
+
   private route = inject(ActivatedRoute);
   private sceneService = inject(SceneService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  public paidDialogService = inject(PaidDialogService);
 
   scenes: Scene[] = [];
   selectedScene: Scene | null = null;
   loaded = false;
   category: ModelSceneCategory | null = null;
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   ngOnInit() {
     const categoryId = Number(this.route.snapshot.paramMap.get('categoryId'));

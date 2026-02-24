@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-create-result',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, PaidDialog],
   standalone: true,
   templateUrl: './create-result.html',
   styleUrls: ['./create-result.scss'],
@@ -14,7 +16,14 @@ export class CreateResult {
   @Output() edit = new EventEmitter<void>();
   @Output() createAnother = new EventEmitter<void>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public paidDialogService: PaidDialogService
+  ) {}
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   downloadResultFile() {
     if (!this.resultImageUrl) return;
@@ -40,11 +49,13 @@ export class CreateResult {
   }
 
   onEdit() {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.edit.emit();
     this.cdr.detectChanges();
   }
 
   onCreateAnother() {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.createAnother.emit();
     this.cdr.detectChanges();
   }

@@ -7,11 +7,13 @@ import { ScenesCard } from '../../scenes/scenes-card/scenes-card';
 import { Loading } from '../../../shared/components/loading/loading';
 import { HomeHeader } from '../home-header/home-header';
 import { Subscription } from 'rxjs';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-home-category',
   standalone: true,
-  imports: [CommonModule, ScenesCard, Loading, HomeHeader],
+  imports: [CommonModule, ScenesCard, Loading, HomeHeader, PaidDialog],
   templateUrl: './home-category.html',
   styleUrls: ['./home-category.scss']
 })
@@ -21,11 +23,16 @@ export class HomeCategory implements OnInit, OnDestroy {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private subscriptions = new Subscription();
+  public paidDialogService = inject(PaidDialogService);
 
   scenes: Scene[] = [];
   selectedScene: Scene | null = null;
   loader = false;
   category: ModelSceneCategory | null = null;
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   ngOnInit() {
     const categoryId = Number(this.route.snapshot.paramMap.get('categoryId'));

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule, NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,19 +9,21 @@ import { FileService } from '../../../core/services/file.service';
 import { Loading } from '../../../shared/components/loading/loading';
 import { from, Subject, switchMap, takeUntil } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 
 @Component({
   selector: 'app-add-avatar',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule, Loading],
+  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule, Loading, PaidDialog],
   templateUrl: './add-avatar.component.html',
   styleUrls: ['./add-avatar.component.scss'],
 })
 export class AddAvatarComponent implements OnDestroy {
 
-  @ViewChild('frontInput', { static: false }) frontInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('frontInput') frontInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('leftInput') leftInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('rightInput') rightInput!: ElementRef<HTMLInputElement>;
 
   gender: Gender = Gender.MALE;
   currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
@@ -44,8 +46,13 @@ export class AddAvatarComponent implements OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private avatarService: AvatarService,
-    private fileService: FileService
+    private fileService: FileService,
+    public paidDialogService: PaidDialogService
   ) {}
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   isSelected(avatar: string): boolean {
     return this.selectedAvatars.includes(avatar);
@@ -60,6 +67,7 @@ export class AddAvatarComponent implements OnDestroy {
   }
 
   confirmAvatars(): void {
+    if (this.paidDialogService.tryShowDialog()) return;
     if (this.selectedAvatars.length === 0) return;
 
     this.currentStep = 'loading';
@@ -86,7 +94,7 @@ export class AddAvatarComponent implements OnDestroy {
       switchMap(res => from(res.blob())),
       map(blob => new File([blob], `avatar_v${index}.png`, { type: 'image/png' })),
       switchMap(file => this.fileService.uploadGeneratedAvatar(file, index)),
-      switchMap((response) => this.avatarService.addImgUrl(response.url)),
+      switchMap(response => this.avatarService.addImgUrl(response.url)),
       takeUntil(this.destroy$)
     ).subscribe({
       next: () => {
@@ -101,37 +109,6 @@ export class AddAvatarComponent implements OnDestroy {
     });
   }
 
-  triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
-    const map = {
-      front: this.frontInput,
-      left: this.leftInput,
-      right: this.rightInput,
-    };
-    map[type]?.nativeElement.click();
-  }
-
-  onFileSelectedAvatar(event: Event, type: 'front' | 'left' | 'right') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) return;
-
-    this.photos[type].file = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photos[type].preview = reader.result as string;
-      this.cdr.detectChanges();
-    };
-    reader.readAsDataURL(file);
-  }
-
-  removePhoto(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
-    this.photos[type].file = null;
-    this.photos[type].preview = null;
-    this.cdr.detectChanges();
-  }
-
   canCreate(): boolean {
     return this.myForm.valid &&
       !!this.photos.front.file &&
@@ -140,15 +117,17 @@ export class AddAvatarComponent implements OnDestroy {
   }
 
   createAvatar() {
+    if (this.paidDialogService.tryShowDialog()) return;
     if (!this.canCreate()) return;
 
     this.currentStep = 'loading';
     this.cdr.detectChanges();
 
-    const filesUpload: File[] = [];
-    if (this.photos.front.file) filesUpload.push(this.photos.front.file);
-    if (this.photos.left.file) filesUpload.push(this.photos.left.file);
-    if (this.photos.right.file) filesUpload.push(this.photos.right.file);
+    const filesUpload: File[] = [
+      this.photos.front.file!,
+      this.photos.left.file!,
+      this.photos.right.file!
+    ];
 
     this.fileService.uploadAvatars(filesUpload)
       .pipe(takeUntil(this.destroy$))
@@ -189,9 +168,35 @@ export class AddAvatarComponent implements OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
+    event.stopPropagation();
+    const map = {
+      front: this.frontInput,
+      left: this.leftInput,
+      right: this.rightInput
+    };
+    map[type]?.nativeElement.click();
+  }
+
+  onFileSelectedAvatar(event: Event, type: 'front' | 'left' | 'right') {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (!file) return;
+
+    this.photos[type].file = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.photos[type].preview = reader.result as string;
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removePhoto(type: 'front' | 'left' | 'right', event: Event) {
+    event.stopPropagation();
+    this.photos[type].file = null;
+    this.photos[type].preview = null;
+    this.cdr.detectChanges();
   }
 
   goProfile() {
@@ -205,5 +210,10 @@ export class AddAvatarComponent implements OnDestroy {
   submit() {
     if (this.myForm.invalid) return;
     console.log('Форма отправлена', this.myForm.value);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

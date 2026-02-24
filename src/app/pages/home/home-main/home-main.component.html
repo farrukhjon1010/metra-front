@@ -1,13 +1,11 @@
-@if (showPaidDialog()) {
-  <app-paid-dialog
-    (close)="closeDialog()">
-  </app-paid-dialog>
+@if (showPaidDialog) {
+  <app-paid-dialog></app-paid-dialog>
 }
 
 @if (categories$ | async; as categories) {
   <app-home-header></app-home-header>
-
   <app-scenes-header></app-scenes-header>
+
   <div class="grid">
     <app-scenes-grid
       [categories]="categories"

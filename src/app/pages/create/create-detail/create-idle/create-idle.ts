@@ -4,11 +4,13 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { CreateCard } from '../../create.data';
 import { GenerationService } from '../../../../core/services/generation.service';
 import { Subject, takeUntil } from 'rxjs';
+import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-create-idle',
   standalone: true,
-  imports: [FormsModule, ButtonComponent],
+  imports: [FormsModule, ButtonComponent, PaidDialog],
   templateUrl: './create-idle.html',
   styleUrls: ['./create-idle.scss'],
 })
@@ -29,8 +31,13 @@ export class CreateIdle implements OnChanges, OnDestroy {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private generationService: GenerationService
+    private generationService: GenerationService,
+    public paidDialogService: PaidDialogService
   ) {}
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['initialPrompt']) {
@@ -45,6 +52,7 @@ export class CreateIdle implements OnChanges, OnDestroy {
   }
 
   createImage() {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.create.emit({
       prompt: this.prompt,
       imageUrl: this.photos.generate,
@@ -80,6 +88,7 @@ export class CreateIdle implements OnChanges, OnDestroy {
   }
 
   generatePrompt(): void {
+    if (this.paidDialogService.tryShowDialog()) return;
     if (!this.card?.type || this.isLoadingPrompt) return;
 
     this.isLoadingPrompt = true;

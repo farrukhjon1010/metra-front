@@ -1,4 +1,7 @@
 <div class="create-detail">
+  @if (showPaidDialog) {
+    <app-paid-dialog></app-paid-dialog>
+  }
   <div class="text-ai-generation">
     <label>Введите запрос</label>
     <div class="textarea-wrapper">
@@ -25,7 +28,8 @@
     <div class="row-quality">
       <div class="upload-small"
            (click)="triggerFileInput('generate', $event)">
-        <input #photoGenerate type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
+        <input #photoGenerate
+               type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                (change)="onPhotoSelected($event, 'generate')" style="display: none;">
         <div class="upload-create-quality">
           <span class="text-small">Загрузить</span>
@@ -37,8 +41,9 @@
     @if (photos.generate) {
       <div class="photo-quality">
         <img class="with-photo" [src]="photos.generate" alt="Photo">
-        <button class="delete-photo-generation"
-                (click)="removePhoto('generate', $event)">
+        <button
+          class="delete-photo-generation"
+          (click)="removePhoto('generate', $event)">
           <img src="assets/icons/delete.svg" alt="">
         </button>
       </div>

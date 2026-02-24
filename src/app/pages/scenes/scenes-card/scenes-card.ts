@@ -7,13 +7,15 @@ import { CommonModule } from "@angular/common";
 import { Subject, takeUntil, finalize } from 'rxjs';
 import { Scene } from '../../../core/models/scene.model';
 import { HomeHeader } from '../../home/home-header/home-header';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 
 @Component({
   selector: 'app-scenes-card',
   templateUrl: './scenes-card.html',
   styleUrls: ['./scenes-card.scss'],
   standalone: true,
-  imports: [ButtonComponent, CommonModule, HomeHeader]
+  imports: [ButtonComponent, CommonModule, HomeHeader, PaidDialog]
 })
 export class ScenesCard implements OnChanges, OnDestroy {
 
@@ -32,7 +34,8 @@ export class ScenesCard implements OnChanges, OnDestroy {
   constructor(
     private sceneService: SceneService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public paidDialogService: PaidDialogService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -54,6 +57,10 @@ export class ScenesCard implements OnChanges, OnDestroy {
 
   get isLoading(): boolean {
     return this.loadingCount > 0;
+  }
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
   }
 
   backToGrid() {
@@ -121,21 +128,19 @@ export class ScenesCard implements OnChanges, OnDestroy {
   }
 
   openTemplate(scene: Scene) {
-    this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
-      state: {
-        prompt: scene.prompt,
-        fromHistory: true
-      }
-    });
+    if (!this.paidDialogService.tryShowDialog()) {
+      this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
+        state: { prompt: scene.prompt, fromHistory: true }
+      });
+    }
   }
 
   openFreestyle(scene: Scene) {
-    this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
-      state: {
-        prompt: scene.prompt,
-        fromHistory: true
-      }
-    });
+    if (!this.paidDialogService.tryShowDialog()) {
+      this.router.navigate(['/create', GenerationType.PHOTO_BY_STAGE], {
+        state: { prompt: scene.prompt, fromHistory: true }
+      });
+    }
   }
 
   showMoreTemplates() {

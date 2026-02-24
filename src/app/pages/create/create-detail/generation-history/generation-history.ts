@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angu
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-generation-history',
-  imports: [ButtonComponent, DatePipe],
+  imports: [ButtonComponent, DatePipe, PaidDialog],
   standalone: true,
   templateUrl: './generation-history.html',
   styleUrls: ['./generation-history.scss'],
@@ -15,15 +17,26 @@ export class GenerationHistory {
   @Input() history: any[] = [];
   @Output() repeat = new EventEmitter<any>();
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    public paidDialogService: PaidDialogService
+  ) {}
+
+  get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   repeatGeneration(generation: any) {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.repeat.emit(generation);
     this.cdr.detectChanges();
   }
 
   downloadFile(url: string, type: 'image' | 'video'): void {
+    if (this.paidDialogService.tryShowDialog()) return;
     if (!url) return;
+
     fetch(url)
       .then(response => {
         if (!response.ok) {
@@ -48,10 +61,12 @@ export class GenerationHistory {
   }
 
   goToUpscale(imageUrl: string) {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.router.navigate(['/history/improving-quality'], { state: { imageUrl } });
   }
 
   navigateToHistory() {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.router.navigate(['/history']);
   }
 }

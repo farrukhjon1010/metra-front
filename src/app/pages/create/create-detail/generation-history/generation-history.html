@@ -1,4 +1,7 @@
 <div class="create-detail-content">
+  @if (showPaidDialog) {
+    <app-paid-dialog></app-paid-dialog>
+  }
   <h1 class="last-generation-text">Последние генерации</h1>
 
   @if (history.length < 1) {
