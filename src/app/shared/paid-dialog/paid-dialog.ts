@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { PaidDialogService } from '../../core/services/paid-dialog.service';
 import { ButtonComponent } from '../components/button/button.component';
 
@@ -11,14 +10,10 @@ import { ButtonComponent } from '../components/button/button.component';
   styleUrls: ['./paid-dialog.scss'],
 })
 export class PaidDialog {
-  constructor(
-    private router: Router,
-    private paidDialogService: PaidDialogService
-  ) {}
+  constructor(public paidDialogService: PaidDialogService) {}
 
   openPaidDialog() {
-    this.paidDialogService.closeDialog();
-    this.router.navigate(['profile/subscription']);
+    this.paidDialogService.openPaidDialog();
   }
 
   closeDialog() {

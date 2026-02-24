@@ -31,8 +31,8 @@ export class HistoryListComponent implements OnInit, OnDestroy {
     public paidDialogService: PaidDialogService
   ) {}
 
-  get showPaidDialog(): boolean {
-    return this.paidDialogService.showDialog();
+  get shouldShowPaidDialog(): boolean {
+    return !this.isLoading && this.generationHistory.length > 0 && this.paidDialogService.showDialog();
   }
 
   ngOnInit() {
@@ -49,7 +49,11 @@ export class HistoryListComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.generationHistory = data;
           this.isLoading = false;
-          this.cdr.detectChanges();
+          if (this.generationHistory.length > 0 && this.paidDialogService.tryShowDialog()) {
+            this.cdr.detectChanges();
+          } else {
+            this.cdr.detectChanges();
+          }
         },
         error: (err) => {
           console.error('Ошибка при загрузке:', err);

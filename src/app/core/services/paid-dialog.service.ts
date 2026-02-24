@@ -1,13 +1,15 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { SubscriptionService } from './subscription.service';
+import { Router } from '@angular/router';
 import { Subscription } from '../models/subscription.model';
 import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PaidDialogService {
 
-  showDialog = signal(false);
-
+  showDialog = signal(true);
+  private router = inject(Router);
+  private subscriptionService = inject(SubscriptionService);
   private hasActiveSubscription = signal<boolean | null>(null);
   private isLimitReached = signal(false);
 
@@ -17,7 +19,7 @@ export class PaidDialogService {
     return active && !this.isLimitReached();
   });
 
-  constructor(private subscriptionService: SubscriptionService) {
+  constructor() {
     this.loadSubscription();
   }
 
@@ -45,7 +47,16 @@ export class PaidDialogService {
   }
 
   closeDialog() {
+    if (!this.hasAccess()) {
+      this.router.navigate(['profile/subscription']);
+    } else {
+      this.showDialog.set(false);
+    }
+  }
+
+  openPaidDialog() {
     this.showDialog.set(false);
+    this.router.navigate(['profile/subscription']);
   }
 
   setLimitReached(reached: boolean) {

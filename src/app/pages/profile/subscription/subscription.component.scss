@@ -166,7 +166,7 @@
 
 .recommendation-icon {
   display: flex;
-  position: absolute;
+  position: relative;
   background: white;
   right: 0;
   border-top-right-radius: $radius-lg;
@@ -175,6 +175,9 @@
   @include fluid-text(13px, 15px);
   padding: 4px 10px;
   gap: 2px;
+  width: 100%;
+  max-width: 85px;
+  float: right;
 }
 .active-badge {
   margin: 0;
