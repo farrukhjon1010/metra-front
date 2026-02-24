@@ -1,3 +1,6 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .bottom-nav {
   position: fixed;
   bottom: clamp(8px, 3vw, 24px);
@@ -14,7 +17,7 @@
   border-radius: 16px;
   background: rgba(20, 22, 40, 0.9);
   backdrop-filter: blur(20px);
-  border: 1px solid #FFFFFF33;
+  border: 1px solid $glass-bg-strong;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
@@ -27,7 +30,7 @@
   font-family: system-ui;
   width: calc((100% - 8px) / var(--items-count));
   border-radius: 12px;
-  background: linear-gradient(135deg, #7b5cff, #a259ff);
+  background: $glass-spiner;
   transition: transform 0.3s ease;
   z-index: 0;
 }
@@ -43,7 +46,7 @@
   cursor: pointer;
   position: relative;
   z-index: 1;
-  color: #c5cce0;
+  color: $color-text-secondary;
   font-size: clamp(11px, 2.5vw, 13px);
   font-weight: 500;
   transition: 0.2s ease;

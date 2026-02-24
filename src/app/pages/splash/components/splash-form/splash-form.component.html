@@ -11,8 +11,7 @@
                [ngClass]="{
               'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
               'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
-            }"
-          >
+            }">
             <input
               type="text"
               name="avatarName"
@@ -92,8 +91,7 @@
           <label class="form-label">Загрузите фото с левого профиля</label>
           <div class="upload-row">
             <div class="upload-area-small" (click)="triggerFileInput('left', $event)">
-              <input
-                #leftInput
+              <input #leftInput
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                 (change)="onFileSelected($event, 'left')"
@@ -130,8 +128,7 @@
           <label class="form-label">Загрузите фото с правого профиля</label>
           <div class="upload-row">
             <div class="upload-area-small" (click)="triggerFileInput('right', $event)">
-              <input
-                #rightInput
+              <input #rightInput
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                 (change)="onFileSelected($event, 'right')"

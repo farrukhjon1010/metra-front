@@ -37,7 +37,7 @@
   @include fluid-text(15px, 19px);
   border: 1px solid $glass-bg-strong;
   border-radius: $radius-md;
-  background: $color-bg;
+  background: $color-bg-main;
   box-shadow: 0 4px 6px 0 $color-black;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);

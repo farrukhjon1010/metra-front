@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import {TokenPackage} from '../../../core/models/token-transactions.model';
-import {TokenTransactionsService} from '../../../core/services/token-transactions.service';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
-import {Loading} from '../../../shared/components/loading/loading';
-import {take} from 'rxjs/operators';
+import { TokenPackage } from '../../../core/models/token-transactions.model';
+import { TokenTransactionsService } from '../../../core/services/token-transactions.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { Loading } from '../../../shared/components/loading/loading';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-balance',
@@ -18,14 +18,22 @@ export class BalanceComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private tokenService: TokenTransactionsService
+    private tokenService: TokenTransactionsService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.tokenService.getTokenPackages()
       .pipe(take(1))
-      .subscribe(packages => {
-        this.tokenPackages = packages;
+      .subscribe({
+        next: (packages) => {
+          this.tokenPackages = packages;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки пакетов токенов', err);
+          this.cdr.detectChanges();
+        }
       });
   }
 
@@ -35,15 +43,18 @@ export class BalanceComponent implements OnInit {
 
   buyToken(pkg: TokenPackage) {
     this.isLoading = true;
+    this.cdr.detectChanges();
     this.tokenService.createOrder(pkg.tokens)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
           this.isLoading = false;
+          this.cdr.detectChanges();
           window.location.href = res.url;
         },
         error: () => {
           this.isLoading = false;
+          this.cdr.detectChanges();
           alert('Не удалось создать заказ. Попробуйте позже.');
         }
       });

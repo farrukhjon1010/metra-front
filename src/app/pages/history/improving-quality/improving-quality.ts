@@ -50,7 +50,6 @@ export class ImprovingQuality implements AfterViewInit {
       this.originalImage = null;
       this.improvedImage = null;
       this.isStarted = false;
-
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
@@ -68,6 +67,7 @@ export class ImprovingQuality implements AfterViewInit {
     this.originalImage = null;
     this.improvedImage = null;
     this.isStarted = false;
+    this.cdr.detectChanges();
   }
 
   async enhanceImage() {
@@ -111,5 +111,6 @@ export class ImprovingQuality implements AfterViewInit {
   repeatImage() {
     this.improvedImage = null;
     this.isStarted = false;
+    this.cdr.detectChanges();
   }
 }

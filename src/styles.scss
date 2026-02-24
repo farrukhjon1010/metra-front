@@ -16,7 +16,7 @@ body {
   background: transparent;
   position: relative;
   font-family: 'SF Pro Display', system-ui !important;
-  color: #ffffff;
+  color: $color-white;
 }
 
 body::before {
@@ -28,7 +28,7 @@ body::before {
   height: 100%;
   background: url('/assets/images/bg.png') repeat center center;
   background-size: cover;
-  z-index: -1;
+  z-index: $z-negative;
 }
 
 app-root {
@@ -41,8 +41,8 @@ app-root {
 }
 
 input {
-  background-color: #181826;
-  color: #fff;
+  background-color: $color-bg-main;
+  color: $color-white;
   font-size: 1rem;
 }
 
@@ -50,8 +50,8 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #181826 inset !important;
-  -webkit-text-fill-color: #fff !important;
-  caret-color: #fff;
+  -webkit-box-shadow: 0 0 0 1000px $color-bg-main inset !important;
+  -webkit-text-fill-color: $color-white !important;
+  caret-color: $color-white;
   transition: background-color 9999s ease-in-out 0s;
 }

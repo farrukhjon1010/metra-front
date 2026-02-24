@@ -27,35 +27,42 @@ export class SceneCategory implements OnInit {
   ngOnInit() {
     const categoryId = Number(this.route.snapshot.paramMap.get('categoryId'));
 
-    this.sceneService.getCategories().subscribe(categories => {
-      this.category = categories.find(c => c.id === categoryId) || null;
-
-      this.sceneService.getScenes({ categoryId }).subscribe({
-        next: (scenes) => {
-          this.scenes = scenes;
-          if (scenes.length > 0) {
-            this.selectedScene = scenes[0];
-          } else if (this.category) {
-            this.selectedScene = {
-              id: 0,
-              name: '',
-              image: this.category.image,
-              category: this.category,
-              prompt: '',
-              mode: 'Template',
-              createdAt: new Date().toISOString()
-            } as Scene;
+    this.sceneService.getCategories().subscribe({
+      next: (categories) => {
+        this.category = categories.find(c => c.id === categoryId) || null;
+        this.cdr.detectChanges();
+        this.sceneService.getScenes({ categoryId }).subscribe({
+          next: (scenes) => {
+            this.scenes = scenes;
+            if (scenes.length > 0) {
+              this.selectedScene = scenes[0];
+            } else if (this.category) {
+              this.selectedScene = {
+                id: 0,
+                name: '',
+                image: this.category.image,
+                category: this.category,
+                prompt: '',
+                mode: 'Template',
+                createdAt: new Date().toISOString()
+              } as Scene;
+            }
+            this.loaded = true;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.scenes = [];
+            this.selectedScene = null;
+            this.loaded = true;
+            this.cdr.detectChanges();
           }
-          this.loaded = true;
-          this.cdr.detectChanges();
-        },
-        error: () => {
-          this.scenes = [];
-          this.selectedScene = null;
-          this.loaded = true;
-          this.cdr.detectChanges();
-        }
-      });
+        });
+      },
+      error: () => {
+        this.category = null;
+        this.loaded = true;
+        this.cdr.detectChanges();
+      }
     });
   }
 

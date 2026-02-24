@@ -12,13 +12,14 @@
       <p class="feature-text-metra">Для доступа ко всем возможностям METRA используется аватар.</p>
     </div>
     <div class="actions">
+      @if (!hasAvatars && !hasActiveSubscription) {
       <app-button
         type="primary"
         icon="assets/icons/add.svg"
         (click)="create.emit()">
         Создать аватар
       </app-button>
-
+      }
       <app-button
         type="secondary"
         (click)="demo.emit()">
@@ -27,4 +28,3 @@
     </div>
   </div>
 </div>
-

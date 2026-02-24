@@ -4,9 +4,9 @@
 .scenes-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  @include fluid-gap(12px, 20px);
-  @include fluid('padding-left', 12px, 20px);
-  @include fluid('padding-right', 12px, 20px);
+  @include fluid-gap(16px, 16px);
+  @include fluid('padding-left', 16px, 20px);
+  @include fluid('padding-right', 16px, 20px);
   @include fluid('padding-bottom', 60px, 100px);
 }
 
@@ -82,7 +82,7 @@
 .empty-block {
   @include fluid('width', 280px, 358px);
   @include fluid('height', 400px, 508px);
-  background: $color-bg;
+  background: $color-bg-main;
   display: flex;
   flex-direction: column;
   align-items: center;

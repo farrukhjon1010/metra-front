@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ScenesGrid } from './scenes-grid/scenes-grid';
 import { Loading } from '../../shared/components/loading/loading';
-import { Scene, SceneCategory } from '../../core/models/scene.model';
+import { SceneCategory } from '../../core/models/scene.model';
 import { SceneService } from '../../core/services/scene.service';
 import { Observable } from 'rxjs';
 import { ScenesHeader } from './scenes-header/scenes-header';
@@ -34,9 +34,5 @@ export class ScenesComponent implements OnInit {
           this.router.navigate(['/scenes/scenes/category', category.id]);
         }
       });
-  }
-
-  onSceneSelect(scene: Scene) {
-    this.router.navigate(['/scenes', scene.id])
   }
 }

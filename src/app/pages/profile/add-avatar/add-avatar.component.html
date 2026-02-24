@@ -14,13 +14,11 @@
               <form [formGroup]="myForm" (ngSubmit)="submit()" novalidate>
                 <div class="form-group">
                   <label class="form-label">Имя аватара</label>
-                  <div
-                    class="input-wrapper"
-                    [ngClass]="{
-                      'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
-                      'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
-                    }"
-                  >
+                  <div class="input-wrapper"
+                      [ngClass]="{
+                        'invalid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].invalid,
+                        'valid': myForm.controls['avatarName'].touched && myForm.controls['avatarName'].valid
+                      }">
                     <input
                       type="text"
                       name="avatarName"
@@ -63,8 +61,7 @@
                 <label class="form-label">Загрузите фото с фронтальной стороны</label>
                 <div class="upload-row">
                   <div class="upload-area-small" (click)="triggerFileInput('front', $event)">
-                    <input
-                      #frontInput
+                    <input #frontInput
                       type="file"
                       accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                       (change)="onFileSelectedAvatar($event, 'front')"
@@ -99,8 +96,7 @@
                 <label class="form-label">Загрузите фото с левого профиля</label>
                 <div class="upload-row">
                   <div class="upload-area-small" (click)="triggerFileInput('left', $event)">
-                    <input
-                      #leftInput
+                    <input #leftInput
                       type="file"
                       accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                       (change)="onFileSelectedAvatar($event, 'left')"
@@ -135,8 +131,7 @@
                 <label class="form-label">Загрузите фото с правого профиля</label>
                 <div class="upload-row">
                   <div class="upload-area-small" (click)="triggerFileInput('right', $event)">
-                    <input
-                      #rightInput
+                    <input #rightInput
                       type="file"
                       accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
                       (change)="onFileSelectedAvatar($event, 'right')"
@@ -219,8 +214,6 @@
             </div>
           }
         </div>
-      } @else {
-        <p class="empty-message">Аватары генерируются…</p>
       }
       <app-button
         type="primary"

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -16,7 +16,10 @@ export class HomeHeader implements OnInit, OnDestroy {
   currentAvatar: string = "";
   private destroy$ = new Subject<void>();
 
-  constructor(private avatarService: AvatarService) {}
+  constructor(
+    private avatarService: AvatarService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loadUserAvatars();
@@ -41,9 +44,11 @@ export class HomeHeader implements OnInit, OnDestroy {
             this.currentAvatar = '';
           }
           this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: () => {
           this.isLoading = false;
+          this.cdr.detectChanges();
         }
       });
   }

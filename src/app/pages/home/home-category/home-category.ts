@@ -30,36 +30,45 @@ export class HomeCategory implements OnInit, OnDestroy {
   ngOnInit() {
     const categoryId = Number(this.route.snapshot.paramMap.get('categoryId'));
 
-    const categoriesSub = this.sceneService.getCategories().subscribe(categories => {
-      this.category = categories.find(c => c.id === categoryId) || null;
+    const categoriesSub = this.sceneService.getCategories().subscribe({
+      next: categories => {
+        this.category = categories.find(c => c.id === categoryId) || null;
 
-      const scenesSub = this.sceneService.getScenes({ categoryId }).subscribe({
-        next: (categoryScenes) => {
-          this.scenes = categoryScenes;
-          if (categoryScenes.length > 0) {
-            this.selectedScene = categoryScenes[0];
-          } else if (this.category) {
-            this.selectedScene = {
-              id: 0,
-              name: '',
-              image: this.category.image,
-              category: this.category,
-              prompt: '',
-              mode: 'Template',
-              createdAt: new Date().toISOString()
-            } as Scene;
+        const scenesSub = this.sceneService.getScenes({ categoryId }).subscribe({
+          next: categoryScenes => {
+            this.scenes = categoryScenes;
+            if (categoryScenes.length > 0) {
+              this.selectedScene = categoryScenes[0];
+            } else if (this.category) {
+              this.selectedScene = {
+                id: 0,
+                name: '',
+                image: this.category.image,
+                category: this.category,
+                prompt: '',
+                mode: 'Template',
+                createdAt: new Date().toISOString()
+              } as Scene;
+            }
+            this.loader = true;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.scenes = [];
+            this.selectedScene = null;
+            this.loader = true;
+            this.cdr.detectChanges();
           }
-          this.loader = true;
-          this.cdr.detectChanges();
-        },
-        error: () => {
-          this.scenes = [];
-          this.selectedScene = null;
-          this.loader = true;
-          this.cdr.detectChanges();
-        }
-      });
-      this.subscriptions.add(scenesSub);
+        });
+        this.subscriptions.add(scenesSub);
+      },
+      error: () => {
+        this.category = null;
+        this.scenes = [];
+        this.selectedScene = null;
+        this.loader = true;
+        this.cdr.detectChanges();
+      }
     });
     this.subscriptions.add(categoriesSub);
   }

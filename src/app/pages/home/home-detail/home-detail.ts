@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ScenesCard } from '../../scenes/scenes-card/scenes-card';
@@ -21,7 +21,8 @@ export class HomeDetail implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sceneService: SceneService,
-    private location: Location
+    private location: Location,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -32,10 +33,12 @@ export class HomeDetail implements OnInit {
         .subscribe({
           next: (scenes: Scene[]) => {
             this.scene = scenes.find(s => s.id === sceneId) || null;
+            this.cdr.detectChanges();
           },
           error: (err) => {
             console.error('Failed to load scenes', err);
             this.scene = null;
+            this.cdr.detectChanges();
           }
         });
     }

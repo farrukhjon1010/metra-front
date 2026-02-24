@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ButtonComponent} from '../../../../shared/components/button/button.component';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-create-result',
@@ -13,6 +13,8 @@ export class CreateResult {
   @Input() prompt!: string;
   @Output() edit = new EventEmitter<void>();
   @Output() createAnother = new EventEmitter<void>();
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   downloadResultFile() {
     if (!this.resultImageUrl) return;
@@ -29,14 +31,21 @@ export class CreateResult {
         a.download = `generation-${isVideo ? 'video' : 'image'}.${extension}`;
         a.click();
         URL.revokeObjectURL(objectUrl);
+        this.cdr.detectChanges();
+      })
+      .catch(err => {
+        console.error('Ошибка при скачивании файла:', err);
+        this.cdr.detectChanges();
       });
   }
 
   onEdit() {
     this.edit.emit();
+    this.cdr.detectChanges();
   }
 
   onCreateAnother() {
     this.createAnother.emit();
+    this.cdr.detectChanges();
   }
 }

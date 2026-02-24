@@ -7,8 +7,8 @@ import { Gender } from '../../../core/models/avatar.model';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { FileService } from '../../../core/services/file.service';
 import { Loading } from '../../../shared/components/loading/loading';
-import {from, Subject, switchMap, takeUntil} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { from, Subject, switchMap, takeUntil } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-avatar',
@@ -23,7 +23,7 @@ export class AddAvatarComponent implements OnDestroy {
   @ViewChild('leftInput', { static: false }) leftInput!: ElementRef<HTMLInputElement>;
   @ViewChild('rightInput', { static: false }) rightInput!: ElementRef<HTMLInputElement>;
 
-  gender: Gender = Gender.MALE
+  gender: Gender = Gender.MALE;
   currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
   generatedAvatars: string[] = [];
   selectedAvatars: string[] = [];
@@ -40,11 +40,12 @@ export class AddAvatarComponent implements OnDestroy {
     avatarName: new FormControl('', Validators.required),
   });
 
-
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private cdr: ChangeDetectorRef,
     private avatarService: AvatarService,
-    private fileService: FileService) { }
+    private fileService: FileService
+  ) {}
 
   isSelected(avatar: string): boolean {
     return this.selectedAvatars.includes(avatar);
@@ -81,29 +82,23 @@ export class AddAvatarComponent implements OnDestroy {
   }
 
   private uploadAndSave(url: string, index: number) {
-
     from(fetch(url)).pipe(
       switchMap(res => from(res.blob())),
       map(blob => new File([blob], `avatar_v${index}.png`, { type: 'image/png' })),
-      switchMap(file =>
-        this.fileService.uploadGeneratedAvatar(file, index)
-      ),
-      switchMap((response) =>
-        this.avatarService.addImgUrl(response.url)
-      ),
+      switchMap(file => this.fileService.uploadGeneratedAvatar(file, index)),
+      switchMap((response) => this.avatarService.addImgUrl(response.url)),
       takeUntil(this.destroy$)
-    )
-      .subscribe({
-        next: () => {
-          this.currentStep = 'success';
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Ошибка при сохранении аватара:', err);
-          this.currentStep = 'form';
-          this.cdr.detectChanges();
-        }
-      });
+    ).subscribe({
+      next: () => {
+        this.currentStep = 'success';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Ошибка при сохранении аватара:', err);
+        this.currentStep = 'form';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
@@ -134,6 +129,7 @@ export class AddAvatarComponent implements OnDestroy {
     event.stopPropagation();
     this.photos[type].file = null;
     this.photos[type].preview = null;
+    this.cdr.detectChanges();
   }
 
   canCreate(): boolean {
@@ -167,15 +163,12 @@ export class AddAvatarComponent implements OnDestroy {
               imageLeft: url[1],
               imageRight: url[2]
             };
-
             this.avatarService.generateAvatar(generate)
               .pipe(takeUntil(this.destroy$))
               .subscribe({
                 next: (response: any) => {
                   if (response.images) {
                     this.generatedAvatars = response.images.imagesURL;
-                    console.log(this.generatedAvatars)
-
                     this.currentStep = 'select';
                     this.cdr.detectChanges();
                   }
@@ -213,5 +206,4 @@ export class AddAvatarComponent implements OnDestroy {
     if (this.myForm.invalid) return;
     console.log('Форма отправлена', this.myForm.value);
   }
-
 }

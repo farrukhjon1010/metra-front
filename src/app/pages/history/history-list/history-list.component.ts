@@ -19,8 +19,8 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   @Input() card!: CreateCard;
   selectedFilter: 'all' | 'photo' | 'video' = 'all';
   generationHistory: any[] = [];
-  private destroy$ = new Subject<void>();
   isLoading = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -34,6 +34,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
 
   loadGenerationsHistory() {
     this.isLoading = true;
+    this.cdr.detectChanges();
     this.generationService
       .findByUser(this.selectedFilter)
       .pipe(takeUntil(this.destroy$))
@@ -46,6 +47,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
         error: (err) => {
           console.error('Ошибка при загрузке:', err);
           this.isLoading = false;
+          this.cdr.detectChanges();
         }
       });
   }

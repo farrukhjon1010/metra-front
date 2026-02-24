@@ -1,14 +1,14 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {ButtonComponent} from '../../../../shared/components/button/button.component';
-import {CreateCard} from '../../create.data';
-import {GenerationService} from "../../../../core/services/generation.service";
-import {Subject, takeUntil} from 'rxjs';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CreateCard } from '../../create.data';
+import { GenerationService } from '../../../../core/services/generation.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-create-idle',
-  imports: [FormsModule, ButtonComponent],
   standalone: true,
+  imports: [FormsModule, ButtonComponent],
   templateUrl: './create-idle.html',
   styleUrls: ['./create-idle.scss'],
 })
@@ -17,12 +17,12 @@ export class CreateIdle implements OnChanges, OnDestroy {
   @Input() card!: CreateCard;
   @Input() initialPrompt: string = '';
   @Input() initialImageUrl: string | null = null;
-  @Output() create = new EventEmitter<{ prompt: string; imageUrl: string | null; file: File | null; }>();
-  @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
+  @Output() create = new EventEmitter<{ prompt: string; imageUrl: string | null; file: File | null }>();
+  @ViewChild('photoGenerate', { static: false }) photoGenerate!: ElementRef<HTMLInputElement>;
   @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
 
   selectedFile: File | null = null;
-  photos: { generate: string | null } = {generate: null};
+  photos: { generate: string | null } = { generate: null };
   prompt = '';
   isLoadingPrompt = false;
   private destroy$ = new Subject<void>();
@@ -35,10 +35,12 @@ export class CreateIdle implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['initialPrompt']) {
       this.prompt = this.initialPrompt || '';
+      this.cdr.detectChanges();
     }
     if (changes['initialImageUrl']) {
       this.photos.generate = this.initialImageUrl || null;
       this.selectedFile = null;
+      this.cdr.detectChanges();
     }
   }
 
@@ -54,13 +56,12 @@ export class CreateIdle implements OnChanges, OnDestroy {
     event.stopPropagation();
     this.photos[type] = null;
     this.selectedFile = null;
+    this.cdr.detectChanges();
   }
 
   triggerFileInput(type: 'generate', event: Event) {
     event.stopPropagation();
-    const map = {
-      generate: this.photoGenerate,
-    };
+    const map = { generate: this.photoGenerate };
     map[type]?.nativeElement.click();
   }
 
@@ -83,12 +84,12 @@ export class CreateIdle implements OnChanges, OnDestroy {
 
     this.isLoadingPrompt = true;
     this.cdr.detectChanges();
-
     this.generationService.getPrompt(this.card.type)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: res => {
           this.prompt = res.prompt;
+          this.cdr.detectChanges();
 
           setTimeout(() => {
             if (this.textarea) {
@@ -99,7 +100,11 @@ export class CreateIdle implements OnChanges, OnDestroy {
             }
           });
         },
-        error: err => console.error('Ошибка получения prompt:', err),
+        error: err => {
+          console.error('Ошибка получения prompt:', err);
+          this.isLoadingPrompt = false;
+          this.cdr.detectChanges();
+        },
         complete: () => {
           this.isLoadingPrompt = false;
           this.cdr.detectChanges();
@@ -111,5 +116,4 @@ export class CreateIdle implements OnChanges, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

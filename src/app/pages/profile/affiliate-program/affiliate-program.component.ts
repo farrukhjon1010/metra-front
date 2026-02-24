@@ -54,11 +54,12 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
             income: this.income,
             currency: this.currency
           });
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Ошибка загрузки рефералки', err);
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
   }
@@ -72,11 +73,12 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
 
     navigator.clipboard.writeText(this.link).then(() => {
       this.copied = true;
+      this.cdr.detectChanges();
 
       setTimeout(() => {
         this.copied = false;
+        this.cdr.detectChanges();
       }, 1500);
-      this.cdr.detectChanges();
     });
   }
 

@@ -39,7 +39,7 @@
   height: 42px;
   position: relative;
   display: flex;
-  background: $color-bg;
+  background: $color-bg-main;
   border-radius: $radius-md;
   @include fluid('padding', 2px, 4px);
   border: 1px solid $glass-bg-strong;
@@ -179,7 +179,7 @@
     box-sizing: border-box;
     padding: 15px 20px;
     border: none;
-    background: $color-bg;
+    background: $color-bg-main;
     border-radius: $radius-md;
     color: $color-white;
     font-family: system-ui;

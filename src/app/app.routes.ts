@@ -4,13 +4,11 @@ import { CreateComponent } from './pages/create/create.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'splash', pathMatch: 'full' },
-
   {
     path: 'splash',
     component: SplashComponent,
     data: { title: 'Splash', showHeader: false }
   },
-
   {
     path: 'create',
     component: CreateComponent,
@@ -150,6 +148,5 @@ export const routes: Routes = [
       }
     ]
   },
-
   { path: '**', redirectTo: 'splash' }
 ];

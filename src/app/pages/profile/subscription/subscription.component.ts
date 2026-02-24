@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,8 @@ import { TokenTransactionsService } from '../../../core/services/token-transacti
 import { Loading } from '../../../shared/components/loading/loading';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Subscription } from '../../../core/models/subscription.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface SubscriptionPlan {
   id: string;
@@ -25,24 +27,19 @@ interface SubscriptionPlan {
   imports: [ButtonComponent, CommonModule, Loading],
   templateUrl: './subscription.component.html',
   styleUrls: ['./subscription.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SubscriptionComponent implements OnInit {
+export class SubscriptionComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   plans: SubscriptionPlan[] = [
     {
       id: 'basic',
       title: 'Metra Basic',
       price: 990,
-      features: [
-        '120 токенов в месяц',
-        'Доступ к сценам METRA',
-        'Доступ к Nano Banana'
-      ],
-      examples: [
-        '~24 генераций в Nano Banana',
-        'или 12 генераций в Nano Banana PRO',
-        'комбинируйте режимы как удобно'
-      ],
+      features: ['120 токенов в месяц', 'Доступ к сценам METRA', 'Доступ к Nano Banana'],
+      examples: ['~24 генераций в Nano Banana', 'или 12 генераций в Nano Banana PRO', 'комбинируйте режимы как удобно'],
       cardClass: 'metra-basic-card',
       spanClass: 'span-card-basic',
       buttonType: 'primary'
@@ -52,18 +49,8 @@ export class SubscriptionComponent implements OnInit {
       title: 'Metra Pro',
       price: 2490,
       isRecommended: true,
-      features: [
-        '350 токенов в месяц',
-        'Доступ к сценам METRA',
-        'Доступ к Nano Banana Pro',
-        'Видео-режимы',
-        'Примерка одежды (Wardrobe)'
-      ],
-      examples: [
-        '~70 генераций в Nano Banana',
-        'или ~35 генераций в Nano Banana PRO',
-        'или фото + видео + wardrobe в любом сочетании'
-      ],
+      features: ['350 токенов в месяц', 'Доступ к сценам METRA', 'Доступ к Nano Banana Pro', 'Видео-режимы', 'Примерка одежды (Wardrobe)'],
+      examples: ['~70 генераций в Nano Banana', 'или ~35 генераций в Nano Banana PRO', 'или фото + видео + wardrobe в любом сочетании'],
       cardClass: 'metra-pro-card',
       spanClass: 'span-card-pro',
       buttonType: 'danger'
@@ -72,20 +59,8 @@ export class SubscriptionComponent implements OnInit {
       id: 'max',
       title: 'Metra Max',
       price: 4990,
-      features: [
-        '800 токенов в месяц',
-        'Доступ к сценам METRA',
-        'Доступ к Nano Banana Pro',
-        'Видео-режимы',
-        'Примерка одежды (Wardrobe)',
-        'Upscale',
-        'Приоритет в очереди'
-      ],
-      examples: [
-        '~160 генераций в Nano Banana',
-        'или ~80 генераций в Nano Banana PRO',
-        'или активное использование всех функций'
-      ],
+      features: ['800 токенов в месяц', 'Доступ к сценам METRA', 'Доступ к Nano Banana Pro', 'Видео-режимы', 'Примерка одежды (Wardrobe)', 'Upscale', 'Приоритет в очереди'],
+      examples: ['~160 генераций в Nano Banana', 'или ~80 генераций в Nano Banana PRO', 'или активное использование всех функций'],
       cardClass: 'metra-max-card',
       spanClass: 'span-card-max',
       buttonType: 'green'
@@ -98,24 +73,37 @@ export class SubscriptionComponent implements OnInit {
   constructor(
     private router: Router,
     private tokenTransactionsService: TokenTransactionsService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadMySubscription();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadMySubscription() {
-    this.subscriptionService.getMySubscription().subscribe({
-      next: (res) => {
-        if (res && res.length > 0) {
-          this.activeSubscription = res[0];
+    this.subscriptionService.getMySubscription()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          if (res?.length) {
+            this.activeSubscription = res[0];
+          } else {
+            this.activeSubscription = null;
+          }
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки подписки', err);
+          this.activeSubscription = null;
+          this.cdr.markForCheck();
         }
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки подписки', err);
-      }
-    });
+      });
   }
 
   isCurrentPlan(plan: SubscriptionPlan): boolean {
@@ -131,8 +119,9 @@ export class SubscriptionComponent implements OnInit {
     if (this.isCurrentPlan(plan)) return;
 
     this.isLoading = true;
-
+    this.cdr.markForCheck();
     this.tokenTransactionsService.createSubscriptionOrder(plan.price)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: res => {
           window.location.href = res.url;
@@ -140,6 +129,7 @@ export class SubscriptionComponent implements OnInit {
         error: err => {
           console.error('Ошибка при создании подписки', err);
           this.isLoading = false;
+          this.cdr.markForCheck();
         }
       });
   }
@@ -149,17 +139,11 @@ export class SubscriptionComponent implements OnInit {
 
     const now = new Date();
     const end = new Date(this.activeSubscription.endsAt);
-
     const diffTime = end.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays > 14) {
-      return 'badge-green';
-    }
-
-    if (diffDays > 7) {
-      return 'badge-yellow';
-    }
+    if (diffDays > 14) return 'badge-green';
+    if (diffDays > 7) return 'badge-yellow';
 
     return 'badge-red';
   }

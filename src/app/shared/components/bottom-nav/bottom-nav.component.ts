@@ -1,8 +1,8 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {filter, Subject, takeUntil} from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -11,8 +11,9 @@ import {filter, Subject, takeUntil} from 'rxjs';
   imports: [CommonModule, RouterModule],
   styleUrls: ['./bottom-nav.component.scss']
 })
-export class BottomNavComponent implements OnDestroy{
+export class BottomNavComponent implements OnDestroy {
 
+  activeIndex = 0;
   navItems = [
     { link: '/home', label: 'Главная', icon: 'assets/icons/home.svg' },
     { link: '/create', label: 'Создать', icon: 'assets/icons/create.svg' },
@@ -21,12 +22,13 @@ export class BottomNavComponent implements OnDestroy{
     { link: '/profile', label: 'Профиль', icon: 'assets/icons/profile.svg' },
   ];
 
-  activeIndex = 0;
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.setActiveFromUrl(this.router.url);
-
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
@@ -34,6 +36,7 @@ export class BottomNavComponent implements OnDestroy{
       )
       .subscribe((event: NavigationEnd) => {
         this.setActiveFromUrl(event.urlAfterRedirects);
+        this.cdr.markForCheck();
       });
   }
 
@@ -50,6 +53,7 @@ export class BottomNavComponent implements OnDestroy{
     } else {
       this.router.navigateByUrl(item.link);
       this.activeIndex = index;
+      this.cdr.markForCheck();
     }
   }
 

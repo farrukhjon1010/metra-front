@@ -15,15 +15,7 @@ import { TelegramService } from '../../core/services/telegram.service';
 @Component({
   selector: 'app-splash',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormsModule,
-    SplashCaseComponent,
-    SplashFormComponent,
-    SplashSelectComponent,
-    SplashSuccessComponent,
-    Loading,
-  ],
+  imports: [ReactiveFormsModule, FormsModule, SplashCaseComponent, SplashFormComponent, SplashSelectComponent, SplashSuccessComponent, Loading,],
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
 })
@@ -174,8 +166,6 @@ export class SplashComponent implements OnDestroy, OnInit {
     if (this.photos.front.file) filesToUpload.push(this.photos.front.file);
     if (this.photos.left.file) filesToUpload.push(this.photos.left.file);
     if (this.photos.right.file) filesToUpload.push(this.photos.right.file);
-
-    const userId = this.UUID;
 
     this.fileService.uploadAvatars(filesToUpload).pipe(
       switchMap((event: any) => {

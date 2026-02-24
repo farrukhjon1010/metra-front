@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { SceneService } from '../../../core/services/scene.service';
 import { GenerationType } from '../../../core/models/generation.model';
@@ -63,9 +63,9 @@ export class ScenesCard implements OnChanges, OnDestroy {
   private loadTemplates() {
     if (!this.scene?.category?.id) {
       this.loadingCount--;
+      this.cdr.detectChanges();
       return;
     }
-
     this.sceneService.getScenes({
       mode: 'Template',
       categoryId: this.scene.category.id
@@ -81,17 +81,21 @@ export class ScenesCard implements OnChanges, OnDestroy {
         next: (data: Scene[]) => {
           this.templates = data;
           this.displayedTemplates = this.templates.slice(0, this.templatesStep);
+          this.cdr.detectChanges();
         },
-        error: (err) => console.error('Failed to load templates', err)
+        error: (err) => {
+          console.error('Failed to load templates', err);
+          this.cdr.detectChanges();
+        }
       });
   }
 
   private loadFreestyle() {
     if (!this.scene?.category?.id) {
       this.loadingCount--;
+      this.cdr.detectChanges();
       return;
     }
-
     this.sceneService.getScenes({
       mode: 'FreeStyle',
       categoryId: this.scene.category.id
@@ -107,8 +111,12 @@ export class ScenesCard implements OnChanges, OnDestroy {
         next: (data: Scene[]) => {
           this.freestyle = data;
           this.displayedFreestyle = this.freestyle.slice(0, this.freestyleStep);
+          this.cdr.detectChanges();
         },
-        error: (err) => console.error('Failed to load freestyle', err)
+        error: (err) => {
+          console.error('Failed to load freestyle', err);
+          this.cdr.detectChanges();
+        }
       });
   }
 
