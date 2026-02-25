@@ -9,6 +9,7 @@ import {CreateCard} from '../../create.data';
   styleUrls: ['./create-header.scss'],
 })
 export class CreateHeader {
+
   @Input() card!: CreateCard;
   @Output() back = new EventEmitter<void>();
 

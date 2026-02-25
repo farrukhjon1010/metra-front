@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {ReferralInfo} from '../../../core/models/referral.model';
@@ -14,23 +14,21 @@ import {ToastService} from '../../../core/services/toast.service';
 })
 export class AffiliateProgramComponent implements OnInit, OnDestroy {
 
-  link = '';
-  clicks = 0;
-  purchases = 0;
-  income = 0;
-  currency = '';
-  copied = false;
-  loading = true;
-  private destroy$ = new Subject<void>();
-
   @Output() incomeChange = new EventEmitter<number>();
 
-  constructor(
-    private router: Router,
-    private referralService: ReferralService,
-    private cdr: ChangeDetectorRef,
-    private toast: ToastService
-  ) {}
+  public link = '';
+  public clicks = 0;
+  public purchases = 0;
+  public income = 0;
+  public currency = '';
+  public copied = false;
+  public loading = true;
+  private destroy$ = new Subject<void>();
+
+  private router = inject(Router);
+  private referralService = inject(ReferralService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
   ngOnInit(): void {
     this.loadReferralInfo();
@@ -72,7 +70,10 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
   }
 
   copyLink() {
-    if (!this.link) return;
+    if (!this.link || this.link.trim() === '') {
+      this.toast.show('Ссылка отсутствует', 'error');
+      return;
+    }
 
     navigator.clipboard.writeText(this.link).then(() => {
       this.copied = true;
@@ -83,6 +84,8 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
         this.copied = false;
         this.cdr.detectChanges();
       }, 1500);
+    }).catch(() => {
+      this.toast.show('Не удалось скопировать ссылку', 'error');
     });
   }
 

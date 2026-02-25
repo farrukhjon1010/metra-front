@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GenerationService } from '../../../core/services/generation.service';
 import { CreateGenerationDto, GenerateImageDto, GenerationType } from '../../../core/models/generation.model';
@@ -25,25 +25,23 @@ type CreateState = 'idle' | 'loading' | 'result';
 })
 export class CreateDetail implements OnInit, OnDestroy {
 
-  card!: CreateCard;
-  createState: CreateState = 'idle';
-  prompt = '';
-  resultImageUrl: string | null = null;
-  generationHistory: any[] = [];
-  initialPrompt!: string;
-  initialImageUrl!: string | null;
-  fromHistory = false;
+  public card!: CreateCard;
+  public createState: CreateState = 'idle';
+  public prompt = '';
+  public resultImageUrl: string | null = null;
+  public generationHistory: any[] = [];
+  public initialPrompt!: string;
+  public initialImageUrl!: string | null;
+  private fromHistory = false;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private generationService: GenerationService,
-    private fileService: FileService,
-    private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private toast: ToastService
-  ) {}
+  private generationService = inject(GenerationService);
+  private fileService = inject(FileService);
+  private cdr = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private location = inject(Location);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     const type = this.route.snapshot.paramMap.get('type') as GenerationType;

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, ViewChild} from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { UpscaleService } from '../../../core/services/upscale.service';
@@ -19,22 +19,20 @@ export class ImprovingQuality implements AfterViewInit {
 
   @ViewChild('photoInput', { static: false }) photoInput!: ElementRef<HTMLInputElement>;
 
-  isProcessing = false;
-  isLoading = false;
-  isStarted = false;
-  photos: { photo: string | null } = { photo: null };
-  originalImage: string | null = null;
-  improvedImage: string | null = null;
+  public isProcessing = false;
+  public isLoading = false;
+  public isStarted = false;
+  public photos: { photo: string | null } = { photo: null };
+  public originalImage: string | null = null;
+  public improvedImage: string | null = null;
 
-  constructor(
-    private location: Location,
-    private cdr: ChangeDetectorRef,
-    private upscaleService: UpscaleService,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  private location = inject(Location);
+  private cdr = inject(ChangeDetectorRef);
+  private upscaleService = inject(UpscaleService);
+  private paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
-  get showPaidDialog(): boolean {
+  public  get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

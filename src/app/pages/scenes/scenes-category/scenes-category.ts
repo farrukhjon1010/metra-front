@@ -18,6 +18,11 @@ import {ToastService} from '../../../core/services/toast.service';
 })
 export class SceneCategory implements OnInit {
 
+  public scenes: Scene[] = [];
+  public selectedScene: Scene | null = null;
+  public loaded = false;
+  public category: ModelSceneCategory | null = null;
+
   private route = inject(ActivatedRoute);
   private sceneService = inject(SceneService);
   private router = inject(Router);
@@ -25,12 +30,7 @@ export class SceneCategory implements OnInit {
   public paidDialogService = inject(PaidDialogService);
   private toast = inject(ToastService);
 
-  scenes: Scene[] = [];
-  selectedScene: Scene | null = null;
-  loaded = false;
-  category: ModelSceneCategory | null = null;
-
-  get showPaidDialog(): boolean {
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
+import {Component, EventEmitter, Input, Output, ChangeDetectorRef, inject} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -18,14 +18,12 @@ export class GenerationHistory {
   @Input() history: any[] = [];
   @Output() repeat = new EventEmitter<any>();
 
-  constructor(
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  private cdr = inject(ChangeDetectorRef);
+  public paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
+  private router = inject(Router);
 
-  get showPaidDialog(): boolean {
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

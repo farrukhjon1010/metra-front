@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, inject} from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenPackage } from '../../../core/models/token-transactions.model';
 import { TokenTransactionsService } from '../../../core/services/token-transactions.service';
@@ -14,15 +14,14 @@ import {ToastService} from '../../../core/services/toast.service';
   imports: [ButtonComponent, Loading]
 })
 export class BalanceComponent implements OnInit {
-  tokenPackages: TokenPackage[] = [];
-  isLoading = false;
 
-  constructor(
-    private router: Router,
-    private tokenService: TokenTransactionsService,
-    private cdr: ChangeDetectorRef,
-    private toast: ToastService
-  ) {}
+  public tokenPackages: TokenPackage[] = [];
+  public isLoading = false;
+
+  private router = inject(Router);
+  private tokenService = inject(TokenTransactionsService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     this.tokenService.getTokenPackages()

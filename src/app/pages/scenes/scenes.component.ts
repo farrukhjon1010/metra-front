@@ -22,7 +22,7 @@ export class ScenesComponent implements OnInit {
   private sceneService = inject(SceneService);
   private router = inject(Router);
   private toast = inject(ToastService);
-  categories$!: Observable<SceneCategory[]>;
+  public categories$!: Observable<SceneCategory[]>;
 
   ngOnInit() {
     this.categories$ = this.sceneService.getCategories();

@@ -19,6 +19,12 @@ import {ToastService} from '../../../core/services/toast.service';
   styleUrls: ['./home-category.scss']
 })
 export class HomeCategory implements OnInit, OnDestroy {
+
+  public scenes: Scene[] = [];
+  public selectedScene: Scene | null = null;
+  public loader = false;
+  public category: ModelSceneCategory | null = null;
+
   private route = inject(ActivatedRoute);
   private sceneService = inject(SceneService);
   private router = inject(Router);
@@ -27,12 +33,7 @@ export class HomeCategory implements OnInit, OnDestroy {
   public paidDialogService = inject(PaidDialogService);
   private toast = inject(ToastService);
 
-  scenes: Scene[] = [];
-  selectedScene: Scene | null = null;
-  loader = false;
-  category: ModelSceneCategory | null = null;
-
-  get showPaidDialog(): boolean {
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

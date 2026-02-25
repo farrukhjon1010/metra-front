@@ -1,4 +1,16 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CreateCard } from '../../create.data';
@@ -24,20 +36,18 @@ export class CreateIdle implements OnChanges, OnDestroy {
   @ViewChild('photoGenerate', { static: false }) photoGenerate!: ElementRef<HTMLInputElement>;
   @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
 
-  selectedFile: File | null = null;
-  photos: { generate: string | null } = { generate: null };
-  prompt = '';
-  isLoadingPrompt = false;
+  public photos: { generate: string | null } = { generate: null };
+  public prompt: string = '';
+  public isLoadingPrompt: boolean = false;
+  private selectedFile: File | null = null;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private generationService: GenerationService,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  private cdr = inject(ChangeDetectorRef);
+  private generationService = inject(GenerationService);
+  public paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
-  get showPaidDialog(): boolean {
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import { DatePipe, NgStyle, CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Router } from '@angular/router';
@@ -20,20 +20,18 @@ import {ToastService} from '../../../core/services/toast.service';
 export class HistoryListComponent implements OnInit, OnDestroy {
 
   @Input() card!: CreateCard;
-  selectedFilter: 'all' | 'photo' | 'video' = 'all';
-  generationHistory: any[] = [];
-  isLoading = false;
+  public selectedFilter: 'all' | 'photo' | 'video' = 'all';
+  public generationHistory: any[] = [];
+  public isLoading = false;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private generationService: GenerationService,
-    private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  private router = inject(Router);
+  private generationService = inject(GenerationService);
+  private cdr = inject(ChangeDetectorRef);
+  private paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
-  get shouldShowPaidDialog(): boolean {
+  public get shouldShowPaidDialog(): boolean {
     return !this.isLoading && this.generationHistory.length > 0 && this.paidDialogService.showDialog();
   }
 

@@ -6,7 +6,7 @@
   bottom: clamp(8px, 3vw, 24px);
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
+  z-index: $z-modal;
   width: 100%;
   max-width: 364px;
   height: clamp(50px, 8vw, 72px);
@@ -32,7 +32,6 @@
   border-radius: 12px;
   background: $glass-spiner;
   transition: transform 0.3s ease;
-  z-index: 0;
 }
 
 .bottom-nav a {
@@ -45,15 +44,20 @@
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  z-index: 1;
+  z-index: $z-normal;
   color: $color-text-secondary;
   font-size: clamp(11px, 2.5vw, 13px);
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   transition: 0.2s ease;
 }
 
 .bottom-nav a.active {
   color: white;
+}
+
+.nav-label{
+  font-family: system-ui;
+  font-weight: $font-weight-medium;
 }
 
 .bottom-nav a.active .nav-icon img {

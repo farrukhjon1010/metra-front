@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -14,9 +14,9 @@ import {ToastComponent} from '../../shared/components/toast/toast.component';
 })
 export class CreateComponent implements OnInit, OnDestroy {
 
-  showHeader = false;
+  public showHeader = false;
   private destroy$ = new Subject<void>();
-  constructor(private router: Router) {}
+  private router = inject(Router);
 
   ngOnInit() {
     this.showHeader = this.router.url === '/create';

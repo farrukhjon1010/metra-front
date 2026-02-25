@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core';
 import { CommonModule, NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,33 +26,31 @@ export class AddAvatarComponent implements OnDestroy {
   @ViewChild('leftInput') leftInput!: ElementRef<HTMLInputElement>;
   @ViewChild('rightInput') rightInput!: ElementRef<HTMLInputElement>;
 
-  gender: Gender = Gender.MALE;
-  currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
-  generatedAvatars: string[] = [];
-  selectedAvatars: string[] = [];
-  protected readonly Gender = Gender;
-  private destroy$ = new Subject<void>();
-
-  photos = {
+  public photos = {
     front: { file: null as File | null, preview: null as string | null },
     left: { file: null as File | null, preview: null as string | null },
     right: { file: null as File | null, preview: null as string | null },
   };
 
-  myForm = new FormGroup({
+  public myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
 
-  constructor(
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    private avatarService: AvatarService,
-    private fileService: FileService,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  public gender: Gender = Gender.MALE;
+  public currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
+  public generatedAvatars: string[] = [];
+  public selectedAvatars: string[] = [];
+  protected readonly Gender = Gender;
+  private destroy$ = new Subject<void>();
 
-  get showPaidDialog(): boolean {
+  private router = inject(Router);
+  private avatarService = inject(AvatarService);
+  private fileService = inject(FileService);
+  private paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
+  private cdr = inject(ChangeDetectorRef);
+
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

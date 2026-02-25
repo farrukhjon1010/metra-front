@@ -17,6 +17,9 @@ import { ToastService } from '../../../../core/services/toast.service';
 })
 export class SplashCaseComponent implements OnInit, OnDestroy {
 
+  @Output() create = new EventEmitter<void>();
+  @Output() demo = new EventEmitter<void>();
+
   public hasAvatars: boolean = false;
   public hasActiveSubscription: boolean = false;
   public loading: boolean = true;
@@ -25,8 +28,6 @@ export class SplashCaseComponent implements OnInit, OnDestroy {
   private subscriptionService = inject(SubscriptionService);
   private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
-  @Output() create = new EventEmitter<void>();
-  @Output() demo = new EventEmitter<void>();
 
   ngOnInit() {
     this.loadData();

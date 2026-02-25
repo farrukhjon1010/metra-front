@@ -22,39 +22,36 @@ import {ToastService} from '../../core/services/toast.service';
   styleUrls: ['./splash.component.scss'],
 })
 export class SplashComponent implements OnDestroy, OnInit {
-  private telegram = inject(TelegramService);
 
-  UUID: string = '';
-  currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
-  gender: Gender = Gender.MALE
-  generatedAvatars: string[] = [];
-  selectedAvatars: string[] = [];
-  photos = {
+  public photos = {
     front: { file: null as File | null, preview: null as string | null },
     left: { file: null as File | null, preview: null as string | null },
     right: { file: null as File | null, preview: null as string | null },
   };
+  public myForm = new FormGroup({
+    avatarName: new FormControl('', Validators.required),
+  });
+  public currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
+  public UUID: string = '';
+  public gender: Gender = Gender.MALE
+  public generatedAvatars: string[] = [];
+  public selectedAvatars: string[] = [];
   private destroy$ = new Subject<void>();
 
-  get photosPreview() {
+  private telegram = inject(TelegramService);
+  private router = inject(Router);
+  private avatarService = inject(AvatarService);
+  private fileService = inject(FileService);
+  private toast = inject(ToastService);
+  private cdr = inject(ChangeDetectorRef);
+
+  public get photosPreview() {
     return {
       front: this.photos.front.preview,
       left: this.photos.left.preview,
       right: this.photos.right.preview
     };
   }
-
-  myForm = new FormGroup({
-    avatarName: new FormControl('', Validators.required),
-  });
-
-  constructor(
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    private avatarService: AvatarService,
-    private fileService: FileService,
-    private toast: ToastService
-  ) {}
 
   ngOnInit() {
     const tgId = this.telegram.userId;

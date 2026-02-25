@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
+import {Component, EventEmitter, Input, Output, ChangeDetectorRef, inject} from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
@@ -12,18 +12,17 @@ import {ToastService} from '../../../../core/services/toast.service';
   styleUrls: ['./create-result.scss'],
 })
 export class CreateResult {
+
   @Input() resultImageUrl!: string | null;
   @Input() prompt!: string;
   @Output() edit = new EventEmitter<void>();
   @Output() createAnother = new EventEmitter<void>();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  public paidDialogService = inject(PaidDialogService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
-  get showPaidDialog(): boolean {
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgClass, NgStyle} from '@angular/common';
@@ -16,15 +16,17 @@ export class SplashFormComponent {
   @Input() myForm!: FormGroup;
   @Input() gender: 'male' | 'female' = 'male';
   @Input() photos: { front: string | null; left: string | null; right: string | null } = {front: null, left: null, right: null};
-  @ViewChild('frontInput', {static: false}) frontInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('leftInput', {static: false}) leftInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rightInput', {static: false}) rightInput!: ElementRef<HTMLInputElement>;
+
   @Output() genderChange = new EventEmitter<'male' | 'female'>();
   @Output() triggerCreate = new EventEmitter<void>();
   @Output() photoUploaded = new EventEmitter<{ type: 'front' | 'left' | 'right'; dataUrl: string; file: File }>();
   @Output() photoRemoved = new EventEmitter<'front' | 'left' | 'right'>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  @ViewChild('frontInput', {static: false}) frontInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('leftInput', {static: false}) leftInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('rightInput', {static: false}) rightInput!: ElementRef<HTMLInputElement>;
+
+  private cdr = inject(ChangeDetectorRef);
 
   triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
     event.stopPropagation();

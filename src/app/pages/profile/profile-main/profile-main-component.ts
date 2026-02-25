@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { ReferralService } from '../../../core/services/referral.service';
 import { BalanceService } from '../../../core/services/balance.service';
+import { SubscriptionService } from '../../../core/services/subscription.service';
+import { ToastService } from '../../../core/services/toast.service';
+import { Subscription as AppSubscription } from '../../../core/models/subscription.model';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { Loading } from '../../../shared/components/loading/loading';
-import { SubscriptionService } from '../../../core/services/subscription.service';
-import { Subscription as AppSubscription } from '../../../core/models/subscription.model';
-import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-profile-main',
@@ -21,34 +21,28 @@ import {ToastService} from '../../../core/services/toast.service';
 })
 export class ProfileMainComponent implements OnInit, OnDestroy {
 
-  planDetails: Record<string, { tokens: number; features: string[] }> = {
+  public planDetails: Record<string, { tokens: number; features: string[] }> = {
     'Metra Basic': { tokens: 120, features: ['Доступ к сценам METRA', 'Доступ к Nano Banana'] },
     'Metra Pro': { tokens: 350, features: ['Доступ к сценам METRA', 'Доступ к Nano Banana Pro', 'Видео-режимы', 'Wardrobe'] },
     'Metra Max': { tokens: 800, features: ['Доступ к сценам METRA', 'Nano Banana Pro', 'Видео-режимы', 'Wardrobe', 'Upscale', 'Приоритет в очереди'] }
   };
 
-  selectedAvatars: string[] = [];
-  income$: Observable<number>;
-  currency$: Observable<string>;
-  balance$: Observable<number>;
-  isAvatarsLoading = true;
-  activeSubscription: AppSubscription | null = null;
-  remainingDays = 0;
-  private destroy$ = new Subject<void>();
+  public selectedAvatars: string[] = [];
+  public isAvatarsLoading = true;
+  public activeSubscription: AppSubscription | null = null;
+  public remainingDays = 0;
 
-  constructor(
-    public router: Router,
-    private avatarService: AvatarService,
-    private referralService: ReferralService,
-    private balanceService: BalanceService,
-    private cdr: ChangeDetectorRef,
-    private subscriptionService: SubscriptionService,
-    private toast: ToastService
-  ) {
-    this.income$ = this.referralService.income$.pipe(map(data => data.income));
-    this.currency$ = this.referralService.income$.pipe(map(data => data.currency));
-    this.balance$ = this.balanceService.balance$;
-  }
+  public income$: Observable<number> = inject(ReferralService).income$.pipe(map(d => d.income));
+  public currency$: Observable<string> = inject(ReferralService).income$.pipe(map(d => d.currency));
+  public balance$: Observable<number> = inject(BalanceService).balance$;
+  private router = inject(Router);
+  private avatarService = inject(AvatarService);
+  private referralService = inject(ReferralService);
+  private balanceService = inject(BalanceService);
+  private cdr = inject(ChangeDetectorRef);
+  private subscriptionService = inject(SubscriptionService);
+  private toast = inject(ToastService);
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.loadUserAvatars();

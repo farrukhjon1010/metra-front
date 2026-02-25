@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -11,23 +11,21 @@ import { filter, Subject, takeUntil } from 'rxjs';
   imports: [CommonModule, RouterModule],
   styleUrls: ['./bottom-nav.component.scss']
 })
-export class BottomNavComponent implements OnDestroy {
+export class BottomNavComponent implements OnInit, OnDestroy {
 
-  activeIndex = 0;
-  navItems = [
+  public activeIndex = 0;
+  public navItems = [
     { link: '/home', label: 'Главная', icon: 'assets/icons/home.svg' },
     { link: '/create', label: 'Создать', icon: 'assets/icons/create.svg' },
     { link: '/scenes', label: 'Сцены', icon: 'assets/icons/scenes.svg' },
     { link: '/history', label: 'История', icon: 'assets/icons/history.svg' },
     { link: '/profile', label: 'Профиль', icon: 'assets/icons/profile.svg' },
   ];
-
   private destroy$ = new Subject<void>();
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
-  constructor(
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {
+  ngOnInit() {
     this.setActiveFromUrl(this.router.url);
     this.router.events
       .pipe(

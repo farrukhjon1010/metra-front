@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectorRef, inject} from '@angular/core';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
 import {ToastService} from '../../../core/services/toast.service';
@@ -12,16 +12,14 @@ import {ToastService} from '../../../core/services/toast.service';
 })
 export class HomeHeader implements OnInit, OnDestroy {
 
-  isLoading: boolean = false;
-  userAvatars: string[] = [];
-  currentAvatar: string = "";
+  public isLoading: boolean = false;
+  public userAvatars: string[] = [];
+  public currentAvatar: string = "";
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private avatarService: AvatarService,
-    private cdr: ChangeDetectorRef,
-    private toast: ToastService
-  ) {}
+  private avatarService = inject(AvatarService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     this.loadUserAvatars();

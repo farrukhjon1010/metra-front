@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { PaidDialogService } from '../../core/services/paid-dialog.service';
 import { ButtonComponent } from '../components/button/button.component';
 
@@ -10,7 +10,8 @@ import { ButtonComponent } from '../components/button/button.component';
   styleUrls: ['./paid-dialog.scss'],
 })
 export class PaidDialog {
-  constructor(public paidDialogService: PaidDialogService) {}
+
+  public paidDialogService = inject(PaidDialogService);
 
   openPaidDialog() {
     this.paidDialogService.openPaidDialog();

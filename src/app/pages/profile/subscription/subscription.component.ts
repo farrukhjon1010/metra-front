@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CommonModule } from '@angular/common';
@@ -32,9 +32,7 @@ interface SubscriptionPlan {
 })
 export class SubscriptionComponent implements OnInit, OnDestroy {
 
-  private destroy$ = new Subject<void>();
-
-  plans: SubscriptionPlan[] = [
+  public plans: SubscriptionPlan[] = [
     {
       id: 'basic',
       title: 'Metra Basic',
@@ -68,16 +66,15 @@ export class SubscriptionComponent implements OnInit, OnDestroy {
     }
   ];
 
-  isLoading = false;
-  activeSubscription: Subscription | null = null;
+  public isLoading = false;
+  public activeSubscription: Subscription | null = null;
+  private destroy$ = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private tokenTransactionsService: TokenTransactionsService,
-    private subscriptionService: SubscriptionService,
-    private cdr: ChangeDetectorRef,
-    private toast: ToastService
-  ) {}
+  private router = inject(Router);
+  private tokenTransactionsService = inject(TokenTransactionsService);
+  private subscriptionService = inject(SubscriptionService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
   ngOnInit(): void {
     this.loadMySubscription();

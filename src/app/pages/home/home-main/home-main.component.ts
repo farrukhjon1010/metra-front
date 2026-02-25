@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { SceneService } from '../../../core/services/scene.service';
 import { Scene, SceneCategory } from '../../../core/models/scene.model';
 import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
@@ -20,17 +20,16 @@ import {ToastService} from '../../../core/services/toast.service';
   imports: [ScenesGrid, HomeRecommendation, HomeHeader, ScenesHeader, AsyncPipe, PaidDialog]
 })
 export class HomeMainComponent implements OnInit {
-  scenes: Scene[] = [];
-  categories$!: Observable<SceneCategory[]>;
 
-  constructor(
-    private sceneService: SceneService,
-    private router: Router,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  public scenes: Scene[] = [];
+  public categories$!: Observable<SceneCategory[]>;
 
-  get showPaidDialog(): boolean {
+  private sceneService = inject(SceneService);
+  private router = inject(Router);
+  private toast = inject(ToastService);
+  private paidDialogService = inject(PaidDialogService);
+
+  public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 

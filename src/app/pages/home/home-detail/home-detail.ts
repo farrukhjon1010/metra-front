@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, inject} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ScenesCard } from '../../scenes/scenes-card/scenes-card';
@@ -16,16 +16,15 @@ import {ToastService} from '../../../core/services/toast.service';
   styleUrls: ['./home-detail.scss'],
 })
 export class HomeDetail implements OnInit {
-  scene: Scene | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private sceneService: SceneService,
-    private location: Location,
-    private cdr: ChangeDetectorRef,
-    private toast: ToastService
-  ) {}
+  public scene: Scene | null = null;
+
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private sceneService = inject(SceneService);
+  private location = inject(Location);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     const sceneId = Number(this.route.snapshot.paramMap.get('id'));

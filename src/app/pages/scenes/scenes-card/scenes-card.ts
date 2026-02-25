@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+  ChangeDetectorRef,
+  inject
+} from '@angular/core';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { SceneService } from '../../../core/services/scene.service';
 import { GenerationType } from '../../../core/models/generation.model';
@@ -23,22 +33,20 @@ export class ScenesCard implements OnChanges, OnDestroy {
   @Input() scene: Scene | null = null;
   @Output() back = new EventEmitter<void>();
 
-  templates: Scene[] = [];
-  freestyle: Scene[] = [];
-  displayedTemplates: Scene[] = [];
-  displayedFreestyle: Scene[] = [];
-  templatesStep = 6;
-  freestyleStep = 6;
-  loadingCount = 0;
+  public templates: Scene[] = [];
+  public freestyle: Scene[] = [];
+  public displayedTemplates: Scene[] = [];
+  public displayedFreestyle: Scene[] = [];
+  public templatesStep = 6;
+  public freestyleStep = 6;
+  public loadingCount = 0;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private sceneService: SceneService,
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService,
-    private toast: ToastService
-  ) {}
+  private sceneService = inject(SceneService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['scene'] && this.scene?.category?.id) {
