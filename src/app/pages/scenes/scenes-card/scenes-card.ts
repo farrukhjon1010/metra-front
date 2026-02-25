@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy,
-  ChangeDetectorRef,
-  inject
-} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy, ChangeDetectorRef, inject} from '@angular/core';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { SceneService } from '../../../core/services/scene.service';
 import { GenerationType } from '../../../core/models/generation.model';

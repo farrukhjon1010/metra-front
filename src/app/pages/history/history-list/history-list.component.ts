@@ -1,14 +1,15 @@
-import {ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
-import { DatePipe, NgStyle, CommonModule } from '@angular/common';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { CommonModule, NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
-import { GenerationService } from '../../../core/services/generation.service';
-import { CreateCard } from '../../create/create.data';
-import { Subject, takeUntil } from 'rxjs';
-import { Loading } from "../../../shared/components/loading/loading";
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { DatePipe } from '@angular/common';
+import { Loading } from '../../../shared/components/loading/loading';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
-import {ToastService} from '../../../core/services/toast.service';
+import { ToastService } from '../../../core/services/toast.service';
+import { GenerationService } from '../../../core/services/generation.service';
+import { Subject, takeUntil } from 'rxjs';
+import { CreateCard } from '../../create/create.data';
 
 @Component({
   selector: 'app-history-list',
@@ -20,58 +21,47 @@ import {ToastService} from '../../../core/services/toast.service';
 export class HistoryListComponent implements OnInit, OnDestroy {
 
   @Input() card!: CreateCard;
-  public selectedFilter: 'all' | 'photo' | 'video' = 'all';
-  public generationHistory: any[] = [];
-  public isLoading = false;
-  private destroy$ = new Subject<void>();
 
+  public selectedFilter = signal<'all' | 'photo' | 'video'>('all');
+  public generationHistory = signal<any[]>([]);
+  public isLoading = signal<boolean>(false);
+
+  private destroy$ = new Subject<void>();
   private router = inject(Router);
   private generationService = inject(GenerationService);
-  private cdr = inject(ChangeDetectorRef);
   private paidDialogService = inject(PaidDialogService);
   private toast = inject(ToastService);
 
   public get shouldShowPaidDialog(): boolean {
-    return !this.isLoading && this.generationHistory.length > 0 && this.paidDialogService.showDialog();
+    return !this.isLoading() && this.generationHistory().length > 0 && this.paidDialogService.showDialog();
   }
 
   ngOnInit() {
     this.loadGenerationsHistory();
   }
 
+  changeFilter(filter: 'all' | 'photo' | 'video') {
+    this.selectedFilter.set(filter);
+    this.loadGenerationsHistory();
+  }
+
   loadGenerationsHistory() {
-    this.isLoading = true;
-    this.cdr.detectChanges();
+    this.isLoading.set(true);
+
     this.generationService
-      .findByUser(this.selectedFilter)
+      .findByUser(this.selectedFilter())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          this.generationHistory = data;
-          this.isLoading = false;
-          if (this.generationHistory.length > 0 && this.paidDialogService.tryShowDialog()) {
-            this.cdr.detectChanges();
-          } else {
-            this.cdr.detectChanges();
-          }
+          this.generationHistory.set(data);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Ошибка загрузки Истории:', err);
-          this.isLoading = false;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
           this.toast.show('Ошибка загрузки Истории', 'error');
         }
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  changeFilter(filter: 'all' | 'photo' | 'video') {
-    this.selectedFilter = filter;
-    this.loadGenerationsHistory();
   }
 
   navigateToCreate() {
@@ -89,9 +79,10 @@ export class HistoryListComponent implements OnInit, OnDestroy {
         a.click();
         URL.revokeObjectURL(objectUrl);
       })
-      .catch(err =>
-        console.error('Ошибка скачивания файла:', err));
-      this.toast.show('Ошибка скачивания файла', 'error');
+      .catch(err => {
+        console.error('Ошибка скачивания файла:', err);
+        this.toast.show('Ошибка скачивания файла', 'error');
+      });
   }
 
   goToUpscale(imageUrl: string, id: string) {
@@ -114,5 +105,10 @@ export class HistoryListComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

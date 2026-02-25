@@ -40,7 +40,7 @@ export const routes: Routes = [
         path: '',
         data: { title: 'Профиль', showHeader: true },
         loadComponent: () =>
-          import('./pages/profile/profile-main/profile-main-component')
+          import('./pages/profile/profile-main/profile-main.component')
             .then(m => m.ProfileMainComponent)
       },
       {

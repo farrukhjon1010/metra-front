@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit, ChangeDetectorRef, inject} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
-import {ToastService} from '../../../core/services/toast.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-home-header',
@@ -12,13 +12,12 @@ import {ToastService} from '../../../core/services/toast.service';
 })
 export class HomeHeader implements OnInit, OnDestroy {
 
-  public isLoading: boolean = false;
-  public userAvatars: string[] = [];
-  public currentAvatar: string = "";
-  private destroy$ = new Subject<void>();
+  public isLoading = signal<boolean>(false);
+  public userAvatars = signal<string[]>([]);
+  public currentAvatar = signal<string>('');
 
+  private destroy$ = new Subject<void>();
   private avatarService = inject(AvatarService);
-  private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
 
   ngOnInit() {
@@ -31,24 +30,22 @@ export class HomeHeader implements OnInit, OnDestroy {
   }
 
   loadUserAvatars() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.avatarService.findByUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (avatar) => {
           if (avatar?.imagesURL?.length) {
-            this.userAvatars = avatar.imagesURL;
-            this.currentAvatar = avatar.imagesURL[0];
+            this.userAvatars.set(avatar.imagesURL);
+            this.currentAvatar.set(avatar.imagesURL[0]);
           } else {
-            this.userAvatars = [];
-            this.currentAvatar = '';
+            this.userAvatars.set([]);
+            this.currentAvatar.set('');
           }
-          this.isLoading = false;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
         },
         error: () => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
           this.toast.show('Ошибка загрузки Аватара', 'error');
         }
       });

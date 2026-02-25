@@ -7,8 +7,8 @@
       </p>
     </div>
     <div class="home__avatar-icon">
-      @if (currentAvatar) {
-        <img [src]="currentAvatar" alt="">
+      @if (currentAvatar()) {
+        <img [src]="currentAvatar()" alt="">
       } @else {
         <img src="assets/icons/user-empty.svg" alt="">
       }

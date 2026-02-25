@@ -1,31 +1,29 @@
 <div class="profile-screen">
 
-  @if (isAvatarsLoading) {
-    <app-loading [texts]="['Загрузка...']"></app-loading>
+  @if (isAvatarsLoading()) {
+    <app-loading
+      [texts]="['Загрузка...']">
+    </app-loading>
   } @else {
     <div class="profile-content">
       <div class="profile-card">
         <h3 class="card-title">Ваш аватар</h3>
         <div class="avatar-circle">
-          <div class="avatars-display" >
-            @for (avatar of selectedAvatars; track avatar){
-            <div class="avatar-item">
-              <img [src]="avatar" alt="Avatar" />
-            </div>
-            }
-            @for (empty of [].constructor(3 - selectedAvatars.length > 0 ? 3 - selectedAvatars.length : 0); track $index) {
-                <div class="add-avatar" (click)="goToAddAvatar()">
-                  <img src="assets/icons/user-empty.svg" alt="Empty"/>
-                </div>
+          <div class="avatars-display">
+            @for (avatar of displayAvatars; track $index) {
+              <div class="{{ avatar.isEmpty ? 'add-avatar' : 'avatar-item' }} {{ selectedAvatar() === avatar.src ? 'selected' : '' }}"
+                   (click)="avatar.isEmpty ? goToAddAvatar() : avatar.src && selectAvatar(avatar.src)">
+                <img [src]="avatar.src || 'assets/icons/user-empty.svg'" alt="Avatar"/>
+              </div>
             }
           </div>
         </div>
 
-        @if (selectedAvatars.length < 3){
+        @if (selectedAvatars().length < 3){
           <app-button
             type="primary"
             icon="assets/icons/add.svg"
-            [disabled]="isAvatarsLoading || selectedAvatars.length >= 3"
+            [disabled]="isAvatarsLoading() || selectedAvatars().length >= 3"
             (click)="goToAddAvatar()">
             Добавить аватар
           </app-button>
@@ -45,30 +43,34 @@
 
       <div class="profile-card">
         <h3 class="card-title">Подписка</h3>
-        @if (activeSubscription) {
-          <div class="sub-text">
-            <p class="subscription-text">
-              {{ activeSubscription.plan }}
-              ({{ remainingDays }}
-              {{ remainingDays === 1 ? 'день' : 'дней' }} осталось)
-            </p>
-            <span class="subscription-details">
-              <p>{{ currentPlanDetails?.tokens }} токенов в месяц</p>
-             @for (feature of currentPlanDetails?.features || []; track feature) {
-               <p>{{ feature }}</p>
-             }
-            </span>
-          </div>
+        @if (isSubscriptionLoading()) {
+          <p class="subscription-text">Загрузка подписки...</p>
         } @else {
-          <p class="subscription-text">
-            У вас нет активной подписки
-          </p>
+          @if (activeSubscription()) {
+            <div class="sub-text">
+              <p class="subscription-text">
+                {{ activeSubscription()?.plan }}
+                ({{ remainingDays() }}
+                {{ remainingDays() === 1 ? 'день' : 'дней' }} осталось)
+              </p>
+              <span class="subscription-details">
+          <p>{{ currentPlanDetails?.tokens }} токенов в месяц</p>
+                @for (feature of currentPlanDetails?.features || []; track feature) {
+                  <p>{{ feature }}</p>
+                }
+        </span>
+            </div>
+          } @else {
+            <p class="subscription-text">
+              У вас нет активной подписки
+            </p>
+          }
         }
         <app-button
           type="primary"
           icon="assets/icons/update.svg"
           (click)="goToSubscription()">
-          {{ activeSubscription ? 'Обновить' : 'Оформить' }}
+          {{ activeSubscription() ? 'Обновить' : 'Оформить' }}
         </app-button>
       </div>
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef, inject} from '@angular/core';
+import {Component, inject, signal, computed, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenPackage } from '../../../core/models/token-transactions.model';
 import { TokenTransactionsService } from '../../../core/services/token-transactions.service';
@@ -13,28 +13,27 @@ import {ToastService} from '../../../core/services/toast.service';
   styleUrls: ['./balance.component.scss'],
   imports: [ButtonComponent, Loading]
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent implements OnInit{
 
-  public tokenPackages: TokenPackage[] = [];
-  public isLoading = false;
+  public tokenPackages = signal<TokenPackage[]>([]);
+  public isLoading = signal(false);
 
   private router = inject(Router);
   private tokenService = inject(TokenTransactionsService);
-  private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
 
   ngOnInit() {
+    this.loadPackages();
+  }
+
+  loadPackages() {
     this.tokenService.getTokenPackages()
       .pipe(take(1))
       .subscribe({
-        next: (packages) => {
-          this.tokenPackages = packages;
-          this.cdr.detectChanges();
-        },
+        next: (packages) => this.tokenPackages.set(packages),
         error: (err) => {
           console.error('Не удалось загрузить пакеты токенов', err);
           this.toast.show('Не удалось загрузить пакеты токенов', 'error');
-          this.cdr.detectChanges();
         }
       });
   }
@@ -44,19 +43,16 @@ export class BalanceComponent implements OnInit {
   }
 
   buyToken(pkg: TokenPackage) {
-    this.isLoading = true;
-    this.cdr.detectChanges();
+    this.isLoading.set(true);
     this.tokenService.createOrder(pkg.tokens)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
           window.location.href = res.url;
         },
         error: () => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
           this.toast.show('Не удалось создать заказ. Попробуйте позже.', 'error');
         }
       });

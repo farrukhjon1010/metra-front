@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CommonModule } from '@angular/common';
@@ -6,9 +6,8 @@ import { TokenTransactionsService } from '../../../core/services/token-transacti
 import { Loading } from '../../../shared/components/loading/loading';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Subscription } from '../../../core/models/subscription.model';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import {ToastService} from '../../../core/services/toast.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ToastService } from '../../../core/services/toast.service';
 
 interface SubscriptionPlan {
   id: string;
@@ -66,14 +65,13 @@ export class SubscriptionComponent implements OnInit, OnDestroy {
     }
   ];
 
-  public isLoading = false;
-  public activeSubscription: Subscription | null = null;
+  public activeSubscription = signal<Subscription | null>(null);
+  public isLoading = signal(false);
   private destroy$ = new Subject<void>();
 
   private router = inject(Router);
   private tokenTransactionsService = inject(TokenTransactionsService);
   private subscriptionService = inject(SubscriptionService);
-  private cdr = inject(ChangeDetectorRef);
   private toast = inject(ToastService);
 
   ngOnInit(): void {
@@ -85,67 +83,60 @@ export class SubscriptionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadMySubscription() {
+  loadMySubscription(): void {
+    this.isLoading.set(true);
     this.subscriptionService.getMySubscription()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          if (res?.length) {
-            this.activeSubscription = res[0];
-          } else {
-            this.activeSubscription = null;
-          }
-          this.cdr.markForCheck();
+          this.activeSubscription.set(res?.[0] ?? null);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Ошибка загрузки подписки', err);
-          this.activeSubscription = null;
+          this.activeSubscription.set(null);
+          this.isLoading.set(false);
           this.toast.show('Ошибка загрузки подписки', 'error');
-          this.cdr.markForCheck();
         }
       });
   }
 
   isCurrentPlan(plan: SubscriptionPlan): boolean {
-    return this.activeSubscription?.plan === plan.title &&
-      this.activeSubscription?.isActive === true;
+    const sub = this.activeSubscription();
+    return sub?.plan === plan.title && sub?.isActive === true;
   }
 
-  goBack() {
-    this.router.navigate(['/profile']);
-  }
-
-  selectPlan(plan: SubscriptionPlan) {
+  selectPlan(plan: SubscriptionPlan): void {
     if (this.isCurrentPlan(plan)) return;
 
-    this.isLoading = true;
-    this.cdr.markForCheck();
+    this.isLoading.set(true);
     this.tokenTransactionsService.createSubscriptionOrder(plan.price)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: res => {
-          window.location.href = res.url;
-        },
+        next: res => window.location.href = res.url,
         error: err => {
           console.error('Ошибка при создании подписки', err);
-          this.isLoading = false;
+          this.isLoading.set(false);
           this.toast.show('Не удалось создать подписку', 'error');
-          this.cdr.markForCheck();
         }
       });
   }
 
+  goBack(): void {
+    this.router.navigate(['/profile']);
+  }
+
   getSubscriptionStatusClass(): string {
-    if (!this.activeSubscription) return '';
+    const sub = this.activeSubscription();
+    if (!sub) return '';
 
     const now = new Date();
-    const end = new Date(this.activeSubscription.endsAt);
+    const end = new Date(sub.endsAt);
     const diffTime = end.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays > 14) return 'badge-green';
     if (diffDays > 7) return 'badge-yellow';
-
     return 'badge-red';
   }
 }

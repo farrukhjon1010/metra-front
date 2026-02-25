@@ -1,19 +1,18 @@
-import { Component, OnDestroy, OnInit, ChangeDetectorRef, inject } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-bottom-nav',
-  templateUrl: './bottom-nav.component.html',
   standalone: true,
   imports: [CommonModule, RouterModule],
+  templateUrl: './bottom-nav.component.html',
   styleUrls: ['./bottom-nav.component.scss']
 })
 export class BottomNavComponent implements OnInit, OnDestroy {
 
-  public activeIndex = 0;
+  public activeIndex = signal(0);
   public navItems = [
     { link: '/home', label: 'Главная', icon: 'assets/icons/home.svg' },
     { link: '/create', label: 'Создать', icon: 'assets/icons/create.svg' },
@@ -23,7 +22,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   ];
   private destroy$ = new Subject<void>();
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
     this.setActiveFromUrl(this.router.url);
@@ -34,7 +32,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       )
       .subscribe((event: NavigationEnd) => {
         this.setActiveFromUrl(event.urlAfterRedirects);
-        this.cdr.markForCheck();
       });
   }
 
@@ -46,12 +43,11 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   setActive(index: number) {
     const item = this.navItems[index];
 
-    if (this.activeIndex === index) {
+    if (this.activeIndex() === index) {
       this.router.navigateByUrl(item.link, { replaceUrl: true });
     } else {
       this.router.navigateByUrl(item.link);
-      this.activeIndex = index;
-      this.cdr.markForCheck();
+      this.activeIndex.set(index); // обновляем сигнал
     }
   }
 
@@ -59,7 +55,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     const index = this.navItems.findIndex(item =>
       url === item.link || url.startsWith(item.link + '/')
     );
-    this.activeIndex = index === -1 ? 0 : index;
+    this.activeIndex.set(index === -1 ? 0 : index);
   }
-
 }

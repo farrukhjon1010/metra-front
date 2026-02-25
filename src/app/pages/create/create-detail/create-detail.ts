@@ -127,8 +127,8 @@ export class CreateDetail implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Ошибка загрузки истории:', err);
-          this.toast.show('Ошибка загрузки истории', 'error');
+          console.error('Ошибка загрузки История Генерации:', err);
+          this.toast.show('Ошибка загрузки История Генерации', 'error');
         }
       });
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AvatarService } from '../../core/services/avatar.service';
@@ -11,8 +11,8 @@ import { SplashSuccessComponent } from './components/splash-success/splash-succe
 import { Loading } from '../../shared/components/loading/loading';
 import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { TelegramService } from '../../core/services/telegram.service';
-import {ToastComponent} from '../../shared/components/toast/toast.component';
-import {ToastService} from '../../core/services/toast.service';
+import { ToastComponent } from '../../shared/components/toast/toast.component';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-splash',
@@ -23,45 +23,40 @@ import {ToastService} from '../../core/services/toast.service';
 })
 export class SplashComponent implements OnDestroy, OnInit {
 
-  public photos = {
+  public currentStep = signal<'splash' | 'form' | 'loading' | 'select' | 'success'>('splash');
+
+  public photos = signal({
     front: { file: null as File | null, preview: null as string | null },
     left: { file: null as File | null, preview: null as string | null },
     right: { file: null as File | null, preview: null as string | null },
-  };
+  });
+
+  public generatedAvatars = signal<string[]>([]);
+  public selectedAvatars = signal<string[]>([]);
+
   public myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
-  public currentStep: 'splash' | 'form' | 'loading' | 'select' | 'success' = 'splash';
-  public UUID: string = '';
-  public gender: Gender = Gender.MALE
-  public generatedAvatars: string[] = [];
-  public selectedAvatars: string[] = [];
-  private destroy$ = new Subject<void>();
 
+  public UUID = signal<string>('');
+  public gender = signal<Gender>(Gender.MALE);
+
+  private destroy$ = new Subject<void>();
   private telegram = inject(TelegramService);
   private router = inject(Router);
   private avatarService = inject(AvatarService);
   private fileService = inject(FileService);
   private toast = inject(ToastService);
-  private cdr = inject(ChangeDetectorRef);
-
-  public get photosPreview() {
-    return {
-      front: this.photos.front.preview,
-      left: this.photos.left.preview,
-      right: this.photos.right.preview
-    };
-  }
 
   ngOnInit() {
     const tgId = this.telegram.userId;
     if (tgId) {
-      this.UUID = tgId;
+      this.UUID.set(tgId);
     }
   }
 
   navigateToCreate(): void {
-    this.currentStep = 'form';
+    this.currentStep.set('form');
   }
 
   navigateToDemo(): void {
@@ -69,51 +64,64 @@ export class SplashComponent implements OnDestroy, OnInit {
   }
 
   onGenderChange(newGender: Gender | 'male' | 'female'): void {
-    this.gender = newGender as Gender;
+    this.gender.set(newGender as Gender);
   }
 
   onPhotoUploaded(event: { type: 'front' | 'left' | 'right'; dataUrl: string; file: File }): void {
-    this.photos[event.type].file = event.file;
-    this.photos[event.type].preview = event.dataUrl;
-    this.cdr.detectChanges();
+    this.photos.update(p => {
+      p[event.type] = { file: event.file, preview: event.dataUrl };
+      return p;
+    });
   }
 
   onPhotoRemoved(type: 'front' | 'left' | 'right'): void {
-    this.photos[type].file = null;
-    this.photos[type].preview = null;
-    this.cdr.detectChanges();
+    this.photos.update(p => {
+      p[type] = { file: null, preview: null };
+      return p;
+    });
+  }
+
+  get photosPreview() {
+    const p = this.photos();
+    return {
+      front: p.front.preview,
+      left: p.left.preview,
+      right: p.right.preview
+    };
   }
 
   canCreate() {
     const avatarName = this.myForm.controls['avatarName'].value?.trim();
+    const p = this.photos();
     return (
-      avatarName &&
-      this.photos.front &&
-      this.photos.left &&
-      this.photos.right
+      !!avatarName &&
+      p.front.file &&
+      p.left.file &&
+      p.right.file
     );
   }
 
   toggleAvatar(avatar: string) {
-    const index = this.selectedAvatars.indexOf(avatar);
+    const arr = this.selectedAvatars();
+    const index = arr.indexOf(avatar);
     if (index > -1) {
-      this.selectedAvatars.splice(index, 1);
-    } else if (this.selectedAvatars.length < 3) {
-      this.selectedAvatars.push(avatar);
+      arr.splice(index, 1);
+    } else if (arr.length < 3) {
+      arr.push(avatar);
     }
+    this.selectedAvatars.set([...arr]);
   }
 
   async confirmAvatars() {
-    if (this.selectedAvatars.length === 0) return;
+    if (this.selectedAvatars().length === 0) return;
 
-    this.currentStep = 'loading';
-    this.cdr.detectChanges();
+    this.currentStep.set('loading');
 
     try {
-      const uploadPromises = this.selectedAvatars.map(async (url, index) => {
+      const uploadPromises = this.selectedAvatars().map(async (url, index) => {
         const response = await fetch(url);
         const blob = await response.blob();
-        return new File([blob], `${this.UUID}${index}.png`, { type: blob.type });
+        return new File([blob], `${this.UUID()}${index}.png`, { type: blob.type });
       });
 
       const filesToUpload = await Promise.all(uploadPromises);
@@ -125,52 +133,41 @@ export class SplashComponent implements OnDestroy, OnInit {
           const cloudinaryUrls = event.body.map((img: any) => img.url);
 
           return this.avatarService.create({
-            name: this.myForm.value.avatarName || "New Avatar",
-            gender: this.gender,
+            name: this.myForm.value.avatarName || 'New Avatar',
+            gender: this.gender(),
             imagesURL: cloudinaryUrls
           });
         }),
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => {
-          this.currentStep = 'success';
-          this.cdr.detectChanges();
+          this.currentStep.set('success');
           this.toast.show('Аватары успешно сохранены', 'success');
         },
         error: (err) => {
           console.error('Ошибка сохранения аватаров:', err);
-          this.currentStep = 'select';
-          this.cdr.detectChanges();
+          this.currentStep.set('select');
           this.toast.show('Ошибка при сохранении Аватаров', 'error');
         }
       });
 
     } catch (error) {
       console.error('Ошибка при обработке ссылок:', error);
-      this.currentStep = 'select';
+      this.currentStep.set('select');
       this.toast.show('Ошибка при обработке ссылок', 'error');
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  goToMetra() {
-    this.router.navigate(['/home']);
   }
 
   createAvatar() {
     if (!this.canCreate()) return;
 
-    this.currentStep = 'loading';
-    this.cdr.detectChanges();
+    this.currentStep.set('loading');
 
+    const photos = this.photos();
     const filesToUpload: File[] = [];
-    if (this.photos.front.file) filesToUpload.push(this.photos.front.file);
-    if (this.photos.left.file) filesToUpload.push(this.photos.left.file);
-    if (this.photos.right.file) filesToUpload.push(this.photos.right.file);
+    if (photos.front.file) filesToUpload.push(photos.front.file);
+    if (photos.left.file) filesToUpload.push(photos.left.file);
+    if (photos.right.file) filesToUpload.push(photos.right.file);
 
     this.fileService.uploadAvatars(filesToUpload).pipe(
       switchMap((event: any) => {
@@ -179,7 +176,7 @@ export class SplashComponent implements OnDestroy, OnInit {
         const urls = event.body.map((img: any) => img.url);
         const generateDto = {
           name: this.myForm.value.avatarName || '',
-          gender: this.gender,
+          gender: this.gender(),
           imageFront: urls[0],
           imageLeft: urls[1],
           imageRight: urls[2]
@@ -190,18 +187,25 @@ export class SplashComponent implements OnDestroy, OnInit {
     ).subscribe({
       next: (response: any) => {
         if (response.images) {
-          this.generatedAvatars = response.images.imagesURL;
-          this.currentStep = 'select';
-          this.cdr.detectChanges();
+          this.generatedAvatars.set(response.images.imagesURL);
+          this.currentStep.set('select');
           this.toast.show('Аватары успешно сгенерированы', 'success');
         }
       },
       error: (err) => {
         console.error('Ошибка:', err);
-        this.currentStep = 'form';
+        this.currentStep.set('form');
         this.toast.show('Ошибка ИИ-сервиса', 'error');
-        this.cdr.detectChanges();
       }
     });
+  }
+
+  goToMetra() {
+    this.router.navigate(['/home']);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

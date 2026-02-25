@@ -1,24 +1,13 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CreateCard } from '../../create.data';
 import { GenerationService } from '../../../../core/services/generation.service';
-import { Subject, takeUntil } from 'rxjs';
 import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
-import {ToastService} from '../../../../core/services/toast.service';
+import { ToastService } from '../../../../core/services/toast.service';
+import { signal, computed } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-create-idle',
@@ -36,55 +25,54 @@ export class CreateIdle implements OnChanges, OnDestroy {
   @ViewChild('photoGenerate', { static: false }) photoGenerate!: ElementRef<HTMLInputElement>;
   @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
 
-  public photos: { generate: string | null } = { generate: null };
-  public prompt: string = '';
-  public isLoadingPrompt: boolean = false;
-  private selectedFile: File | null = null;
-  private destroy$ = new Subject<void>();
+  public prompt = signal('');
+  public photosGenerate = signal<string | null>(null);
+  public isLoadingPrompt = signal(false);
+  private selectedFile = signal<File | null>(null);
+  public showPaidDialog = computed(() => this.paidDialogService.showDialog());
 
-  private cdr = inject(ChangeDetectorRef);
+  private destroy$ = new Subject<void>();
   private generationService = inject(GenerationService);
   public paidDialogService = inject(PaidDialogService);
   private toast = inject(ToastService);
 
-  public get showPaidDialog(): boolean {
-    return this.paidDialogService.showDialog();
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['initialPrompt']) {
-      this.prompt = this.initialPrompt || '';
-      this.cdr.detectChanges();
+      this.prompt.set(this.initialPrompt || '');
     }
     if (changes['initialImageUrl']) {
-      this.photos.generate = this.initialImageUrl || null;
-      this.selectedFile = null;
-      this.cdr.detectChanges();
+      this.photosGenerate.set(this.initialImageUrl || null);
+      this.selectedFile.set(null);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createImage() {
     if (this.paidDialogService.tryShowDialog()) return;
-    if (!this.prompt.trim()) {
+    if (!this.prompt().trim()) {
       this.toast.show('Введите описание (prompt)', 'error');
       return;
     }
-    if (!this.photos.generate && !this.selectedFile) {
+    if (!this.photosGenerate() && !this.selectedFile()) {
       this.toast.show('Добавьте изображение', 'error');
       return;
     }
     this.create.emit({
-      prompt: this.prompt,
-      imageUrl: this.photos.generate,
-      file: this.selectedFile
+      prompt: this.prompt(),
+      imageUrl: this.photosGenerate(),
+      file: this.selectedFile()
     });
   }
 
   removePhoto(type: 'generate', event: Event) {
     event.stopPropagation();
-    this.photos[type] = null;
-    this.selectedFile = null;
-    this.cdr.detectChanges();
+    this.photosGenerate.set(null);
+    this.selectedFile.set(null);
+    this.toast.show('Фото удалено');
   }
 
   triggerFileInput(type: 'generate', event: Event) {
@@ -97,32 +85,29 @@ export class CreateIdle implements OnChanges, OnDestroy {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
 
-    this.selectedFile = file;
+    this.selectedFile.set(file);
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.photos[type] = reader.result as string;
-      this.cdr.detectChanges();
+      this.photosGenerate.set(reader.result as string);
     };
     reader.readAsDataURL(file);
   }
 
   generatePrompt(): void {
     if (this.paidDialogService.tryShowDialog()) return;
-    if (!this.card?.type || this.isLoadingPrompt) {
+    if (!this.card?.type || this.isLoadingPrompt()) {
       this.toast.show('Невозможно сгенерировать prompt', 'error');
       return;
     }
 
-    this.isLoadingPrompt = true;
-    this.cdr.detectChanges();
+    this.isLoadingPrompt.set(true);
     this.generationService.getPrompt(this.card.type)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: res => {
-          this.prompt = res.prompt;
+          this.prompt.set(res.prompt);
           this.toast.show('Prompt успешно сгенерирован!', 'success');
-          this.cdr.detectChanges();
 
           setTimeout(() => {
             if (this.textarea) {
@@ -136,18 +121,10 @@ export class CreateIdle implements OnChanges, OnDestroy {
         error: err => {
           console.error('Ошибка получения prompt:', err);
           this.toast.show('Ошибка генерации Prompt', 'error');
-          this.isLoadingPrompt = false;
-          this.cdr.detectChanges();
         },
         complete: () => {
-          this.isLoadingPrompt = false;
-          this.cdr.detectChanges();
+          this.isLoadingPrompt.set(false);
         }
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

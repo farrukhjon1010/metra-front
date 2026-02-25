@@ -1,5 +1,5 @@
 <app-toast></app-toast>
-@switch (currentStep) {
+@switch (currentStep()) {
   @case ('splash') {
     <app-splash-case
       (create)="navigateToCreate()"
@@ -9,7 +9,7 @@
   @case ('form') {
     <app-splash-form
       [myForm]="myForm"
-      [gender]="gender"
+      [gender]="gender()"
       [photos]="photosPreview"
       (genderChange)="onGenderChange($event)"
       (photoUploaded)="onPhotoUploaded($event)"
@@ -24,8 +24,8 @@
   }
   @case ('select') {
     <app-splash-select
-      [generatedAvatars]="generatedAvatars"
-      [selectedAvatars]="selectedAvatars"
+      [generatedAvatars]="generatedAvatars()"
+      [selectedAvatars]="selectedAvatars()"
       (toggle)="toggleAvatar($event)"
       (confirm)="confirmAvatars()">
     </app-splash-select>

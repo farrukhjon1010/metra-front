@@ -145,6 +145,11 @@
   }
 }
 
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px
+}
 .before-photo,
 .after-photo {
   display: flex;

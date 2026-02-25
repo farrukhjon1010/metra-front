@@ -138,6 +138,11 @@
   transform: scale(1.05);
 }
 
+.avatar-item.selected {
+  border: 2px solid $color-success;
+  box-shadow: 0 0 10px rgba(59, 193, 74, 0.6);
+}
+
 .balance-text,
 .partnership-text,
 .subscription-text,

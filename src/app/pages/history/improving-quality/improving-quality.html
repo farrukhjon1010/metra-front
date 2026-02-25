@@ -29,11 +29,11 @@
         <img src="assets/icons/upload.svg" alt="Icon">
       </div>
     </div>
-    @if (photos.photo) {
+    @if (photos().photo) {
       <div class="photo-quality">
-        <img class="with-photo" [src]="photos.photo" alt="Photo">
+        <img class="with-photo" [src]="photos().photo" alt="Photo">
 
-        @if (photos.photo) {
+        @if (photos().photo) {
           <button class="delete-photo" (click)="removePhoto('photo', $event)">
             <img src="assets/icons/delete.svg" alt="">
           </button>
@@ -43,16 +43,16 @@
   </div>
 
   <div class="btn-quality">
-    @if (!isLoading){
+    @if (!isLoading()){
     <app-button
       type="primary"
       icon="assets/icons/photo-size.svg"
       (click)="enhanceImage()"
-      [disabled]="!photos.photo || isProcessing ">
+      [disabled]="!photos().photo || isProcessing() ">
       Улучшить изображение
     </app-button>
     }
-    @if (isLoading){
+    @if (isLoading()){
     <app-loading
       [texts]="['Улучшаем изображение…']">
     </app-loading>
@@ -64,8 +64,8 @@
 
     <div class="before-photo">
       <div class="bf-text">До</div>
-      @if (originalImage) {
-        <img [src]="originalImage" class="result-img" alt="Before">
+      @if (originalImage()) {
+        <img [src]="originalImage()" class="result-img" alt="Before">
       } @else {
         <div class="center-text-quality">Ваше изображение</div>
       }
@@ -73,20 +73,20 @@
 
     <div class="after-photo">
       <div class="aft-text">После</div>
-      @if (improvedImage) {
-        <img [src]="improvedImage" class="result-img" alt="After">
+      @if (improvedImage()) {
+        <img [src]="improvedImage()" class="result-img" alt="After">
       } @else {
         <div class="center-text-quality">После улучшения</div>
       }
     </div>
 
-    @if (originalImage) {
+    @if (originalImage()) {
       <div class="result-actions">
         <app-button
           type="secondary"
           icon="assets/icons/download.svg"
           (click)="downloadImage()"
-          [disabled]="!improvedImage">
+          [disabled]="!improvedImage()">
           Скачать
         </app-button>
 

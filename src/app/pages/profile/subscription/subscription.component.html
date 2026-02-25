@@ -1,4 +1,4 @@
-@if (isLoading) {
+@if (isLoading()) {
   <app-loading
     [texts]="['Подготовка к оплате…']">
   </app-loading>
@@ -23,10 +23,10 @@
         }
         <div class="text-card">
           <h2>{{ plan.title }}</h2>
-          @if (isCurrentPlan(plan) && activeSubscription) {
+          @if (isCurrentPlan(plan) && activeSubscription()) {
             <div class="active-badge"
                  [ngClass]="getSubscriptionStatusClass()">
-              Активна до {{ activeSubscription.endsAt | date:'dd MMMM yyyy' }}
+              Активна до {{ activeSubscription()?.endsAt | date:'dd MMMM yyyy' }}
             </div>
           }
           <p>Вы получаете:</p>

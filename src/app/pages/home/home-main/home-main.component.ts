@@ -6,7 +6,7 @@ import { HomeRecommendation } from '../home-recommendation/home-recommendation';
 import { HomeHeader } from '../home-header/home-header';
 import { ScenesHeader } from '../../scenes/scenes-header/scenes-header';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
@@ -41,21 +41,19 @@ export class HomeMainComponent implements OnInit {
     this.categories$ = this.sceneService.getCategories();
   }
 
-  onCategorySelect(category: SceneCategory) {
+  async onCategorySelect(category: SceneCategory) {
     if (this.paidDialogService.tryShowDialog()) return;
 
-    this.sceneService.getScenes({ categoryId: category.id }).subscribe({
-      next: (scenes) => {
-        if (scenes.length > 0) {
-          this.router.navigate(['/home', scenes[0].id]);
-        } else {
-          this.router.navigate(['/home/home/category', category.id]);
-        }
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки Категории', err);
-        this.toast.show('Ошибка загрузки Категории', 'error');
+    try {
+      const scenes = await firstValueFrom(this.sceneService.getScenes({ categoryId: category.id }));
+      if (scenes.length > 0) {
+        await this.router.navigate(['/home', scenes[0].id]);
+      } else {
+        await this.router.navigate(['/home/home/category', category.id]);
       }
-    });
+    } catch (err) {
+      console.error('Ошибка загрузки Категории', err);
+      this.toast.show('Ошибка загрузки Категории', 'error');
+    }
   }
 }

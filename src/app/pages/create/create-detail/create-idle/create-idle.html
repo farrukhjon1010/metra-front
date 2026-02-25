@@ -1,5 +1,5 @@
 <div class="create-detail">
-  @if (showPaidDialog) {
+  @if (showPaidDialog()) {
     <app-paid-dialog></app-paid-dialog>
   }
   <div class="text-ai-generation">
@@ -7,8 +7,8 @@
     <div class="textarea-wrapper">
       <div class="icon-wrapper"
            (click)="generatePrompt()"
-           [class.disabled]="isLoadingPrompt">
-        @if (!isLoadingPrompt) {
+           [class.disabled]="isLoadingPrompt()">
+        @if (!isLoadingPrompt()) {
           <img src="assets/icons/awesome.svg" alt="AI">
         } @else {
           <div class="spinner-promt"></div>
@@ -16,7 +16,8 @@
       </div>
       <textarea
         #promptTextarea
-        [(ngModel)]="prompt"
+        [ngModel]="prompt()"
+        (ngModelChange)="prompt.set($event)"
         placeholder="Опишите ваше изображение"
         rows="4">
       </textarea>
@@ -38,9 +39,9 @@
         <img src="assets/icons/upload.svg" alt="Icon">
       </div>
     </div>
-    @if (photos.generate) {
+    @if (photosGenerate()) {
       <div class="photo-quality">
-        <img class="with-photo" [src]="photos.generate" alt="Photo">
+        <img class="with-photo" [src]="photosGenerate()" alt="Photo">
         <button
           class="delete-photo-generation"
           (click)="removePhoto('generate', $event)">
@@ -54,7 +55,7 @@
       type="primary"
       icon="assets/icons/add.svg"
       (click)="createImage()"
-      [disabled]="!photos.generate">
+      [disabled]="!photosGenerate()">
       Создать изображение
     </app-button>
   </div>
