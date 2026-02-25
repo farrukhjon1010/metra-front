@@ -39,29 +39,30 @@ export class SplashCaseComponent implements OnInit, OnDestroy {
   }
 
   private loadData() {
-    forkJoin({
-      avatars: this.avatarService.findByUser().pipe(
+    forkJoin([
+      this.avatarService.findByUser().pipe(
         catchError(err => {
           console.error('Ошибка загрузки аватаров', err);
           this.toast.show('Не удалось загрузить Аватар', 'error');
           return of({ imagesURL: [] });
         })
       ),
-      subscription: this.subscriptionService.getMySubscription().pipe(
+      this.subscriptionService.getMySubscription().pipe(
         catchError(err => {
           console.error('Ошибка загрузки подписки', err);
           this.toast.show('Не удалось загрузить подписку', 'error');
           return of([]);
         })
       )
-    }).pipe(takeUntil(this.destroy$))
-      .subscribe(({ avatars, subscription }) => {
-        this.hasAvatars = (avatars?.imagesURL?.length ?? 0) > 0;
+    ]).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(([avatars, subscription]) => {
+      this.hasAvatars = (avatars?.imagesURL?.length ?? 0) > 0;
 
-        const activeSub: AppSubscription | undefined = subscription?.[0];
-        this.hasActiveSubscription = activeSub?.isActive === true;
-        this.loading = false;
-        this.cdr.markForCheck();
-      });
+      const activeSub: AppSubscription | undefined = subscription?.[0];
+      this.hasActiveSubscription = activeSub?.isActive === true;
+      this.loading = false;
+      this.cdr.markForCheck();
+    });
   }
 }

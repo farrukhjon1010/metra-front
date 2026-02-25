@@ -23,23 +23,22 @@ import { ToastService } from '../../core/services/toast.service';
 })
 export class SplashComponent implements OnDestroy, OnInit {
 
-  public currentStep = signal<'splash' | 'form' | 'loading' | 'select' | 'success'>('splash');
+
 
   public photos = signal({
     front: { file: null as File | null, preview: null as string | null },
     left: { file: null as File | null, preview: null as string | null },
     right: { file: null as File | null, preview: null as string | null },
   });
-
+  public currentStep = signal<'splash' | 'form' | 'loading' | 'select' | 'success'>('splash');
+  public UUID = signal<string>('');
+  public gender = signal<Gender>(Gender.MALE);
   public generatedAvatars = signal<string[]>([]);
   public selectedAvatars = signal<string[]>([]);
 
   public myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
-
-  public UUID = signal<string>('');
-  public gender = signal<Gender>(Gender.MALE);
 
   private destroy$ = new Subject<void>();
   private telegram = inject(TelegramService);

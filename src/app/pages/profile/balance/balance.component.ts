@@ -1,4 +1,4 @@
-import {Component, inject, signal, computed, OnInit} from '@angular/core';
+import {Component, inject, signal, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenPackage } from '../../../core/models/token-transactions.model';
 import { TokenTransactionsService } from '../../../core/services/token-transactions.service';

@@ -5,8 +5,8 @@
   <div class="form-group">
     <div class="filter-buttons">
       <div class="slider"
-           [ngStyle]="{transform:selectedFilter() === 'all' ? 'translateX(0%)':
-                              selectedFilter() === 'photo'? 'translateX(100%)': 'translateX(200%)'}">
+           [ngStyle]="{ transform:selectedFilter() === 'all' ? 'translateX(0%)':
+                                  selectedFilter() === 'photo'? 'translateX(100%)': 'translateX(200%)'}">
       </div>
 
       <button

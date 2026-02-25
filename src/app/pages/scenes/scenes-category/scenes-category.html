@@ -1,12 +1,14 @@
 @if(!loaded){
-  <div>
-    <app-loading [texts]="['Загрузка...']"></app-loading>
-  </div>
+  <app-loading
+    [texts]="['Загрузка...']">
+  </app-loading>
 }
 @if (loaded){
-<div >
   @if (selectedScene) {
-    <app-scenes-card [scene]="selectedScene" (back)="goBack()"></app-scenes-card>
+    <app-scenes-card
+      [scene]="selectedScene"
+      (back)="goBack()">
+    </app-scenes-card>
   } @else {
     <div class="empty-page">
       <h2>Пусто</h2>
@@ -14,7 +16,6 @@
       <button (click)="goBack()">Назад</button>
     </div>
   }
-</div>
 }
 @if (showPaidDialog) {
   <app-paid-dialog></app-paid-dialog>
