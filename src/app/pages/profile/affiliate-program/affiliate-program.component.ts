@@ -4,6 +4,7 @@ import {ButtonComponent} from '../../../shared/components/button/button.componen
 import {ReferralInfo} from '../../../core/models/referral.model';
 import {ReferralService} from '../../../core/services/referral.service';
 import {Subject, takeUntil} from 'rxjs';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-affiliate-program',
@@ -28,6 +29,7 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
     private router: Router,
     private referralService: ReferralService,
     private cdr: ChangeDetectorRef,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -57,8 +59,9 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Ошибка загрузки рефералки', err);
+          console.error('Ошибка загрузки Рефералки', err);
           this.loading = false;
+          this.toast.show('Ошибка загрузки данных Рефералки', 'error');
           this.cdr.detectChanges();
         }
       });
@@ -73,6 +76,7 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
 
     navigator.clipboard.writeText(this.link).then(() => {
       this.copied = true;
+      this.toast.show('Ссылка скопирована', 'success');
       this.cdr.detectChanges();
 
       setTimeout(() => {

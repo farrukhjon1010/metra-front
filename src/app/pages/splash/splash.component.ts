@@ -11,11 +11,13 @@ import { SplashSuccessComponent } from './components/splash-success/splash-succe
 import { Loading } from '../../shared/components/loading/loading';
 import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { TelegramService } from '../../core/services/telegram.service';
+import {ToastComponent} from '../../shared/components/toast/toast.component';
+import {ToastService} from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-splash',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, SplashCaseComponent, SplashFormComponent, SplashSelectComponent, SplashSuccessComponent, Loading,],
+  imports: [ReactiveFormsModule, FormsModule, SplashCaseComponent, SplashFormComponent, SplashSelectComponent, SplashSuccessComponent, Loading, ToastComponent,],
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss'],
 })
@@ -46,10 +48,13 @@ export class SplashComponent implements OnDestroy, OnInit {
     avatarName: new FormControl('', Validators.required),
   });
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private cdr: ChangeDetectorRef,
     private avatarService: AvatarService,
-    private fileService: FileService) { }
+    private fileService: FileService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit() {
     const tgId = this.telegram.userId;
@@ -133,17 +138,20 @@ export class SplashComponent implements OnDestroy, OnInit {
         next: () => {
           this.currentStep = 'success';
           this.cdr.detectChanges();
+          this.toast.show('Аватары успешно сохранены', 'success');
         },
         error: (err) => {
           console.error('Ошибка сохранения аватаров:', err);
           this.currentStep = 'select';
           this.cdr.detectChanges();
+          this.toast.show('Ошибка при сохранении Аватаров', 'error');
         }
       });
 
     } catch (error) {
       console.error('Ошибка при обработке ссылок:', error);
       this.currentStep = 'select';
+      this.toast.show('Ошибка при обработке ссылок', 'error');
     }
   }
 
@@ -188,12 +196,13 @@ export class SplashComponent implements OnDestroy, OnInit {
           this.generatedAvatars = response.images.imagesURL;
           this.currentStep = 'select';
           this.cdr.detectChanges();
+          this.toast.show('Аватары успешно сгенерированы', 'success');
         }
       },
       error: (err) => {
         console.error('Ошибка:', err);
         this.currentStep = 'form';
-        alert('Ошибка ИИ-сервиса');
+        this.toast.show('Ошибка ИИ-сервиса', 'error');
         this.cdr.detectChanges();
       }
     });

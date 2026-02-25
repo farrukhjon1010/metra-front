@@ -64,15 +64,15 @@
 .avatars-display {
   display: flex;
   flex-wrap: wrap;
-  @include fluid-gap(8px, 16px);
+  @include fluid-gap(16px, 16px);
   justify-content: center;
 }
 
 .avatar-item,
 .add-avatar {
   flex: 0 0 auto;
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   border: 2px solid $color-primary-light;
   display: flex;

@@ -7,6 +7,7 @@ import { ScenesCard } from '../scenes-card/scenes-card';
 import { Loading } from '../../../shared/components/loading/loading';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-scenes-category',
@@ -22,6 +23,7 @@ export class SceneCategory implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   public paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
   scenes: Scene[] = [];
   selectedScene: Scene | null = null;
@@ -63,6 +65,7 @@ export class SceneCategory implements OnInit {
             this.selectedScene = null;
             this.loaded = true;
             this.cdr.detectChanges();
+            this.toast.show('Не удалось загрузить Сцены', 'error');
           }
         });
       },
@@ -70,6 +73,7 @@ export class SceneCategory implements OnInit {
         this.category = null;
         this.loaded = true;
         this.cdr.detectChanges();
+        this.toast.show('Не удалось загрузить Категории', 'error');
       }
     });
   }

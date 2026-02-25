@@ -9,6 +9,7 @@ import { Scene } from '../../../core/models/scene.model';
 import { HomeHeader } from '../../home/home-header/home-header';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-scenes-card',
@@ -35,7 +36,8 @@ export class ScenesCard implements OnChanges, OnDestroy {
     private sceneService: SceneService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -91,7 +93,8 @@ export class ScenesCard implements OnChanges, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Failed to load templates', err);
+          console.error('Не удалось загрузить Templates', err);
+          this.toast.show('Не удалось загрузить Templates', 'error');
           this.cdr.detectChanges();
         }
       });
@@ -121,7 +124,8 @@ export class ScenesCard implements OnChanges, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Failed to load freestyle', err);
+          console.error('Не удалось загрузить Freestyle', err);
+          this.toast.show('Не удалось загрузить Freestyle', 'error');
           this.cdr.detectChanges();
         }
       });

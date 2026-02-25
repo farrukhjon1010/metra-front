@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import {Subject, takeUntil} from 'rxjs';
+import {ToastComponent} from '../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-create',
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, ToastComponent],
   standalone: true,
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],

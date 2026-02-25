@@ -5,6 +5,7 @@ import { TokenTransactionsService } from '../../../core/services/token-transacti
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Loading } from '../../../shared/components/loading/loading';
 import { take } from 'rxjs/operators';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-balance',
@@ -19,7 +20,8 @@ export class BalanceComponent implements OnInit {
   constructor(
     private router: Router,
     private tokenService: TokenTransactionsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toast: ToastService
   ) {}
 
   ngOnInit() {
@@ -31,7 +33,8 @@ export class BalanceComponent implements OnInit {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Ошибка загрузки пакетов токенов', err);
+          console.error('Не удалось загрузить пакеты токенов', err);
+          this.toast.show('Не удалось загрузить пакеты токенов', 'error');
           this.cdr.detectChanges();
         }
       });
@@ -55,7 +58,7 @@ export class BalanceComponent implements OnInit {
         error: () => {
           this.isLoading = false;
           this.cdr.detectChanges();
-          alert('Не удалось создать заказ. Попробуйте позже.');
+          this.toast.show('Не удалось создать заказ. Попробуйте позже.', 'error');
         }
       });
   }

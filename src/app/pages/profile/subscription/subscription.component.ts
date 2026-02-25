@@ -8,6 +8,7 @@ import { SubscriptionService } from '../../../core/services/subscription.service
 import { Subscription } from '../../../core/models/subscription.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {ToastService} from '../../../core/services/toast.service';
 
 interface SubscriptionPlan {
   id: string;
@@ -74,7 +75,8 @@ export class SubscriptionComponent implements OnInit, OnDestroy {
     private router: Router,
     private tokenTransactionsService: TokenTransactionsService,
     private subscriptionService: SubscriptionService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -101,6 +103,7 @@ export class SubscriptionComponent implements OnInit, OnDestroy {
         error: (err) => {
           console.error('Ошибка загрузки подписки', err);
           this.activeSubscription = null;
+          this.toast.show('Ошибка загрузки подписки', 'error');
           this.cdr.markForCheck();
         }
       });
@@ -129,6 +132,7 @@ export class SubscriptionComponent implements OnInit, OnDestroy {
         error: err => {
           console.error('Ошибка при создании подписки', err);
           this.isLoading = false;
+          this.toast.show('Не удалось создать подписку', 'error');
           this.cdr.markForCheck();
         }
       });

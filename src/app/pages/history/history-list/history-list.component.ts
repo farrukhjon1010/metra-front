@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Loading } from "../../../shared/components/loading/loading";
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-history-list',
@@ -28,7 +29,8 @@ export class HistoryListComponent implements OnInit, OnDestroy {
     private router: Router,
     private generationService: GenerationService,
     private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get shouldShowPaidDialog(): boolean {
@@ -56,9 +58,10 @@ export class HistoryListComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          console.error('Ошибка при загрузке:', err);
+          console.error('Ошибка загрузки Истории:', err);
           this.isLoading = false;
           this.cdr.detectChanges();
+          this.toast.show('Ошибка загрузки Истории', 'error');
         }
       });
   }
@@ -74,7 +77,6 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   }
 
   navigateToCreate() {
-    if (this.paidDialogService.tryShowDialog()) return;
     this.router.navigate(['/create']);
   }
 
@@ -89,7 +91,9 @@ export class HistoryListComponent implements OnInit, OnDestroy {
         a.click();
         URL.revokeObjectURL(objectUrl);
       })
-      .catch(err => console.error('Ошибка скачивания файла:', err));
+      .catch(err =>
+        console.error('Ошибка скачивания файла:', err));
+      this.toast.show('Ошибка скачивания файла', 'error');
   }
 
   goToUpscale(imageUrl: string, id: string) {

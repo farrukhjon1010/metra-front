@@ -12,6 +12,7 @@ import { CreateIdle } from './create-idle/create-idle';
 import { CreateResult } from './create-result/create-result';
 import { GenerationHistory } from './generation-history/generation-history';
 import { Loading } from '../../../shared/components/loading/loading';
+import {ToastService} from '../../../core/services/toast.service';
 
 type CreateState = 'idle' | 'loading' | 'result';
 
@@ -40,7 +41,8 @@ export class CreateDetail implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private toast: ToastService
   ) {}
 
   ngOnInit() {
@@ -107,11 +109,13 @@ export class CreateDetail implements OnInit, OnDestroy {
           this.createState = 'result';
           this.loadGenerationsHistory();
           this.cdr.detectChanges();
+          this.toast.show('Изображение успешно сгенерировано!', 'success');
         },
         error: (err) => {
-          console.error('Ошибка генерации:', err);
+          console.error('Ошибка генерации изображения:', err);
           this.createState = 'idle';
           this.cdr.detectChanges();
+          this.toast.show('Ошибка генерации изображения', 'error');
         }
       });
   }
@@ -124,7 +128,10 @@ export class CreateDetail implements OnInit, OnDestroy {
           this.generationHistory = data.filter(gen => gen.type === this.card.type);
           this.cdr.detectChanges();
         },
-        error: (err) => console.error('Ошибка загрузки истории:', err)
+        error: (err) => {
+          console.error('Ошибка загрузки истории:', err);
+          this.toast.show('Ошибка загрузки истории', 'error');
+        }
       });
   }
 

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-home-main',
@@ -25,7 +26,8 @@ export class HomeMainComponent implements OnInit {
   constructor(
     private sceneService: SceneService,
     private router: Router,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get showPaidDialog(): boolean {
@@ -43,11 +45,17 @@ export class HomeMainComponent implements OnInit {
   onCategorySelect(category: SceneCategory) {
     if (this.paidDialogService.tryShowDialog()) return;
 
-    this.sceneService.getScenes({ categoryId: category.id }).subscribe(scenes => {
-      if (scenes.length > 0) {
-        this.router.navigate(['/home', scenes[0].id]);
-      } else {
-        this.router.navigate(['/home/home/category', category.id]);
+    this.sceneService.getScenes({ categoryId: category.id }).subscribe({
+      next: (scenes) => {
+        if (scenes.length > 0) {
+          this.router.navigate(['/home', scenes[0].id]);
+        } else {
+          this.router.navigate(['/home/home/category', category.id]);
+        }
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки Категории', err);
+        this.toast.show('Ошибка загрузки Категории', 'error');
       }
     });
   }

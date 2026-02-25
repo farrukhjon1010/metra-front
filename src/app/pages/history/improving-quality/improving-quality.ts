@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { Loading } from '../../../shared/components/loading/loading';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-improving-quality',
@@ -29,7 +30,8 @@ export class ImprovingQuality implements AfterViewInit {
     private location: Location,
     private cdr: ChangeDetectorRef,
     private upscaleService: UpscaleService,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get showPaidDialog(): boolean {
@@ -77,11 +79,15 @@ export class ImprovingQuality implements AfterViewInit {
     this.improvedImage = null;
     this.isStarted = false;
     this.cdr.detectChanges();
+    this.toast.show('Фото удалено', 'success');
   }
 
   async enhanceImage() {
     if (this.paidDialogService.tryShowDialog()) return;
-    if (!this.photos.photo) return;
+    if (!this.photos.photo) {
+      this.toast.show('Выберите изображение для улучшения', 'error');
+      return;
+    }
 
     this.isLoading = true;
     this.isStarted = true;
@@ -93,9 +99,11 @@ export class ImprovingQuality implements AfterViewInit {
     try {
       const result = await firstValueFrom(this.upscaleService.improveImage(this.originalImage));
       this.improvedImage = result?.improvedImage || this.originalImage;
+      this.toast.show('Изображение успешно улучшено!', 'success');
     } catch (err) {
       console.error('Ошибка улучшения изображения', err);
       this.improvedImage = null;
+      this.toast.show('Ошибка при улучшении изображения', 'error');
     } finally {
       this.isLoading = false;
       this.isProcessing = false;
@@ -104,7 +112,10 @@ export class ImprovingQuality implements AfterViewInit {
   }
 
   downloadImage() {
-    if (!this.improvedImage) return;
+    if (!this.improvedImage) {
+      this.toast.show('Нет изображения для скачивания', 'error');
+      return;
+    }
 
     fetch(this.improvedImage)
       .then(res => res.blob())
@@ -114,8 +125,10 @@ export class ImprovingQuality implements AfterViewInit {
         a.download = 'improved-image.jpg';
         a.click();
         URL.revokeObjectURL(a.href);
+        this.toast.show('Изображение успешно скачано', 'success');
       })
-      .catch(err => console.error('Ошибка при скачивании улучшенного изображения', err));
+      .catch(err => console.error('Ошибка скачивании улучшенного изображения', err));
+      this.toast.show('Ошибка скачивании улучшенного изображения', 'error');
   }
 
   repeatImage() {

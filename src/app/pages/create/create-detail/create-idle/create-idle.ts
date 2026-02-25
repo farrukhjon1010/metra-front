@@ -6,6 +6,7 @@ import { GenerationService } from '../../../../core/services/generation.service'
 import { Subject, takeUntil } from 'rxjs';
 import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
+import {ToastService} from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-create-idle',
@@ -32,7 +33,8 @@ export class CreateIdle implements OnChanges, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     private generationService: GenerationService,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get showPaidDialog(): boolean {
@@ -53,6 +55,14 @@ export class CreateIdle implements OnChanges, OnDestroy {
 
   createImage() {
     if (this.paidDialogService.tryShowDialog()) return;
+    if (!this.prompt.trim()) {
+      this.toast.show('Введите описание (prompt)', 'error');
+      return;
+    }
+    if (!this.photos.generate && !this.selectedFile) {
+      this.toast.show('Добавьте изображение', 'error');
+      return;
+    }
     this.create.emit({
       prompt: this.prompt,
       imageUrl: this.photos.generate,
@@ -89,7 +99,10 @@ export class CreateIdle implements OnChanges, OnDestroy {
 
   generatePrompt(): void {
     if (this.paidDialogService.tryShowDialog()) return;
-    if (!this.card?.type || this.isLoadingPrompt) return;
+    if (!this.card?.type || this.isLoadingPrompt) {
+      this.toast.show('Невозможно сгенерировать prompt', 'error');
+      return;
+    }
 
     this.isLoadingPrompt = true;
     this.cdr.detectChanges();
@@ -98,6 +111,7 @@ export class CreateIdle implements OnChanges, OnDestroy {
       .subscribe({
         next: res => {
           this.prompt = res.prompt;
+          this.toast.show('Prompt успешно сгенерирован!', 'success');
           this.cdr.detectChanges();
 
           setTimeout(() => {
@@ -111,6 +125,7 @@ export class CreateIdle implements OnChanges, OnDestroy {
         },
         error: err => {
           console.error('Ошибка получения prompt:', err);
+          this.toast.show('Ошибка генерации Prompt', 'error');
           this.isLoadingPrompt = false;
           this.cdr.detectChanges();
         },

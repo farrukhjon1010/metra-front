@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angu
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
+import {ToastService} from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-create-result',
@@ -18,7 +19,8 @@ export class CreateResult {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get showPaidDialog(): boolean {
@@ -26,7 +28,10 @@ export class CreateResult {
   }
 
   downloadResultFile() {
-    if (!this.resultImageUrl) return;
+    if (!this.resultImageUrl) {
+      this.toast.show('Нет файла для скачивания', 'error');
+      return;
+    }
 
     fetch(this.resultImageUrl)
       .then(res => res.blob())
@@ -40,10 +45,12 @@ export class CreateResult {
         a.download = `generation-${isVideo ? 'video' : 'image'}.${extension}`;
         a.click();
         URL.revokeObjectURL(objectUrl);
+        this.toast.show('Файл успешно скачан', 'success');
         this.cdr.detectChanges();
       })
       .catch(err => {
-        console.error('Ошибка при скачивании файла:', err);
+        console.error('Ошибка скачивании файла:', err);
+        this.toast.show('Ошибка скачивании файла', 'error');
         this.cdr.detectChanges();
       });
   }

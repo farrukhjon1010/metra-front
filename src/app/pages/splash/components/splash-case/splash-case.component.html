@@ -6,19 +6,21 @@
       </div>
       <h1 class="brand-name">METRA</h1>
     </div>
+
     <div class="features">
       <p class="feature-text">Генерация образов и фото с помощью персонального аватара.</p>
       <p class="feature-text">Сцены, стили и примерка одежды — в одном пространстве.</p>
       <p class="feature-text-metra">Для доступа ко всем возможностям METRA используется аватар.</p>
     </div>
+
     <div class="actions">
-      @if (!hasAvatars && !hasActiveSubscription) {
-      <app-button
-        type="primary"
-        icon="assets/icons/add.svg"
-        (click)="create.emit()">
-        Создать аватар
-      </app-button>
+      @if (!loading && !hasAvatars && !hasActiveSubscription) {
+        <app-button
+          type="primary"
+          icon="assets/icons/add.svg"
+          (click)="create.emit()">
+          Создать аватар
+        </app-button>
       }
       <app-button
         type="secondary"

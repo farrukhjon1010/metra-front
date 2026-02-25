@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
+import {ToastService} from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-generation-history',
@@ -20,7 +21,8 @@ export class GenerationHistory {
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get showPaidDialog(): boolean {
@@ -35,7 +37,10 @@ export class GenerationHistory {
 
   downloadFile(url: string, type: 'image' | 'video'): void {
     if (this.paidDialogService.tryShowDialog()) return;
-    if (!url) return;
+    if (!url) {
+      this.toast.show('Файл не найден', 'error');
+      return;
+    }
 
     fetch(url)
       .then(response => {
@@ -52,10 +57,12 @@ export class GenerationHistory {
         a.download = `generation-${type}.${extension}`;
         a.click();
         URL.revokeObjectURL(objectUrl);
+        this.toast.show('Файл успешно скачан', 'success');
         this.cdr.detectChanges();
       })
       .catch(err => {
         console.error('Не удалось скачать файл:', err);
+        this.toast.show('Ошибка скачивании файла', 'error');
         this.cdr.detectChanges();
       });
   }

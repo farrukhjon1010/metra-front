@@ -9,6 +9,7 @@ import { HomeHeader } from '../home-header/home-header';
 import { Subscription } from 'rxjs';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-home-category',
@@ -24,6 +25,7 @@ export class HomeCategory implements OnInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private subscriptions = new Subscription();
   public paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
   scenes: Scene[] = [];
   selectedScene: Scene | null = null;
@@ -64,6 +66,7 @@ export class HomeCategory implements OnInit, OnDestroy {
             this.scenes = [];
             this.selectedScene = null;
             this.loader = true;
+            this.toast.show('Ошибка загрузки Сцен', 'error');
             this.cdr.detectChanges();
           }
         });
@@ -74,6 +77,7 @@ export class HomeCategory implements OnInit, OnDestroy {
         this.scenes = [];
         this.selectedScene = null;
         this.loader = true;
+        this.toast.show('Ошибка загрузки Категорий', 'error');
         this.cdr.detectChanges();
       }
     });

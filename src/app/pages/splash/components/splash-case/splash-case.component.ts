@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {Component, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectorRef, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { AvatarService } from '../../../../core/services/avatar.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
 import { Subscription as AppSubscription } from '../../../../core/models/subscription.model';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, forkJoin, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-splash-case',
@@ -15,21 +17,19 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class SplashCaseComponent implements OnInit, OnDestroy {
 
-  hasAvatars = false;
-  hasActiveSubscription = false;
+  public hasAvatars: boolean = false;
+  public hasActiveSubscription: boolean = false;
+  public loading: boolean = true;
   private destroy$ = new Subject<void>();
+  private avatarService = inject(AvatarService);
+  private subscriptionService = inject(SubscriptionService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
   @Output() create = new EventEmitter<void>();
   @Output() demo = new EventEmitter<void>();
 
-  constructor(
-    private avatarService: AvatarService,
-    private subscriptionService: SubscriptionService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
   ngOnInit() {
-    this.loadAvatars();
-    this.loadSubscription();
+    this.loadData();
   }
 
   ngOnDestroy() {
@@ -37,34 +37,30 @@ export class SplashCaseComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private loadAvatars() {
-    this.avatarService.findByUser()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res) => {
-          this.hasAvatars = (res?.imagesURL?.length ?? 0) > 0;
-          this.cdr.markForCheck();
-        },
-        error: () => {
-          this.hasAvatars = false;
-          this.cdr.markForCheck();
-        }
-      });
-  }
+  private loadData() {
+    forkJoin({
+      avatars: this.avatarService.findByUser().pipe(
+        catchError(err => {
+          console.error('Ошибка загрузки аватаров', err);
+          this.toast.show('Не удалось загрузить Аватар', 'error');
+          return of({ imagesURL: [] });
+        })
+      ),
+      subscription: this.subscriptionService.getMySubscription().pipe(
+        catchError(err => {
+          console.error('Ошибка загрузки подписки', err);
+          this.toast.show('Не удалось загрузить подписку', 'error');
+          return of([]);
+        })
+      )
+    }).pipe(takeUntil(this.destroy$))
+      .subscribe(({ avatars, subscription }) => {
+        this.hasAvatars = (avatars?.imagesURL?.length ?? 0) > 0;
 
-  private loadSubscription() {
-    this.subscriptionService.getMySubscription()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res) => {
-          const activeSub: AppSubscription | undefined = res?.[0];
-          this.hasActiveSubscription = activeSub?.isActive === true;
-          this.cdr.markForCheck();
-        },
-        error: () => {
-          this.hasActiveSubscription = false;
-          this.cdr.markForCheck();
-        }
+        const activeSub: AppSubscription | undefined = subscription?.[0];
+        this.hasActiveSubscription = activeSub?.isActive === true;
+        this.loading = false;
+        this.cdr.markForCheck();
       });
   }
 }

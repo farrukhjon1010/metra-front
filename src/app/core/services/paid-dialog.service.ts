@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class PaidDialogService {
 
-  showDialog = signal(true);
+  showDialog = signal(false);
   private router = inject(Router);
   private subscriptionService = inject(SubscriptionService);
   private hasActiveSubscription = signal<boolean | null>(null);

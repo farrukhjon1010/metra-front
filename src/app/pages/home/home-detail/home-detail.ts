@@ -6,6 +6,7 @@ import { SceneService } from '../../../core/services/scene.service';
 import { Scene } from '../../../core/models/scene.model';
 import { Location } from '@angular/common';
 import { take } from 'rxjs/operators';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-home-detail',
@@ -22,7 +23,8 @@ export class HomeDetail implements OnInit {
     private router: Router,
     private sceneService: SceneService,
     private location: Location,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toast: ToastService
   ) {}
 
   ngOnInit() {
@@ -36,8 +38,9 @@ export class HomeDetail implements OnInit {
             this.cdr.detectChanges();
           },
           error: (err) => {
-            console.error('Failed to load scenes', err);
+            console.error('Ошибка загрузки Сцены', err);
             this.scene = null;
+            this.toast.show('Ошибка загрузки Сцены', 'error');
             this.cdr.detectChanges();
           }
         });

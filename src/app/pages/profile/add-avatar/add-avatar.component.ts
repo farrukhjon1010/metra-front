@@ -11,6 +11,7 @@ import { from, Subject, switchMap, takeUntil } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-add-avatar',
@@ -47,7 +48,8 @@ export class AddAvatarComponent implements OnDestroy {
     private cdr: ChangeDetectorRef,
     private avatarService: AvatarService,
     private fileService: FileService,
-    public paidDialogService: PaidDialogService
+    public paidDialogService: PaidDialogService,
+    private toast: ToastService
   ) {}
 
   get showPaidDialog(): boolean {
@@ -99,11 +101,13 @@ export class AddAvatarComponent implements OnDestroy {
     ).subscribe({
       next: () => {
         this.currentStep = 'success';
+        this.toast.show('Аватар успешно сохранён!', 'success');
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Ошибка при сохранении аватара:', err);
+        console.error('Ошибка сохранении аватара:', err);
         this.currentStep = 'form';
+        this.toast.show('Ошибка сохранении аватара', 'error');
         this.cdr.detectChanges();
       }
     });
@@ -149,20 +153,23 @@ export class AddAvatarComponent implements OnDestroy {
                   if (response.images) {
                     this.generatedAvatars = response.images.imagesURL;
                     this.currentStep = 'select';
+                    this.toast.show('Аватар успешно сгенерирован!', 'success');
                     this.cdr.detectChanges();
                   }
                 },
                 error: (err) => {
-                  console.error('Ошибка генерации:', err);
+                  console.error('Ошибка Генерации Аватара:', err);
                   this.currentStep = 'form';
+                  this.toast.show('Ошибка Генерации Аватара', 'error');
                   this.cdr.detectChanges();
                 }
               });
           }
         },
         error: (err) => {
-          console.error('Ошибка загрузки фото:', err);
+          console.error('Ошибка создание Аватара:', err);
           this.currentStep = 'form';
+          this.toast.show('Ошибка создание Аватара', 'error');
           this.cdr.detectChanges();
         }
       });
@@ -196,6 +203,7 @@ export class AddAvatarComponent implements OnDestroy {
     event.stopPropagation();
     this.photos[type].file = null;
     this.photos[type].preview = null;
+    this.toast.show('Фото удалено', 'success');
     this.cdr.detectChanges();
   }
 

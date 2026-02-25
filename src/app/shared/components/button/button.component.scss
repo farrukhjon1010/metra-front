@@ -52,10 +52,9 @@
 .ui-button.secondary {
   border: 1px solid $glass-bg-strong;
   border-radius: 12px;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
-                    linear-gradient(90deg, #FFFFFF33 0%, #FFFFFF0F 100%);
-  background-origin: border-box;
   background-clip: padding-box, border-box;
+  background: $glass-bg-soft;
+  backdrop-filter: blur(40px);
 
   &:hover {
     background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),

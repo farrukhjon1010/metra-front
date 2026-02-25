@@ -10,6 +10,7 @@ import { AsyncPipe } from '@angular/common';
 import { Loading } from '../../../shared/components/loading/loading';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Subscription as AppSubscription } from '../../../core/models/subscription.model';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-profile-main',
@@ -41,7 +42,8 @@ export class ProfileMainComponent implements OnInit, OnDestroy {
     private referralService: ReferralService,
     private balanceService: BalanceService,
     private cdr: ChangeDetectorRef,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private toast: ToastService
   ) {
     this.income$ = this.referralService.income$.pipe(map(data => data.income));
     this.currency$ = this.referralService.income$.pipe(map(data => data.currency));
@@ -113,6 +115,7 @@ export class ProfileMainComponent implements OnInit, OnDestroy {
         error: () => {
           this.selectedAvatars = [];
           this.isAvatarsLoading = false;
+          this.toast.show('Не удалось загрузить Аватары', 'error');
           this.cdr.markForCheck();
         }
       });

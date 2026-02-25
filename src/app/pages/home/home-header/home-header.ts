@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-home-header',
@@ -18,7 +19,8 @@ export class HomeHeader implements OnInit, OnDestroy {
 
   constructor(
     private avatarService: AvatarService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toast: ToastService
   ) {}
 
   ngOnInit() {
@@ -49,6 +51,7 @@ export class HomeHeader implements OnInit, OnDestroy {
         error: () => {
           this.isLoading = false;
           this.cdr.detectChanges();
+          this.toast.show('Ошибка загрузки Аватара', 'error');
         }
       });
   }
