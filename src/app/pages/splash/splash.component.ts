@@ -23,15 +23,12 @@ import { ToastService } from '../../core/services/toast.service';
 })
 export class SplashComponent implements OnDestroy, OnInit {
 
-
-
   public photos = signal({
     front: { file: null as File | null, preview: null as string | null },
     left: { file: null as File | null, preview: null as string | null },
     right: { file: null as File | null, preview: null as string | null },
   });
   public currentStep = signal<'splash' | 'form' | 'loading' | 'select' | 'success'>('splash');
-  public UUID = signal<string>('');
   public gender = signal<Gender>(Gender.MALE);
   public generatedAvatars = signal<string[]>([]);
   public selectedAvatars = signal<string[]>([]);
@@ -39,7 +36,6 @@ export class SplashComponent implements OnDestroy, OnInit {
   public myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
-
   private destroy$ = new Subject<void>();
   private telegram = inject(TelegramService);
   private router = inject(Router);
@@ -50,7 +46,7 @@ export class SplashComponent implements OnDestroy, OnInit {
   ngOnInit() {
     const tgId = this.telegram.userId;
     if (tgId) {
-      this.UUID.set(tgId);
+      console.log('Telegram ID:', tgId);
     }
   }
 
@@ -120,7 +116,9 @@ export class SplashComponent implements OnDestroy, OnInit {
       const uploadPromises = this.selectedAvatars().map(async (url, index) => {
         const response = await fetch(url);
         const blob = await response.blob();
-        return new File([blob], `${this.UUID()}${index}.png`, { type: blob.type });
+        const uniqueName = `avatar-${Date.now()}-${Math.floor(Math.random() * 1000000)}-${index}.png`;
+
+        return new File([blob], uniqueName, { type: blob.type });
       });
 
       const filesToUpload = await Promise.all(uploadPromises);
@@ -128,7 +126,6 @@ export class SplashComponent implements OnDestroy, OnInit {
       this.fileService.uploadGeneratedAvatars(filesToUpload).pipe(
         switchMap((event: any) => {
           if (!event.body) return EMPTY;
-
           const cloudinaryUrls = event.body.map((img: any) => img.url);
 
           return this.avatarService.create({
