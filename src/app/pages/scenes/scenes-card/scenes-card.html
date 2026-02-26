@@ -34,7 +34,7 @@
                 <div class="scenes-card-templates" (click)="openTemplate(t)">
                   <div class="circle-2-ava">
                   <div class="circle-ava">
-                    <img [src]="t.image" alt="{{ t.name }}">
+                    <img [src]="t.image ? t.image : 'assets/icons/3d-avatar.svg'" alt="{{ t.name }}">
                   </div>
                   </div>
                   <div class="circle-ava-text">
@@ -63,7 +63,7 @@
               @for (f of displayedFreestyle; track f.id) {
                 <div class="scenes-card-templates" (click)="openFreestyle(f)">
                   <div class="circle-ava">
-                    <img [src]="f.image" alt="{{ f.name }}">
+                    <img [src]="f.image ? f.image : 'assets/icons/3d-avatar.svg'" alt="{{ f.name }}">
                   </div>
                   <div class="circle-ava-text">
                     <p>{{ f.name }}</p>
