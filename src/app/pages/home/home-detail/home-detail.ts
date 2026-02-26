@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ScenesCard } from '../../scenes/scenes-card/scenes-card';
@@ -6,6 +6,7 @@ import { SceneService } from '../../../core/services/scene.service';
 import { Scene } from '../../../core/models/scene.model';
 import { Location } from '@angular/common';
 import { take } from 'rxjs/operators';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-home-detail',
@@ -15,30 +16,31 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./home-detail.scss'],
 })
 export class HomeDetail implements OnInit {
-  scene: Scene | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private sceneService: SceneService,
-    private location: Location
-  ) {}
+  public scene = signal<Scene | null>(null);
+
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private sceneService = inject(SceneService);
+  private location = inject(Location);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     const sceneId = Number(this.route.snapshot.paramMap.get('id'));
-    if (sceneId) {
-      this.sceneService.getScenes()
-        .pipe(take(1))
-        .subscribe({
-          next: (scenes: Scene[]) => {
-            this.scene = scenes.find(s => s.id === sceneId) || null;
-          },
-          error: (err) => {
-            console.error('Failed to load scenes', err);
-            this.scene = null;
-          }
-        });
-    }
+    if (!sceneId) return;
+
+    this.sceneService.getScenes()
+      .pipe(take(1))
+      .subscribe({
+        next: (scenes: Scene[]) => {
+          this.scene.set(scenes.find(s => s.id === sceneId) || null);
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки Сцены', err);
+          this.scene.set(null);
+          this.toast.show('Ошибка загрузки Сцены', 'error');
+        }
+      });
   }
 
   goBack() {

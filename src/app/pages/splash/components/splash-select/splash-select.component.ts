@@ -10,8 +10,10 @@ import {ButtonComponent} from '../../../../shared/components/button/button.compo
   styleUrls: ['./splash-select.component.scss'],
 })
 export class SplashSelectComponent {
+
   @Input() generatedAvatars: string[] = [];
   @Input() selectedAvatars: string[] = [];
+
   @Output() toggle = new EventEmitter<string>();
   @Output() confirm = new EventEmitter<void>();
 

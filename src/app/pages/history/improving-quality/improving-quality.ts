@@ -1,37 +1,44 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {CommonModule, Location} from '@angular/common';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
-import {UpscaleService} from '../../../core/services/upscale.service';
-import {firstValueFrom} from 'rxjs';
-import {Loading} from '../../../shared/components/loading/loading';
+import { AfterViewInit, Component, ElementRef, inject, ViewChild, signal } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { UpscaleService } from '../../../core/services/upscale.service';
+import { firstValueFrom } from 'rxjs';
+import { Loading } from '../../../shared/components/loading/loading';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-improving-quality',
-  imports: [CommonModule, ButtonComponent, Loading],
+  standalone: true,
+  imports: [CommonModule, ButtonComponent, Loading, PaidDialog],
   templateUrl: './improving-quality.html',
   styleUrls: ['./improving-quality.scss'],
 })
 export class ImprovingQuality implements AfterViewInit {
 
-  @ViewChild('photoInput', {static: false}) photoInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('photoInput', { static: false }) photoInput!: ElementRef<HTMLInputElement>;
 
-  isProcessing = false;
-  isLoading = false;
-  isStarted = false;
-  photos: { photo: string | null } = {photo: null};
-  originalImage: string | null = null;
-  improvedImage: string | null = null;
+  public isProcessing = signal(false);
+  public isLoading = signal(false);
+  public isStarted = signal(false);
+  public photos = signal<{ photo: string | null }>({ photo: null });
+  public originalImage = signal<string | null>(null);
+  public improvedImage = signal<string | null>(null);
 
-  constructor(private location: Location,
-              private cdr: ChangeDetectorRef,
-              private upscaleService: UpscaleService) {
+  private location = inject(Location);
+  private upscaleService = inject(UpscaleService);
+  private paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
+
+  public get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
   }
 
   ngAfterViewInit() {
     const imageUrl = history.state?.imageUrl;
     if (imageUrl) {
-      this.photos.photo = imageUrl;
-      this.cdr.detectChanges();
+      this.photos.update(p => ({ ...p, photo: imageUrl }));
     }
   }
 
@@ -42,61 +49,77 @@ export class ImprovingQuality implements AfterViewInit {
   onPhotoSelected(event: Event, type: 'photo') {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
-    this.cdr.detectChanges();
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.photos[type] = reader.result as string;
-      this.originalImage = null;
-      this.improvedImage = null;
-      this.isStarted = false;
-
-      this.cdr.detectChanges();
+      this.photos.update(p => ({ ...p, [type]: reader.result as string }));
+      this.originalImage.set(null);
+      this.improvedImage.set(null);
+      this.isStarted.set(false);
     };
     reader.readAsDataURL(file);
   }
 
   triggerFileInput(type: 'photo', event: Event) {
     event.stopPropagation();
-    const map = {photo: this.photoInput};
+    const map = { photo: this.photoInput };
     map[type]?.nativeElement.click();
   }
 
   removePhoto(type: 'photo', event: Event) {
     event.stopPropagation();
-    this.photos[type] = null;
-    this.originalImage = null;
-    this.improvedImage = null;
-    this.isStarted = false;
+    this.photos.update(p => ({ ...p, [type]: null }));
+    this.originalImage.set(null);
+    this.improvedImage.set(null);
+    this.isStarted.set(false);
+    this.toast.show('Фото удалено', 'success');
   }
 
   async enhanceImage() {
-    if (!this.photos.photo) return;
+    if (this.paidDialogService.tryShowDialog()) return;
 
-    this.isLoading = true;
-    this.isStarted = true;
-    this.originalImage = this.photos.photo;
-    this.improvedImage = null;
-    this.isProcessing = true;
-    this.cdr.detectChanges();
+    const photo = this.photos().photo;
+    if (!photo) {
+      this.toast.show('Выберите изображение для улучшения', 'error');
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.isStarted.set(true);
+    this.originalImage.set(photo);
+    this.improvedImage.set(null);
+    this.isProcessing.set(true);
+
+    const original = this.originalImage();
+    if (!original) {
+      this.toast.show('Нет исходного изображения', 'error');
+      this.isLoading.set(false);
+      this.isProcessing.set(false);
+      return;
+    }
 
     try {
-      const result = await firstValueFrom(this.upscaleService.improveImage(this.originalImage));
-      this.improvedImage = result?.improvedImage || this.originalImage;
+      const result = await firstValueFrom(this.upscaleService.improveImage(original));
+      this.improvedImage.set(result?.improvedImage || original);
+      this.toast.show('Изображение успешно улучшено!', 'success');
     } catch (err) {
       console.error('Ошибка улучшения изображения', err);
-      this.improvedImage = null;
+      this.improvedImage.set(null);
+      this.toast.show('Ошибка при улучшении изображения', 'error');
     } finally {
-      this.isLoading = false;
-      this.isProcessing = false;
-      this.cdr.detectChanges();
+      this.isLoading.set(false);
+      this.isProcessing.set(false);
     }
   }
 
   downloadImage() {
-    if (!this.improvedImage) return;
+    const img = this.improvedImage();
+    if (!img) {
+      this.toast.show('Нет изображения для скачивания', 'error');
+      return;
+    }
 
-    fetch(this.improvedImage)
+    fetch(img)
       .then(res => res.blob())
       .then(blob => {
         const a = document.createElement('a');
@@ -104,12 +127,20 @@ export class ImprovingQuality implements AfterViewInit {
         a.download = 'improved-image.jpg';
         a.click();
         URL.revokeObjectURL(a.href);
+        this.toast.show('Изображение успешно скачано', 'success');
       })
-      .catch(err => console.error('Ошибка при скачивании улучшенного изображения', err));
+      .catch(err => {
+        console.error('Ошибка скачивания улучшенного изображения', err);
+        this.toast.show('Ошибка скачивания улучшенного изображения', 'error');
+      });
   }
 
   repeatImage() {
-    this.improvedImage = null;
-    this.isStarted = false;
+    const photo = this.photos().photo;
+    if (!photo) return;
+
+    this.improvedImage.set(null);
+    this.isStarted.set(false);
+    this.enhanceImage();
   }
 }

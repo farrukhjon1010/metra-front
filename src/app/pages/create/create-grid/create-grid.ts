@@ -1,20 +1,26 @@
-import {Component} from '@angular/core';
-import {CREATE_CARDS, CreateCard} from '../create.data';
-import {Router} from '@angular/router';
-import {CommonModule} from "@angular/common";
+import {Component, inject} from '@angular/core';
+import { CREATE_CARDS, CreateCard } from '../create.data';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { PaidDialogService } from '../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-create-grid',
-  imports: [CommonModule],
   standalone: true,
+  imports: [CommonModule, PaidDialog],
   templateUrl: './create-grid.html',
   styleUrls: ['./create-grid.scss'],
 })
 export class CreateGrid {
 
-  cards: CreateCard[] = CREATE_CARDS;
+  public cards: CreateCard[] = CREATE_CARDS;
+  public paidDialogService = inject(PaidDialogService);
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  public get showPaidDialog(): boolean {
+    return this.paidDialogService.showDialog();
+  }
 
   get categories(): string[] {
     return [...new Set(this.cards.map(card => card.category))];
@@ -25,6 +31,7 @@ export class CreateGrid {
   }
 
   selectCard(card: CreateCard) {
+    if (this.paidDialogService.tryShowDialog()) return;
     this.router.navigate(['/create', card.type]);
   }
 }

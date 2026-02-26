@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GenerateImageDto, GenerationResponse, CreateGenerationDto, GenerationPromptResponse } from '../models/generation.model';
+import { GenerationPromptResponse } from '../models/generation.model';
 import { environment } from '../../../environment/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -29,7 +29,7 @@ export class GenerationService {
 
     return this.http.get<any[]>(`${this.apiUrl}/by-category`, { params });
   }
-  
+
   getPrompt(type: string): Observable<GenerationPromptResponse> {
     const params = new HttpParams().set('type', type);
 

@@ -1,13 +1,21 @@
-@if(!loader){
+@if (showPaidDialog()) {
+  <app-paid-dialog></app-paid-dialog>
+}
+@if(!loader()){
   <div>
-    <app-loading [texts]="['Загрузка...']"></app-loading>
+    <app-loading
+      [texts]="['Загрузка...']">
+    </app-loading>
   </div>
 }
-@if (loader){
+@if (loader()){
   <div class="category">
-    @if (selectedScene) {
+    @if (selectedScene()) {
       <app-home-header></app-home-header>
-      <app-scenes-card [scene]="selectedScene" (back)="goBack()"></app-scenes-card>
+      <app-scenes-card
+        [scene]="selectedScene()"
+        (back)="goBack()">
+      </app-scenes-card>
     } @else {
       <div class="empty-page">
         <h2>Пусто</h2>

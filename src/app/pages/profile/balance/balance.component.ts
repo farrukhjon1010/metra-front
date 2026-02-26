@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, signal, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import {TokenPackage} from '../../../core/models/token-transactions.model';
-import {TokenTransactionsService} from '../../../core/services/token-transactions.service';
-import {ButtonComponent} from '../../../shared/components/button/button.component';
-import {Loading} from '../../../shared/components/loading/loading';
-import {take} from 'rxjs/operators';
+import { TokenPackage } from '../../../core/models/token-transactions.model';
+import { TokenTransactionsService } from '../../../core/services/token-transactions.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { Loading } from '../../../shared/components/loading/loading';
+import { take } from 'rxjs/operators';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-balance',
@@ -12,20 +13,28 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./balance.component.scss'],
   imports: [ButtonComponent, Loading]
 })
-export class BalanceComponent implements OnInit {
-  tokenPackages: TokenPackage[] = [];
-  isLoading = false;
+export class BalanceComponent implements OnInit{
 
-  constructor(
-    private router: Router,
-    private tokenService: TokenTransactionsService
-  ) {}
+  public tokenPackages = signal<TokenPackage[]>([]);
+  public isLoading = signal(false);
+
+  private router = inject(Router);
+  private tokenService = inject(TokenTransactionsService);
+  private toast = inject(ToastService);
 
   ngOnInit() {
+    this.loadPackages();
+  }
+
+  loadPackages() {
     this.tokenService.getTokenPackages()
       .pipe(take(1))
-      .subscribe(packages => {
-        this.tokenPackages = packages;
+      .subscribe({
+        next: (packages) => this.tokenPackages.set(packages),
+        error: (err) => {
+          console.error('Не удалось загрузить пакеты токенов', err);
+          this.toast.show('Не удалось загрузить пакеты токенов', 'error');
+        }
       });
   }
 
@@ -34,17 +43,17 @@ export class BalanceComponent implements OnInit {
   }
 
   buyToken(pkg: TokenPackage) {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.tokenService.createOrder(pkg.tokens)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           window.location.href = res.url;
         },
         error: () => {
-          this.isLoading = false;
-          alert('Не удалось создать заказ. Попробуйте позже.');
+          this.isLoading.set(false);
+          this.toast.show('Не удалось создать заказ. Попробуйте позже.', 'error');
         }
       });
   }

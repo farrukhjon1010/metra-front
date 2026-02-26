@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, inject} from '@angular/core';
+import { PaidDialogService } from '../../core/services/paid-dialog.service';
 import { ButtonComponent } from '../components/button/button.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-paid-dialog',
@@ -11,15 +11,13 @@ import { Router } from '@angular/router';
 })
 export class PaidDialog {
 
-  @Output() close = new EventEmitter<void>();
-  constructor(private router: Router) {}
+  public paidDialogService = inject(PaidDialogService);
 
   openPaidDialog() {
-    this.close.emit();
-    this.router.navigate(['profile/subscription']);
+    this.paidDialogService.openPaidDialog();
   }
 
   closeDialog() {
-    this.close.emit();
+    this.paidDialogService.closeDialog();
   }
 }

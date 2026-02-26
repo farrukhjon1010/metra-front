@@ -1,3 +1,4 @@
+<app-toast></app-toast>
 @if (categories$ | async; as categories) {
 
   <app-scenes-header
@@ -12,5 +13,7 @@
   </app-scenes-grid>
 
 } @else {
-  <app-loading [texts]="['Загрузка...']"></app-loading>
+  <app-loading
+    [texts]="['Загрузка...']">
+  </app-loading>
 }

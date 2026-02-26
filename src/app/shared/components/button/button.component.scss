@@ -1,3 +1,6 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
 .ui-button {
   display: inline-flex;
   align-items: center;
@@ -12,7 +15,7 @@
   cursor: pointer;
   border: none;
   background: transparent;
-  color: #fff;
+  color: $color-white;
   transition: transform 0.15s ease,
   box-shadow 0.15s ease,
   background 0.2s ease,
@@ -38,7 +41,7 @@
 }
 
 .ui-button.primary {
-  background: linear-gradient(90deg, #6A5CFF 0%, #A890FF 100%);
+  background: $glass-spiner;
   box-shadow: 0 4px 12px rgba(106, 92, 255, 0.5);
 
   &:hover {
@@ -47,23 +50,15 @@
 }
 
 .ui-button.secondary {
-  backdrop-filter: blur(40px);
-  border: 1px solid #FFFFFF33;
+  border: 1px solid $glass-bg-strong;
   border-radius: 12px;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
-  linear-gradient(90deg, #FFFFFF33 0%, #FFFFFF0F 100%);
-  background-origin: border-box;
   background-clip: padding-box, border-box;
+  background: $glass-bg-soft;
+  backdrop-filter: blur(40px);
 
   &:hover {
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.1)
-    ),
-    linear-gradient(
-        90deg,
-        #FFFFFF4D, #FFFFFF1A
-    );
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+                      linear-gradient(90deg, #FFFFFF4D, #FFFFFF1A);
   }
 }
 

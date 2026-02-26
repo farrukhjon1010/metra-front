@@ -1,14 +1,30 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {ButtonComponent} from '../../../../shared/components/button/button.component';
-import {CreateCard} from '../../create.data';
-import {GenerationService} from "../../../../core/services/generation.service";
-import {Subject, takeUntil} from 'rxjs';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  OnDestroy,
+  signal,
+  computed
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CreateCard } from '../../create.data';
+import { GenerationService } from '../../../../core/services/generation.service';
+import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
+import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
+import { ToastService } from '../../../../core/services/toast.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-create-idle',
-  imports: [FormsModule, ButtonComponent],
   standalone: true,
+  imports: [FormsModule, ButtonComponent, PaidDialog],
   templateUrl: './create-idle.html',
   styleUrls: ['./create-idle.scss'],
 })
@@ -17,78 +33,101 @@ export class CreateIdle implements OnChanges, OnDestroy {
   @Input() card!: CreateCard;
   @Input() initialPrompt: string = '';
   @Input() initialImageUrl: string | null = null;
-  @Output() create = new EventEmitter<{ prompt: string; imageUrl: string | null; file: File | null; }>();
-  @ViewChild('photoGenerate', {static: false}) photoGenerate!: ElementRef<HTMLInputElement>;
-  @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
 
-  selectedFile: File | null = null;
-  photos: { generate: string | null } = {generate: null};
-  prompt = '';
-  isLoadingPrompt = false;
+  @Output() create = new EventEmitter<{
+    prompt: string;
+    imageUrl: string | null;
+    file: File | null;
+  }>();
+
+  @ViewChild('photoGenerate', { static: false })
+  photoGenerate!: ElementRef<HTMLInputElement>;
+
+  @ViewChild('promptTextarea')
+  textarea!: ElementRef<HTMLTextAreaElement>;
+
+  public prompt = signal('');
+  public photosGenerate = signal<string | null>(null);
+  public isLoadingPrompt = signal(false);
+  private selectedFile = signal<File | null>(null);
+
+  public showPaidDialog = computed(() =>
+    this.paidDialogService.showDialog()
+  );
+
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private generationService: GenerationService
-  ) {}
+  private generationService = inject(GenerationService);
+  public paidDialogService = inject(PaidDialogService);
+  private toast = inject(ToastService);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['initialPrompt']) {
-      this.prompt = this.initialPrompt || '';
+      this.prompt.set(this.initialPrompt || '');
     }
     if (changes['initialImageUrl']) {
-      this.photos.generate = this.initialImageUrl || null;
-      this.selectedFile = null;
+      this.photosGenerate.set(this.initialImageUrl || null);
+      this.selectedFile.set(null);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createImage() {
+    if (this.paidDialogService.tryShowDialog()) return;
+    if (!this.prompt().trim()) {
+      this.toast.show('Введите описание (prompt)', 'error');
+      return;
+    }
     this.create.emit({
-      prompt: this.prompt,
-      imageUrl: this.photos.generate,
-      file: this.selectedFile
+      prompt: this.prompt(),
+      imageUrl: this.photosGenerate(),
+      file: this.selectedFile()
     });
   }
 
-  removePhoto(type: 'generate', event: Event) {
+  removePhoto(event: Event) {
     event.stopPropagation();
-    this.photos[type] = null;
-    this.selectedFile = null;
+    this.photosGenerate.set(null);
+    this.selectedFile.set(null);
+    this.toast.show('Фото удалено');
   }
 
-  triggerFileInput(type: 'generate', event: Event) {
+  triggerFileInput(event: Event) {
     event.stopPropagation();
-    const map = {
-      generate: this.photoGenerate,
-    };
-    map[type]?.nativeElement.click();
+    this.photoGenerate?.nativeElement.click();
   }
 
-  onPhotoSelected(event: Event, type: 'generate') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
+  onPhotoSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
+
     if (!file) return;
-
-    this.selectedFile = file;
+    this.selectedFile.set(file);
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.photos[type] = reader.result as string;
-      this.cdr.detectChanges();
+      this.photosGenerate.set(reader.result as string);
     };
     reader.readAsDataURL(file);
   }
 
   generatePrompt(): void {
-    if (!this.card?.type || this.isLoadingPrompt) return;
+    if (this.paidDialogService.tryShowDialog()) return;
+    if (!this.card?.type || this.isLoadingPrompt()) {
+      this.toast.show('Невозможно сгенерировать prompt', 'error');
+      return;
+    }
 
-    this.isLoadingPrompt = true;
-    this.cdr.detectChanges();
-
+    this.isLoadingPrompt.set(true);
     this.generationService.getPrompt(this.card.type)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: res => {
-          this.prompt = res.prompt;
+          this.prompt.set(res.prompt);
+          this.toast.show('Prompt успешно сгенерирован!', 'success');
 
           setTimeout(() => {
             if (this.textarea) {
@@ -99,17 +138,23 @@ export class CreateIdle implements OnChanges, OnDestroy {
             }
           });
         },
-        error: err => console.error('Ошибка получения prompt:', err),
+        error: err => {
+          console.error('Ошибка получения prompt:', err);
+          this.toast.show('Ошибка генерации Prompt', 'error');
+        },
         complete: () => {
-          this.isLoadingPrompt = false;
-          this.cdr.detectChanges();
+          this.isLoadingPrompt.set(false);
         }
       });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  focusTextarea() {
+    if (this.textarea) {
+      const el = this.textarea.nativeElement;
+      el.focus();
+      const len = el.value.length;
+      el.selectionStart = len;
+      el.selectionEnd = len;
+    }
   }
-
 }

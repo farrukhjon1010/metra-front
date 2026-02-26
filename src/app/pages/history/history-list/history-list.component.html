@@ -1,39 +1,41 @@
+@if (shouldShowPaidDialog) {
+  <app-paid-dialog></app-paid-dialog>
+}
 <div class="history-container">
-
   <div class="form-group">
     <div class="filter-buttons">
-      <div
-        class="slider"
-        [ngStyle]="{transform:selectedFilter === 'all' ? 'translateX(0%)': selectedFilter === 'photo'? 'translateX(100%)': 'translateX(200%)'}">
+      <div class="slider"
+           [ngStyle]="{ transform:selectedFilter() === 'all' ? 'translateX(0%)':
+                                  selectedFilter() === 'photo'? 'translateX(100%)': 'translateX(200%)'}">
       </div>
 
       <button
         class="filter-btn"
-        [class.active]="selectedFilter === 'all'"
+        [class.active]="selectedFilter() === 'all'"
         (click)="changeFilter('all')">
         Все
       </button>
 
       <button
         class="filter-btn"
-        [class.active]="selectedFilter === 'photo'"
+        [class.active]="selectedFilter() === 'photo'"
         (click)="changeFilter('photo')">
         Фото
       </button>
 
       <button
         class="filter-btn"
-        [class.active]="selectedFilter === 'video'"
+        [class.active]="selectedFilter() === 'video'"
         (click)="changeFilter('video')">
         Видео
       </button>
     </div>
   </div>
 
-  @if (isLoading) {
+  @if (isLoading()) {
     <app-loading></app-loading>
   } @else {
-    @if (generationHistory.length < 1) {
+    @if (generationHistory.length < 0) {
       <div class="history-not">
         <div class="create-of-history">
           <div class="no-create-image-wrapper">
@@ -52,7 +54,7 @@
       </div>
     } @else {
       <div class="history-content-detail">
-        @for (generation of generationHistory; track generation.id) {
+        @for (generation of generationHistory(); track generation.id) {
           <div class="history-generate-detail">
 
             <div class="left-text-detail">

@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ToastService } from '../../../core/services/toast.service';
+import {SelectedAvatarService} from '../../../core/services/selected-avatar.service';
 
 @Component({
   selector: 'app-home-header',
@@ -11,12 +13,15 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class HomeHeader implements OnInit, OnDestroy {
 
-  isLoading: boolean = false;
-  userAvatars: string[] = [];
-  currentAvatar: string = "";
-  private destroy$ = new Subject<void>();
+  public isLoading = signal<boolean>(false);
+  public userAvatars = signal<string[]>([]);
+  // public currentAvatar = signal<string>('');
 
-  constructor(private avatarService: AvatarService) {}
+  private destroy$ = new Subject<void>();
+  private avatarService = inject(AvatarService);
+  private toast = inject(ToastService);
+  private selectedAvatarService = inject(SelectedAvatarService);
+  public currentAvatar = this.selectedAvatarService.currentAvatar;
 
   ngOnInit() {
     this.loadUserAvatars();
@@ -28,22 +33,23 @@ export class HomeHeader implements OnInit, OnDestroy {
   }
 
   loadUserAvatars() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.avatarService.findByUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (avatar) => {
           if (avatar?.imagesURL?.length) {
-            this.userAvatars = avatar.imagesURL;
-            this.currentAvatar = avatar.imagesURL[0];
+            this.userAvatars.set(avatar.imagesURL);
+            this.currentAvatar.set(avatar.imagesURL[0]);
           } else {
-            this.userAvatars = [];
-            this.currentAvatar = '';
+            this.userAvatars.set([]);
+            this.currentAvatar.set('');
           }
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
         error: () => {
-          this.isLoading = false;
+          this.isLoading.set(false);
+          this.toast.show('Ошибка загрузки Аватара', 'error');
         }
       });
   }

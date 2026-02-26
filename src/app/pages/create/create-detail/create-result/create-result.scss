@@ -12,7 +12,6 @@
 .result-generate {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   border-radius: $radius-xl;
   overflow: hidden;
@@ -31,6 +30,14 @@
   }
 
   span {
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    white-space: normal;
     @include fluid-text(15px, 19px);
     font-family: system-ui;
     color: $color-text-secondary;
@@ -46,8 +53,6 @@
 }
 
 .image-generation img {
-  @include fluid('width', 324px, 480px);
-  @include fluid('height', 324px, 480px);
   overflow: hidden;
   border-radius: $radius-md;
   object-fit: cover;

@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {
-  GenerateAvatarDto,
-  AvatarResponse,
-  Avatar,
-  CreateAvatarDto,
-  UpdateAvatarDto
-} from '../models/avatar.model';
+import {GenerateAvatarDto, AvatarResponse, Avatar, CreateAvatarDto, UpdateAvatarDto} from '../models/avatar.model';
 
 @Injectable({
   providedIn: 'root'

@@ -20,12 +20,9 @@
             </ng-container>
           }
         </div>
-
-        <button
-          class="btn-select"
+        <button class="btn-select"
           [class.selected]="isSelected(avatar)"
-          (click)="toggle.emit(avatar)"
-        >
+          (click)="toggle.emit(avatar)">
           {{ isSelected(avatar) ? 'Выбран' : 'Выбрать' }}
         </button>
       </div>

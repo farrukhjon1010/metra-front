@@ -8,7 +8,7 @@
   </div>
 </div>
 
-@if (isLoading){
+@if (isLoading()){
   <div class="loading-balance">
     <app-loading
       [texts]="['Переходим к оплате…']">
@@ -17,7 +17,7 @@
 }
 
 <div class="btn-balance">
-  @for (pkg of tokenPackages; track pkg.tokens) {
+  @for (pkg of tokenPackages(); track pkg.tokens) {
     <div [class]="pkg.tag === 'Популярно' ? 'danger-buttons' : 'funds-buttons'">
       @if (pkg.tag) {
         <div class="price-text">
@@ -33,7 +33,7 @@
         [type]="pkg.tag === 'Популярно' ? 'danger' : 'primary'"
         icon="assets/icons/arrow-forward.svg"
         (click)="buyToken(pkg)"
-        [disabled]="isLoading">
+        [disabled]="isLoading()">
         Купить
       </app-button>
     </div>

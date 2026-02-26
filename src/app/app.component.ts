@@ -1,9 +1,9 @@
-import {Component, OnDestroy, signal} from '@angular/core';
-import {RouterOutlet, Router, NavigationEnd, ActivatedRoute} from '@angular/router';
-import {BottomNavComponent} from './shared/components/bottom-nav/bottom-nav.component';
-import {CommonModule} from '@angular/common';
-import {filter, map, mergeMap, Subject, takeUntil} from 'rxjs';
-import {HeaderComponent} from "./shared/components/header/header.component";
+import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.component';
+import { CommonModule } from '@angular/common';
+import { filter, map, mergeMap, Subject, takeUntil } from 'rxjs';
+import { HeaderComponent } from "./shared/components/header/header.component";
 
 @Component({
   selector: 'app-root',
@@ -12,16 +12,18 @@ import {HeaderComponent} from "./shared/components/header/header.component";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnDestroy{
-  pageTitle = signal('');
-  showHeader = signal(true);
-  showBottomNav = signal(true);
+export class AppComponent implements OnInit, OnDestroy {
+
+  public pageTitle = signal('');
+  public showHeader = signal(true);
+  public showBottomNav = signal(true);
+
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+
+  ngOnInit() {
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       map(() => {
@@ -39,14 +41,13 @@ export class AppComponent implements OnDestroy{
       this.showHeader.set(data['showHeader'] !== false);
     });
 
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((event: NavigationEnd) => {
-        this.updateBottomNav(event.urlAfterRedirects);
-      });
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this.destroy$)
+    ).subscribe((event: NavigationEnd) => {
+      this.updateBottomNav(event.urlAfterRedirects);
+    });
+
     this.updateBottomNav(this.router.url);
   }
 

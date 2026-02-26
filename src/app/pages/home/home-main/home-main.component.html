@@ -1,17 +1,15 @@
 @if (showPaidDialog()) {
-  <app-paid-dialog
-    (close)="closeDialog()">
-  </app-paid-dialog>
+  <app-paid-dialog></app-paid-dialog>
 }
 
-@if (categories$ | async; as categories) {
+@if (categories().length > 0) {
   <app-home-header></app-home-header>
-
   <app-scenes-header></app-scenes-header>
+
   <div class="grid">
     <app-scenes-grid
-      [categories]="categories"
-      [scenes]="[]"
+      [categories]="categories()"
+      [scenes]="scenes()"
       viewMode="categories"
       (selectCategory)="onCategorySelect($event)">
     </app-scenes-grid>

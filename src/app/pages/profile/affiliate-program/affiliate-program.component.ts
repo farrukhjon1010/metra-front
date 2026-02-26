@@ -1,9 +1,10 @@
-import {ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {ButtonComponent} from '../../../shared/components/button/button.component';
 import {ReferralInfo} from '../../../core/models/referral.model';
 import {ReferralService} from '../../../core/services/referral.service';
 import {Subject, takeUntil} from 'rxjs';
+import {ToastService} from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-affiliate-program',
@@ -13,22 +14,21 @@ import {Subject, takeUntil} from 'rxjs';
 })
 export class AffiliateProgramComponent implements OnInit, OnDestroy {
 
-  link = '';
-  clicks = 0;
-  purchases = 0;
-  income = 0;
-  currency = '';
-  copied = false;
-  loading = true;
-  private destroy$ = new Subject<void>();
-
   @Output() incomeChange = new EventEmitter<number>();
 
-  constructor(
-    private router: Router,
-    private referralService: ReferralService,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  public link = '';
+  public clicks = 0;
+  public purchases = 0;
+  public income = 0;
+  public currency = '';
+  public copied = false;
+  public loading = true;
+  private destroy$ = new Subject<void>();
+
+  private router = inject(Router);
+  private referralService = inject(ReferralService);
+  private cdr = inject(ChangeDetectorRef);
+  private toast = inject(ToastService);
 
   ngOnInit(): void {
     this.loadReferralInfo();
@@ -54,11 +54,13 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
             income: this.income,
             currency: this.currency
           });
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Ошибка загрузки рефералки', err);
+          console.error('Ошибка загрузки Рефералки', err);
           this.loading = false;
+          this.toast.show('Ошибка загрузки данных Рефералки', 'error');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -68,15 +70,22 @@ export class AffiliateProgramComponent implements OnInit, OnDestroy {
   }
 
   copyLink() {
-    if (!this.link) return;
+    if (!this.link || this.link.trim() === '') {
+      this.toast.show('Ссылка отсутствует', 'error');
+      return;
+    }
 
     navigator.clipboard.writeText(this.link).then(() => {
       this.copied = true;
+      this.toast.show('Ссылка скопирована', 'success');
+      this.cdr.detectChanges();
 
       setTimeout(() => {
         this.copied = false;
+        this.cdr.detectChanges();
       }, 1500);
-      this.cdr.detectChanges();
+    }).catch(() => {
+      this.toast.show('Не удалось скопировать ссылку', 'error');
     });
   }
 

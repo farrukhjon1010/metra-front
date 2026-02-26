@@ -3,31 +3,32 @@
     [card]="card"
     (back)="goBack()">
   </app-create-header>
+
   <div class="create-detail-wrapper">
-    @switch (createState) {
-      @case ('idle') {
-        <app-create-idle
-          [card]="card"
-          [initialPrompt]="prompt"
-          [initialImageUrl]="initialImageUrl"
-          (create)="onCreate($event)">
-        </app-create-idle>
-      }
-      @case ('loading') {
-        <app-loading
-          [texts]="['Генерируем…']">
-        </app-loading>
-      }
-      @case ('result') {
-        <app-create-result
-          [resultImageUrl]="resultImageUrl"
-          [prompt]="prompt"
-          (edit)="onEditResult()"
-          (createAnother)="onCreateAnother()">
-        </app-create-result>
-      }
+    <app-create-idle
+      [card]="card"
+      [initialPrompt]="prompt"
+      [initialImageUrl]="initialImageUrl"
+      (create)="onCreate($event)"
+      [style.display]="createState === 'idle' ? 'block' : 'none'">
+    </app-create-idle>
+
+    @if (createState === 'loading'){
+    <app-loading
+      [texts]="['Генерируем…']">
+    </app-loading>
+    }
+
+    @if (createState === 'result'){
+    <app-create-result
+      [resultImageUrl]="resultImageUrl"
+      [prompt]="prompt"
+      (edit)="onEditResult()"
+      (createAnother)="onCreateAnother()">
+    </app-create-result>
     }
   </div>
+
   <app-generation-history
     [history]="generationHistory"
     (repeat)="repeatGeneration($event)">

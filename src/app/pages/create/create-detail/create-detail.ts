@@ -1,17 +1,18 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GenerationService } from '../../../core/services/generation.service';
-import {CreateGenerationDto, GenerateImageDto, GenerationType} from '../../../core/models/generation.model';
-import {FileService} from '../../../core/services/file.service';
-import {Subject, switchMap, takeUntil} from 'rxjs';
-import {CREATE_CARDS, CreateCard} from '../create.data';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location, CommonModule} from '@angular/common';
-import {CreateHeader} from './create-header/create-header';
-import {CreateIdle} from './create-idle/create-idle';
-import {CreateResult} from './create-result/create-result';
-import {GenerationHistory} from './generation-history/generation-history';
-import {Loading} from '../../../shared/components/loading/loading';
+import { CreateGenerationDto, GenerateImageDto, GenerationType } from '../../../core/models/generation.model';
+import { FileService } from '../../../core/services/file.service';
+import { Subject, switchMap, takeUntil } from 'rxjs';
+import { CREATE_CARDS, CreateCard } from '../create.data';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location, CommonModule } from '@angular/common';
+import { CreateHeader } from './create-header/create-header';
+import { CreateIdle } from './create-idle/create-idle';
+import { CreateResult } from './create-result/create-result';
+import { GenerationHistory } from './generation-history/generation-history';
+import { Loading } from '../../../shared/components/loading/loading';
+import { ToastService } from '../../../core/services/toast.service';
 
 type CreateState = 'idle' | 'loading' | 'result';
 
@@ -24,35 +25,35 @@ type CreateState = 'idle' | 'loading' | 'result';
 })
 export class CreateDetail implements OnInit, OnDestroy {
 
-  card!: CreateCard;
-  createState: CreateState = 'idle';
-  prompt = '';
-  resultImageUrl: string | null = null;
-  generationHistory: any[] = [];
-  initialPrompt!: string;
-  initialImageUrl!: string | null;
-  fromHistory = false;
+  @ViewChild(CreateIdle) createIdle!: CreateIdle;
+  public card!: CreateCard;
+  public createState: CreateState = 'idle';
+  public prompt = '';
+  public resultImageUrl: string | null = null;
+  public generationHistory: any[] = [];
+  public initialPrompt = '';
+  public initialImageUrl: string | null = null;
+  private fromHistory = false;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private generationService: GenerationService,
-    private fileService: FileService,
-    private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
-  ) {}
+  private generationService = inject(GenerationService);
+  private fileService = inject(FileService);
+  private cdr = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private location = inject(Location);
+  private toast = inject(ToastService);
 
   ngOnInit() {
     const type = this.route.snapshot.paramMap.get('type') as GenerationType;
-    this.card = CREATE_CARDS.find(c => c.type === type) as CreateCard;
+    this.card = CREATE_CARDS.find(c => c.type === type)!;
 
     const state = history.state;
     if (state) {
-        this.fromHistory = !!state.fromHistory;
-        this.initialPrompt = state.prompt ?? '';
-        this.initialImageUrl = state.imageUrl ?? null;
-        this.prompt = state.prompt ?? '';
+      this.fromHistory = !!state.fromHistory;
+      this.initialPrompt = state.prompt ?? '';
+      this.initialImageUrl = state.imageUrl ?? null;
+      this.prompt = state.prompt ?? '';
     }
     this.loadGenerationsHistory();
   }
@@ -61,6 +62,10 @@ export class CreateDetail implements OnInit, OnDestroy {
     this.prompt = generation.prompt;
     this.initialImageUrl = generation.imageURL;
     this.createState = 'idle';
+
+    setTimeout(() => {
+      this.createIdle?.focusTextarea();
+    }, 0);
   }
 
   onCreate(data: { prompt: string; imageUrl: string | null; file: File | null }) {
@@ -68,7 +73,7 @@ export class CreateDetail implements OnInit, OnDestroy {
     this.startGeneration(data.imageUrl, data.file);
   }
 
-  startGeneration(imageUrl: string | null, file: File | null) {
+  private startGeneration(imageUrl: string | null, file: File | null) {
     this.createState = 'loading';
 
     const handleGeneration = (imgUrl: string) => {
@@ -105,21 +110,18 @@ export class CreateDetail implements OnInit, OnDestroy {
           this.createState = 'result';
           this.loadGenerationsHistory();
           this.cdr.detectChanges();
+          this.toast.show('Изображение успешно сгенерировано!', 'success');
         },
         error: (err) => {
-          console.error('Ошибка генерации:', err);
+          console.error('Ошибка генерации изображения:', err);
           this.createState = 'idle';
           this.cdr.detectChanges();
+          this.toast.show('Ошибка генерации изображения', 'error');
         }
       });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  loadGenerationsHistory() {
+  private loadGenerationsHistory() {
     this.generationService.findByUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -127,7 +129,10 @@ export class CreateDetail implements OnInit, OnDestroy {
           this.generationHistory = data.filter(gen => gen.type === this.card.type);
           this.cdr.detectChanges();
         },
-        error: (err) => console.error(err)
+        error: (err) => {
+          console.error('Ошибка загрузки История Генерации:', err);
+          this.toast.show('Ошибка загрузки История Генерации', 'error');
+        }
       });
   }
 
@@ -139,11 +144,13 @@ export class CreateDetail implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/create']);
     }
+    this.cdr.detectChanges();
   }
 
   onEditResult() {
     this.createState = 'idle';
     this.initialImageUrl = this.resultImageUrl;
+    this.cdr.detectChanges();
   }
 
   onCreateAnother() {
@@ -151,5 +158,11 @@ export class CreateDetail implements OnInit, OnDestroy {
     this.prompt = '';
     this.initialImageUrl = null;
     this.resultImageUrl = null;
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

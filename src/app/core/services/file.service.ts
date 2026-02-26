@@ -7,16 +7,15 @@ import { Observable } from 'rxjs';
 })
 export class FileService {
 
-    private readonly apiUrl = 'files'; 
+    private readonly apiUrl = 'files';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
     uploadAvatars(files: File[]): Observable<any> {
         const formData = new FormData();
         files.forEach(file => {
             formData.append('files', file);
         });
-        
         return this.http.post(`${this.apiUrl}/avatar`, formData, {
             reportProgress: true,
             observe: 'events'
@@ -28,7 +27,6 @@ export class FileService {
         files.forEach(file => {
             formData.append('files', file);
         });
-
         return this.http.post(`${this.apiUrl}/generated-avatar`, formData, {
             reportProgress: true,
             observe: 'events'
@@ -38,7 +36,6 @@ export class FileService {
     uploadGeneratedAvatar(file: File, index: number): Observable<any> {
         const formData = new FormData();
         formData.append('file', file);
-        // userId убрали, индекс оставили
         return this.http.post(`${this.apiUrl}/generated-avatar/${index}`, formData);
     }
 

@@ -8,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class Loading implements OnInit {
 
   @Input() texts: string[] = [];
-  currentText: string = '';
+  public currentText: string = '';
 
   ngOnInit() {
     this.currentText = this.texts[0];

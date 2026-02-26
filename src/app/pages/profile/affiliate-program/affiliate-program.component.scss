@@ -143,19 +143,6 @@ input.success {
   opacity: 0.75;
 }
 
-.field-message {
-  position: absolute;
-  @include fluid('right', 12px, 24px);
-  @include fluid('top', 12px, 24px);
-  @include fluid-text(11px, 14px);
-  opacity: 0;
-  animation: slideFade 5.5s ease forwards;
-
-  &.success {
-    color: $color-text-area;
-  }
-}
-
 @keyframes slideFade {
   0% {
     opacity: 0;

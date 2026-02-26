@@ -3,6 +3,7 @@
 
 .subscription-header {
   display: flex;
+  align-items: center;
   @include fluid-gap(16px, 24px);
   @include fluid('padding', 24px, 32px);
   background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
@@ -11,6 +12,11 @@
   position: sticky;
   top: 0;
   z-index: $z-fixed;
+
+  .back-btn img {
+    width: clamp(20px, 4vw, 24px);
+    height: auto;
+  }
 }
 
 .subscription-balance span {
@@ -19,160 +25,153 @@
   margin: 0;
 }
 
-.metra-basic-card {
-  border: 1px solid #6A5CFF66;
-  background: linear-gradient(90deg, rgba(106, 92, 255, 0.6), rgba(168, 144, 255, 0.1));
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  border-radius: $radius-lg;
-  box-shadow: 0 0 20px 0 #6A5CFF40 inset;
-  backdrop-filter: blur(40px)
-}
-
 .subscription-content {
-  @include fluid-gap(16px, 24px);
   display: flex;
   flex-direction: column;
+  @include fluid-gap(16px, 24px);
   @include fluid('padding-left', 16px, 24px);
   @include fluid('padding-right', 16px, 24px);
   @include fluid('padding-bottom', 90px, 120px);
 }
 
 .text-card {
+  display: flex;
+  flex-direction: column;
   @include fluid-gap(8px, 12px);
-  display: flex;
-  flex-direction: column;
   @include fluid('padding', 24px, 32px);
-}
 
-.text-card h2 {
-  margin: 0;
-}
+  h2 {
+    margin: 0;
+    @include fluid-text(18px, 22px);
+  }
 
-.text-card p {
-  @include fluid-text(17px, 20px);
-  font-weight: $font-weight-semibold;
-  margin: 0;
-  padding-top: 8px
-}
-
-.span-card-basic {
-  display: flex;
-  flex-direction: column;
-  @include fluid-text(15px, 17px);
-  font-family: system-ui;
-  gap: 6px;
-
-  span {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: $color-text-secondary;
+  p {
+    @include fluid-text(16px, 18px);
+    font-weight: $font-weight-semibold;
+    margin: 0;
+    padding-top: 8px;
   }
 }
 
-.btn-card-basic {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  width: 100%;
-}
-
-.btn-card-basic app-button {
-  flex: 1;
-}
-
-.metra-pro-card {
-  border: 1px solid #FF4B5566;
-  background: linear-gradient(90deg, rgba(255, 75, 85, 0.6), rgba(255, 75, 85, 0.1));
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  border-radius: $radius-lg;
-  box-shadow: 0 0 20px 0 #FF4B5580;
-}
-
-.span-card-pro {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  @include fluid-text(15px, 17px);
-  font-family: system-ui;
-
-  span {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: $color-text-secondary;
-  }
-}
-
-.btn-card-pro {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 8px;
-}
-
-.span-card-pro img {
-  filter: brightness(0) saturate(31%) invert(27%) sepia(83%) saturate(2899%) hue-rotate(343deg) brightness(97%) contrast(101%)
-}
-
-.metra-max-card {
-  border: 1px solid #2EC57A99;
-  background: linear-gradient(90deg, rgba(46, 197, 122, 0.4) 0%, rgba(46, 197, 122, 0.05) 100%);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  border-radius: $radius-lg;
-  box-shadow: 0 0 20px 0 #2EC57A40 inset;
-  backdrop-filter: blur(40px)
-}
-
+.span-card-basic,
+.span-card-pro,
 .span-card-max {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(4px, 1vw, 8px);
   @include fluid-text(15px, 17px);
   font-family: system-ui;
 
   span {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: clamp(6px, 1vw, 8px);
     color: $color-text-secondary;
+
+    img {
+      width: clamp(14px, 2vw, 18px);
+      height: auto;
+    }
   }
 }
 
-.btn-card-max {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 8px;
-}
-
-.span-card-max img {
-  filter: brightness(69) saturate(70%) invert(27%) sepia(112%) saturate(2899%) hue-rotate(430deg) brightness(200%) contrast(50%)
-}
-
+.btn-card-basic,
+.btn-card-pro,
 .btn-card-max {
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: clamp(6px, 1vw, 8px);
+  margin-top: 8px;
   width: 100%;
+
+  app-button {
+    flex: 1;
+  }
 }
 
-.btn-card-max app-button, button {
-  flex: 1;
+.metra-basic-card,
+.metra-pro-card,
+.metra-max-card {
+  position: relative;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+}
+
+.metra-basic-card {
+  background: linear-gradient(90deg, rgba(106, 92, 255, 0.4) 0%, rgba(106, 92, 255, 0.05) 100%);
+  border: 1px solid rgba(106, 92, 255, 0.6);;
+  box-shadow: inset 0 0 20px 0 rgba(106, 92, 255, 0.25), 0 4px 10px 0 rgba(0,0,0,0.1);
+}
+
+.metra-pro-card {
+  background: linear-gradient(90deg, rgba(255, 75, 85, 0.4) 0%, rgba(255, 75, 85, 0.05) 100%);
+  border: 1px solid rgba(255, 75, 85, 0.6);
+  box-shadow: inset 0 0 20px 0 rgba(255, 75, 85, 0.25), 0 4px 10px 0 rgba(0,0,0,0.1);
+  .span-card-pro img {
+    filter: brightness(0) saturate(31%) invert(27%) sepia(83%) saturate(2899%) hue-rotate(343deg) brightness(97%) contrast(101%)
+  }
+}
+
+.metra-max-card {
+  background: linear-gradient(90deg, rgba(46, 197, 122, 0.4) 0%, rgba(46, 197, 122, 0.05) 100%);
+  border: 1px solid rgba(46, 197, 122, 0.6);
+  box-shadow: inset 0 0 20px 0 rgba(46, 197, 122, 0.25), 0 4px 10px 0 rgba(0,0,0,0.1);
+  .span-card-max img {
+    filter: brightness(69) saturate(70%) invert(27%) sepia(112%) saturate(2899%) hue-rotate(430deg) brightness(200%) contrast(50%)
+  }
 }
 
 .recommendation-icon {
-  display: flex;
   position: absolute;
-  background: white;
+  top: 0;
   right: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: $color-white;
+  color: $color-black;
   border-top-right-radius: $radius-lg;
   border-bottom-left-radius: $radius-md;
-  color: $color-black;
-  @include fluid-text(13px, 15px);
-  padding: 4px 10px;
-  gap: 2px;
+  font-weight: 600;
+  font-size: clamp(12px, 1.5vw, 15px);
+  padding: clamp(4px, 0.5vw, 6px) clamp(8px, 2vw, 12px);
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  img {
+    width: clamp(12px, 1.5vw, 16px);
+    height: clamp(12px, 1.5vw, 16px);
+    object-fit: contain;
+  }
+}
+
+.active-badge {
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: clamp(12px, 1.5vw, 14px);
+  font-weight: 600;
+  width: fit-content;
+  transition: 0.3s ease;
+}
+
+.badge-green {
+  background: rgba(0, 200, 120, 0.15);
+  color: $color-success;
+  border: 1px solid $color-success;
+}
+
+.badge-yellow {
+  background: rgba(255, 170, 0, 0.15);
+  color: #ffaa00;
+  border: 1px solid #ffaa00;
+}
+
+.badge-red {
+  background: rgba(255, 60, 60, 0.15);
+  color: #ff3c3c;
+  border: 1px solid #ff3c3c;
 }

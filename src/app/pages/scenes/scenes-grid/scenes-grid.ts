@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./scenes-grid.scss'],
 })
 export class ScenesGrid {
+
   @Input() scenes: Scene[] = [];
   @Input() categories: SceneCategory[] = [];
   @Input() viewMode: 'categories' | 'scenes' = 'categories';

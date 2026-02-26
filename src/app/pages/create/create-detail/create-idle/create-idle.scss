@@ -37,7 +37,7 @@
   @include fluid-text(15px, 19px);
   border: 1px solid $glass-bg-strong;
   border-radius: $radius-md;
-  background: $color-bg;
+  background: $color-bg-main;
   box-shadow: 0 4px 6px 0 $color-black;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
@@ -144,13 +144,13 @@
   background: $color-danger;
   border: none;
   cursor: pointer;
-  padding: 2px;
-  @include fluid('left', 54px, 64px);
-  margin-top: 3px;
+  padding: 1px;
+  @include fluid('left', 63px, 64px);
+  margin-top: 5px;
 }
 
 .with-photo {
-  @include fluid('width', 65px, 85px);
-  @include fluid('height', 65px, 85px);
+  width: 65px;
+  height: 65px;
   border-radius: $radius-md;
 }
