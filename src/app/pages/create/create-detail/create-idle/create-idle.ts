@@ -1,4 +1,17 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  OnDestroy,
+  signal,
+  computed
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CreateCard } from '../../create.data';
@@ -6,7 +19,6 @@ import { GenerationService } from '../../../../core/services/generation.service'
 import { PaidDialogService } from '../../../../core/services/paid-dialog.service';
 import { PaidDialog } from '../../../../shared/paid-dialog/paid-dialog';
 import { ToastService } from '../../../../core/services/toast.service';
-import { signal, computed } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -21,15 +33,27 @@ export class CreateIdle implements OnChanges, OnDestroy {
   @Input() card!: CreateCard;
   @Input() initialPrompt: string = '';
   @Input() initialImageUrl: string | null = null;
-  @Output() create = new EventEmitter<{ prompt: string; imageUrl: string | null; file: File | null }>();
-  @ViewChild('photoGenerate', { static: false }) photoGenerate!: ElementRef<HTMLInputElement>;
-  @ViewChild('promptTextarea') textarea!: ElementRef<HTMLTextAreaElement>;
+
+  @Output() create = new EventEmitter<{
+    prompt: string;
+    imageUrl: string | null;
+    file: File | null;
+  }>();
+
+  @ViewChild('photoGenerate', { static: false })
+  photoGenerate!: ElementRef<HTMLInputElement>;
+
+  @ViewChild('promptTextarea')
+  textarea!: ElementRef<HTMLTextAreaElement>;
 
   public prompt = signal('');
   public photosGenerate = signal<string | null>(null);
   public isLoadingPrompt = signal(false);
   private selectedFile = signal<File | null>(null);
-  public showPaidDialog = computed(() => this.paidDialogService.showDialog());
+
+  public showPaidDialog = computed(() =>
+    this.paidDialogService.showDialog()
+  );
 
   private destroy$ = new Subject<void>();
   private generationService = inject(GenerationService);
@@ -57,10 +81,6 @@ export class CreateIdle implements OnChanges, OnDestroy {
       this.toast.show('Введите описание (prompt)', 'error');
       return;
     }
-    if (!this.photosGenerate() && !this.selectedFile()) {
-      this.toast.show('Добавьте изображение', 'error');
-      return;
-    }
     this.create.emit({
       prompt: this.prompt(),
       imageUrl: this.photosGenerate(),
@@ -68,23 +88,23 @@ export class CreateIdle implements OnChanges, OnDestroy {
     });
   }
 
-  removePhoto(type: 'generate', event: Event) {
+  removePhoto(event: Event) {
     event.stopPropagation();
     this.photosGenerate.set(null);
     this.selectedFile.set(null);
     this.toast.show('Фото удалено');
   }
 
-  triggerFileInput(type: 'generate', event: Event) {
+  triggerFileInput(event: Event) {
     event.stopPropagation();
-    const map = { generate: this.photoGenerate };
-    map[type]?.nativeElement.click();
+    this.photoGenerate?.nativeElement.click();
   }
 
-  onPhotoSelected(event: Event, type: 'generate') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) return;
+  onPhotoSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
 
+    if (!file) return;
     this.selectedFile.set(file);
 
     const reader = new FileReader();
@@ -126,5 +146,15 @@ export class CreateIdle implements OnChanges, OnDestroy {
           this.isLoadingPrompt.set(false);
         }
       });
+  }
+
+  focusTextarea() {
+    if (this.textarea) {
+      const el = this.textarea.nativeElement;
+      el.focus();
+      const len = el.value.length;
+      el.selectionStart = len;
+      el.selectionEnd = len;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GenerationService } from '../../../core/services/generation.service';
 import { CreateGenerationDto, GenerateImageDto, GenerationType } from '../../../core/models/generation.model';
@@ -12,7 +12,7 @@ import { CreateIdle } from './create-idle/create-idle';
 import { CreateResult } from './create-result/create-result';
 import { GenerationHistory } from './generation-history/generation-history';
 import { Loading } from '../../../shared/components/loading/loading';
-import {ToastService} from '../../../core/services/toast.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 type CreateState = 'idle' | 'loading' | 'result';
 
@@ -25,13 +25,14 @@ type CreateState = 'idle' | 'loading' | 'result';
 })
 export class CreateDetail implements OnInit, OnDestroy {
 
+  @ViewChild(CreateIdle) createIdle!: CreateIdle;
   public card!: CreateCard;
   public createState: CreateState = 'idle';
   public prompt = '';
   public resultImageUrl: string | null = null;
   public generationHistory: any[] = [];
-  public initialPrompt!: string;
-  public initialImageUrl!: string | null;
+  public initialPrompt = '';
+  public initialImageUrl: string | null = null;
   private fromHistory = false;
   private destroy$ = new Subject<void>();
 
@@ -45,7 +46,7 @@ export class CreateDetail implements OnInit, OnDestroy {
 
   ngOnInit() {
     const type = this.route.snapshot.paramMap.get('type') as GenerationType;
-    this.card = CREATE_CARDS.find(c => c.type === type) as CreateCard;
+    this.card = CREATE_CARDS.find(c => c.type === type)!;
 
     const state = history.state;
     if (state) {
@@ -61,7 +62,10 @@ export class CreateDetail implements OnInit, OnDestroy {
     this.prompt = generation.prompt;
     this.initialImageUrl = generation.imageURL;
     this.createState = 'idle';
-    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      this.createIdle?.focusTextarea();
+    }, 0);
   }
 
   onCreate(data: { prompt: string; imageUrl: string | null; file: File | null }) {
@@ -71,7 +75,6 @@ export class CreateDetail implements OnInit, OnDestroy {
 
   private startGeneration(imageUrl: string | null, file: File | null) {
     this.createState = 'loading';
-    this.cdr.detectChanges();
 
     const handleGeneration = (imgUrl: string) => {
       const genDto: GenerateImageDto = {

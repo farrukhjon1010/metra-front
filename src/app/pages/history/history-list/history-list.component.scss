@@ -8,6 +8,7 @@
   box-shadow: 0 4px 6px 0 $color-black;
   backdrop-filter: blur($blur);
   -webkit-backdrop-filter: blur($blur);
+  justify-content: space-between;
 }
 
 @mixin label-style {
@@ -91,7 +92,7 @@
 }
 
 .history-content-detail {
-  @include fluid('padding-bottom', 50px, 80px);
+  @include fluid('padding-bottom', 60px, 80px);
 }
 
 .history-generate-detail,
@@ -150,7 +151,9 @@
 }
 
 .photo-detail {
-  @include fluid('width', 143px, 220px);
+  width: 143px;
+  height: 143px;
+  object-fit: cover;
   @include fluid('height', 143px, 220px);
   border-radius: $radius-md;
   border: 1px solid $glass-bg-strong;

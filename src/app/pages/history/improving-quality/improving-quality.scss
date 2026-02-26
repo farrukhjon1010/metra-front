@@ -92,9 +92,8 @@
 
 .photo-quality {
   position: relative;
-  @include fluid('width', 50px, 65px);
-  @include fluid('height', 50px, 65px);
-  @include fluid('margin-top', 6px, 8px);
+  width: 65px;
+  height: 65px;
 
   img.with-photo {
     width: 100%;

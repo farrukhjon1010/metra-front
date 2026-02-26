@@ -28,10 +28,10 @@
     <label class="form-label-detail">Загрузите фото</label>
     <div class="row-quality">
       <div class="upload-small"
-           (click)="triggerFileInput('generate', $event)">
+           (click)="triggerFileInput($event)">
         <input #photoGenerate
                type="file" accept="image/jpeg,image/jpg,image/png,image/heic,image/webp"
-               (change)="onPhotoSelected($event, 'generate')" style="display: none;">
+               (change)="onPhotoSelected($event)" style="display: none;">
         <div class="upload-create-quality">
           <span class="text-small">Загрузить</span>
           <span class="upload-formats-small">JPEG, JPG, PNG, HEIC, WEBP</span>
@@ -44,7 +44,7 @@
         <img class="with-photo" [src]="photosGenerate()" alt="Photo">
         <button
           class="delete-photo-generation"
-          (click)="removePhoto('generate', $event)">
+          (click)="removePhoto($event)">
           <img src="assets/icons/delete.svg" alt="">
         </button>
       </div>

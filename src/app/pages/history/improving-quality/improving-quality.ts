@@ -136,7 +136,11 @@ export class ImprovingQuality implements AfterViewInit {
   }
 
   repeatImage() {
+    const photo = this.photos().photo;
+    if (!photo) return;
+
     this.improvedImage.set(null);
     this.isStarted.set(false);
+    this.enhanceImage();
   }
 }
