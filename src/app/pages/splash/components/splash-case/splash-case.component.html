@@ -14,7 +14,7 @@
     </div>
 
     <div class="actions">
-      @if (!loading && !hasAvatars && !hasActiveSubscription) {
+      @if (hasAvatars() === false) {
         <app-button
           type="primary"
           icon="assets/icons/add.svg"
@@ -22,6 +22,7 @@
           Создать аватар
         </app-button>
       }
+
       <app-button
         type="secondary"
         (click)="demo.emit()">
