@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Loading } from '../../../shared/components/loading/loading';
 import { AsyncPipe } from '@angular/common';
+import {SelectedAvatarService} from '../../../core/services/selected-avatar.service';
 
 @Component({
   selector: 'app-profile-main',
@@ -43,6 +44,12 @@ export class ProfileMainComponent implements OnInit {
   private balanceService = inject(BalanceService);
   private subscriptionService = inject(SubscriptionService);
   private toast = inject(ToastService);
+  private selectedAvatarService = inject(SelectedAvatarService);
+
+  selectAvatar(avatar: string) {
+    this.selectedAvatar.set(avatar);
+    this.selectedAvatarService.setAvatar(avatar); // синхронизация с сервисом
+  }
 
   ngOnInit(): void {
     this.loadUserAvatars();
@@ -107,21 +114,24 @@ export class ProfileMainComponent implements OnInit {
       next: (avatar) => {
         const avatars = avatar?.imagesURL ?? [];
         this.selectedAvatars.set(avatars);
-        this.selectedAvatar.set(avatars[0] ?? null);
+        const firstAvatar = avatars[0] ?? null;
+        this.selectedAvatar.set(firstAvatar);
+        if (firstAvatar) this.selectedAvatarService.setAvatar(firstAvatar);
         this.isAvatarsLoading.set(false);
       },
       error: () => {
         this.selectedAvatars.set([]);
         this.selectedAvatar.set(null);
+        this.selectedAvatarService.setAvatar('');
         this.isAvatarsLoading.set(false);
         this.toast.show('Не удалось загрузить Аватары', 'error');
       }
     });
   }
 
-  selectAvatar(avatar: string) {
-    this.selectedAvatar.set(avatar);
-  }
+  // selectAvatar(avatar: string) {
+  //   this.selectedAvatar.set(avatar);
+  // }
 
   goToAddAvatar(): void {
     if (this.isAvatarsLoading() || this.selectedAvatars().length >= 3) return;

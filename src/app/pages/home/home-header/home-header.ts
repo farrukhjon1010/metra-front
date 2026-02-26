@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ToastService } from '../../../core/services/toast.service';
+import {SelectedAvatarService} from '../../../core/services/selected-avatar.service';
 
 @Component({
   selector: 'app-home-header',
@@ -14,11 +15,13 @@ export class HomeHeader implements OnInit, OnDestroy {
 
   public isLoading = signal<boolean>(false);
   public userAvatars = signal<string[]>([]);
-  public currentAvatar = signal<string>('');
+  // public currentAvatar = signal<string>('');
 
   private destroy$ = new Subject<void>();
   private avatarService = inject(AvatarService);
   private toast = inject(ToastService);
+  private selectedAvatarService = inject(SelectedAvatarService);
+  public currentAvatar = this.selectedAvatarService.currentAvatar;
 
   ngOnInit() {
     this.loadUserAvatars();
