@@ -36,6 +36,10 @@ export class AvatarService {
     return this.http.patch<Avatar>(`${this.apiUrl}/add`, { url: newUrl });
   }
 
+  setMainAvatar(url: string): Observable<Avatar> {
+    return this.http.patch<Avatar>(`${this.apiUrl}/set-main`, { url });
+  }
+
   remove(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

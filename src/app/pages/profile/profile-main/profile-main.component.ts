@@ -45,11 +45,13 @@ export class ProfileMainComponent implements OnInit {
   private subscriptionService = inject(SubscriptionService);
   private toast = inject(ToastService);
   private selectedAvatarService = inject(SelectedAvatarService);
+  
 
   selectAvatar(avatar: string) {
     this.selectedAvatar.set(avatar);
-    this.selectedAvatarService.setAvatar(avatar); // синхронизация с сервисом
+    this.avatarService.setMainAvatar(avatar)
   }
+  
 
   ngOnInit(): void {
     this.loadUserAvatars();

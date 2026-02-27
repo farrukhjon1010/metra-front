@@ -21,6 +21,7 @@ export interface Avatar {
   name: string;
   gender: string;
   imagesURL: string[];
+  activeAvatar: string;
   user?: any;
 }
 

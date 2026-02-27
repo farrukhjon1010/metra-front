@@ -40,7 +40,7 @@ export class HomeHeader implements OnInit, OnDestroy {
         next: (avatar) => {
           if (avatar?.imagesURL?.length) {
             this.userAvatars.set(avatar.imagesURL);
-            this.currentAvatar.set(avatar.imagesURL[0]);
+            this.currentAvatar.set(avatar.activeAvatar);
           } else {
             this.userAvatars.set([]);
             this.currentAvatar.set('');
