@@ -29,7 +29,7 @@ export class ProfileMainComponent implements OnInit {
   };
 
   public selectedAvatars = signal<string[]>([]);
-  public selectedAvatar = signal<string | null>(null); // <-- выбранный аватар
+  public selectedAvatar = signal<string | null>(null);
   public isAvatarsLoading = signal(true);
   public activeSubscription = signal<AppSubscription | null>(null);
   public remainingDays = signal(0);
@@ -44,43 +44,75 @@ export class ProfileMainComponent implements OnInit {
   private balanceService = inject(BalanceService);
   private subscriptionService = inject(SubscriptionService);
   private toast = inject(ToastService);
-  private selectedAvatarService = inject(SelectedAvatarService);
+  public selectedAvatarService = inject(SelectedAvatarService);
 
   selectAvatar(avatar: string) {
-    this.selectedAvatar.set(avatar);
-
-    // Добавьте .subscribe(), чтобы запрос ушел на сервер
+    this.selectedAvatarService.setAvatar(avatar);
     this.avatarService.setMainAvatar(avatar).subscribe({
-      next: (updatedAvatar) => {
-        console.log('Главный аватар успешно изменен:', updatedAvatar);
-      },
-      error: (err) => {
-        console.error('Ошибка при установке аватара:', err);
-      }
+      next: () =>
+        console.log('Главный аватар успешно изменен'),
+      error: (err) =>
+        console.error('Ошибка при установке аватара:', err)
     });
   }
 
   ngOnInit(): void {
     this.loadUserAvatars();
     this.loadMySubscription();
-
     this.referralService.getReferralInfo().pipe(take(1)).subscribe({
       next: (data) => {
-        this.referralService.setIncome({ income: data.stats.income, currency: data.stats.currency });
+        this.referralService.setIncome({
+          income: data.stats.income,
+          currency: data.stats.currency
+        });
       },
-      error: () => this.referralService.setIncome({ income: 0, currency: '' })
+      error: () =>
+        this.referralService.setIncome({ income: 0, currency: '' })
     });
-
     this.balanceService.loadUserBalance();
   }
 
   get displayAvatars(): { src: string | null, isEmpty: boolean }[] {
     const avatars = this.selectedAvatars();
     const emptyCount = Math.max(0, 3 - avatars.length);
-    const realAvatars = avatars.map(src => ({ src, isEmpty: false }));
-    const emptyAvatars = Array.from({ length: emptyCount }, () => ({ src: null, isEmpty: true }));
-
+    const realAvatars = avatars.map(src => ({
+      src,
+      isEmpty: false
+    }));
+    const emptyAvatars = Array.from({ length: emptyCount }, () => ({
+      src: null,
+      isEmpty: true
+    }));
     return [...realAvatars, ...emptyAvatars];
+  }
+
+  loadUserAvatars(): void {
+    this.isAvatarsLoading.set(true);
+    this.avatarService.findByUser().pipe(take(1)).subscribe({
+      next: (avatar) => {
+        const avatars = avatar?.imagesURL ?? [];
+        this.selectedAvatars.set(avatars);
+
+        const savedActiveAvatar = this.selectedAvatarService.currentAvatar();
+        const activeAvatar =
+          savedActiveAvatar && avatars.includes(savedActiveAvatar)
+            ? savedActiveAvatar
+            : avatars[0] ?? null;
+        this.selectedAvatar.set(activeAvatar);
+
+        if (activeAvatar) {
+          this.selectedAvatarService.setAvatar(activeAvatar);
+        }
+        this.isAvatarsLoading.set(false);
+      },
+      error: () => {
+        this.selectedAvatars.set([]);
+        this.selectedAvatar.set(null);
+        this.selectedAvatarService.setAvatar('');
+        this.isAvatarsLoading.set(false);
+        this.toast.show('Не удалось загрузить Аватары', 'error');
+      }
+    });
   }
 
   loadMySubscription(): void {
@@ -116,31 +148,6 @@ export class ProfileMainComponent implements OnInit {
     const planKey = sub.plan as keyof typeof this.planDetails;
     return this.planDetails[planKey];
   }
-
-  loadUserAvatars(): void {
-    this.isAvatarsLoading.set(true);
-    this.avatarService.findByUser().pipe(take(1)).subscribe({
-      next: (avatar) => {
-        const avatars = avatar?.imagesURL ?? [];
-        this.selectedAvatars.set(avatars);
-        const firstAvatar = avatars[0] ?? null;
-        this.selectedAvatar.set(firstAvatar);
-        if (firstAvatar) this.selectedAvatarService.setAvatar(firstAvatar);
-        this.isAvatarsLoading.set(false);
-      },
-      error: () => {
-        this.selectedAvatars.set([]);
-        this.selectedAvatar.set(null);
-        this.selectedAvatarService.setAvatar('');
-        this.isAvatarsLoading.set(false);
-        this.toast.show('Не удалось загрузить Аватары', 'error');
-      }
-    });
-  }
-
-  // selectAvatar(avatar: string) {
-  //   this.selectedAvatar.set(avatar);
-  // }
 
   goToAddAvatar(): void {
     if (this.isAvatarsLoading() || this.selectedAvatars().length >= 3) return;

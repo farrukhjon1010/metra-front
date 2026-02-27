@@ -55,7 +55,7 @@
       type="primary"
       icon="assets/icons/add.svg"
       (click)="createImage()"
-      [disabled]="!photosGenerate()">
+      [disabled]="!prompt().trim()">
       Создать изображение
     </app-button>
   </div>
