@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Loading } from '../../../shared/components/loading/loading';
 import { AsyncPipe } from '@angular/common';
-import {SelectedAvatarService} from '../../../core/services/selected-avatar.service';
+import { SelectedAvatarService } from '../../../core/services/selected-avatar.service';
 
 @Component({
   selector: 'app-profile-main',
@@ -45,13 +45,20 @@ export class ProfileMainComponent implements OnInit {
   private subscriptionService = inject(SubscriptionService);
   private toast = inject(ToastService);
   private selectedAvatarService = inject(SelectedAvatarService);
-  
 
   selectAvatar(avatar: string) {
     this.selectedAvatar.set(avatar);
-    this.avatarService.setMainAvatar(avatar)
+
+    // Добавьте .subscribe(), чтобы запрос ушел на сервер
+    this.avatarService.setMainAvatar(avatar).subscribe({
+      next: (updatedAvatar) => {
+        console.log('Главный аватар успешно изменен:', updatedAvatar);
+      },
+      error: (err) => {
+        console.error('Ошибка при установке аватара:', err);
+      }
+    });
   }
-  
 
   ngOnInit(): void {
     this.loadUserAvatars();
