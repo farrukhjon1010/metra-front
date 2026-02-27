@@ -11,8 +11,11 @@
         <div class="avatar-circle">
           <div class="avatars-display">
             @for (avatar of displayAvatars; track $index) {
-              <div class="{{ avatar.isEmpty ? 'add-avatar' : 'avatar-item' }} {{ selectedAvatar() === avatar.src ? 'selected' : '' }}"
-                   (click)="avatar.isEmpty ? goToAddAvatar() : avatar.src && selectAvatar(avatar.src)">
+              <div
+                class="{{ avatar.isEmpty ? 'add-avatar' : 'avatar-item' }}
+               {{ selectedAvatarService.currentAvatar() === avatar.src ? 'selected' : '' }}"
+                (click)="avatar.isEmpty ? goToAddAvatar() : avatar.src && selectAvatar(avatar.src)"
+              >
                 <img [src]="avatar.src || 'assets/icons/user-empty.svg'" alt="Avatar"/>
               </div>
             }
