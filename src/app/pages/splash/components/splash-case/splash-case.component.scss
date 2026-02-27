@@ -7,6 +7,23 @@
   padding: 0;
 }
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: $z-modal;
+
+  app-loading {
+    font-size: 20px;
+  }
+}
+
 .content {
   width: 100%;
   @include fluid('max-width', 390px, 500px);

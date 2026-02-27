@@ -1,4 +1,9 @@
-<div class="splash-container">
+@if (isLoading()) {
+  <div class="loading-overlay">
+    <app-loading [texts]="['Добро пожаловать!']"></app-loading>
+  </div>
+}
+  <div class="splash-container">
   <div class="content">
     <div class="logo-container">
       <div class="logo-m">
@@ -14,7 +19,7 @@
     </div>
 
     <div class="actions">
-      @if (hasAvatars() === false) {
+      @if (hasAvatars() === false && !isLoading()) {
         <app-button
           type="primary"
           icon="assets/icons/add.svg"
