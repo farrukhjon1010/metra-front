@@ -43,7 +43,6 @@ export class SplashCaseComponent {
 
   readonly hasAvatars = computed(() => {
     const avatars = this.avatarsSignal();
-    if (!avatars) return null;
-    return (avatars?.imagesURL?.length ?? 0) > 0;
+    return !!(avatars?.imagesURL?.length);
   });
 }
