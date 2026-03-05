@@ -19,7 +19,7 @@
     </div>
 
     <div class="actions">
-      @if (hasAvatars() === false && !isLoading()) {
+      @if (!hasAvatars() && !isLoading()) {
         <app-button
           type="primary"
           icon="assets/icons/add.svg"
