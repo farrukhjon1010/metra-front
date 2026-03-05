@@ -4,31 +4,15 @@
 <div class="history-container">
   <div class="form-group">
     <div class="filter-buttons">
-      <div class="slider"
-           [ngStyle]="{ transform:selectedFilter() === 'all' ? 'translateX(0%)':
-                                  selectedFilter() === 'photo'? 'translateX(100%)': 'translateX(200%)'}">
-      </div>
-
+      <div class="slider" [ngStyle]="{ transform: getSliderTransform() }"></div>
+      @for (filter of filters; track filter) {
       <button
         class="filter-btn"
-        [class.active]="selectedFilter() === 'all'"
-        (click)="changeFilter('all')">
-        Все
+        [class.active]="selectedFilter() === filter.key"
+        (click)="changeFilter(filter.key)">
+        {{ filter.label }}
       </button>
-
-      <button
-        class="filter-btn"
-        [class.active]="selectedFilter() === 'photo'"
-        (click)="changeFilter('photo')">
-        Фото
-      </button>
-
-      <button
-        class="filter-btn"
-        [class.active]="selectedFilter() === 'video'"
-        (click)="changeFilter('video')">
-        Видео
-      </button>
+      }
     </div>
   </div>
 

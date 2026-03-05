@@ -21,7 +21,11 @@ import { CreateCard } from '../../create/create.data';
 export class HistoryListComponent implements OnInit, OnDestroy {
 
   @Input() card!: CreateCard;
-
+  filters: { key: 'all' | 'photo' | 'video', label: string }[] = [
+    { key: 'all', label: 'Все' },
+    { key: 'photo', label: 'Фото' },
+    { key: 'video', label: 'Видео' }
+  ];
   public selectedFilter = signal<'all' | 'photo' | 'video'>('all');
   public generationHistory = signal<any[]>([]);
   public isLoading = signal<boolean>(false);
@@ -38,6 +42,11 @@ export class HistoryListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadGenerationsHistory();
+  }
+
+  getSliderTransform(): string {
+    const index = this.filters.findIndex(f => f.key === this.selectedFilter());
+    return `translateX(${index * 100}%)`;
   }
 
   changeFilter(filter: 'all' | 'photo' | 'video') {
