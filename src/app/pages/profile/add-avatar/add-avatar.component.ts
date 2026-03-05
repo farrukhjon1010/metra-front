@@ -3,15 +3,14 @@ import { CommonModule, NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { Gender } from '../../../core/models/avatar.model';
+import { Gender, CreateAvatarDto } from '../../../core/models/avatar.model';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { FileService } from '../../../core/services/file.service';
 import { Loading } from '../../../shared/components/loading/loading';
-import { from, Subject, switchMap, takeUntil } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Subject, switchMap, takeUntil, map } from 'rxjs';
 import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
-import {ToastService} from '../../../core/services/toast.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-add-avatar',
@@ -75,26 +74,22 @@ export class AddAvatarComponent implements OnDestroy {
 
     const selectedUrl = this.selectedAvatars[0];
 
-    this.avatarService.findByUser()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (existingAvatar) => {
-          const currentCount = existingAvatar?.imagesURL?.length || 0;
-          const nextIndex = currentCount + 1;
-          this.uploadAndSave(selectedUrl, nextIndex);
-        },
-        error: () => {
-          this.uploadAndSave(selectedUrl, 1);
-        }
-      });
+    this.uploadAndSave(selectedUrl);
   }
 
-  private uploadAndSave(url: string, index: number) {
+  private uploadAndSave(url: string) {
     from(fetch(url)).pipe(
       switchMap(res => from(res.blob())),
-      map(blob => new File([blob], `avatar_v${index}.png`, { type: 'image/png' })),
-      switchMap(file => this.fileService.uploadGeneratedAvatar(file, index)),
-      switchMap(response => this.avatarService.addImgUrl(response.url)),
+      map(blob => new File([blob], `avatar.png`, { type: 'image/png' })),
+      switchMap(file => this.fileService.uploadGeneratedAvatar(file, 1)),
+      switchMap(response => {
+        const dto: CreateAvatarDto = {
+          name: this.myForm.value.avatarName || '',
+          gender: this.gender,
+          imagesURL: [response.url]
+        };
+        return this.avatarService.create(dto);
+      }),
       takeUntil(this.destroy$)
     ).subscribe({
       next: () => {
@@ -132,42 +127,34 @@ export class AddAvatarComponent implements OnDestroy {
     ];
 
     this.fileService.uploadAvatars(filesUpload)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((event: any) => {
+          if (!event.body) throw new Error('No files uploaded');
+          const urls = event.body.map((img: any) => img.url);
+          const generateDto = {
+            name: this.myForm.value.avatarName || '',
+            gender: this.gender,
+            imageFront: urls[0],
+            imageLeft: urls[1],
+            imageRight: urls[2]
+          };
+          return this.avatarService.generateAvatar(generateDto);
+        })
+      )
       .subscribe({
-        next: (event: any) => {
-          if (event.body) {
-            const url = event.body.map((img: any) => img.url);
-            const generate = {
-              name: this.myForm.value.avatarName || '',
-              gender: this.gender,
-              imageFront: url[0],
-              imageLeft: url[1],
-              imageRight: url[2]
-            };
-            this.avatarService.generateAvatar(generate)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe({
-                next: (response: any) => {
-                  if (response.images) {
-                    this.generatedAvatars = response.images.imagesURL;
-                    this.currentStep = 'select';
-                    this.toast.show('Аватар успешно сгенерирован!', 'success');
-                    this.cdr.detectChanges();
-                  }
-                },
-                error: (err) => {
-                  console.error('Ошибка Генерации Аватара:', err);
-                  this.currentStep = 'form';
-                  this.toast.show('Ошибка Генерации Аватара', 'error');
-                  this.cdr.detectChanges();
-                }
-              });
+        next: (response: any) => {
+          if (response.images) {
+            this.generatedAvatars = response.images.imagesURL;
+            this.currentStep = 'select';
+            this.toast.show('Аватар успешно сгенерирован!', 'success');
+            this.cdr.detectChanges();
           }
         },
         error: (err) => {
-          console.error('Ошибка создание Аватара:', err);
+          console.error('Ошибка Генерации Аватара:', err);
           this.currentStep = 'form';
-          this.toast.show('Ошибка создание Аватара', 'error');
+          this.toast.show('Ошибка Генерации Аватара', 'error');
           this.cdr.detectChanges();
         }
       });
