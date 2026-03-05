@@ -1,16 +1,21 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {GenerateAvatarDto, AvatarResponse, Avatar, CreateAvatarDto, UpdateAvatarDto} from '../models/avatar.model';
+import {
+  GenerateAvatarDto,
+  AvatarResponse,
+  Avatar,
+  CreateAvatarDto,
+  UpdateAvatarDto
+} from '../models/avatar.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvatarService {
-  private readonly apiUrl = `avatars`;
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly apiUrl = 'avatars';
+  private http = inject(HttpClient)
 
   generateAvatar(data: GenerateAvatarDto): Observable<AvatarResponse> {
     return this.http.post<AvatarResponse>(`${this.apiUrl}/generate-avatar`, data);
@@ -30,10 +35,6 @@ export class AvatarService {
 
   update(id: string, dto: UpdateAvatarDto): Observable<Avatar> {
     return this.http.patch<Avatar>(`${this.apiUrl}/${id}`, dto);
-  }
-
-  addImgUrl(newUrl: string): Observable<Avatar> {
-    return this.http.patch<Avatar>(`${this.apiUrl}/add`, { url: newUrl });
   }
 
   setMainAvatar(url: string): Observable<Avatar> {
