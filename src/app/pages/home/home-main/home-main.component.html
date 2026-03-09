@@ -14,5 +14,7 @@
     </app-scenes-grid>
   </div>
 
-  <app-home-recommendation></app-home-recommendation>
+  <app-home-recommendation
+    (selectCategory)="onCategorySelect($event)">
+  </app-home-recommendation>
 }

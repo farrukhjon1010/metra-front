@@ -3,20 +3,14 @@
     [texts]="['Загрузка...']">
   </app-loading>
 }
+
 @if (loaded){
-  @if (selectedScene) {
     <app-scenes-card
       [scene]="selectedScene"
       (back)="goBack()">
     </app-scenes-card>
-  } @else {
-    <div class="empty-page">
-      <h2>Пусто</h2>
-      <p>Категория не найдена</p>
-      <button (click)="goBack()">Назад</button>
-    </div>
-  }
 }
+
 @if (showPaidDialog) {
   <app-paid-dialog></app-paid-dialog>
 }

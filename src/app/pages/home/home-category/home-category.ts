@@ -42,22 +42,22 @@ export class HomeCategory implements OnInit, OnDestroy {
         const cat = categories.find(c => c.id === categoryId) || null;
         this.category.set(cat);
 
+        if (!cat) {
+          this.loader.set(true);
+          this.toast.show('Категория не найдена', 'error');
+          this.goBack();
+          return;
+        }
+
         const scenesSub = this.sceneService.getScenes({ categoryId }).subscribe({
           next: categoryScenes => {
             this.scenes.set(categoryScenes);
 
             if (categoryScenes.length > 0) {
               this.selectedScene.set(categoryScenes[0]);
-            } else if (cat) {
-              this.selectedScene.set({
-                id: 0,
-                name: '',
-                image: cat.image,
-                category: cat,
-                prompt: '',
-                mode: 'Template',
-                createdAt: new Date().toISOString()
-              } as Scene);
+            } else {
+              this.selectedScene.set(null);
+              this.toast.show('В категории нет сцен', 'error');
             }
             this.loader.set(true);
           },
@@ -65,9 +65,10 @@ export class HomeCategory implements OnInit, OnDestroy {
             this.scenes.set([]);
             this.selectedScene.set(null);
             this.loader.set(true);
-            this.toast.show('Ошибка загрузки Сцен', 'error');
+            this.toast.show('Ошибка загрузки сцен', 'error');
           }
         });
+
         this.subscriptions.add(scenesSub);
       },
       error: () => {
@@ -75,7 +76,7 @@ export class HomeCategory implements OnInit, OnDestroy {
         this.scenes.set([]);
         this.selectedScene.set(null);
         this.loader.set(true);
-        this.toast.show('Ошибка загрузки Категорий', 'error');
+        this.toast.show('Ошибка загрузки категорий', 'error');
       }
     });
 

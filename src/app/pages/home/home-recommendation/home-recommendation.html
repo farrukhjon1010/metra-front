@@ -1,47 +1,21 @@
 <div class="home__content">
   <div class="home__scenes-section">
-
     <div class="home__recommendations-section">
       <div class="home__section-header">
         <h2 class="home__section-title">Рекомендации дня</h2>
       </div>
 
-      <div class="home__recommendations-grid">
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/home-port-icon.svg" alt="">
-          <span class="home__rec-label">Домашний портрет</span>
+      @for (row of rows(); track row) {
+        <div class="home__recommendations-grid">
+          @for (rec of row; track rec.id) {
+            <div class="home__recommendation-btn" (click)="select(rec)">
+              <img [src]="rec.image" alt="">
+              <span class="home__rec-label">{{ rec.name }}</span>
+            </div>
+          }
         </div>
+      }
 
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/studio-icon.svg" alt="">
-          <span class="home__rec-label">Студийный образ</span>
-        </div>
-      </div>
-
-      <div class="home__recommendations-grid">
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/city-night-icon.svg" alt="">
-          <span class="home__rec-label">Городской вечер</span>
-        </div>
-
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/winter-look-icon.svg" alt="">
-          <span class="home__rec-label">Зимний образ</span>
-        </div>
-      </div>
-
-      <div class="home__recommendations-grid">
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/profile-avatar-icon.svg" alt="">
-          <span class="home__rec-label">Профиль / Аватар</span>
-        </div>
-
-        <div class="home__recommendation-btn">
-          <img src="assets/icons/pair-duo-icon.svg" alt="">
-          <span class="home__rec-label">Пара / Duo</span>
-        </div>
-
-      </div>
     </div>
   </div>
 </div>
