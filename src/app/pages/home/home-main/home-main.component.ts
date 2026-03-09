@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit, signal} from '@angular/core';
 import { SceneService } from '../../../core/services/scene.service';
 import { Scene, SceneCategory } from '../../../core/models/scene.model';
 import { ScenesGrid } from '../../scenes/scenes-grid/scenes-grid';
@@ -28,6 +28,7 @@ export class HomeMainComponent implements OnInit {
   private router = inject(Router);
   private toast = inject(ToastService);
   private paidDialogService = inject(PaidDialogService);
+  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
     this.loadCategories();
@@ -64,4 +65,14 @@ export class HomeMainComponent implements OnInit {
       this.toast.show('Ошибка загрузки сцен', 'error');
     }
   }
+
+  onCategorySel(categoryId: string) {
+    const id = Number(categoryId);
+    const category = this.categories().find(c => c.id === id);
+    if (!category) return;
+
+    this.onCategorySelect(category);
+    this.cdr.detectChanges();
+  }
+
 }

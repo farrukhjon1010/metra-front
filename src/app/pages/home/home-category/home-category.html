@@ -1,14 +1,14 @@
 @if (showPaidDialog()) {
   <app-paid-dialog></app-paid-dialog>
 }
-@if(!loader()){
-  <div>
+
+@if (!loader()) {
     <app-loading
       [texts]="['Загрузка...']">
     </app-loading>
-  </div>
 }
-@if (loader()){
+
+@if (loader()) {
   <div class="category">
     @if (selectedScene()) {
       <app-home-header></app-home-header>
@@ -16,12 +16,6 @@
         [scene]="selectedScene()"
         (back)="goBack()">
       </app-scenes-card>
-    } @else {
-      <div class="empty-page">
-        <h2>Пусто</h2>
-        <p>Категория не найдена</p>
-        <button (click)="goBack()">Назад</button>
-      </div>
     }
   </div>
 }

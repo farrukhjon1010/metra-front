@@ -6,7 +6,7 @@
         Генерация образов и фото с помощью персонального аватара
       </p>
     </div>
-    <div class="home__avatar-icon">
+    <div class="home__avatar-icon" (click)="goToProfile()">
       @if (currentAvatar()) {
         <img [src]="currentAvatar()" alt="">
       } @else {
