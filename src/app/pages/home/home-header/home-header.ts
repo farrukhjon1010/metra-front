@@ -3,6 +3,7 @@ import { AvatarService } from '../../../core/services/avatar.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ToastService } from '../../../core/services/toast.service';
 import {SelectedAvatarService} from '../../../core/services/selected-avatar.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-header',
@@ -15,12 +16,11 @@ export class HomeHeader implements OnInit, OnDestroy {
 
   public isLoading = signal<boolean>(false);
   public userAvatars = signal<string[]>([]);
-  // public currentAvatar = signal<string>('');
-
   private destroy$ = new Subject<void>();
   private avatarService = inject(AvatarService);
   private toast = inject(ToastService);
   private selectedAvatarService = inject(SelectedAvatarService);
+  private router = inject(Router);
   public currentAvatar = this.selectedAvatarService.currentAvatar;
 
   ngOnInit() {
@@ -52,5 +52,13 @@ export class HomeHeader implements OnInit, OnDestroy {
           this.toast.show('Ошибка загрузки Аватара', 'error');
         }
       });
+  }
+
+  goToProfile() {
+    const avatar = this.currentAvatar();
+    if (avatar) {
+      this.selectedAvatarService.currentAvatar.set(avatar);
+    }
+    this.router.navigate(['/profile']);
   }
 }
