@@ -1,45 +1,57 @@
-import {ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core';
-import { CommonModule, NgStyle } from '@angular/common';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Gender, CreateAvatarDto } from '../../../core/models/avatar.model';
 import { AvatarService } from '../../../core/services/avatar.service';
 import { FileService } from '../../../core/services/file.service';
-import { Loading } from '../../../shared/components/loading/loading';
 import { from, Subject, switchMap, takeUntil, map } from 'rxjs';
-import { PaidDialog } from '../../../shared/paid-dialog/paid-dialog';
 import { PaidDialogService } from '../../../core/services/paid-dialog.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { SplashFormComponent } from '../../splash/components/splash-form/splash-form.component';
+import { Loading } from '../../../shared/components/loading/loading';
+import {SplashSelectComponent} from '../../splash/components/splash-select/splash-select.component';
+import {SplashSuccessComponent} from '../../splash/components/splash-success/splash-success.component';
+import {PaidDialog} from '../../../shared/paid-dialog/paid-dialog';
 
 @Component({
   selector: 'app-add-avatar',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgStyle, ButtonComponent, ReactiveFormsModule, Loading, PaidDialog],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SplashFormComponent,
+    Loading,
+    SplashSelectComponent,
+    SplashSuccessComponent,
+    PaidDialog
+  ],
   templateUrl: './add-avatar.component.html',
   styleUrls: ['./add-avatar.component.scss'],
 })
 export class AddAvatarComponent implements OnDestroy {
-
-  @ViewChild('frontInput') frontInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('leftInput') leftInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rightInput') rightInput!: ElementRef<HTMLInputElement>;
-
-  public photos = {
-    front: { file: null as File | null, preview: null as string | null },
-    left: { file: null as File | null, preview: null as string | null },
-    right: { file: null as File | null, preview: null as string | null },
-  };
 
   public myForm = new FormGroup({
     avatarName: new FormControl('', Validators.required),
   });
 
   public gender: Gender = Gender.MALE;
+
+  public photosPreview = {
+    front: null as string | null,
+    left: null as string | null,
+    right: null as string | null
+  };
+
+  public photosFiles = {
+    front: null as File | null,
+    left: null as File | null,
+    right: null as File | null
+  };
+
   public currentStep: 'form' | 'loading' | 'select' | 'success' = 'form';
   public generatedAvatars: string[] = [];
   public selectedAvatars: string[] = [];
-  protected readonly Gender = Gender;
   private destroy$ = new Subject<void>();
 
   private router = inject(Router);
@@ -47,40 +59,43 @@ export class AddAvatarComponent implements OnDestroy {
   private fileService = inject(FileService);
   private paidDialogService = inject(PaidDialogService);
   private toast = inject(ToastService);
-  private cdr = inject(ChangeDetectorRef);
 
   public get showPaidDialog(): boolean {
     return this.paidDialogService.showDialog();
   }
 
-  isSelected(avatar: string): boolean {
-    return this.selectedAvatars.includes(avatar);
+  onGenderChange(g: 'male' | 'female') {
+    this.gender = g === 'male' ? Gender.MALE : Gender.FEMALE;
+  }
+
+  onPhotoUploaded(event: { type: 'front' | 'left' | 'right'; dataUrl: string; file: File }) {
+    this.photosPreview[event.type] = event.dataUrl;
+    this.photosFiles[event.type] = event.file;
+  }
+
+  onPhotoRemoved(type: 'front' | 'left' | 'right') {
+    this.photosPreview[type] = null;
+    this.photosFiles[type] = null;
   }
 
   toggleAvatar(avatar: string): void {
-    if (this.selectedAvatars[0] === avatar) {
-      this.selectedAvatars = [];
-    } else {
-      this.selectedAvatars = [avatar];
-    }
+    this.selectedAvatars = this.selectedAvatars[0] === avatar ? [] : [avatar];
   }
 
   confirmAvatars(): void {
-    if (this.paidDialogService.tryShowDialog()) return;
-    if (this.selectedAvatars.length === 0) return;
-
+    if (this.paidDialogService.tryShowDialog())
+      return;
+    if (this.selectedAvatars.length === 0)
+      return;
     this.currentStep = 'loading';
-    this.cdr.detectChanges();
-
     const selectedUrl = this.selectedAvatars[0];
-
     this.uploadAndSave(selectedUrl);
   }
 
   private uploadAndSave(url: string) {
     from(fetch(url)).pipe(
       switchMap(res => from(res.blob())),
-      map(blob => new File([blob], `avatar.png`, { type: 'image/png' })),
+      map(blob => new File([blob], 'avatar.png', { type: 'image/png' })),
       switchMap(file => this.fileService.uploadGeneratedAvatar(file, 1)),
       switchMap(response => {
         const dto: CreateAvatarDto = {
@@ -95,51 +110,40 @@ export class AddAvatarComponent implements OnDestroy {
       next: () => {
         this.currentStep = 'success';
         this.toast.show('Аватар успешно сохранён!', 'success');
-        this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Ошибка сохранении аватара:', err);
+      error: () => {
         this.currentStep = 'form';
-        this.toast.show('Ошибка сохранении аватара', 'error');
-        this.cdr.detectChanges();
+        this.toast.show('Ошибка сохранения аватара', 'error');
       }
     });
   }
 
-  canCreate(): boolean {
-    return this.myForm.valid &&
-      !!this.photos.front.file &&
-      !!this.photos.left.file &&
-      !!this.photos.right.file;
-  }
-
   createAvatar() {
     if (this.paidDialogService.tryShowDialog()) return;
-    if (!this.canCreate()) return;
-
+    if (!this.photosFiles.front || !this.photosFiles.left || !this.photosFiles.right) {
+      this.toast.show('Загрузите все фотографии', 'error');
+      return;
+    }
     this.currentStep = 'loading';
-    this.cdr.detectChanges();
 
     const filesUpload: File[] = [
-      this.photos.front.file!,
-      this.photos.left.file!,
-      this.photos.right.file!
-    ];
-
+      this.photosFiles.front,
+      this.photosFiles.left,
+      this.photosFiles.right
+    ] as File[];
     this.fileService.uploadAvatars(filesUpload)
       .pipe(
         takeUntil(this.destroy$),
         switchMap((event: any) => {
           if (!event.body) throw new Error('No files uploaded');
           const urls = event.body.map((img: any) => img.url);
-          const generateDto = {
+          return this.avatarService.generateAvatar({
             name: this.myForm.value.avatarName || '',
             gender: this.gender,
             imageFront: urls[0],
             imageLeft: urls[1],
             imageRight: urls[2]
-          };
-          return this.avatarService.generateAvatar(generateDto);
+          });
         })
       )
       .subscribe({
@@ -148,48 +152,13 @@ export class AddAvatarComponent implements OnDestroy {
             this.generatedAvatars = response.images.imagesURL;
             this.currentStep = 'select';
             this.toast.show('Аватар успешно сгенерирован!', 'success');
-            this.cdr.detectChanges();
           }
         },
-        error: (err) => {
-          console.error('Ошибка Генерации Аватара:', err);
+        error: () => {
           this.currentStep = 'form';
-          this.toast.show('Ошибка Генерации Аватара', 'error');
-          this.cdr.detectChanges();
+          this.toast.show('Ошибка генерации аватара', 'error');
         }
       });
-  }
-
-  triggerFileInput(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
-    const map = {
-      front: this.frontInput,
-      left: this.leftInput,
-      right: this.rightInput
-    };
-    map[type]?.nativeElement.click();
-  }
-
-  onFileSelectedAvatar(event: Event, type: 'front' | 'left' | 'right') {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) return;
-
-    this.photos[type].file = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photos[type].preview = reader.result as string;
-      this.cdr.detectChanges();
-    };
-    reader.readAsDataURL(file);
-  }
-
-  removePhoto(type: 'front' | 'left' | 'right', event: Event) {
-    event.stopPropagation();
-    this.photos[type].file = null;
-    this.photos[type].preview = null;
-    this.toast.show('Фото удалено', 'success');
-    this.cdr.detectChanges();
   }
 
   goProfile() {
@@ -198,11 +167,6 @@ export class AddAvatarComponent implements OnDestroy {
 
   goBack() {
     this.router.navigate(['/profile']);
-  }
-
-  submit() {
-    if (this.myForm.invalid) return;
-    console.log('Форма отправлена', this.myForm.value);
   }
 
   ngOnDestroy() {

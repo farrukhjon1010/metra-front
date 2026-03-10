@@ -1,3 +1,5 @@
+
+
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
 
@@ -7,16 +9,24 @@
   padding: 0;
 }
 
+.header {
+  padding: 24px 16px 8px 16px;
+  margin: 0;
+
+  .title {
+    display: flex;
+    gap: 16px;
+    font-size: 20px;
+    font-weight: $font-weight-bold;
+  }
+}
+
 .add-avatar-content {
   width: 100%;
   margin: 0 auto;
   @include fluid('padding', 16px, 20px);
   position: relative;
   z-index: $z-normal;
-
-  .header {
-    @include fluid('margin-bottom', 12px, 16px);
-  }
 
   .title {
     display: flex;
@@ -347,3 +357,10 @@
   @include fluid-text(10px, 12px);
   margin-top: 4px;
 }
+
+::ng-deep {
+  .add-avatar app-splash-form .header {
+    display: none;
+  }
+}
+
