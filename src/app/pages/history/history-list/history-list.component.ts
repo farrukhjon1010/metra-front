@@ -51,20 +51,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    const testGeneration = {
-      id: 'test123',
-      createdAt: new Date().toISOString(),
-      category: 'Фото',
-      prompt: 'Тестовое изображение для проверки увеличения',
-      imageURL: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      type: 'photo'
-    };
     this.loadGenerationsHistory();
-    setTimeout(() => {
-      const currentHistory = this.generationHistory();
-      this.generationHistory.set([testGeneration, ...currentHistory]);
-    }, 500);
   }
 
   getSliderTransform(): string {
@@ -123,10 +110,6 @@ export class HistoryListComponent implements OnInit, OnDestroy {
       ['/history/improving-quality'],
       { state: { imageUrl, id } }
     );
-  }
-
-  reloadHistory() {
-    this.loadGenerationsHistory();
   }
 
   repeatGeneration(generation: any) {
