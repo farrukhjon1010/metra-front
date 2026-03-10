@@ -1,19 +1,24 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
 
+.header {
+  position: sticky;
+  top: 0;
+  z-index: $z-fixed;
+  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
 .subscription-header {
   display: flex;
   align-items: center;
   @include fluid-gap(16px, 24px);
   @include fluid('padding', 24px, 32px);
-  background: linear-gradient(180deg, rgba(10, 10, 20, 0.95) 0%, rgba(10, 10, 20, 0.5) 100%);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: $z-fixed;
 
-  .back-btn img {
+
+
+   img {
     width: clamp(20px, 4vw, 24px);
     height: auto;
   }

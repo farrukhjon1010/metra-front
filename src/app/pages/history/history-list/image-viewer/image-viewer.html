@@ -1,0 +1,30 @@
+<div class="overlay" (click)="onBackgroundClick($event)">
+  <div class="viewer">
+    <button class="close-btn" (click)="close.emit()">✕</button>
+
+    <img [src]="generation.imageURL" alt="Generated image" />
+
+    <div class="actions">
+      <app-button
+        type="primary"
+        icon="assets/icons/update.svg"
+        (click)="repeatGeneration()">
+        Повторить
+      </app-button>
+
+      <app-button
+        type="secondary"
+        icon="assets/icons/photo-size.svg"
+        (click)="upScale()">
+        Upscale
+      </app-button>
+
+      <app-button
+        type="secondary"
+        icon="assets/icons/download.svg"
+        (click)="downloadImage()">
+        Скачать
+      </app-button>
+    </div>
+  </div>
+</div>

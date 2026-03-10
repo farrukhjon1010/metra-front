@@ -10,11 +10,12 @@ import { ToastService } from '../../../core/services/toast.service';
 import { GenerationService } from '../../../core/services/generation.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CreateCard } from '../../create/create.data';
+import {ImageViewerComponent} from './image-viewer/image-viewer';
 
 @Component({
   selector: 'app-history-list',
   standalone: true,
-  imports: [NgStyle, CommonModule, ButtonComponent, DatePipe, Loading, PaidDialog],
+  imports: [NgStyle, CommonModule, ButtonComponent, DatePipe, Loading, PaidDialog, ImageViewerComponent],
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
 })
@@ -29,6 +30,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   public selectedFilter = signal<'all' | 'photo' | 'video'>('all');
   public generationHistory = signal<any[]>([]);
   public isLoading = signal<boolean>(false);
+  public viewingGenerationSignal = signal<string | null>(null);
 
   private destroy$ = new Subject<void>();
   private router = inject(Router);
@@ -40,8 +42,29 @@ export class HistoryListComponent implements OnInit, OnDestroy {
     return !this.isLoading() && this.generationHistory().length > 0 && this.paidDialogService.showDialog();
   }
 
+  openImageViewer(generation: any) {
+    this.viewingGenerationSignal.set(generation);
+  }
+
+  closeImageViewer() {
+    this.viewingGenerationSignal.set(null);
+  }
+
   ngOnInit() {
+
+    const testGeneration = {
+      id: 'test123',
+      createdAt: new Date().toISOString(),
+      category: 'Фото',
+      prompt: 'Тестовое изображение для проверки увеличения',
+      imageURL: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      type: 'photo'
+    };
     this.loadGenerationsHistory();
+    setTimeout(() => {
+      const currentHistory = this.generationHistory();
+      this.generationHistory.set([testGeneration, ...currentHistory]);
+    }, 500);
   }
 
   getSliderTransform(): string {
@@ -100,6 +123,10 @@ export class HistoryListComponent implements OnInit, OnDestroy {
       ['/history/improving-quality'],
       { state: { imageUrl, id } }
     );
+  }
+
+  reloadHistory() {
+    this.loadGenerationsHistory();
   }
 
   repeatGeneration(generation: any) {
