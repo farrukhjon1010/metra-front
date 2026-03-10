@@ -67,7 +67,9 @@
                 <img
                   class="photo-history"
                   [src]="generation.imageURL"
-                  alt="">
+                  alt=""
+                  (click)="openImageViewer(generation)"
+                >
               </div>
 
               <app-button
@@ -92,6 +94,13 @@
               </app-button>
             </div>
           </div>
+        }
+        @if (viewingGenerationSignal()) {
+          <app-image-viewer
+            [generation]="viewingGenerationSignal()"
+            (close)="closeImageViewer()"
+            (updateParent)="loadGenerationsHistory()">
+          </app-image-viewer>
         }
       </div>
     }

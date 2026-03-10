@@ -16,7 +16,7 @@
   .title {
     display: flex;
     gap: 16px;
-    font-size: 20px;
+    @include fluid-text(18px, 20px);
     font-weight: $font-weight-bold;
   }
 }

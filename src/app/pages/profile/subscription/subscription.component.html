@@ -3,12 +3,12 @@
     [texts]="['Подготовка к оплате…']">
   </app-loading>
 } @else {
-  <div class="subscription-header">
-    <div (click)="goBack()">
-      <img src="assets/icons/arrow-back.svg" alt="">
-    </div>
-    <div class="subscription-balance">
-      <span>Подписка METRA</span>
+  <div class="header">
+    <div class="subscription-header">
+        <img src="assets/icons/arrow-back.svg" alt="" (click)="goBack()">
+      <div class="subscription-balance">
+        <span>Подписка METRA</span>
+      </div>
     </div>
   </div>
   <div class="subscription-content">

@@ -10,11 +10,12 @@ import { ToastService } from '../../../core/services/toast.service';
 import { GenerationService } from '../../../core/services/generation.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CreateCard } from '../../create/create.data';
+import {ImageViewerComponent} from './image-viewer/image-viewer';
 
 @Component({
   selector: 'app-history-list',
   standalone: true,
-  imports: [NgStyle, CommonModule, ButtonComponent, DatePipe, Loading, PaidDialog],
+  imports: [NgStyle, CommonModule, ButtonComponent, DatePipe, Loading, PaidDialog, ImageViewerComponent],
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
 })
@@ -29,6 +30,7 @@ export class HistoryListComponent implements OnInit, OnDestroy {
   public selectedFilter = signal<'all' | 'photo' | 'video'>('all');
   public generationHistory = signal<any[]>([]);
   public isLoading = signal<boolean>(false);
+  public viewingGenerationSignal = signal<string | null>(null);
 
   private destroy$ = new Subject<void>();
   private router = inject(Router);
@@ -38,6 +40,14 @@ export class HistoryListComponent implements OnInit, OnDestroy {
 
   public get shouldShowPaidDialog(): boolean {
     return !this.isLoading() && this.generationHistory().length > 0 && this.paidDialogService.showDialog();
+  }
+
+  openImageViewer(generation: any) {
+    this.viewingGenerationSignal.set(generation);
+  }
+
+  closeImageViewer() {
+    this.viewingGenerationSignal.set(null);
   }
 
   ngOnInit() {
